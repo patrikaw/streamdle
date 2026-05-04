@@ -1,64 +1,232 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+
+const GAMES = [
+  {
+    slug: 'classic',
+    name: 'Streamdle',
+    emoji: '🎯',
+    description: 'Adiviná el streamer del día con pistas',
+    color: '#7C3AED',
+    available: true,
+    daily: true,
+  },
+  {
+    slug: 'avatardle',
+    name: 'Avatardle',
+    emoji: '👤',
+    description: 'Adiviná el streamer por su foto pixelada',
+    color: '#9D5FF5',
+    available: true,
+    daily: true,
+  },
+  {
+    slug: 'higherdle-followers',
+    name: 'Higherdle',
+    emoji: '📊',
+    description: '¿Quién tiene más seguidores?',
+    color: '#2563EB',
+    available: true,
+    daily: false,
+  },
+  {
+    slug: 'higherdle-hours',
+    name: 'Hourdle',
+    emoji: '⏱️',
+    description: '¿Quién streameó más horas?',
+    color: '#0891B2',
+    available: true,
+    daily: false,
+  },
+  {
+    slug: 'categorydle',
+    name: 'Categorydle',
+    emoji: '🎮',
+    description: 'Adiviná la categoría favorita del streamer',
+    color: '#059669',
+    available: true,
+    daily: true,
+  },
+];
 
 export default function Home() {
+  const [hoveredGame, setHoveredGame] = useState(null);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+      {/* Header */}
+      <header style={{
+        borderBottom: '1px solid var(--color-border)',
+        padding: '16px 24px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        background: 'var(--bg-secondary)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ fontSize: '24px' }}>🎮</span>
+          <span style={{
+            fontSize: '22px',
+            fontWeight: '800',
+            background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}>STREAMDLE</span>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{
+            fontSize: '12px',
+            color: 'var(--color-text-secondary)',
+            background: 'var(--bg-card)',
+            padding: '4px 10px',
+            borderRadius: '12px',
+            border: '1px solid var(--color-border)',
+          }}>🌎 ES</span>
         </div>
+      </header>
+
+      {/* Hero */}
+      <div style={{ textAlign: 'center', padding: '48px 24px 32px' }}>
+        <h1 style={{
+          fontSize: 'clamp(24px, 5vw, 42px)',
+          fontWeight: '800',
+          lineHeight: 1.2,
+          marginBottom: '12px',
+        }}>
+          ¿Cuánto sabés de tus{' '}
+          <span style={{
+            background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}>
+            streamers favoritos?
+          </span>
+        </h1>
+        <p style={{
+          color: 'var(--color-text-secondary)',
+          fontSize: '16px',
+          maxWidth: '480px',
+          margin: '0 auto',
+        }}>
+          Jugá los desafíos diarios y demostrá que sos el fan número 1
+        </p>
+      </div>
+
+      {/* Games grid */}
+      <main style={{
+        maxWidth: '900px',
+        margin: '0 auto',
+        padding: '0 24px 48px',
+      }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gap: '16px',
+        }}>
+          {GAMES.map((game) => (
+            <Link
+              key={game.slug}
+              href={`/${game.slug}`}
+              style={{ textDecoration: 'none' }}
+              onMouseEnter={() => setHoveredGame(game.slug)}
+              onMouseLeave={() => setHoveredGame(null)}
+            >
+              <div style={{
+                background: 'var(--bg-card)',
+                border: `1.5px solid ${hoveredGame === game.slug ? game.color : 'var(--color-border)'}`,
+                borderRadius: '14px',
+                padding: '24px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                transform: hoveredGame === game.slug ? 'translateY(-3px)' : 'none',
+                boxShadow: hoveredGame === game.slug ? `0 8px 24px ${game.color}30` : 'none',
+                position: 'relative',
+                overflow: 'hidden',
+              }}>
+                {/* Glow top bar */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0, left: 0, right: 0,
+                  height: '3px',
+                  background: game.color,
+                  borderRadius: '14px 14px 0 0',
+                }} />
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '12px' }}>
+                  <span style={{ fontSize: '32px' }}>{game.emoji}</span>
+                  {game.daily && (
+                    <span style={{
+                      fontSize: '10px',
+                      fontWeight: '700',
+                      background: `${game.color}22`,
+                      color: game.color,
+                      padding: '3px 8px',
+                      borderRadius: '8px',
+                      border: `1px solid ${game.color}44`,
+                    }}>DIARIO</span>
+                  )}
+                </div>
+
+                <h2 style={{
+                  fontSize: '20px',
+                  fontWeight: '700',
+                  marginBottom: '6px',
+                  color: 'var(--color-text)',
+                }}>{game.name}</h2>
+
+                <p style={{
+                  fontSize: '13px',
+                  color: 'var(--color-text-secondary)',
+                  lineHeight: 1.5,
+                }}>{game.description}</p>
+
+                <div style={{
+                  marginTop: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  color: game.color,
+                  fontSize: '13px',
+                  fontWeight: '600',
+                }}>
+                  Jugar ahora →
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Footer links */}
+        <div style={{
+          textAlign: 'center',
+          marginTop: '48px',
+          padding: '24px',
+          borderTop: '1px solid var(--color-border)',
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '24px',
+          flexWrap: 'wrap',
+        }}>
+          {['Cómo jugar', 'Contacto', 'Privacidad', 'Términos'].map(link => (
+            <span key={link} style={{
+              color: 'var(--color-text-secondary)',
+              fontSize: '13px',
+              cursor: 'pointer',
+            }}>{link}</span>
+          ))}
+        </div>
+        <p style={{
+          textAlign: 'center',
+          color: 'var(--color-text-secondary)',
+          fontSize: '12px',
+          marginTop: '12px',
+        }}>
+          © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por fans, para fans.
+        </p>
       </main>
     </div>
   );
