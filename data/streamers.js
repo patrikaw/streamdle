@@ -3054,7 +3054,8 @@ export function getStreamersByCountry(country) {
 export function searchStreamers(query, country = "ALL") {
   const q = query.toLowerCase().trim();
   if (!q) return [];
-  const pool = getStreamersByCountry(country);
+  let pool = getStreamersByCountry(country);
+  if (filter) pool = pool.filter(filter);
   return pool.filter(s => {
     const fields = [
       s.name,
@@ -3073,7 +3074,7 @@ export function getDailyStreamer(country = "ALL", gameOffset = 0) {
   const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
   return pool[(seed + gameOffset) % pool.length];
 }
- export function getDailyStreamerNoRepeat(country = "ALL", gameKey = "classic", offset = 0) {
+ export function getDailyStreamerNoRepeat(country = "ALL", gameKey = "classic", offset = 0, filter = null) {
   const pool = getStreamersByCountry(country);
   const today = new Date();
   const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
