@@ -291,3 +291,9 @@ body {
   color: white;
   font-weight: 600;
 }
+
+@media (max-width: 640px) {
+  .game-nav-links {
+    display: none !important;
+  }
+}

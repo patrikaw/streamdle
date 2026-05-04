@@ -48,12 +48,16 @@ function Countdown() {
   return <span className="countdown">{time}</span>;
 }
 
-function ShareModal({ won, attempts, target, avatars, onClose, onOtherGames }) {
+  function ShareModal({ won, attempts, target, avatars, guesses, onClose, onOtherGames }) {
   const [copied, setCopied] = useState(false);
   const emoji = won ? (attempts <= 3 ? '🔥' : attempts <= 6 ? '✅' : '😅') : '💀';
-  const blocks = Array.from({ length: MAX_ATTEMPTS }).map((_, i) =>
-    i < attempts - 1 ? '🟥' : i === attempts - 1 && won ? '🟩' : i < attempts ? '🟥' : '⬛'
-  ).join('');
+  const blocks = Array.from({ length: MAX_ATTEMPTS }).map((_, i) => {
+  const guess = guesses ? guesses[i] : null;
+  if (!guess) return '⬛';
+  const isTop = guess.toLowerCase() === (target.top_category || '').toLowerCase();
+  const isSecond = guess.toLowerCase() === (target.second_category || '').toLowerCase();
+  return (isTop || isSecond) ? '🟩' : '🟥';
+}).join('');
 
   const shareText = !won
     ? `🎮 Categorydle\nNo lo adiviné 💀\nEran: ${target.top_category} + ${target.second_category}\n${blocks}\nstreamdle.net/categorydle`
@@ -313,18 +317,20 @@ export default function CategorydlePage() {
         <div style={{ textAlign: 'center', marginBottom: '16px' }}>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '6px' }}>
             {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => {
-              const guess = guesses[i];
-              const isTop = guess && guess.toLowerCase() === (target.top_category || '').toLowerCase();
-              const isSecond = guess && guess.toLowerCase() === (target.second_category || '').toLowerCase();
-              const isCorrect = isTop || isSecond;
-              return (
-                <div key={i} style={{
-                  width: '28px', height: '6px', borderRadius: '3px',
-                  background: i >= guesses.length ? 'var(--color-border)' : isCorrect ? '#16A34A' : '#DC2626',
-                  transition: 'background 0.3s',
-                }} />
-              );
-            })}
+  const guess = guesses[i];
+  const isTop = guess && guess.toLowerCase() === (target.top_category || '').toLowerCase();
+  const isSecond = guess && guess.toLowerCase() === (target.second_category || '').toLowerCase();
+  const isCorrect = isTop || isSecond;
+  const isEmpty = i >= guesses.length;
+  return (
+    <div key={i} style={{
+      width: '28px', height: '6px', borderRadius: '3px',
+      background: isEmpty ? 'var(--color-border)' : isCorrect ? '#16A34A' : '#DC2626',
+      transition: 'background 0.3s',
+      outline: won && !isEmpty && isCorrect ? '2px solid #53FC18' : 'none',
+    }} />
+  );
+})}
           </div>
           <p style={{ fontSize: '12px', color: 'var(--color-text-secondary)' }}>
             {gameOver
@@ -395,7 +401,7 @@ export default function CategorydlePage() {
       </main>
 
       {showModal && (
-        <ShareModal won={won} attempts={guesses.length} target={target} avatars={avatars}
+        <ShareModal won={won} attempts={guesses.length} target={target} avatars={avatars} guesses={guesses}
           onClose={() => setShowModal(false)}
           onOtherGames={() => window.location.href = '/'} />
       )}

@@ -5,11 +5,17 @@ export const metadata = {
   title: 'Streamdle — ¿Cuánto sabés de tus streamers favoritos?',
   description: 'Adiviná streamers hispanohablantes en varios juegos diarios. Avatardle, Higherdle, Categorydle y más.',
   keywords: 'streamdle, streamer, twitch, kick, juego, adivinar, wordle, hispano, argentina, mexico, españa',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-icon.png',
+    shortcut: '/icon.png',
+  },
   openGraph: {
-    title: 'Streamdle',
-    description: '¿Cuánto sabés de tus streamers favoritos?',
+    title: 'Streamdle — ¿Cuánto sabés de tus streamers favoritos?',
+    description: 'Adiviná streamers hispanohablantes en varios juegos diarios.',
     url: 'https://streamdle.net',
     siteName: 'Streamdle',
+    images: [{ url: 'https://streamdle.net/og-image.jpg', width: 1200, height: 630 }],
     locale: 'es_ES',
     type: 'website',
   },
@@ -17,6 +23,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Streamdle',
     description: '¿Cuánto sabés de tus streamers favoritos?',
+    images: ['https://streamdle.net/og-image.jpg'],
   },
 };
 
