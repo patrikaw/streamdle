@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { STREAMERS, COUNTRIES, getDailyStreamerNoRepeat } from '../../data/streamers';
+import { getAvatars, getAvatarUrl } from '../../data/avatars';
 
 const MAX_ATTEMPTS = 8;
 
@@ -12,12 +13,6 @@ function getCategories(pool) {
     if (s.second_category) cats.add(s.second_category);
   });
   return Array.from(cats).sort();
-}
-
-function getAvatarUrl(streamer) {
-  if (streamer.twitch) return `https://unavatar.io/twitch/${streamer.twitch}`;
-  if (streamer.kick) return `https://unavatar.io/kick/${streamer.kick}`;
-  return null;
 }
 
 function formatNum(n) {
@@ -53,7 +48,7 @@ function Countdown() {
   return <span className="countdown">{time}</span>;
 }
 
-function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
+function ShareModal({ won, attempts, target, avatars, onClose, onOtherGames }) {
   const [copied, setCopied] = useState(false);
   const emoji = won ? (attempts <= 3 ? '🔥' : attempts <= 6 ? '✅' : '😅') : '💀';
   const blocks = Array.from({ length: MAX_ATTEMPTS }).map((_, i) =>
@@ -64,6 +59,8 @@ function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
     ? `🎮 Categorydle\nNo lo adiviné 💀\nEran: ${target.top_category} + ${target.second_category}\n${blocks}\nstreamdle.net/categorydle`
     : `🎮 Categorydle ${attempts}/${MAX_ATTEMPTS}\n${blocks}\n¿Conocés las 2 categorías de ${target.display_name}?\nstreamdle.net/categorydle`;
 
+  const avatarUrl = getAvatarUrl(target, avatars);
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-box" onClick={e => e.stopPropagation()}>
@@ -73,9 +70,7 @@ function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
             {won ? '¡Lo adivinaste!' : '¡Casi!'}
           </h2>
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px' }}>
-            {won
-              ? `Lo lograste en ${attempts} intento${attempts > 1 ? 's' : ''}`
-              : `Eran: ${target.top_category} + ${target.second_category}`}
+            {won ? `Lo lograste en ${attempts} intento${attempts > 1 ? 's' : ''}` : `Eran: ${target.top_category} + ${target.second_category}`}
           </p>
           <div style={{ fontSize: '24px', letterSpacing: '4px', margin: '12px 0' }}>{blocks}</div>
         </div>
@@ -85,8 +80,8 @@ function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
           display: 'flex', alignItems: 'center', gap: '12px',
           marginBottom: '16px', border: '1px solid var(--color-purple)',
         }}>
-          {getAvatarUrl(target) ? (
-            <img src={getAvatarUrl(target)} alt={target.display_name}
+          {avatarUrl ? (
+            <img src={avatarUrl} alt={target.display_name}
               style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover' }} />
           ) : (
             <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}>
@@ -144,8 +139,12 @@ export default function CategorydlePage() {
   const [showModal, setShowModal] = useState(false);
   const [topGuessed, setTopGuessed] = useState(false);
   const [secondGuessed, setSecondGuessed] = useState(false);
-  const [hint, setHint] = useState(null);
+  const [avatars, setAvatars] = useState({});
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    getAvatars().then(data => setAvatars(data));
+  }, []);
 
   useEffect(() => {
     const newPool = country === 'ALL' ? STREAMERS : STREAMERS.filter(s => s.country === country);
@@ -165,7 +164,7 @@ export default function CategorydlePage() {
       if (go) setTimeout(() => setShowModal(true), 400);
     } else {
       setGuesses([]); setWon(false); setGameOver(false);
-      setShowModal(false); setQuery(''); setHint(null);
+      setShowModal(false); setQuery('');
       setTopGuessed(false); setSecondGuessed(false);
     }
   }, [country]);
@@ -185,27 +184,17 @@ export default function CategorydlePage() {
     setSuggestions(results);
   }, [query, categories, guesses]);
 
-// Sin pistas
-  useEffect(() => {
-    setHint(null);
-  }, []);
-
   const handleGuess = (category) => {
     if (!target || gameOver) return;
     setQuery(''); setSuggestions([]);
-
     const isTop = category.toLowerCase() === (target.top_category || '').toLowerCase();
     const isSecond = category.toLowerCase() === (target.second_category || '').toLowerCase();
-
     const newTopGuessed = topGuessed || isTop;
     const newSecondGuessed = secondGuessed || isSecond;
     const newGuesses = [...guesses, category];
-
     setGuesses(newGuesses);
     setTopGuessed(newTopGuessed);
     setSecondGuessed(newSecondGuessed);
-
-    // Gana cuando adivina las DOS categorías
     if (newTopGuessed && newSecondGuessed) {
       setWon(true); setGameOver(true);
       setTimeout(() => setShowModal(true), 600);
@@ -221,7 +210,7 @@ export default function CategorydlePage() {
     </div>
   );
 
-  const avatarUrl = getAvatarUrl(target);
+  const avatarUrl = getAvatarUrl(target, avatars);
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
@@ -245,7 +234,6 @@ export default function CategorydlePage() {
           </p>
         </div>
 
-        {/* Filtro país */}
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '20px' }}>
           {COUNTRIES.map(c => (
             <button key={c.code} className={`filter-pill ${country === c.code ? 'active' : ''}`} onClick={() => setCountry(c.code)}>
@@ -254,7 +242,6 @@ export default function CategorydlePage() {
           ))}
         </div>
 
-        {/* Streamer */}
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
           <div style={{ textAlign: 'center' }}>
             <div style={{
@@ -264,7 +251,8 @@ export default function CategorydlePage() {
               background: '#1A1A2E', margin: '0 auto 10px',
             }}>
               {avatarUrl ? (
-                <img src={avatarUrl} alt="Streamer" style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                <img src={avatarUrl} alt="Streamer"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={e => e.target.style.display = 'none'} />
               ) : (
                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px', background: '#7C3AED' }}>
@@ -279,13 +267,11 @@ export default function CategorydlePage() {
           </div>
         </div>
 
-        {/* Estado de las 2 categorías */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '16px' }}>
           <div style={{
             background: topGuessed ? '#16A34A22' : 'var(--bg-card)',
             border: `1.5px solid ${topGuessed ? '#16A34A' : 'var(--color-border)'}`,
-            borderRadius: '10px', padding: '12px', textAlign: 'center',
-            transition: 'all 0.3s',
+            borderRadius: '10px', padding: '12px', textAlign: 'center', transition: 'all 0.3s',
           }}>
             <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)', marginBottom: '4px', fontWeight: '600', textTransform: 'uppercase' }}>
               🥇 Categoría Principal
@@ -297,8 +283,7 @@ export default function CategorydlePage() {
           <div style={{
             background: secondGuessed ? '#7C3AED22' : 'var(--bg-card)',
             border: `1.5px solid ${secondGuessed ? '#7C3AED' : 'var(--color-border)'}`,
-            borderRadius: '10px', padding: '12px', textAlign: 'center',
-            transition: 'all 0.3s',
+            borderRadius: '10px', padding: '12px', textAlign: 'center', transition: 'all 0.3s',
           }}>
             <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)', marginBottom: '4px', fontWeight: '600', textTransform: 'uppercase' }}>
               🥈 Segunda Categoría
@@ -309,20 +294,6 @@ export default function CategorydlePage() {
           </div>
         </div>
 
-        {/* Pista */}
-        {hint && (
-          <div style={{
-            background: '#7C3AED22', border: '1px solid #7C3AED44',
-            borderRadius: '10px', padding: '10px 16px',
-            fontSize: '13px', color: '#9D5FF5',
-            marginBottom: '16px', textAlign: 'center',
-            animation: 'fadeIn 0.3s ease',
-          }}>
-            💡 {hint}
-          </div>
-        )}
-
-        {/* Barra intentos */}
         <div style={{ textAlign: 'center', marginBottom: '16px' }}>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '6px' }}>
             {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => {
@@ -346,7 +317,6 @@ export default function CategorydlePage() {
           </p>
         </div>
 
-        {/* Input */}
         {!gameOver && (
           <div style={{ position: 'relative', marginBottom: '20px' }}>
             <input
@@ -374,7 +344,6 @@ export default function CategorydlePage() {
           </div>
         )}
 
-        {/* Intentos anteriores */}
         {guesses.length > 0 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
@@ -410,7 +379,7 @@ export default function CategorydlePage() {
       </main>
 
       {showModal && (
-        <ShareModal won={won} attempts={guesses.length} target={target}
+        <ShareModal won={won} attempts={guesses.length} target={target} avatars={avatars}
           onClose={() => setShowModal(false)}
           onOtherGames={() => window.location.href = '/'} />
       )}

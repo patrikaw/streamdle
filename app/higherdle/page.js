@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { STREAMERS } from '../../data/streamers';
+import { getAvatars, getAvatarUrl } from '../../data/avatars';
 
 function formatNum(n) {
   if (!n || n === 0) return '0';
@@ -14,12 +15,6 @@ function formatNum(n) {
 function formatNumFull(n) {
   if (!n) return '0';
   return n.toLocaleString('es-AR');
-}
-
-function getAvatarUrl(streamer) {
-  if (streamer.twitch) return `https://unavatar.io/twitch/${streamer.twitch}`;
-  if (streamer.kick) return `https://unavatar.io/kick/${streamer.kick}`;
-  return null;
 }
 
 function getRandomPair(pool, recentIds = []) {
@@ -43,8 +38,8 @@ function saveHighScore(mode, country, score) {
   } catch {}
 }
 
-function StreamerCard({ streamer, value, label, showValue, result, onClick, disabled }) {
-  const avatarUrl = getAvatarUrl(streamer);
+function StreamerCard({ streamer, value, label, showValue, result, onClick, disabled, avatars }) {
+  const avatarUrl = getAvatarUrl(streamer, avatars);
   const bgColor = result === 'correct' ? 'rgba(22,163,74,0.3)' : result === 'wrong' ? 'rgba(220,38,38,0.3)' : 'transparent';
 
   return (
@@ -137,8 +132,13 @@ function HigherdleInner() {
   const [usedIds, setUsedIds] = useState([]);
   const [showValue, setShowValue] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [avatars, setAvatars] = useState({});
 
   const label = mode === 'followers' ? 'Seguidores' : 'Horas en Stream';
+
+  useEffect(() => {
+    getAvatars().then(data => setAvatars(data));
+  }, []);
 
   const getValue = useCallback((streamer) => {
     return mode === 'followers' ? streamer.total_followers : streamer.total_hours;
@@ -254,7 +254,7 @@ function HigherdleInner() {
 
       {!gameOver ? (
         <div style={{ display: 'flex', flex: 1, paddingTop: '100px', position: 'relative' }}>
-          <StreamerCard streamer={left} value={getValue(left)} label={label} showValue={true} result={null} disabled={true} />
+          <StreamerCard streamer={left} value={getValue(left)} label={label} showValue={true} result={null} disabled={true} avatars={avatars} />
           <div style={{
             position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
             zIndex: 10, width: '56px', height: '56px', borderRadius: '50%',
@@ -262,14 +262,14 @@ function HigherdleInner() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: '14px', fontWeight: '800', color: 'white',
           }}>VS</div>
-          <StreamerCard streamer={right} value={getValue(right)} label={label} showValue={showValue} result={result} onClick={handleGuess} disabled={!!result} />
+          <StreamerCard streamer={right} value={getValue(right)} label={label} showValue={showValue} result={result} onClick={handleGuess} disabled={!!result} avatars={avatars} />
           <div style={{ position: 'fixed', left: '50%', top: 0, bottom: 0, width: '2px', background: 'var(--color-border)', zIndex: 5 }} />
         </div>
       ) : (
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '100px', position: 'relative' }}>
           <div style={{ position: 'fixed', inset: 0, zIndex: 0, display: 'flex' }}>
-            <div style={{ flex: 1, backgroundImage: getAvatarUrl(left) ? `url(${getAvatarUrl(left)})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px) brightness(0.25)', transform: 'scale(1.1)' }} />
-            <div style={{ flex: 1, backgroundImage: getAvatarUrl(right) ? `url(${getAvatarUrl(right)})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px) brightness(0.25)', transform: 'scale(1.1)' }} />
+            <div style={{ flex: 1, backgroundImage: left ? `url(${getAvatarUrl(left, avatars)})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px) brightness(0.25)', transform: 'scale(1.1)' }} />
+            <div style={{ flex: 1, backgroundImage: right ? `url(${getAvatarUrl(right, avatars)})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px) brightness(0.25)', transform: 'scale(1.1)' }} />
           </div>
           <div style={{
             position: 'relative', zIndex: 10,

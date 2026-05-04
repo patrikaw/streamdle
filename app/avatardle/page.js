@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamer, getDailyStreamerNoRepeat } from '../../data/streamers';
+import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat } from '../../data/streamers';
+import { getAvatars, getAvatarUrl } from '../../data/avatars';
 
 const MAX_ATTEMPTS = 6;
 const PIXEL_LEVELS = ['pixel-1', 'pixel-2', 'pixel-3', 'pixel-4', 'pixel-5', 'pixel-0'];
@@ -16,12 +17,6 @@ function formatNum(n) {
 function getTodayKey(country) {
   const d = new Date();
   return `avatardle_${country}_${d.getFullYear()}${d.getMonth()}${d.getDate()}`;
-}
-
-function getAvatarUrl(streamer) {
-  if (streamer.twitch) return `https://unavatar.io/twitch/${streamer.twitch}`;
-  if (streamer.kick) return `https://unavatar.io/kick/${streamer.kick}`;
-  return null;
 }
 
 function Countdown() {
@@ -45,7 +40,7 @@ function Countdown() {
   return <span className="countdown">{time}</span>;
 }
 
-function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
+function ShareModal({ won, attempts, target, avatars, onClose, onOtherGames }) {
   const [copied, setCopied] = useState(false);
   const emoji = won ? (attempts <= 2 ? '🔥' : attempts <= 4 ? '✅' : '😅') : '💀';
   const blocks = Array.from({ length: MAX_ATTEMPTS }).map((_, i) =>
@@ -55,6 +50,8 @@ function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
   const shareText = !won
     ? `👤 Avatardle\nNo lo adiviné 💀\nEra ${target.display_name}\n${blocks}\nstreamdle.net/avatardle`
     : `👤 Avatardle ${attempts}/${MAX_ATTEMPTS}\n${blocks}\n¿Podés adivinar el streamer de hoy?\nstreamdle.net/avatardle`;
+
+  const avatarUrl = getAvatarUrl(target, avatars);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -75,8 +72,8 @@ function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
           display: 'flex', alignItems: 'center', gap: '12px',
           marginBottom: '20px', border: '1px solid var(--color-purple)',
         }}>
-          {getAvatarUrl(target) ? (
-            <img src={getAvatarUrl(target)} alt={target.display_name}
+          {avatarUrl ? (
+            <img src={avatarUrl} alt={target.display_name}
               style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover' }} />
           ) : (
             <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}>
@@ -127,7 +124,12 @@ export default function AvatardlePage() {
   const [showModal, setShowModal] = useState(false);
   const [alreadyGuessed, setAlreadyGuessed] = useState([]);
   const [currentPixelLevel, setCurrentPixelLevel] = useState(0);
+  const [avatars, setAvatars] = useState({});
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    getAvatars().then(data => setAvatars(data));
+  }, []);
 
   useEffect(() => {
     const newTarget = getDailyStreamerNoRepeat(country, 'avatardle', 17);
@@ -154,9 +156,7 @@ export default function AvatardlePage() {
     if (!target || guesses.length === 0) return;
     const key = getTodayKey(country);
     localStorage.setItem(key, JSON.stringify({
-      guesses: alreadyGuessed,
-      won, gameOver,
-      pixelLevel: currentPixelLevel,
+      guesses: alreadyGuessed, won, gameOver, pixelLevel: currentPixelLevel,
     }));
   }, [guesses, won, gameOver, currentPixelLevel]);
 
@@ -173,10 +173,8 @@ export default function AvatardlePage() {
     setAlreadyGuessed(prev => [...prev, streamer.id]);
     const newGuesses = [...guesses, streamer];
     setGuesses(newGuesses);
-
     const newPixelLevel = Math.min(newGuesses.length, PIXEL_LEVELS.length - 1);
     setCurrentPixelLevel(newPixelLevel);
-
     if (streamer.id === target.id) {
       setWon(true); setGameOver(true);
       setTimeout(() => setShowModal(true), 900);
@@ -187,7 +185,7 @@ export default function AvatardlePage() {
     }
   };
 
-  const avatarUrl = target ? getAvatarUrl(target) : null;
+  const avatarUrl = target ? getAvatarUrl(target, avatars) : null;
 
   if (!target) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -197,7 +195,6 @@ export default function AvatardlePage() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
-      {/* Header */}
       <header style={{
         borderBottom: '1px solid var(--color-border)', padding: '14px 24px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -218,7 +215,6 @@ export default function AvatardlePage() {
           </p>
         </div>
 
-        {/* Filtro país */}
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
           {COUNTRIES.map(c => (
             <button key={c.code} className={`filter-pill ${country === c.code ? 'active' : ''}`} onClick={() => setCountry(c.code)}>
@@ -227,43 +223,30 @@ export default function AvatardlePage() {
           ))}
         </div>
 
-        {/* Avatar pixelado */}
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
           <div style={{
             width: '220px', height: '220px', borderRadius: '16px',
             overflow: 'hidden', border: '3px solid var(--color-purple)',
             boxShadow: '0 0 30px rgba(124,58,237,0.4)',
-            background: '#1A1A2E',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: '#1A1A2E', display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             {avatarUrl ? (
-              <img
-                src={avatarUrl}
-                alt="¿Quién es?"
+              <img src={avatarUrl} alt="¿Quién es?"
                 className={PIXEL_LEVELS[currentPixelLevel]}
-                style={{
-                  width: '100%', height: '100%', objectFit: 'cover',
-                  transition: 'filter 0.6s ease',
-                }}
-                onError={e => {
-                  e.target.style.display = 'none';
-                }}
-              />
+                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'filter 0.6s ease' }}
+                onError={e => { e.target.style.display = 'none'; }} />
             ) : (
               <div style={{ fontSize: '80px', filter: currentPixelLevel < 4 ? 'blur(8px)' : 'none' }}>👤</div>
             )}
           </div>
         </div>
 
-        {/* Barra intentos */}
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '6px' }}>
             {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => (
               <div key={i} style={{
                 width: '32px', height: '6px', borderRadius: '3px',
-                background: i < guesses.length
-                  ? (won && i === guesses.length - 1 ? '#16A34A' : '#DC2626')
-                  : 'var(--color-border)',
+                background: i < guesses.length ? (won && i === guesses.length - 1 ? '#16A34A' : '#DC2626') : 'var(--color-border)',
                 transition: 'background 0.3s',
               }} />
             ))}
@@ -275,7 +258,6 @@ export default function AvatardlePage() {
           </p>
         </div>
 
-        {/* Input */}
         {!gameOver && (
           <div style={{ position: 'relative', marginBottom: '20px' }}>
             <input
@@ -293,29 +275,31 @@ export default function AvatardlePage() {
             />
             {suggestions.length > 0 && (
               <div className="suggestions-box">
-                {suggestions.map(s => (
-                  <div key={s.id} className="suggestion-item" onClick={() => handleGuess(s)}>
-                    {getAvatarUrl(s) ? (
-                      <img src={getAvatarUrl(s)} alt={s.display_name}
-                        style={{ width: '28px', height: '28px', borderRadius: '50%' }}
-                        onError={e => e.target.style.display = 'none'} />
-                    ) : (
-                      <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
-                        {s.display_name[0]}
+                {suggestions.map(s => {
+                  const sUrl = getAvatarUrl(s, avatars);
+                  return (
+                    <div key={s.id} className="suggestion-item" onClick={() => handleGuess(s)}>
+                      {sUrl ? (
+                        <img src={sUrl} alt={s.display_name}
+                          style={{ width: '28px', height: '28px', borderRadius: '50%' }}
+                          onError={e => e.target.style.display = 'none'} />
+                      ) : (
+                        <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                          {s.display_name[0]}
+                        </div>
+                      )}
+                      <div>
+                        <div style={{ fontSize: '14px', fontWeight: '600' }}>{s.display_name}</div>
+                        <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)' }}>{s.country} · {formatNum(s.total_followers)} seguidores</div>
                       </div>
-                    )}
-                    <div>
-                      <div style={{ fontSize: '14px', fontWeight: '600' }}>{s.display_name}</div>
-                      <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)' }}>{s.country} · {formatNum(s.total_followers)} seguidores</div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
         )}
 
-        {/* Lista de intentos fallidos */}
         {guesses.length > 0 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '4px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
@@ -323,6 +307,7 @@ export default function AvatardlePage() {
             </div>
             {guesses.map((guess, i) => {
               const isCorrect = guess.id === target.id;
+              const gUrl = getAvatarUrl(guess, avatars);
               return (
                 <div key={guess.id} style={{
                   display: 'flex', alignItems: 'center', gap: '10px',
@@ -331,8 +316,8 @@ export default function AvatardlePage() {
                   borderRadius: '8px', padding: '8px 12px',
                   animation: 'fadeIn 0.3s ease',
                 }}>
-                  {getAvatarUrl(guess) ? (
-                    <img src={getAvatarUrl(guess)} alt={guess.display_name}
+                  {gUrl ? (
+                    <img src={gUrl} alt={guess.display_name}
                       style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }}
                       onError={e => e.target.style.display = 'none'} />
                   ) : (
@@ -356,7 +341,7 @@ export default function AvatardlePage() {
       </main>
 
       {showModal && (
-        <ShareModal won={won} attempts={guesses.length} target={target}
+        <ShareModal won={won} attempts={guesses.length} target={target} avatars={avatars}
           onClose={() => setShowModal(false)}
           onOtherGames={() => window.location.href = '/'} />
       )}
