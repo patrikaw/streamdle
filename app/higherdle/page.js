@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { STREAMERS, COUNTRIES } from '../../data/streamers';
+import { STREAMERS } from '../../data/streamers';
 
 function formatNum(n) {
   if (!n || n === 0) return '0';
@@ -43,7 +43,7 @@ function saveHighScore(mode, country, score) {
   } catch {}
 }
 
-function StreamerCard({ streamer, value, label, showValue, isLeft, result, onClick, disabled }) {
+function StreamerCard({ streamer, value, label, showValue, result, onClick, disabled }) {
   const avatarUrl = getAvatarUrl(streamer);
   const bgColor = result === 'correct' ? 'rgba(22,163,74,0.3)' : result === 'wrong' ? 'rgba(220,38,38,0.3)' : 'transparent';
 
@@ -61,10 +61,7 @@ function StreamerCard({ streamer, value, label, showValue, isLeft, result, onCli
           filter: 'blur(20px) brightness(0.3)', transform: 'scale(1.1)',
         }} />
       )}
-      <div style={{
-        position: 'absolute', inset: 0,
-        background: bgColor, transition: 'background 0.4s ease', zIndex: 1,
-      }} />
+      <div style={{ position: 'absolute', inset: 0, background: bgColor, transition: 'background 0.4s ease', zIndex: 1 }} />
       <div style={{
         position: 'relative', zIndex: 2,
         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px',
@@ -85,25 +82,19 @@ function StreamerCard({ streamer, value, label, showValue, isLeft, result, onCli
             </div>
           )}
         </div>
-
         <div>
           <div style={{ fontSize: '28px', fontWeight: '800', color: 'white', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
             {streamer.display_name}
           </div>
-          <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', marginTop: '4px' }}>
-            {streamer.country}
-          </div>
+          <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', marginTop: '4px' }}>{streamer.country}</div>
         </div>
-
         {showValue ? (
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)', marginBottom: '4px' }}>{label}</div>
             <div style={{ fontSize: '48px', fontWeight: '800', color: '#53FC18', textShadow: '0 0 20px rgba(83,252,24,0.5)', lineHeight: 1 }}>
               {formatNum(value)}
             </div>
-            <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', marginTop: '4px' }}>
-              ({formatNumFull(value)})
-            </div>
+            <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', marginTop: '4px' }}>({formatNumFull(value)})</div>
           </div>
         ) : (
           <div style={{ textAlign: 'center' }}>
@@ -112,27 +103,16 @@ function StreamerCard({ streamer, value, label, showValue, isLeft, result, onCli
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <button onClick={() => !disabled && onClick('higher')} disabled={disabled}
-                style={{
-                  background: 'rgba(124,58,237,0.8)', border: '2px solid #7C3AED',
-                  color: 'white', borderRadius: '10px', padding: '12px 32px',
-                  fontSize: '16px', fontWeight: '700', cursor: disabled ? 'default' : 'pointer',
-                  transition: 'all 0.2s', backdropFilter: 'blur(4px)',
-                }}>
+                style={{ background: 'rgba(124,58,237,0.8)', border: '2px solid #7C3AED', color: 'white', borderRadius: '10px', padding: '12px 32px', fontSize: '16px', fontWeight: '700', cursor: disabled ? 'default' : 'pointer', transition: 'all 0.2s', backdropFilter: 'blur(4px)' }}>
                 ↑ Más
               </button>
               <button onClick={() => !disabled && onClick('lower')} disabled={disabled}
-                style={{
-                  background: 'rgba(124,58,237,0.8)', border: '2px solid #7C3AED',
-                  color: 'white', borderRadius: '10px', padding: '12px 32px',
-                  fontSize: '16px', fontWeight: '700', cursor: disabled ? 'default' : 'pointer',
-                  transition: 'all 0.2s', backdropFilter: 'blur(4px)',
-                }}>
+                style={{ background: 'rgba(124,58,237,0.8)', border: '2px solid #7C3AED', color: 'white', borderRadius: '10px', padding: '12px 32px', fontSize: '16px', fontWeight: '700', cursor: disabled ? 'default' : 'pointer', transition: 'all 0.2s', backdropFilter: 'blur(4px)' }}>
                 ↓ Menos
               </button>
             </div>
           </div>
         )}
-
         {result && (
           <div style={{ fontSize: '48px', animation: 'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)' }}>
             {result === 'correct' ? '✅' : '❌'}
@@ -167,14 +147,10 @@ function HigherdleInner() {
   const initGame = useCallback((p) => {
     const pair = getRandomPair(p, []);
     if (!pair) return;
-    setLeft(pair[0]);
-    setRight(pair[1]);
+    setLeft(pair[0]); setRight(pair[1]);
     setUsedIds([pair[0].id, pair[1].id]);
-    setScore(0);
-    setResult(null);
-    setGameOver(false);
-    setShowValue(false);
-    setCopied(false);
+    setScore(0); setResult(null); setGameOver(false);
+    setShowValue(false); setCopied(false);
   }, []);
 
   useEffect(() => {
@@ -189,10 +165,8 @@ function HigherdleInner() {
     const leftVal = getValue(left);
     const rightVal = getValue(right);
     const isCorrect = guess === 'higher' ? rightVal >= leftVal : rightVal <= leftVal;
-
     setShowValue(true);
     setResult(isCorrect ? 'correct' : 'wrong');
-
     setTimeout(() => {
       if (isCorrect) {
         const newScore = score + 1;
@@ -202,11 +176,9 @@ function HigherdleInner() {
         const newUsed = [...usedIds];
         const nextPair = getRandomPair(pool, newUsed.slice(-10));
         if (!nextPair) { setGameOver(true); return; }
-        setLeft(right);
-        setRight(nextPair[1]);
+        setLeft(right); setRight(nextPair[1]);
         setUsedIds([...newUsed, nextPair[1].id]);
-        setResult(null);
-        setShowValue(false);
+        setResult(null); setShowValue(false);
       } else {
         saveHighScore(mode, country, score);
         setGameOver(true);
@@ -224,13 +196,12 @@ function HigherdleInner() {
 
   if (!left || !right) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0D0D14' }}>
-      <div style={{ color: 'var(--color-text-secondary)' }}>Cargando...</div>
+      <div style={{ color: '#A1A1B5' }}>Cargando...</div>
     </div>
   );
 
   return (
     <div style={{ minHeight: '100vh', background: '#0D0D14', display: 'flex', flexDirection: 'column' }}>
-      {/* Header */}
       <header style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
         borderBottom: '1px solid var(--color-border)', padding: '10px 24px',
@@ -261,7 +232,6 @@ function HigherdleInner() {
         </div>
       </header>
 
-      {/* Filtro país */}
       <div style={{
         position: 'fixed', top: '57px', left: 0, right: 0, zIndex: 49,
         display: 'flex', gap: '6px', justifyContent: 'center',
@@ -282,10 +252,9 @@ function HigherdleInner() {
         ))}
       </div>
 
-      {/* Game area */}
       {!gameOver ? (
         <div style={{ display: 'flex', flex: 1, paddingTop: '100px', position: 'relative' }}>
-          <StreamerCard streamer={left} value={getValue(left)} label={label} showValue={true} isLeft={true} result={null} disabled={true} />
+          <StreamerCard streamer={left} value={getValue(left)} label={label} showValue={true} result={null} disabled={true} />
           <div style={{
             position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
             zIndex: 10, width: '56px', height: '56px', borderRadius: '50%',
@@ -293,30 +262,15 @@ function HigherdleInner() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: '14px', fontWeight: '800', color: 'white',
           }}>VS</div>
-          <StreamerCard streamer={right} value={getValue(right)} label={label} showValue={showValue} isLeft={false} result={result} onClick={handleGuess} disabled={!!result} />
+          <StreamerCard streamer={right} value={getValue(right)} label={label} showValue={showValue} result={result} onClick={handleGuess} disabled={!!result} />
           <div style={{ position: 'fixed', left: '50%', top: 0, bottom: 0, width: '2px', background: 'var(--color-border)', zIndex: 5 }} />
         </div>
       ) : (
-        /* Game Over */
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '100px', position: 'relative' }}>
-
-          {/* Fondo blurreado */}
           <div style={{ position: 'fixed', inset: 0, zIndex: 0, display: 'flex' }}>
-            <div style={{
-              flex: 1,
-              backgroundImage: getAvatarUrl(left) ? `url(${getAvatarUrl(left)})` : 'none',
-              backgroundSize: 'cover', backgroundPosition: 'center',
-              filter: 'blur(20px) brightness(0.25)', transform: 'scale(1.1)',
-            }} />
-            <div style={{
-              flex: 1,
-              backgroundImage: getAvatarUrl(right) ? `url(${getAvatarUrl(right)})` : 'none',
-              backgroundSize: 'cover', backgroundPosition: 'center',
-              filter: 'blur(20px) brightness(0.25)', transform: 'scale(1.1)',
-            }} />
+            <div style={{ flex: 1, backgroundImage: getAvatarUrl(left) ? `url(${getAvatarUrl(left)})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px) brightness(0.25)', transform: 'scale(1.1)' }} />
+            <div style={{ flex: 1, backgroundImage: getAvatarUrl(right) ? `url(${getAvatarUrl(right)})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px) brightness(0.25)', transform: 'scale(1.1)' }} />
           </div>
-
-          {/* Modal Game Over */}
           <div style={{
             position: 'relative', zIndex: 10,
             background: 'rgba(19,19,31,0.92)', border: '1px solid var(--color-border)',
@@ -334,7 +288,6 @@ function HigherdleInner() {
             <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px', marginBottom: '24px' }}>
               Modo: {mode === 'followers' ? 'Seguidores' : 'Horas en Stream'}
             </p>
-
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '28px' }}>
               <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', padding: '16px' }}>
                 <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)', marginBottom: '4px' }}>RACHA</div>
@@ -345,16 +298,10 @@ function HigherdleInner() {
                 <div style={{ fontSize: '36px', fontWeight: '800', color: '#7C3AED' }}>{Math.max(score, highScore)}</div>
               </div>
             </div>
-
             <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-              <button className="btn-green" style={{ flex: 1 }} onClick={() => initGame(pool)}>
-                🔄 Jugar de nuevo
-              </button>
-              <button className="btn-primary" style={{ flex: 1 }} onClick={() => window.location.href = '/'}>
-                🎮 Otros juegos
-              </button>
+              <button className="btn-green" style={{ flex: 1 }} onClick={() => initGame(pool)}>🔄 Jugar de nuevo</button>
+              <button className="btn-primary" style={{ flex: 1 }} onClick={() => window.location.href = '/'}>🎮 Otros juegos</button>
             </div>
-
             <button style={{
               width: '100%', background: 'transparent',
               border: '1px solid var(--color-border)',
@@ -371,19 +318,13 @@ function HigherdleInner() {
   );
 }
 
-import { Suspense } from 'react';
-
-export default function HigherdleInner() {
-  return (
-    <Suspense fallback={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0D0D14' }}><div style={{ color: '#A1A1B5' }}>Cargando...</div></div>}>
-      <HigherdleInner />
-    </Suspense>
-  );
-}
-
 export default function HigherdlePage() {
   return (
-    <Suspense fallback={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0D0D14' }}><div style={{ color: '#A1A1B5' }}>Cargando...</div></div>}>
+    <Suspense fallback={
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0D0D14' }}>
+        <div style={{ color: '#A1A1B5' }}>Cargando...</div>
+      </div>
+    }>
       <HigherdleInner />
     </Suspense>
   );
