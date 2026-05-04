@@ -23,7 +23,7 @@ const GAMES = [
     daily: true,
   },
   {
-    slug: 'higherdle-followers',
+    slug: 'higherdle',
     name: 'Higherdle',
     emoji: '📊',
     description: '¿Quién tiene más seguidores?',
@@ -32,7 +32,7 @@ const GAMES = [
     daily: false,
   },
   {
-    slug: 'higherdle-hours',
+    slug: 'higherdle?mode=hours',
     name: 'Hourdle',
     emoji: '⏱️',
     description: '¿Quién streameó más horas?',
