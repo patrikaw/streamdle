@@ -254,10 +254,13 @@ function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
         </div>
 
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button className="btn-green" style={{ flex: 1 }} onClick={() => {
-            navigator.clipboard.writeText(shareText).then(() => {});
+          <button className="btn-green" style={{ flex: 1, transition: 'all 0.2s' }} onClick={() => {
+            navigator.clipboard.writeText(shareText).then(() => {
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000);
+            });
           }}>
-            🔗 Compartir
+            {copied ? '✓ ¡Copiado!' : '🔗 Compartir'}
           </button>
           <button className="btn-primary" style={{ flex: 1 }} onClick={onOtherGames}>
             🎮 Otros juegos
@@ -269,7 +272,7 @@ function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
 }
 
 export default function ClassicPage() {
-  const [country, setCountry] = useState('ALL');
+const [country, setCountry] = useState('ALL');
   const [target, setTarget] = useState(null);
   const [guesses, setGuesses] = useState([]);
   const [query, setQuery] = useState('');
@@ -280,11 +283,39 @@ export default function ClassicPage() {
   const [alreadyGuessed, setAlreadyGuessed] = useState([]);
   const inputRef = useRef(null);
 
+  const getTodayKey = (c) => {
+    const d = new Date();
+    return `classic_${c}_${d.getFullYear()}${d.getMonth()}${d.getDate()}`;
+  };
+
   useEffect(() => {
-    setTarget(getDailyStreamer(country));
-    setGuesses([]); setWon(false); setGameOver(false);
-    setShowModal(false); setAlreadyGuessed([]); setQuery('');
+    const newTarget = getDailyStreamer(country);
+    setTarget(newTarget);
+    const key = getTodayKey(country);
+    const saved = localStorage.getItem(key);
+    if (saved) {
+      const { guesses: g, won: w, gameOver: go } = JSON.parse(saved);
+      const fullGuesses = g.map(id => STREAMERS.find(s => s.id === id)).filter(Boolean);
+      setGuesses(fullGuesses);
+      setAlreadyGuessed(g);
+      setWon(w);
+      setGameOver(go);
+      if (go) setTimeout(() => setShowModal(true), 400);
+    } else {
+      setGuesses([]); setWon(false); setGameOver(false);
+      setShowModal(false); setAlreadyGuessed([]); setQuery('');
+    }
   }, [country]);
+
+  useEffect(() => {
+    if (!target || guesses.length === 0) return;
+    const key = getTodayKey(country);
+    localStorage.setItem(key, JSON.stringify({
+      guesses: alreadyGuessed,
+      won,
+      gameOver,
+    }));
+  }, [guesses, won, gameOver]);
 
   useEffect(() => {
     if (!query.trim()) { setSuggestions([]); return; }
