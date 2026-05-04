@@ -3055,7 +3055,6 @@ export function searchStreamers(query, country = "ALL") {
   const q = query.toLowerCase().trim();
   if (!q) return [];
   let pool = getStreamersByCountry(country);
-  if (filter) pool = pool.filter(filter);
   return pool.filter(s => {
     const fields = [
       s.name,

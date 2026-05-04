@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamer, getDailyStreamerNoRepeat } from '../../data/streamers';
+import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat } from '../../data/streamers';
+import { getAvatars, getAvatarUrl } from '../../data/avatars';
 
 const MAX_ATTEMPTS = 8;
 
@@ -45,45 +46,26 @@ function CountryFlag({ code }) {
 function LockedCell({ label }) {
   return (
     <div style={{
-      background: '#1A1A2E',
-      border: '1px dashed #2A2A40',
-      borderRadius: '8px',
-      padding: '8px 6px',
-      textAlign: 'center',
-      minWidth: '80px',
-      flex: 1,
-      opacity: 0.5,
+      background: '#1A1A2E', border: '1px dashed #2A2A40',
+      borderRadius: '8px', padding: '8px 6px', textAlign: 'center',
+      minWidth: '80px', flex: 1, opacity: 0.5,
     }}>
-      <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', marginBottom: '4px', fontWeight: '500' }}>
-        {label}
-      </div>
+      <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', marginBottom: '4px', fontWeight: '500' }}>{label}</div>
       <div style={{ fontSize: '16px' }}>🔒</div>
     </div>
   );
 }
 
 function HintCell({ label, value, hint, arrow }) {
-  const colors = {
-    correct: '#16A34A',
-    wrong: '#DC2626',
-    higher: '#2563EB',
-    lower: '#2563EB',
-  };
+  const colors = { correct: '#16A34A', wrong: '#DC2626', higher: '#2563EB', lower: '#2563EB' };
   const bg = colors[hint] || '#1A1A2E';
   return (
     <div style={{
-      background: bg,
-      border: `1px solid ${bg}`,
-      borderRadius: '8px',
-      padding: '8px 6px',
-      textAlign: 'center',
-      minWidth: '80px',
-      flex: 1,
+      background: bg, border: `1px solid ${bg}`, borderRadius: '8px',
+      padding: '8px 6px', textAlign: 'center', minWidth: '80px', flex: 1,
       animation: 'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)',
     }}>
-      <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.7)', marginBottom: '4px', fontWeight: '500' }}>
-        {label}
-      </div>
+      <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.7)', marginBottom: '4px', fontWeight: '500' }}>{label}</div>
       <div style={{ fontSize: '13px', fontWeight: '700', color: 'white', lineHeight: 1.2 }}>
         {value}{arrow && <span style={{ marginLeft: '4px' }}>{arrow}</span>}
       </div>
@@ -99,51 +81,35 @@ function PlatformsCell({ guess, target }) {
     <div style={{
       background: isCorrect ? '#16A34A' : '#DC2626',
       border: `1px solid ${isCorrect ? '#16A34A' : '#DC2626'}`,
-      borderRadius: '8px',
-      padding: '8px 6px',
-      textAlign: 'center',
-      minWidth: '80px',
-      flex: 1,
-      animation: 'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)',
+      borderRadius: '8px', padding: '8px 6px', textAlign: 'center',
+      minWidth: '80px', flex: 1, animation: 'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)',
     }}>
-      <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.7)', marginBottom: '4px', fontWeight: '500' }}>
-        Plataformas
-      </div>
+      <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.7)', marginBottom: '4px', fontWeight: '500' }}>Plataformas</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', alignItems: 'center' }}>
         {guessPlatforms.map(p => (
-          <span key={p.label} style={{
-            fontSize: '9px', fontWeight: '700',
-            background: p.color, color: p.textColor || 'white',
-            padding: '1px 5px', borderRadius: '3px',
-          }}>{p.label}</span>
+          <span key={p.label} style={{ fontSize: '9px', fontWeight: '700', background: p.color, color: p.textColor || 'white', padding: '1px 5px', borderRadius: '3px' }}>{p.label}</span>
         ))}
       </div>
     </div>
   );
 }
 
-function GuessRow({ guess, target, attemptNumber }) {
+function GuessRow({ guess, target, attemptNumber, avatars }) {
   const showPeakViewers = attemptNumber >= 4;
   const showPlatforms = attemptNumber >= 6;
   const arrowMap = { higher: '↑', lower: '↓', correct: '✓' };
+  const avatarUrl = getAvatarUrl(guess, avatars);
 
   return (
-    <div style={{
-      display: 'flex', alignItems: 'center', gap: '6px',
-      animation: 'fadeIn 0.3s ease', overflowX: 'auto', paddingBottom: '2px',
-    }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', animation: 'fadeIn 0.3s ease', overflowX: 'auto', paddingBottom: '2px' }}>
       <div style={{
         display: 'flex', alignItems: 'center', gap: '8px',
         minWidth: '130px', maxWidth: '130px',
         background: '#1A1A2E', borderRadius: '8px', padding: '8px',
         border: '1px solid var(--color-border)', flexShrink: 0,
       }}>
-        {guess.twitch ? (
-          <img src={`https://unavatar.io/twitch/${guess.twitch}`} alt={guess.display_name}
-            style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
-            onError={e => e.target.style.display = 'none'} />
-        ) : guess.kick ? (
-          <img src={`https://unavatar.io/kick/${guess.kick}`} alt={guess.display_name}
+        {avatarUrl ? (
+          <img src={avatarUrl} alt={guess.display_name}
             style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
             onError={e => e.target.style.display = 'none'} />
         ) : (
@@ -168,13 +134,11 @@ function GuessRow({ guess, target, attemptNumber }) {
         arrow={arrowMap[getNumericHint(guess.total_hours, target.total_hours)]} />
       <HintCell label="Activo" value={guess.is_active ? 'Sí' : 'No'}
         hint={guess.is_active === target.is_active ? 'correct' : 'wrong'} />
-
       {showPeakViewers
         ? <HintCell label="Peak Viewers" value={formatNum(guess.peak_viewers)}
             hint={getNumericHint(guess.peak_viewers, target.peak_viewers)}
             arrow={arrowMap[getNumericHint(guess.peak_viewers, target.peak_viewers)]} />
         : <LockedCell label="Peak Viewers" />}
-
       {showPlatforms
         ? <PlatformsCell guess={guess} target={target} />
         : <LockedCell label="Plataformas" />}
@@ -203,7 +167,7 @@ function Countdown() {
   return <span className="countdown">{time}</span>;
 }
 
-function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
+function ShareModal({ won, attempts, target, avatars, onClose, onOtherGames }) {
   const [copied, setCopied] = useState(false);
   const emoji = won ? (attempts <= 2 ? '🔥' : attempts <= 4 ? '✅' : '😅') : '💀';
   const shareText = !won
@@ -211,6 +175,8 @@ function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
     : attempts <= 3
     ? `🟣 Streamdle Classic\n¡Lo adiviné en ${attempts} intento${attempts > 1 ? 's' : ''}! 🔥\n¿Podés con el streamer de hoy?\nstreamdle.net`
     : `🟣 Streamdle Classic\nPor poco... ${attempts} intentos 😅\nEl streamer me costó. ¿Lo conocés?\nstreamdle.net`;
+
+  const avatarUrl = getAvatarUrl(target, avatars);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -230,8 +196,8 @@ function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
           display: 'flex', alignItems: 'center', gap: '12px',
           marginBottom: '20px', border: '1px solid var(--color-purple)',
         }}>
-          {target.twitch ? (
-            <img src={`https://unavatar.io/twitch/${target.twitch}`} alt={target.display_name}
+          {avatarUrl ? (
+            <img src={avatarUrl} alt={target.display_name}
               style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover' }} />
           ) : (
             <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}>
@@ -254,7 +220,7 @@ function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
         </div>
 
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button className="btn-green" style={{ flex: 1, transition: 'all 0.2s' }} onClick={() => {
+          <button className="btn-green" style={{ flex: 1 }} onClick={() => {
             navigator.clipboard.writeText(shareText).then(() => {
               setCopied(true);
               setTimeout(() => setCopied(false), 2000);
@@ -272,7 +238,7 @@ function ShareModal({ won, attempts, target, onClose, onOtherGames }) {
 }
 
 export default function ClassicPage() {
-const [country, setCountry] = useState('ALL');
+  const [country, setCountry] = useState('ALL');
   const [target, setTarget] = useState(null);
   const [guesses, setGuesses] = useState([]);
   const [query, setQuery] = useState('');
@@ -281,7 +247,13 @@ const [country, setCountry] = useState('ALL');
   const [won, setWon] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [alreadyGuessed, setAlreadyGuessed] = useState([]);
+  const [avatars, setAvatars] = useState({});
   const inputRef = useRef(null);
+
+  // Cargar avatares de Twitch API
+  useEffect(() => {
+    getAvatars().then(data => setAvatars(data));
+  }, []);
 
   const getTodayKey = (c) => {
     const d = new Date();
@@ -310,11 +282,7 @@ const [country, setCountry] = useState('ALL');
   useEffect(() => {
     if (!target || guesses.length === 0) return;
     const key = getTodayKey(country);
-    localStorage.setItem(key, JSON.stringify({
-      guesses: alreadyGuessed,
-      won,
-      gameOver,
-    }));
+    localStorage.setItem(key, JSON.stringify({ guesses: alreadyGuessed, won, gameOver }));
   }, [guesses, won, gameOver]);
 
   useEffect(() => {
@@ -392,7 +360,6 @@ const [country, setCountry] = useState('ALL');
           </p>
         </div>
 
-        {/* Indicadores de pistas bloqueadas */}
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
           {[{ label: 'Peak Viewers', unlockAt: 4 }, { label: 'Plataformas', unlockAt: 6 }].map(hint => {
             const unlocked = guesses.length >= hint.unlockAt - 1;
@@ -410,7 +377,6 @@ const [country, setCountry] = useState('ALL');
           })}
         </div>
 
-        {/* Headers columnas */}
         {guesses.length > 0 && (
           <div style={{ display: 'flex', gap: '6px', marginBottom: '8px', paddingLeft: '138px', overflowX: 'auto' }}>
             {['País', 'Categoría', 'Seguidores', 'Horas en Stream', 'Activo', 'Peak Viewers', 'Plataformas'].map(col => (
@@ -421,7 +387,6 @@ const [country, setCountry] = useState('ALL');
           </div>
         )}
 
-        {/* Input */}
         {!gameOver && (
           <div style={{ position: 'relative', marginBottom: '20px' }}>
             <input
@@ -439,32 +404,34 @@ const [country, setCountry] = useState('ALL');
             />
             {suggestions.length > 0 && (
               <div className="suggestions-box">
-                {suggestions.map(s => (
-                  <div key={s.id} className="suggestion-item" onClick={() => handleGuess(s)}>
-                    {s.twitch ? (
-                      <img src={`https://unavatar.io/twitch/${s.twitch}`} alt={s.display_name}
-                        style={{ width: '28px', height: '28px', borderRadius: '50%' }}
-                        onError={e => e.target.style.display = 'none'} />
-                    ) : (
-                      <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
-                        {s.display_name[0]}
+                {suggestions.map(s => {
+                  const sAvatarUrl = getAvatarUrl(s, avatars);
+                  return (
+                    <div key={s.id} className="suggestion-item" onClick={() => handleGuess(s)}>
+                      {sAvatarUrl ? (
+                        <img src={sAvatarUrl} alt={s.display_name}
+                          style={{ width: '28px', height: '28px', borderRadius: '50%' }}
+                          onError={e => e.target.style.display = 'none'} />
+                      ) : (
+                        <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                          {s.display_name[0]}
+                        </div>
+                      )}
+                      <div>
+                        <div style={{ fontSize: '14px', fontWeight: '600' }}>{s.display_name}</div>
+                        <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)' }}>{s.country} · {formatNum(s.total_followers)} seguidores</div>
                       </div>
-                    )}
-                    <div>
-                      <div style={{ fontSize: '14px', fontWeight: '600' }}>{s.display_name}</div>
-                      <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)' }}>{s.country} · {formatNum(s.total_followers)} seguidores</div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
         )}
 
-        {/* Filas de intentos */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {guesses.map((guess, i) => (
-            <GuessRow key={guess.id} guess={guess} target={target} attemptNumber={guesses.length - i} />
+            <GuessRow key={guess.id} guess={guess} target={target} attemptNumber={guesses.length - i} avatars={avatars} />
           ))}
         </div>
 
@@ -476,7 +443,7 @@ const [country, setCountry] = useState('ALL');
       </main>
 
       {showModal && (
-        <ShareModal won={won} attempts={guesses.length} target={target}
+        <ShareModal won={won} attempts={guesses.length} target={target} avatars={avatars}
           onClose={() => setShowModal(false)}
           onOtherGames={() => window.location.href = '/'} />
       )}
