@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { STREAMERS, COUNTRIES } from '../../data/streamers';
 
@@ -143,7 +143,7 @@ function StreamerCard({ streamer, value, label, showValue, isLeft, result, onCli
   );
 }
 
-export default function HigherdlePage() {
+function HigherdleInner() {
   const searchParams = useSearchParams();
   const [mode, setMode] = useState(searchParams.get('mode') === 'hours' ? 'hours' : 'followers');
   const [country, setCountry] = useState('ALL');
@@ -368,5 +368,23 @@ export default function HigherdlePage() {
         </div>
       )}
     </div>
+  );
+}
+
+import { Suspense } from 'react';
+
+export default function HigherdleInner() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0D0D14' }}><div style={{ color: '#A1A1B5' }}>Cargando...</div></div>}>
+      <HigherdleInner />
+    </Suspense>
+  );
+}
+
+export default function HigherdlePage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0D0D14' }}><div style={{ color: '#A1A1B5' }}>Cargando...</div></div>}>
+      <HigherdleInner />
+    </Suspense>
   );
 }
