@@ -211,13 +211,19 @@ export default function Home() {
           gap: '24px',
           flexWrap: 'wrap',
         }}>
-          {['Cómo jugar', 'Contacto', 'Privacidad', 'Términos'].map(link => (
-            <span key={link} style={{
-              color: 'var(--color-text-secondary)',
-              fontSize: '13px',
-              cursor: 'pointer',
-            }}>{link}</span>
-          ))}
+          {[
+  { label: 'Cómo jugar', href: '/como-jugar' },
+  { label: 'Contacto', href: '/contacto' },
+  { label: 'Privacidad', href: '/privacidad' },
+  { label: 'Términos', href: '/terminos' },
+].map(link => (
+  <a key={link.label} href={link.href} style={{
+    color: 'var(--color-text-secondary)',
+    fontSize: '13px',
+    textDecoration: 'none',
+    cursor: 'pointer',
+  }}>{link.label}</a>
+))}
         </div>
         <p style={{
           textAlign: 'center',
