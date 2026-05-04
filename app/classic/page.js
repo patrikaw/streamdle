@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamer } from '../../data/streamers';
+import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamer, getDailyStreamerNoRepeat } from '../../data/streamers';
 
 const MAX_ATTEMPTS = 8;
 
@@ -289,7 +289,7 @@ const [country, setCountry] = useState('ALL');
   };
 
   useEffect(() => {
-    const newTarget = getDailyStreamer(country);
+    const newTarget = getDailyStreamerNoRepeat(country, 'classic', 0);
     setTarget(newTarget);
     const key = getTodayKey(country);
     const saved = localStorage.getItem(key);

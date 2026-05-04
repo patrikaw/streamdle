@@ -3067,9 +3067,44 @@ export function searchStreamers(query, country = "ALL") {
   });
 }
 
-export function getDailyStreamer(country = "ALL") {
+export function getDailyStreamer(country = "ALL", gameOffset = 0) {
   const pool = getStreamersByCountry(country);
   const today = new Date();
   const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-  return pool[seed % pool.length];
+  return pool[(seed + gameOffset) % pool.length];
+}
+ export function getDailyStreamerNoRepeat(country = "ALL", gameKey = "classic", offset = 0) {
+  const pool = getStreamersByCountry(country);
+  const today = new Date();
+  const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+
+  let history = [];
+  if (typeof window !== 'undefined') {
+    try {
+      history = JSON.parse(localStorage.getItem(`history_${gameKey}_${country}`) || '[]');
+    } catch { history = []; }
+  }
+
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 30);
+  const recentIds = history
+    .filter(h => new Date(h.date) > cutoff)
+    .map(h => h.id);
+
+  const available = pool.filter(s => !recentIds.includes(s.id));
+  const finalPool = available.length > 0 ? available : pool;
+  const streamer = finalPool[(seed + offset) % finalPool.length];
+
+  if (typeof window !== 'undefined') {
+    const todayStr = today.toISOString().split('T')[0];
+    const alreadyToday = history.some(h => h.date === todayStr && h.game === gameKey);
+    if (!alreadyToday) {
+      history.push({ id: streamer.id, date: todayStr, game: gameKey });
+      try {
+        localStorage.setItem(`history_${gameKey}_${country}`, JSON.stringify(history));
+      } catch {}
+    }
+  }
+
+  return streamer;
 }
