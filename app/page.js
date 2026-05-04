@@ -216,14 +216,17 @@ export default function Home() {
   { label: 'Contacto', href: '/contacto' },
   { label: 'Privacidad', href: '/privacidad' },
   { label: 'Términos', href: '/terminos' },
+  { label: '☕ Apoyá Streamdle', href: 'https://ko-fi.com/streamdlenet' },
 ].map(link => (
-  <a key={link.label} href={link.href} style={{
-    color: 'var(--color-text-secondary)',
+  <a key={link.label} href={link.href} target={link.href.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer" style={{
+    color: link.href.startsWith('https://ko-fi') ? '#FF5E5B' : 'var(--color-text-secondary)',
     fontSize: '13px',
     textDecoration: 'none',
     cursor: 'pointer',
+    fontWeight: link.href.startsWith('https://ko-fi') ? '600' : 'normal',
   }}>{link.label}</a>
 ))}
+ 
         </div>
         <p style={{
           textAlign: 'center',

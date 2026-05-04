@@ -208,10 +208,28 @@ function HigherdleInner() {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         background: 'rgba(13,13,20,0.85)', backdropFilter: 'blur(12px)',
       }}>
-        <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '18px' }}>🎮</span>
-          <span style={{ fontSize: '16px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
-        </a>
+       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '18px' }}>🎮</span>
+            <span style={{ fontSize: '16px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
+          </a>
+          <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+            {[
+              { href: '/classic', label: '🎯' },
+              { href: '/avatardle', label: '👤' },
+              { href: '/categorydle', label: '🎮' },
+              { href: '/higherdle', label: '📊' },
+              { href: '/higherdle?mode=hours', label: '⏱️' },
+            ].map(g => (
+              <a key={g.href} href={g.href} style={{
+                background: g.href === '/higherdle' ? '#7C3AED' : 'var(--bg-card)',
+                border: '1px solid var(--color-border)',
+                color: 'white', borderRadius: '6px', padding: '4px 8px',
+                fontSize: '13px', textDecoration: 'none',
+              }}>{g.label}</a>
+            ))}
+          </div>
+        </div>
         <div style={{ display: 'flex', gap: '6px' }}>
           <button onClick={() => setMode('followers')} style={{ background: mode === 'followers' ? '#7C3AED' : 'var(--bg-card)', border: '1px solid var(--color-border)', color: 'white', borderRadius: '8px', padding: '6px 14px', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>
             👥 Seguidores

@@ -77,8 +77,19 @@ export default function ContactoPage() {
         </div>
 
         <p style={{ textAlign: 'center', color: 'var(--color-text-secondary)', fontSize: '13px', marginTop: '24px' }}>
-          Streamdle es un proyecto independiente hecho por fans, para fans. No estamos afiliados con Twitch, Kick ni YouTube.
-        </p>
+  Streamdle es un proyecto independiente hecho por fans, para fans. No estamos afiliados con Twitch, Kick ni YouTube.
+</p>
+<div style={{ textAlign: 'center', marginTop: '16px' }}>
+  <a href="https://ko-fi.com/streamdlenet" target="_blank" rel="noopener noreferrer" style={{
+    display: 'inline-flex', alignItems: 'center', gap: '8px',
+    background: '#FF5E5B', color: 'white',
+    padding: '10px 24px', borderRadius: '10px',
+    fontSize: '14px', fontWeight: '700', textDecoration: 'none',
+    transition: 'opacity 0.2s',
+  }}>
+    ☕ Apoyá Streamdle en Ko-fi
+  </a>
+</div>
       </main>
     </div>
   );

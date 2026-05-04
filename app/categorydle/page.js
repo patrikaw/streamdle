@@ -217,13 +217,29 @@ export default function CategorydlePage() {
       <header style={{
         borderBottom: '1px solid var(--color-border)', padding: '14px 24px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        background: 'var(--bg-secondary)',
+        background: 'var(--bg-secondary)', gap: '12px', flexWrap: 'wrap',
       }}>
         <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span style={{ fontSize: '20px' }}>🎮</span>
           <span style={{ fontSize: '18px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
         </a>
-        <span style={{ fontSize: '13px', fontWeight: '700', background: 'linear-gradient(135deg, #059669, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>CATEGORYDLE</span>
+        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+          {[
+            { href: '/classic', label: '🎯 Classic' },
+            { href: '/avatardle', label: '👤 Avatardle' },
+            { href: '/categorydle', label: '🎮 Categorydle' },
+            { href: '/higherdle', label: '📊 Higherdle' },
+            { href: '/higherdle?mode=hours', label: '⏱️ Hourdle' },
+          ].map(g => (
+            <a key={g.href} href={g.href} style={{
+              background: g.href === '/categorydle' ? '#7C3AED' : 'var(--bg-card)',
+              border: '1px solid var(--color-border)',
+              color: 'white', borderRadius: '8px', padding: '5px 12px',
+              fontSize: '11px', fontWeight: '600', textDecoration: 'none',
+              whiteSpace: 'nowrap',
+            }}>{g.label}</a>
+          ))}
+        </div>
       </header>
 
       <main style={{ maxWidth: '600px', margin: '0 auto', padding: '24px 16px 48px' }}>
