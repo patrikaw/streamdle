@@ -32,6 +32,15 @@ const GAMES = [
     daily: true,
   },
   {
+    slug: 'chatdle',
+    name: 'Chatdle',
+    emoji: '💬',
+    description: 'Adiviná el streamer por su frase más icónica',
+    color: '#B45309',
+    available: true,
+    daily: true,
+  },
+  {
     slug: 'higherdle',
     name: 'Higherdle',
     emoji: '📊',
