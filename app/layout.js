@@ -25,6 +25,9 @@ export const metadata = {
     description: '¿Cuánto sabés de tus streamers favoritos?',
     images: ['https://streamdle.net/og-image.jpg'],
   },
+  verification: {
+    google: 'xHolM5K2MY7kQJyWcckrSVRZgRsAohrAqh8qHjDOHOg',
+  },
 };
 
 export default function RootLayout({ children }) {
