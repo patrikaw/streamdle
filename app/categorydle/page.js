@@ -165,7 +165,6 @@ export default function CategorydlePage() {
       setGameOver(go);
       setTopGuessed(tg || false);
       setSecondGuessed(sg || false);
-      if (go) setTimeout(() => setShowModal(true), 400);
     } else {
       const newTarget = getDailyStreamerNoRepeat(country, 'categorydle', 41, s => s.top_category && s.second_category && s.second_category !== '');
       setTarget(newTarget);

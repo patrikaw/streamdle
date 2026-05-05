@@ -172,7 +172,6 @@ export default function ChatdlePage() {
       setAlreadyGuessed(g);
       setWon(w);
       setGameOver(go);
-      if (go) setTimeout(() => setShowModal(true), 400);
     } else {
       const newTarget = getDailyStreamerNoRepeat(country, 'chatdle', 67, s => s.catchphrase && s.catchphrase.trim() !== '');
       setTarget(newTarget);

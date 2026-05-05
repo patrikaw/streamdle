@@ -276,7 +276,6 @@ export default function ClassicPage() {
       setAlreadyGuessed(g);
       setWon(w);
       setGameOver(go);
-      if (go && g.length > 0) setTimeout(() => setShowModal(true), 400);
     } else {
       const newTarget = getDailyStreamerNoRepeat(country, 'classic', 0);
       setTarget(newTarget);

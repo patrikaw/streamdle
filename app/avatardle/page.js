@@ -145,7 +145,6 @@ export default function AvatardlePage() {
       setWon(w);
       setGameOver(go);
       setCurrentPixelLevel(pl || 0);
-      if (go) setTimeout(() => setShowModal(true), 400);
     } else {
       const newTarget = getDailyStreamerNoRepeat(country, 'avatardle', 17);
       setTarget(newTarget);
