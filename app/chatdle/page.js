@@ -319,9 +319,9 @@ export default function ChatdlePage() {
             {showCategory && target.top_category && (
               <HintBadge label="Categoría" value={target.top_category} color="#059669" />
             )}
-            {showCountry && target.country && (
-              <HintBadge label="País" value={`${countryFlags[target.country] || ''} ${target.country}`} color="#2563EB" />
-            )}
+            {showCountry && target.country && country === 'ALL' && (
+  <HintBadge label="País" value={`${countryFlags[target.country] || ''} ${target.country}`} color="#2563EB" />
+)}
             {showPlatform && (
               <HintBadge label="Plataformas" value={getPlatforms(target).map(p => p.label).join(' · ')} color="#B45309" />
             )}
@@ -336,7 +336,7 @@ export default function ChatdlePage() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center', marginBottom: '20px' }}>
             {[
               { label: 'Categoría', unlockAt: 1 },
-              { label: 'País', unlockAt: 2 },
+              ...(country === 'ALL' ? [{ label: 'País', unlockAt: 2 }] : []),
               { label: 'Plataformas', unlockAt: 3 },
               { label: 'Inicial', unlockAt: 4 },
             ].filter(h => attemptCount < h.unlockAt).map(h => (

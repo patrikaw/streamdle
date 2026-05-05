@@ -94,7 +94,7 @@ function PlatformsCell({ guess, target }) {
   );
 }
 
-function GuessRow({ guess, target, attemptNumber, avatars }) {
+function GuessRow({ guess, target, attemptNumber, avatars, country }) {
   const showPeakViewers = attemptNumber >= 4;
   const showPlatforms = attemptNumber >= 6;
   const arrowMap = { higher: '↑', lower: '↓', correct: '✓' };
@@ -122,8 +122,10 @@ function GuessRow({ guess, target, attemptNumber, avatars }) {
         </span>
       </div>
 
-      <HintCell label="País" value={<CountryFlag code={guess.country} />}
-        hint={normalizeStr(guess.country) === normalizeStr(target.country) ? 'correct' : 'wrong'} />
+      {country === 'ALL' && (
+  <HintCell label="País" value={<CountryFlag code={guess.country} />}
+    hint={normalizeStr(guess.country) === normalizeStr(target.country) ? 'correct' : 'wrong'} />
+)}
       <HintCell label="Categoría" value={guess.top_category || '?'}
         hint={normalizeStr(guess.top_category) === normalizeStr(target.top_category) ? 'correct' : 'wrong'} />
       <HintCell label="Seguidores" value={formatNum(guess.total_followers)}
@@ -414,7 +416,7 @@ export default function ClassicPage() {
 
         {guesses.length > 0 && (
           <div style={{ display: 'flex', gap: '6px', marginBottom: '8px', paddingLeft: '138px', overflowX: 'auto' }}>
-            {['País', 'Categoría', 'Seguidores', 'Horas en Stream', 'Activo', 'Peak Viewers', 'Plataformas'].map(col => (
+            {(country === 'ALL' ? ['País', 'Categoría', 'Seguidores', 'Horas en Stream', 'Activo', 'Peak Viewers', 'Plataformas'] : ['Categoría', 'Seguidores', 'Horas en Stream', 'Activo', 'Peak Viewers', 'Plataformas']).map(col => (
               <div key={col} style={{ flex: 1, minWidth: '80px', textAlign: 'center', fontSize: '9px', fontWeight: '600', color: 'var(--color-text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 {col}
               </div>
@@ -466,7 +468,7 @@ export default function ClassicPage() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {guesses.map((guess, i) => (
-            <GuessRow key={guess.id} guess={guess} target={target} attemptNumber={guesses.length - i} avatars={avatars} />
+            <GuessRow key={guess.id} guess={guess} target={target} attemptNumber={guesses.length - i} avatars={avatars} country={country} />
           ))}
         </div>
 
