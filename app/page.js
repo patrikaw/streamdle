@@ -105,14 +105,14 @@ export default function Home() {
           lineHeight: 1.2,
           marginBottom: '12px',
         }}>
-          ¿Cuánto sabés de tus{' '}
+          El Wordle de{' '}
           <span style={{
             background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
           }}>
-            streamers favoritos?
+             Streamers en Español
           </span>
         </h1>
         <p style={{
@@ -121,7 +121,7 @@ export default function Home() {
           maxWidth: '480px',
           margin: '0 auto',
         }}>
-          Jugá los desafíos diarios y demostrá que sos el fan número 1
+          Adiviná el streamer del día — el Wordle de streamers hispanohablantes
         </p>
       </div>
 

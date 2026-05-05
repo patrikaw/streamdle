@@ -2,9 +2,9 @@ import './globals.css';
 import Script from 'next/script';
 
 export const metadata = {
-  title: 'Streamdle — ¿Cuánto sabés de tus streamers favoritos?',
-  description: 'Adiviná streamers hispanohablantes en varios juegos diarios. Avatardle, Higherdle, Categorydle y más.',
-  keywords: 'streamdle, streamer, twitch, kick, juego, adivinar, wordle, hispano, argentina, mexico, españa',
+  title: 'Streamdle — El Wordle de Streamers en Español',
+  description: 'El Wordle de streamers hispanohablantes. Adiviná el streamer del día con pistas, su foto pixelada, sus categorías y más. Juegos diarios gratis.',
+  keywords: 'wordle streamers, wordle de streamers, juego streamers, adivinar streamer, wordle español, streamers hispanos, twitch wordle, kick wordle',
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-icon.png',
