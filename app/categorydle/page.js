@@ -152,7 +152,7 @@ export default function CategorydlePage() {
 
   useEffect(() => {
     const newPool = country === 'ALL' ? STREAMERS : STREAMERS.filter(s => s.country === country);
-    setCategories(getCategories(newPool));
+    setCategories(getCategories(STREAMERS));
     const key = getTodayKey(country);
     const saved = localStorage.getItem(key);
     if (saved) {
