@@ -221,19 +221,20 @@ export default function AvatardlePage() {
           <span style={{ fontSize: '20px' }}>🎮</span>
           <span style={{ fontSize: '18px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
         </a>
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'center' }}>
           {[
             { href: '/classic', label: '🎯 Classic' },
             { href: '/avatardle', label: '👤 Avatardle' },
             { href: '/categorydle', label: '🎮 Categorydle' },
             { href: '/higherdle', label: '📊 Higherdle' },
             { href: '/higherdle?mode=hours', label: '⏱️ Hourdle' },
+            { href: '/chatdle', label: '💬 Chatdle' },
           ].map(g => (
             <a key={g.href} href={g.href} style={{
               background: g.href === '/avatardle' ? '#7C3AED' : 'var(--bg-card)',
               border: '1px solid var(--color-border)',
-              color: 'white', borderRadius: '8px', padding: '5px 12px',
-              fontSize: '11px', fontWeight: '600', textDecoration: 'none',
+              color: 'white', borderRadius: '8px', padding: '4px 8px',
+              fontSize: '10px', fontWeight: '600', textDecoration: 'none',
               whiteSpace: 'nowrap',
             }}>{g.label}</a>
           ))}
@@ -323,7 +324,7 @@ export default function AvatardlePage() {
                       )}
                       <div>
                         <div style={{ fontSize: '14px', fontWeight: '600' }}>{s.display_name}</div>
-                        <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)' }}>{s.country} · {formatNum(s.total_followers)} seguidores</div>
+                        <div style={{ fontSize: '10px', color: 'var(--color-text-secondary)' }}>{s.country} · {formatNum(s.total_followers)} seguidores</div>
                       </div>
                     </div>
                   );

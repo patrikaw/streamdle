@@ -256,7 +256,7 @@ export default function ChatdlePage() {
           <span style={{ fontSize: '20px' }}>🎮</span>
           <span style={{ fontSize: '18px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
         </a>
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'center' }}>
           {[
             { href: '/classic', label: '🎯 Classic' },
             { href: '/avatardle', label: '👤 Avatardle' },
@@ -269,7 +269,7 @@ export default function ChatdlePage() {
               background: g.href === '/chatdle' ? '#7C3AED' : 'var(--bg-card)',
               border: '1px solid var(--color-border)',
               color: 'white', borderRadius: '8px', padding: '5px 12px',
-              fontSize: '11px', fontWeight: '600', textDecoration: 'none', whiteSpace: 'nowrap',
+              fontSize: '10px', fontWeight: '600', textDecoration: 'none', whiteSpace: 'nowrap',
             }}>{g.label}</a>
           ))}
         </div>

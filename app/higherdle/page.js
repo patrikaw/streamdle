@@ -230,11 +230,11 @@ function HigherdleInner() {
             ))}
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '6px' }}>
-          <button onClick={() => setMode('followers')} style={{ background: mode === 'followers' ? '#7C3AED' : 'var(--bg-card)', border: '1px solid var(--color-border)', color: 'white', borderRadius: '8px', padding: '6px 14px', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>
+        <div style={{ display: 'flex', gap: '6px', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+          <button onClick={() => setMode('followers')} style={{ background: mode === 'followers' ? '#7C3AED' : 'var(--bg-card)', border: '1px solid var(--color-border)', color: 'white', borderRadius: '8px', padding: '4px 8px', fontSize: '10px', fontWeight: '600', cursor: 'pointer' }}>
             👥 Seguidores
           </button>
-          <button onClick={() => setMode('hours')} style={{ background: mode === 'hours' ? '#7C3AED' : 'var(--bg-card)', border: '1px solid var(--color-border)', color: 'white', borderRadius: '8px', padding: '6px 14px', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>
+          <button onClick={() => setMode('hours')} style={{ background: mode === 'hours' ? '#7C3AED' : 'var(--bg-card)', border: '1px solid var(--color-border)', color: 'white', borderRadius: '8px', padding: '4px 8px', fontSize: '10px', fontWeight: '600', cursor: 'pointer' }}>
             ⏱️ Horas
           </button>
         </div>
@@ -251,7 +251,7 @@ function HigherdleInner() {
       </header>
 
       <div style={{
-        position: 'fixed', top: '57px', left: 0, right: 0, zIndex: 49,
+        position: 'fixed', top: '100px', left: 0, right: 0, zIndex: 49,
         display: 'flex', gap: '6px', justifyContent: 'center',
         padding: '8px 16px', background: 'rgba(13,13,20,0.85)', backdropFilter: 'blur(12px)',
         borderBottom: '1px solid var(--color-border)', flexWrap: 'wrap',
@@ -271,7 +271,7 @@ function HigherdleInner() {
       </div>
 
       {!gameOver ? (
-        <div style={{ display: 'flex', flex: 1, paddingTop: '100px', position: 'relative' }}>
+        <div style={{ display: 'flex', flex: 1, paddingTop: '105px', position: 'relative' }}>
           <StreamerCard streamer={left} value={getValue(left)} label={label} showValue={true} result={null} disabled={true} avatars={avatars} />
           <div style={{
             position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
@@ -284,7 +284,7 @@ function HigherdleInner() {
           <div style={{ position: 'fixed', left: '50%', top: 0, bottom: 0, width: '2px', background: 'var(--color-border)', zIndex: 5 }} />
         </div>
       ) : (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '100px', position: 'relative' }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '105px', position: 'relative' }}>
           <div style={{ position: 'fixed', inset: 0, zIndex: 0, display: 'flex' }}>
             <div style={{ flex: 1, backgroundImage: left ? `url(${getAvatarUrl(left, avatars)})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px) brightness(0.25)', transform: 'scale(1.1)' }} />
             <div style={{ flex: 1, backgroundImage: right ? `url(${getAvatarUrl(right, avatars)})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px) brightness(0.25)', transform: 'scale(1.1)' }} />
