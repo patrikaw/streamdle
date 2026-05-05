@@ -132,12 +132,13 @@ export default function AvatardlePage() {
   }, []);
 
   useEffect(() => {
-    const newTarget = getDailyStreamerNoRepeat(country, 'avatardle', 17);
-    setTarget(newTarget);
     const key = getTodayKey(country);
     const saved = localStorage.getItem(key);
     if (saved) {
-      const { guesses: g, won: w, gameOver: go, pixelLevel: pl } = JSON.parse(saved);
+      const { guesses: g, won: w, gameOver: go, pixelLevel: pl, targetId } = JSON.parse(saved);
+      const savedTarget = STREAMERS.find(s => s.id === targetId);
+      if (savedTarget) setTarget(savedTarget);
+      else setTarget(getDailyStreamerNoRepeat(country, 'avatardle', 17));
       const fullGuesses = g.map(id => STREAMERS.find(s => s.id === id)).filter(Boolean);
       setGuesses(fullGuesses);
       setAlreadyGuessed(g);
@@ -146,6 +147,8 @@ export default function AvatardlePage() {
       setCurrentPixelLevel(pl || 0);
       if (go) setTimeout(() => setShowModal(true), 400);
     } else {
+      const newTarget = getDailyStreamerNoRepeat(country, 'avatardle', 17);
+      setTarget(newTarget);
       setGuesses([]); setWon(false); setGameOver(false);
       setShowModal(false); setAlreadyGuessed([]);
       setCurrentPixelLevel(0); setQuery('');
@@ -156,7 +159,9 @@ export default function AvatardlePage() {
     if (!target || guesses.length === 0) return;
     const key = getTodayKey(country);
     localStorage.setItem(key, JSON.stringify({
-      guesses: alreadyGuessed, won, gameOver, pixelLevel: currentPixelLevel,
+      guesses: alreadyGuessed, won, gameOver,
+      pixelLevel: currentPixelLevel,
+      targetId: target.id
     }));
   }, [guesses, won, gameOver, currentPixelLevel]);
 
@@ -166,6 +171,18 @@ export default function AvatardlePage() {
       .filter(s => !alreadyGuessed.includes(s.id)).slice(0, 6);
     setSuggestions(results);
   }, [query, country, alreadyGuessed]);
+
+  useEffect(() => {
+    if (!target) return;
+    const key = getTodayKey(country);
+    const saved = localStorage.getItem(key);
+    if (!saved) {
+      localStorage.setItem(key, JSON.stringify({
+        guesses: [], won: false, gameOver: false,
+        pixelLevel: 0, targetId: target.id
+      }));
+    }
+  }, [target]);
 
   const handleGuess = (streamer) => {
     if (!target || gameOver) return;

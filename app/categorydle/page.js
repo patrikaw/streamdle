@@ -153,13 +153,13 @@ export default function CategorydlePage() {
   useEffect(() => {
     const newPool = country === 'ALL' ? STREAMERS : STREAMERS.filter(s => s.country === country);
     setCategories(getCategories(newPool));
-    const newTarget = getDailyStreamerNoRepeat(country, 'categorydle', 41, s => s.top_category && s.second_category && s.second_category !== '');
-    setTarget(newTarget);
-
     const key = getTodayKey(country);
     const saved = localStorage.getItem(key);
     if (saved) {
-      const { guesses: g, won: w, gameOver: go, topGuessed: tg, secondGuessed: sg } = JSON.parse(saved);
+      const { guesses: g, won: w, gameOver: go, topGuessed: tg, secondGuessed: sg, targetId } = JSON.parse(saved);
+      const savedTarget = STREAMERS.find(s => s.id === targetId);
+      if (savedTarget) setTarget(savedTarget);
+      else setTarget(getDailyStreamerNoRepeat(country, 'categorydle', 41, s => s.top_category && s.second_category && s.second_category !== ''));
       setGuesses(g);
       setWon(w);
       setGameOver(go);
@@ -167,6 +167,8 @@ export default function CategorydlePage() {
       setSecondGuessed(sg || false);
       if (go) setTimeout(() => setShowModal(true), 400);
     } else {
+      const newTarget = getDailyStreamerNoRepeat(country, 'categorydle', 41, s => s.top_category && s.second_category && s.second_category !== '');
+      setTarget(newTarget);
       setGuesses([]); setWon(false); setGameOver(false);
       setShowModal(false); setQuery('');
       setTopGuessed(false); setSecondGuessed(false);
@@ -176,7 +178,11 @@ export default function CategorydlePage() {
   useEffect(() => {
     if (!target || guesses.length === 0) return;
     const key = getTodayKey(country);
-    localStorage.setItem(key, JSON.stringify({ guesses, won, gameOver, topGuessed, secondGuessed }));
+    localStorage.setItem(key, JSON.stringify({
+      guesses, won, gameOver,
+      topGuessed, secondGuessed,
+      targetId: target.id
+    }));
   }, [guesses, won, gameOver, topGuessed, secondGuessed]);
 
   useEffect(() => {
@@ -187,6 +193,19 @@ export default function CategorydlePage() {
       .slice(0, 8);
     setSuggestions(results);
   }, [query, categories, guesses]);
+
+  useEffect(() => {
+    if (!target) return;
+    const key = getTodayKey(country);
+    const saved = localStorage.getItem(key);
+    if (!saved) {
+      localStorage.setItem(key, JSON.stringify({
+        guesses: [], won: false, gameOver: false,
+        topGuessed: false, secondGuessed: false,
+        targetId: target.id
+      }));
+    }
+  }, [target]);
 
   const handleGuess = (category) => {
     if (!target || gameOver) return;

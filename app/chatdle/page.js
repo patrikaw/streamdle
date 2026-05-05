@@ -160,12 +160,13 @@ export default function ChatdlePage() {
   }, []);
 
   useEffect(() => {
-    const newTarget = getDailyStreamerNoRepeat(country, 'chatdle', 67, s => s.catchphrase && s.catchphrase.trim() !== '');
-    setTarget(newTarget);
     const key = getTodayKey(country);
     const saved = localStorage.getItem(key);
     if (saved) {
-      const { guesses: g, won: w, gameOver: go } = JSON.parse(saved);
+      const { guesses: g, won: w, gameOver: go, targetId } = JSON.parse(saved);
+      const savedTarget = STREAMERS.find(s => s.id === targetId);
+      if (savedTarget) setTarget(savedTarget);
+      else setTarget(getDailyStreamerNoRepeat(country, 'chatdle', 67, s => s.catchphrase && s.catchphrase.trim() !== ''));
       const fullGuesses = g.map(id => STREAMERS.find(s => s.id === id)).filter(Boolean);
       setGuesses(fullGuesses);
       setAlreadyGuessed(g);
@@ -173,6 +174,8 @@ export default function ChatdlePage() {
       setGameOver(go);
       if (go) setTimeout(() => setShowModal(true), 400);
     } else {
+      const newTarget = getDailyStreamerNoRepeat(country, 'chatdle', 67, s => s.catchphrase && s.catchphrase.trim() !== '');
+      setTarget(newTarget);
       setGuesses([]); setWon(false); setGameOver(false);
       setShowModal(false); setAlreadyGuessed([]); setQuery('');
     }
@@ -181,7 +184,10 @@ export default function ChatdlePage() {
   useEffect(() => {
     if (!target || guesses.length === 0) return;
     const key = getTodayKey(country);
-    localStorage.setItem(key, JSON.stringify({ guesses: alreadyGuessed, won, gameOver }));
+    localStorage.setItem(key, JSON.stringify({
+      guesses: alreadyGuessed, won, gameOver,
+      targetId: target.id
+    }));
   }, [guesses, won, gameOver]);
 
   useEffect(() => {
@@ -190,6 +196,18 @@ export default function ChatdlePage() {
       .filter(s => !alreadyGuessed.includes(s.id)).slice(0, 6);
     setSuggestions(results);
   }, [query, country, alreadyGuessed]);
+
+  useEffect(() => {
+    if (!target) return;
+    const key = getTodayKey(country);
+    const saved = localStorage.getItem(key);
+    if (!saved) {
+      localStorage.setItem(key, JSON.stringify({
+        guesses: [], won: false, gameOver: false,
+        targetId: target.id
+      }));
+    }
+  }, [target]);
 
   const handleGuess = (streamer) => {
     if (!target || gameOver) return;
