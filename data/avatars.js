@@ -51,12 +51,18 @@ async function fetchAndCacheAvatars() {
   }
 }
 
+const KICK_AVATARS = {
+  'adrianozendejas32': 'https://files.kick.com/images/user/53715418/profile_image/conversion/4ddecb8f-57f5-4c84-a293-50d98fd3c1cb-fullsize.webp',
+  'benjaz': 'https://files.kick.com/images/user/11383714/profile_image/conversion/b4458890-6422-43b0-aed7-f2b657c6b357-fullsize.webp',
+  'cristorata7': 'https://files.kick.com/images/user/37748685/profile_image/conversion/bb8c1847-06c9-452b-9800-673997f74107-fullsize.webp',
+};
+
 export function getAvatarUrl(streamer, avatars = {}) {
-  // Primero intentamos con la caché de Twitch API
   if (streamer.twitch && avatars[streamer.twitch.toLowerCase()]) {
     return avatars[streamer.twitch.toLowerCase()].avatar;
   }
-  // Fallback a unavatar
+  const kickKey = (streamer.kick || '').toLowerCase();
+  if (kickKey && KICK_AVATARS[kickKey]) return KICK_AVATARS[kickKey];
   if (streamer.twitch) return `https://unavatar.io/twitch/${streamer.twitch}`;
   if (streamer.kick) return `https://unavatar.io/kick/${streamer.kick}`;
   return null;
