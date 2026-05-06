@@ -3,7 +3,7 @@ import Script from 'next/script';
 
 export const metadata = {
   title: 'Streamdle — El Wordle de Streamers en Español',
-  description: 'El Wordle de streamers hispanohablantes. Adiviná el streamer del día con pistas, su foto pixelada, sus categorías y más. Juegos diarios gratis.',
+  description: '6 juegos diarios de streamers hispanos: adiviná por pistas, foto pixelada, emojis, categorías, frases y más. ¡Nuevo reto cada día!',
   keywords: 'wordle streamers, wordle de streamers, juego streamers, adivinar streamer, wordle español, streamers hispanos, twitch wordle, kick wordle',
   icons: {
     icon: '/favicon.ico',
