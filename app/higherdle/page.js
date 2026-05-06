@@ -134,14 +134,16 @@ function HigherdleInner() {
   const [copied, setCopied] = useState(false);
   const [avatars, setAvatars] = useState({});
 
-  const label = mode === 'followers' ? 'Seguidores' : 'Horas en Stream';
+  const label = mode === 'followers' ? 'Seguidores' : mode === 'hours' ? 'Horas en Stream' : 'Peak Viewers';
 
   useEffect(() => {
     getAvatars().then(data => setAvatars(data));
   }, []);
 
   const getValue = useCallback((streamer) => {
-    return mode === 'followers' ? streamer.total_followers : streamer.total_hours;
+    if (mode === 'followers') return streamer.total_followers;
+    if (mode === 'hours') return streamer.total_hours;
+    return streamer.peak_viewers;
   }, [mode]);
 
   const initGame = useCallback((p) => {
@@ -154,7 +156,10 @@ function HigherdleInner() {
   }, []);
 
   useEffect(() => {
-    const newPool = country === 'ALL' ? STREAMERS : STREAMERS.filter(s => s.country === country);
+    let newPool;
+    if (country === 'ALL') newPool = STREAMERS;
+    else if (country === 'LATAM') newPool = STREAMERS.filter(s => s.country !== 'ES');
+    else newPool = STREAMERS.filter(s => s.country === country);
     setPool(newPool);
     setHighScore(getHighScore(mode, country));
     initGame(newPool);
@@ -187,7 +192,8 @@ function HigherdleInner() {
   };
 
   const handleShare = () => {
-    const text = `📊 Higherdle ${mode === 'followers' ? 'Seguidores' : 'Horas'}\nRacha: ${score} | Récord: ${Math.max(score, highScore)}\n¿Podés superarme?\nstreamdle.net/higherdle`;
+    const modeLabel = mode === 'followers' ? 'Seguidores' : mode === 'hours' ? 'Horas' : 'Peak Viewers';
+    const text = `📊 Higherdle ${modeLabel}\nRacha: ${score} | Récord: ${Math.max(score, highScore)}\n¿Podés superarme?\nstreamdle.net/higherdle`;
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -204,41 +210,58 @@ function HigherdleInner() {
     <div style={{ minHeight: '100vh', background: '#0D0D14', display: 'flex', flexDirection: 'column' }}>
       <header style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
-        borderBottom: '1px solid var(--color-border)', padding: '10px 24px',
+        borderBottom: '1px solid var(--color-border)', padding: '8px 16px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         background: 'rgba(13,13,20,0.85)', backdropFilter: 'blur(12px)',
       }}>
-       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '18px' }}>🎮</span>
-            <span style={{ fontSize: '16px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ fontSize: '16px' }}>🎮</span>
+            <span style={{ fontSize: '14px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
           </a>
-          <div className="game-nav-links" style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+          <div className="game-nav-links" style={{ display: 'flex', gap: '4px' }}>
             {[
               { href: '/classic', label: '🎯' },
               { href: '/avatardle', label: '👤' },
               { href: '/categorydle', label: '🎮' },
               { href: '/higherdle', label: '📊' },
               { href: '/higherdle?mode=hours', label: '⏱️' },
+              { href: '/chatdle', label: '💬' },
             ].map(g => (
               <a key={g.href} href={g.href} style={{
                 background: g.href === '/higherdle' ? '#7C3AED' : 'var(--bg-card)',
                 border: '1px solid var(--color-border)',
-                color: 'white', borderRadius: '6px', padding: '4px 8px',
-                fontSize: '13px', textDecoration: 'none',
+                color: 'white', borderRadius: '6px', padding: '3px 7px',
+                fontSize: '12px', textDecoration: 'none',
               }}>{g.label}</a>
             ))}
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '6px', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
-          <button onClick={() => setMode('followers')} style={{ background: mode === 'followers' ? '#7C3AED' : 'var(--bg-card)', border: '1px solid var(--color-border)', color: 'white', borderRadius: '8px', padding: '4px 8px', fontSize: '10px', fontWeight: '600', cursor: 'pointer' }}>
-            👥 Seguidores
-          </button>
-          <button onClick={() => setMode('hours')} style={{ background: mode === 'hours' ? '#7C3AED' : 'var(--bg-card)', border: '1px solid var(--color-border)', color: 'white', borderRadius: '8px', padding: '4px 8px', fontSize: '10px', fontWeight: '600', cursor: 'pointer' }}>
-            ⏱️ Horas
-          </button>
+
+        {/* Botones de modo centrados */}
+        <div style={{
+          display: 'flex', gap: '4px',
+          position: 'absolute', left: '50%', transform: 'translateX(-50%)',
+        }}>
+          {[
+            { key: 'followers', emoji: '👥', label: 'Seg.' },
+            { key: 'hours', emoji: '⏱️', label: 'Hrs' },
+            { key: 'peak', emoji: '🏆', label: 'Peak' },
+          ].map(m => (
+            <button key={m.key} onClick={() => setMode(m.key)} style={{
+              background: mode === m.key ? '#7C3AED' : 'var(--bg-card)',
+              border: '1px solid var(--color-border)',
+              color: 'white', borderRadius: '8px',
+              padding: '4px 8px',
+              fontSize: '10px', fontWeight: '600', cursor: 'pointer',
+              whiteSpace: 'nowrap',
+            }}>
+              {m.emoji} {m.label}
+            </button>
+          ))}
         </div>
-        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '10px', color: 'var(--color-text-secondary)' }}>RACHA</div>
             <div style={{ fontSize: '18px', fontWeight: '800', color: '#53FC18' }}>{score}</div>
@@ -251,7 +274,7 @@ function HigherdleInner() {
       </header>
 
       <div style={{
-        position: 'fixed', top: '100px', left: 0, right: 0, zIndex: 49,
+        position: 'fixed', top: '57px', left: 0, right: 0, zIndex: 49,
         display: 'flex', gap: '6px', justifyContent: 'center',
         padding: '8px 16px', background: 'rgba(13,13,20,0.85)', backdropFilter: 'blur(12px)',
         borderBottom: '1px solid var(--color-border)', flexWrap: 'wrap',
@@ -261,7 +284,7 @@ function HigherdleInner() {
           { code: 'AR', label: '🇦🇷 Argentina' },
           { code: 'MX', label: '🇲🇽 México' },
           { code: 'ES', label: '🇪🇸 España' },
-          { code: 'CO', label: '🇨🇴 Colombia' },
+          { code: 'LATAM', label: '🌎 LATAM' },
         ].map(c => (
           <button key={c.code} className={`filter-pill ${country === c.code ? 'active' : ''}`}
             onClick={() => setCountry(c.code)} style={{ fontSize: '11px', padding: '3px 10px' }}>
@@ -271,7 +294,7 @@ function HigherdleInner() {
       </div>
 
       {!gameOver ? (
-        <div style={{ display: 'flex', flex: 1, paddingTop: '105px', position: 'relative' }}>
+        <div style={{ display: 'flex', flex: 1, paddingTop: '110px', position: 'relative' }}>
           <StreamerCard streamer={left} value={getValue(left)} label={label} showValue={true} result={null} disabled={true} avatars={avatars} />
           <div style={{
             position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
@@ -284,7 +307,7 @@ function HigherdleInner() {
           <div style={{ position: 'fixed', left: '50%', top: 0, bottom: 0, width: '2px', background: 'var(--color-border)', zIndex: 5 }} />
         </div>
       ) : (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '105px', position: 'relative' }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '110px', position: 'relative' }}>
           <div style={{ position: 'fixed', inset: 0, zIndex: 0, display: 'flex' }}>
             <div style={{ flex: 1, backgroundImage: left ? `url(${getAvatarUrl(left, avatars)})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px) brightness(0.25)', transform: 'scale(1.1)' }} />
             <div style={{ flex: 1, backgroundImage: right ? `url(${getAvatarUrl(right, avatars)})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px) brightness(0.25)', transform: 'scale(1.1)' }} />
@@ -304,7 +327,7 @@ function HigherdleInner() {
               {score >= 10 ? '¡Increíble!' : score >= 5 ? '¡Bien jugado!' : 'Game Over'}
             </h2>
             <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px', marginBottom: '24px' }}>
-              Modo: {mode === 'followers' ? 'Seguidores' : 'Horas en Stream'}
+              Modo: {label}
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '28px' }}>
               <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', padding: '16px' }}>

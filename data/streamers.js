@@ -181,11 +181,16 @@ export const COUNTRIES = [
   { code: "AR", label: "🇦🇷 Argentina" },
   { code: "MX", label: "🇲🇽 México" },
   { code: "ES", label: "🇪🇸 España" },
-  { code: "CO", label: "🇨🇴 Colombia" },
+  { code: "LATAM", label: "🌎 LATAM" },
 ];
+
+export const LATAM_COUNTRIES = ["AR","MX","CO","PE","CL","VE","UY","SV","PR","DO","GT","HN","CR","PA","CU","NI","BO","PY","EC","FR","NO"];
+
+export const REDUCED_WEIGHT_COUNTRIES = ["AR","MX"];
 
 export function getStreamersByCountry(country) {
   if (country === "ALL") return STREAMERS;
+  if (country === "LATAM") return STREAMERS.filter(s => s.country !== "ES");
   return STREAMERS.filter(s => s.country === country);
 }
 
@@ -220,7 +225,20 @@ export function getDailyStreamerNoRepeat(country = "ALL", gameKey = "classic", o
   const recentIds = history.filter(h => new Date(h.date) > cutoff).map(h => h.id);
   const available = pool.filter(s => !recentIds.includes(s.id));
   const finalPool = available.length > 0 ? available : pool;
-  const streamer = finalPool[(seed + offset) % finalPool.length];
+
+  // Sistema de pesos: en LATAM, AR y MX tienen 40% menos probabilidad
+  let weightedPool = finalPool;
+  if (country === "LATAM") {
+    weightedPool = [];
+    finalPool.forEach(s => {
+      // AR y MX se agregan 6 veces en vez de 10 (40% menos)
+      const weight = REDUCED_WEIGHT_COUNTRIES.includes(s.country) ? 6 : 10;
+      for (let i = 0; i < weight; i++) weightedPool.push(s);
+    });
+  }
+
+  const streamer = weightedPool[(seed + offset) % weightedPool.length];
+
   if (typeof window !== "undefined") {
     const todayStr = today.toISOString().split("T")[0];
     const alreadyToday = history.some(h => h.date === todayStr && h.game === gameKey);

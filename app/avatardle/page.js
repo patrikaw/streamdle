@@ -127,6 +127,10 @@ export default function AvatardlePage() {
   const [avatars, setAvatars] = useState({});
   const inputRef = useRef(null);
 
+  // En ALL → miniaturas B&N. En filtros de país → sin miniatura
+  const showThumbnails = country === 'ALL';
+  const grayscale = country === 'ALL';
+
   useEffect(() => {
     getAvatars().then(data => setAvatars(data));
   }, []);
@@ -309,16 +313,19 @@ export default function AvatardlePage() {
             {suggestions.length > 0 && (
               <div className="suggestions-box">
                 {suggestions.map(s => {
-                  const sUrl = getAvatarUrl(s, avatars);
+                  const sUrl = showThumbnails ? getAvatarUrl(s, avatars) : null;
                   return (
                     <div key={s.id} className="suggestion-item" onClick={() => handleGuess(s)}>
                       {sUrl ? (
                         <img src={sUrl} alt={s.display_name}
-                          style={{ width: '28px', height: '28px', borderRadius: '50%' }}
+                          style={{
+                            width: '28px', height: '28px', borderRadius: '50%',
+                            filter: grayscale ? 'grayscale(100%)' : 'none',
+                          }}
                           onError={e => e.target.style.display = 'none'} />
                       ) : (
-                        <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
-                          {s.display_name[0]}
+                        <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#3A3A5C', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', color: 'rgba(255,255,255,0.4)' }}>
+                          ?
                         </div>
                       )}
                       <div>
