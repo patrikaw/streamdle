@@ -354,10 +354,10 @@ export default function ClassicPage() {
           {[
             { href: '/classic', label: '🎯 Classic' },
             { href: '/avatardle', label: '👤 Avatardle' },
+            { href: '/emojidle', label: '😂 Emojidle' },
             { href: '/categorydle', label: '🎮 Categorydle' },
-            { href: '/higherdle', label: '📊 Higherdle' },
-            { href: '/higherdle?mode=hours', label: '⏱️ Hourdle' },
             { href: '/chatdle', label: '💬 Chatdle' },
+            { href: '/higherdle', label: '📊 Higherdle' },
           ].map(g => (
             <a key={g.href} href={g.href} style={{
               background: g.href === '/classic' ? '#7C3AED' : 'var(--bg-card)',

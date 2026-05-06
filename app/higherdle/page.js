@@ -226,10 +226,10 @@ function HigherdleInner() {
             {[
               { href: '/classic', label: '🎯' },
               { href: '/avatardle', label: '👤' },
+              { href: '/emojidle', label: '😂' },
               { href: '/categorydle', label: '🎮' },
               { href: '/chatdle', label: '💬' },
               { href: '/higherdle', label: '📊' },
-              { href: '/higherdle?mode=hours', label: '⏱️' },
             ].map(g => (
               <a key={g.href} href={g.href} style={{
                 background: g.href === '/higherdle' ? '#7C3AED' : 'var(--bg-card)',

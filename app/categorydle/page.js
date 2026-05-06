@@ -253,10 +253,10 @@ export default function CategorydlePage() {
           {[
             { href: '/classic', label: '🎯 Classic' },
             { href: '/avatardle', label: '👤 Avatardle' },
+            { href: '/emojidle', label: '😂 Emojidle' },
             { href: '/categorydle', label: '🎮 Categorydle' },
             { href: '/chatdle', label: '💬 Chatdle' },
             { href: '/higherdle', label: '📊 Higherdle' },
-            { href: '/higherdle?mode=hours', label: '⏱️ Hourdle' },
           ].map(g => (
             <a key={g.href} href={g.href} style={{
               background: g.href === '/categorydle' ? '#7C3AED' : 'var(--bg-card)',
