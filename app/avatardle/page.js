@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat } from '../../data/streamers';
+import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 
 const MAX_ATTEMPTS = 6;
@@ -125,6 +125,7 @@ export default function AvatardlePage() {
   const [alreadyGuessed, setAlreadyGuessed] = useState([]);
   const [currentPixelLevel, setCurrentPixelLevel] = useState(0);
   const [avatars, setAvatars] = useState({});
+  const [yesterday, setYesterday] = useState(null);
   const inputRef = useRef(null);
 
   // En ALL → miniaturas B&N. En filtros de país → sin miniatura
@@ -134,6 +135,10 @@ export default function AvatardlePage() {
   useEffect(() => {
     getAvatars().then(data => setAvatars(data));
   }, []);
+  useEffect(() => {
+    const yday = getYesterdayStreamer(country, 'avatardle', 17);
+    setYesterday(yday);
+  }, [country]);
 
   useEffect(() => {
     const key = getTodayKey(country);
@@ -229,9 +234,9 @@ export default function AvatardlePage() {
             { href: '/classic', label: '🎯 Classic' },
             { href: '/avatardle', label: '👤 Avatardle' },
             { href: '/categorydle', label: '🎮 Categorydle' },
+            { href: '/chatdle', label: '💬 Chatdle' },
             { href: '/higherdle', label: '📊 Higherdle' },
             { href: '/higherdle?mode=hours', label: '⏱️ Hourdle' },
-            { href: '/chatdle', label: '💬 Chatdle' },
           ].map(g => (
             <a key={g.href} href={g.href} style={{
               background: g.href === '/avatardle' ? '#7C3AED' : 'var(--bg-card)',
@@ -244,14 +249,14 @@ export default function AvatardlePage() {
         </div>
       </header>
 
-      <main style={{ maxWidth: '600px', margin: '0 auto', padding: '24px 16px 48px' }}>
+      <main className="game-main-content" style={{ maxWidth: '600px', margin: '0 auto', padding: '24px 16px 48px' }}>
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <h1 style={{ fontSize: '22px', fontWeight: '800', marginBottom: '6px' }}>👤 ¿Quién es este streamer?</h1>
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px' }}>
             La foto se va aclarando con cada intento fallido
           </p>
         </div>
-
+          {yesterday && <div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>El streamer de ayer fue <a href={yesterday.kick ? `https://kick.com/${yesterday.kick}` : `https://twitch.tv/${yesterday.twitch}`} target="_blank" rel="noopener noreferrer" style={{fontWeight:'700',color:yesterday.kick?'#53FC18':'#9146FF',textDecoration:'none'}}>{yesterday.display_name}</a></div>}
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
           {COUNTRIES.map(c => (
             <button key={c.code} className={`filter-pill ${country === c.code ? 'active' : ''}`} onClick={() => setCountry(c.code)}>

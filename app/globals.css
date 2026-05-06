@@ -297,3 +297,42 @@ body {
     display: none !important;
   }
 }
+@media (min-width: 641px) {
+  .game-nav-links a {
+    padding: 5px 10px !important;
+    fontSize: 13px !important;
+  }
+  .filter-pill {
+    font-size: 13px !important;
+    padding: 5px 14px !important;
+  }
+  /* Botones modo Higherdle en desktop */
+  .higherdle-mode-btn {
+    padding: 6px 14px !important;
+    font-size: 13px !important;
+  }
+}
+@media (min-width: 641px) {
+  /* Botones de navegación entre juegos — 25% más grandes */
+  .game-nav-links a {
+    padding: 6px 15px !important;
+    font-size: 13px !important;
+  }
+
+  /* Header links en juegos diarios */
+  header a[href] {
+    font-size: 13px !important;
+  }
+
+  /* Filtros de país — 10% más grandes */
+  .filter-pill {
+    font-size: 14px !important;
+    padding: 6px 16px !important;
+  }
+
+  /* Contenido principal de juegos diarios — zoom 110% */
+  .game-main-content {
+    transform: scale(1.1);
+    transform-origin: top center;
+  }
+}

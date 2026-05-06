@@ -249,3 +249,30 @@ export function getDailyStreamerNoRepeat(country = "ALL", gameKey = "classic", o
   }
   return streamer;
 }
+export function getYesterdayStreamer(country = "ALL", gameKey = "classic", offset = 0, filter = null) {
+  let pool = getStreamersByCountry(country);
+  if (filter) pool = pool.filter(filter);
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const seed = yesterday.getFullYear() * 10000 + (yesterday.getMonth() + 1) * 100 + yesterday.getDate();
+  let history = [];
+  if (typeof window !== "undefined") {
+    try { history = JSON.parse(localStorage.getItem(`history_${gameKey}_${country}`) || "[]"); } catch { history = []; }
+  }
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 30);
+  const recentIds = history.filter(h => new Date(h.date) > cutoff).map(h => h.id);
+  const available = pool.filter(s => !recentIds.includes(s.id));
+  const finalPool = available.length > 0 ? available : pool;
+
+  if (country === "LATAM") {
+    const weighted = [];
+    finalPool.forEach(s => {
+      const weight = ["AR","MX"].includes(s.country) ? 6 : 10;
+      for (let i = 0; i < weight; i++) weighted.push(s);
+    });
+    return weighted[(seed + offset) % weighted.length];
+  }
+
+  return finalPool[(seed + offset) % finalPool.length];
+}

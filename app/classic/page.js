@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat } from '../../data/streamers';
+import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 
 const MAX_ATTEMPTS = 8;
@@ -250,12 +250,18 @@ export default function ClassicPage() {
   const [showModal, setShowModal] = useState(false);
   const [alreadyGuessed, setAlreadyGuessed] = useState([]);
   const [avatars, setAvatars] = useState({});
+  const [yesterday, setYesterday] = useState(null);
   const inputRef = useRef(null);
 
   // Cargar avatares de Twitch API
   useEffect(() => {
     getAvatars().then(data => setAvatars(data));
   }, []);
+
+  useEffect(() => {
+    const yday = getYesterdayStreamer(country, 'classic', 0);
+    setYesterday(yday);
+  }, [country]);
 
   const getTodayKey = (c) => {
     const d = new Date();
@@ -364,7 +370,7 @@ export default function ClassicPage() {
         </div>
       </header>
 
-      <main style={{ maxWidth: '980px', margin: '0 auto', padding: '24px 16px 48px' }}>
+      <main className="game-main-content" style={{ maxWidth: '980px', margin: '0 auto', padding: '24px 16px 48px' }}>
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <h1 style={{ fontSize: '22px', fontWeight: '800', marginBottom: '6px' }}>🎯 Adiviná el streamer del día</h1>
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px' }}>
@@ -372,6 +378,8 @@ export default function ClassicPage() {
           </p>
         </div>
 
+        {yesterday && <div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>El streamer de ayer fue <a href={yesterday.kick ? `https://kick.com/${yesterday.kick}` : `https://twitch.tv/${yesterday.twitch}`} target="_blank" rel="noopener noreferrer" style={{fontWeight:'700',color:yesterday.kick?'#53FC18':'#9146FF',textDecoration:'none'}}>{yesterday.display_name}</a></div>}
+        
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
           {COUNTRIES.map(c => (
             <button key={c.code} className={`filter-pill ${country === c.code ? 'active' : ''}`} onClick={() => setCountry(c.code)}>

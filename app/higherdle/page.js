@@ -179,7 +179,7 @@ function HigherdleInner() {
         saveHighScore(mode, country, newScore);
         setHighScore(hs => Math.max(hs, newScore));
         const newUsed = [...usedIds];
-        const nextPair = getRandomPair(pool, newUsed.slice(-10));
+        const nextPair = getRandomPair(pool, newUsed.slice(-20));
         if (!nextPair) { setGameOver(true); return; }
         setLeft(right); setRight(nextPair[1]);
         setUsedIds([...newUsed, nextPair[1].id]);
@@ -224,9 +224,9 @@ function HigherdleInner() {
               { href: '/classic', label: '🎯' },
               { href: '/avatardle', label: '👤' },
               { href: '/categorydle', label: '🎮' },
+              { href: '/chatdle', label: '💬' },
               { href: '/higherdle', label: '📊' },
               { href: '/higherdle?mode=hours', label: '⏱️' },
-              { href: '/chatdle', label: '💬' },
             ].map(g => (
               <a key={g.href} href={g.href} style={{
                 background: g.href === '/higherdle' ? '#7C3AED' : 'var(--bg-card)',
@@ -248,7 +248,7 @@ function HigherdleInner() {
             { key: 'hours', emoji: '⏱️', label: 'Hrs' },
             { key: 'peak', emoji: '🏆', label: 'Peak' },
           ].map(m => (
-            <button key={m.key} onClick={() => setMode(m.key)} style={{
+            <button key={m.key} onClick={() => setMode(m.key)} className="higherdle-mode-btn" style={{
               background: mode === m.key ? '#7C3AED' : 'var(--bg-card)',
               border: '1px solid var(--color-border)',
               color: 'white', borderRadius: '8px',

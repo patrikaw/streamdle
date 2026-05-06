@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat } from '../../data/streamers';
+import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 
 const MAX_ATTEMPTS = 6;
@@ -153,11 +153,16 @@ export default function ChatdlePage() {
   const [showModal, setShowModal] = useState(false);
   const [alreadyGuessed, setAlreadyGuessed] = useState([]);
   const [avatars, setAvatars] = useState({});
+  const [yesterday, setYesterday] = useState(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
     getAvatars().then(data => setAvatars(data));
   }, []);
+  useEffect(() => {
+    const yday = getYesterdayStreamer(country, 'chatdle', 67, s => s.catchphrase && s.catchphrase.trim() !== '');
+    setYesterday(yday);
+  }, [country]);
 
   useEffect(() => {
     const key = getTodayKey(country);
@@ -274,13 +279,14 @@ export default function ChatdlePage() {
         </div>
       </header>
 
-      <main style={{ maxWidth: '640px', margin: '0 auto', padding: '24px 16px 48px' }}>
+      <main className="game-main-content" style={{ maxWidth: '640px', margin: '0 auto', padding: '24px 16px 48px' }}>
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <h1 style={{ fontSize: '22px', fontWeight: '800', marginBottom: '6px' }}>💬 ¿De quién es esta frase?</h1>
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px' }}>
             Adiviná el streamer por su frase más icónica
           </p>
         </div>
+          {yesterday && <div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>La frase de ayer era de <a href={yesterday.kick ? `https://kick.com/${yesterday.kick}` : `https://twitch.tv/${yesterday.twitch}`} target="_blank" rel="noopener noreferrer" style={{fontWeight:'700',color:yesterday.kick?'#53FC18':'#9146FF',textDecoration:'none'}}>{yesterday.display_name}</a></div>}
 
         {/* Filtro país */}
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
