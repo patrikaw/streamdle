@@ -120,7 +120,10 @@ function StreamerCard({ streamer, value, label, showValue, result, onClick, disa
 
 function HigherdleInner() {
   const searchParams = useSearchParams();
-  const [mode, setMode] = useState(searchParams.get('mode') === 'hours' ? 'hours' : 'followers');
+  const [mode, setMode] = useState(
+    searchParams.get('mode') === 'hours' ? 'hours' : 
+    searchParams.get('mode') === 'peak' ? 'peak' : 'followers'
+  );
   const [country, setCountry] = useState('ALL');
   const [pool, setPool] = useState([]);
   const [left, setLeft] = useState(null);
@@ -284,7 +287,7 @@ function HigherdleInner() {
           { code: 'AR', label: '🇦🇷 Argentina' },
           { code: 'MX', label: '🇲🇽 México' },
           { code: 'ES', label: '🇪🇸 España' },
-          { code: 'LATAM', label: '🌎 LATAM' },
+          { code: 'LATAM', label: '🌎 Latam' },
         ].map(c => (
           <button key={c.code} className={`filter-pill ${country === c.code ? 'active' : ''}`}
             onClick={() => setCountry(c.code)} style={{ fontSize: '11px', padding: '3px 10px' }}>

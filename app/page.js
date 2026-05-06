@@ -141,7 +141,7 @@ export default function Home() {
               style={{ textDecoration: 'none', cursor: 'pointer', height: '100%' }}
               onMouseEnter={() => setHoveredGame(game.slug)}
               onMouseLeave={() => setHoveredGame(null)}
-              onClick={() => game.slug !== 'higherdle' && (window.location.href = `/${game.slug}`)}
+              onClick={() => { window.location.href = game.slug === 'higherdle' ? '/higherdle' : `/${game.slug}`; }}
             >
               <div style={{
                 background: 'var(--bg-card)',
@@ -198,12 +198,12 @@ export default function Home() {
                     {[
                       { label: '👥 Seg.', href: '/higherdle', color: '#2563EB' },
                       { label: '⏱️ Horas', href: '/higherdle?mode=hours', color: '#0891B2' },
-                      { label: '🏆 Viewers', href: '/higherdle?mode=peak', color: '#7C3AED' },
+                      { label: '🏆 Peak', href: '/higherdle?mode=peak', color: '#7C3AED' },
                     ].map(btn => (
                       <a key={btn.href} href={btn.href} onClick={e => e.stopPropagation()} style={{
                         color: btn.color, fontSize: '13px', fontWeight: '700',
                         textDecoration: 'none', padding: '4px 0',
-                      }}>{btn.label} |</a>
+                      }}>{btn.label}  </a>
                     ))}
                   </div>
                 ) : (
