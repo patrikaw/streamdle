@@ -257,7 +257,7 @@ export default function ChatdlePage() {
         background: 'var(--bg-secondary)', gap: '12px', flexWrap: 'wrap',
       }}>
         <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '20px' }}>🎮</span>
+          <span className="hide-mobile" style={{ fontSize: '20px' }}>🎮</span>
           <span style={{ fontSize: '18px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
         </a>
         <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'center' }}>

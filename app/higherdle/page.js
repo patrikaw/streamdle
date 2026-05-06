@@ -216,7 +216,7 @@ function HigherdleInner() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span style={{ fontSize: '16px' }}>🎮</span>
+            <span className="hide-mobile" style={{ fontSize: '16px' }}>🎮</span>
             <span style={{ fontSize: '14px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
           </a>
           <div className="game-nav-links" style={{ display: 'flex', gap: '4px' }}>

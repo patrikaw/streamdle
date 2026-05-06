@@ -108,7 +108,7 @@ export default function ComoJugarPage() {
         }}>
           <div style={{ fontWeight: '700', marginBottom: '8px', fontSize: '14px' }}>🌎 Filtros de región</div>
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '13px', lineHeight: 1.6 }}>
-            En todos los juegos podés filtrar streamers por región: <strong>Todos</strong>, <strong>🇦🇷 Argentina</strong>, <strong>🇲🇽 México</strong>, <strong>🇪🇸 España</strong> o <strong>🇨🇴 Colombia</strong>. Al cambiar el filtro, el streamer del día cambia también para esa región.
+            En todos los juegos podés filtrar streamers por región: <strong>Todos</strong>, <strong>🇦🇷 Argentina</strong>, <strong>🇲🇽 México</strong>, <strong>🇪🇸 España</strong> o <strong>🌎 LATAM</strong>. Al cambiar el filtro, el streamer del día cambia también para esa región.
           </p>
         </div>
 

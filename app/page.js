@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 
 const GAMES = [
   {
@@ -9,7 +8,7 @@ const GAMES = [
     name: 'Streamdle',
     emoji: '🎯',
     description: 'Adiviná el streamer del día con pistas',
-    color: '#7C3AED',
+    color: '#DC2626',
     available: true,
     daily: true,
   },
@@ -23,10 +22,19 @@ const GAMES = [
     daily: true,
   },
   {
+    slug: 'emojidle',
+    name: 'Emojidle',
+    emoji: '😂',
+    description: 'Adiviná el streamer por sus emojis',
+    color: '#F59E0B',
+    available: true,
+    daily: true,
+  },
+  {
     slug: 'categorydle',
     name: 'Categorydle',
     emoji: '🎮',
-    description: 'Adiviná la categoría favorita del streamer',
+    description: 'Adiviná las 2 categorías favoritas del streamer',
     color: '#059669',
     available: true,
     daily: true,
@@ -44,17 +52,8 @@ const GAMES = [
     slug: 'higherdle',
     name: 'Higherdle',
     emoji: '📊',
-    description: '¿Quién tiene más seguidores? — Infinito',
+    description: '¿Quién tiene más?',
     color: '#2563EB',
-    available: true,
-    daily: false,
-  },
-  {
-    slug: 'higherdle?mode=hours',
-    name: 'Hourdle',
-    emoji: '⏱️',
-    description: '¿Quién streameó más horas? — Infinito',
-    color: '#0891B2',
     available: true,
     daily: false,
   },
@@ -131,18 +130,18 @@ export default function Home() {
         margin: '0 auto',
         padding: '0 24px 48px',
       }}>
-        <div style={{
+        <div className="games-grid" style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '16px',
         }}>
           {GAMES.map((game) => (
-            <Link
+            <div
               key={game.slug}
-              href={`/${game.slug}`}
-              style={{ textDecoration: 'none' }}
+              style={{ textDecoration: 'none', cursor: 'pointer', height: '100%' }}
               onMouseEnter={() => setHoveredGame(game.slug)}
               onMouseLeave={() => setHoveredGame(null)}
+              onClick={() => game.slug !== 'higherdle' && (window.location.href = `/${game.slug}`)}
             >
               <div style={{
                 background: 'var(--bg-card)',
@@ -155,6 +154,9 @@ export default function Home() {
                 boxShadow: hoveredGame === game.slug ? `0 8px 24px ${game.color}30` : 'none',
                 position: 'relative',
                 overflow: 'hidden',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
               }}>
                 {/* Glow top bar */}
                 <div style={{
@@ -167,17 +169,15 @@ export default function Home() {
 
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '12px' }}>
                   <span style={{ fontSize: '32px' }}>{game.emoji}</span>
-                  {game.daily && (
-                    <span style={{
-                      fontSize: '10px',
-                      fontWeight: '700',
-                      background: `${game.color}22`,
-                      color: game.color,
-                      padding: '3px 8px',
-                      borderRadius: '8px',
-                      border: `1px solid ${game.color}44`,
-                    }}>DIARIO</span>
-                  )}
+                  <span style={{
+                    fontSize: '10px',
+                    fontWeight: '700',
+                    background: `${game.color}22`,
+                    color: game.color,
+                    padding: '3px 8px',
+                    borderRadius: '8px',
+                    border: `1px solid ${game.color}44`,
+                  }}>{game.daily ? 'DIARIO' : 'INFINITO'}</span>
                 </div>
 
                 <h2 style={{
@@ -193,19 +193,34 @@ export default function Home() {
                   lineHeight: 1.5,
                 }}>{game.description}</p>
 
-                <div style={{
-                  marginTop: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  color: game.color,
-                  fontSize: '13px',
-                  fontWeight: '600',
-                }}>
-                  Jugar ahora →
-                </div>
+                {game.slug === 'higherdle' ? (
+                  <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'row', gap: '8px', flexWrap: 'wrap' }}>
+                    {[
+                      { label: '👥 Seg.', href: '/higherdle', color: '#2563EB' },
+                      { label: '⏱️ Horas', href: '/higherdle?mode=hours', color: '#0891B2' },
+                      { label: '🏆 Viewers', href: '/higherdle?mode=peak', color: '#7C3AED' },
+                    ].map(btn => (
+                      <a key={btn.href} href={btn.href} onClick={e => e.stopPropagation()} style={{
+                        color: btn.color, fontSize: '13px', fontWeight: '700',
+                        textDecoration: 'none', padding: '4px 0',
+                      }}>{btn.label} |</a>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{
+                    marginTop: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    color: game.color,
+                    fontSize: '13px',
+                    fontWeight: '600',
+                  }}>
+                    Jugar ahora →
+                  </div>
+                )}
               </div>
-            </Link>
+            </div>
           ))}
         </div>
 
