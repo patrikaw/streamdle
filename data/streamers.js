@@ -215,26 +215,28 @@ export function searchStreamers(query, country = "ALL") {
   if (!q) return [];
   let pool = getStreamersByCountry(country);
 
-  const results = pool.filter(s => {
-    const fields = [s.name, s.display_name, s.twitch, s.kick, ...s.aliases]
-      .map(f => (f || '').toLowerCase());
-    return fields.some(f => f.includes(q));
-  });
+  const getScore = (s) => {
+    const display = s.display_name.toLowerCase();
+    if (display.startsWith(q)) return 0;
+    if ((s.twitch || '').toLowerCase().startsWith(q)) return 1;
+    if ((s.kick || '').toLowerCase().startsWith(q)) return 2;
+    if (s.aliases.some(a => a.toLowerCase().startsWith(q))) return 3;
+    if (display.includes(q)) return 4;
+    if ((s.twitch || '').toLowerCase().includes(q)) return 5;
+    if ((s.kick || '').toLowerCase().includes(q)) return 6;
+    if (s.aliases.some(a => a.toLowerCase().includes(q))) return 7;
+    return 8;
+  };
 
-  // Ordenar por relevancia
-  results.sort((a, b) => {
-    const score = (s) => {
-      const name = s.display_name.toLowerCase();
-      const aliases = s.aliases.map(a => a.toLowerCase());
-      const allNames = [name, ...aliases];
-      if (allNames.some(n => n.startsWith(q))) return 0;
-      if (allNames.some(n => n.includes(q))) return 1;
-      return 2;
-    };
-    return score(a) - score(b);
-  });
-
-  return results.slice(0, 12);
+  return pool
+    .map(s => ({ s, score: getScore(s) }))
+    .filter(({ score }) => score < 8)
+    .sort((a, b) => {
+      if (a.score !== b.score) return a.score - b.score;
+      return a.s.display_name.toLowerCase() < b.s.display_name.toLowerCase() ? -1 : 1;
+    })
+    .map(({ s }) => s)
+    .slice(0, 12);
 }
 
 export function getDailyStreamer(country = "ALL", gameOffset = 0) {
