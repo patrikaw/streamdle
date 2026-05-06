@@ -243,7 +243,8 @@ export default function Home() {
           fontSize: '12px',
           marginTop: '12px',
         }}>
-          © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por fans, para fans.
+          © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por{' '}
+          <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer" style={{ color: '#53FC18', fontWeight: '700', textDecoration: 'none' }}>Pato Wnuk</a>.
         </p>
       </main>
     </div>

@@ -3,13 +3,31 @@ export default function PrivacidadPage() {
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       <header style={{
         borderBottom: '1px solid var(--color-border)', padding: '14px 24px',
-        display: 'flex', alignItems: 'center', gap: '8px',
-        background: 'var(--bg-secondary)',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        background: 'var(--bg-secondary)', gap: '12px', flexWrap: 'wrap',
       }}>
         <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span style={{ fontSize: '20px' }}>🎮</span>
           <span style={{ fontSize: '18px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
         </a>
+        <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {[
+            { href: '/classic', label: '🎯 Classic' },
+            { href: '/avatardle', label: '👤 Avatardle' },
+            { href: '/categorydle', label: '🎮 Categorydle' },
+            { href: '/chatdle', label: '💬 Chatdle' },
+            { href: '/higherdle', label: '📊 Higherdle' },
+            { href: '/higherdle?mode=hours', label: '⏱️ Hourdle' },
+          ].map(g => (
+            <a key={g.href} href={g.href} style={{
+              background: 'var(--bg-card)',
+              border: '1px solid var(--color-border)',
+              color: 'white', borderRadius: '8px', padding: '5px 12px',
+              fontSize: '10px', fontWeight: '600', textDecoration: 'none',
+              whiteSpace: 'nowrap',
+            }}>{g.label}</a>
+          ))}
+        </div>
       </header>
 
       <main style={{ maxWidth: '720px', margin: '0 auto', padding: '40px 16px 64px' }}>
