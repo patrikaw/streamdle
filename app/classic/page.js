@@ -95,8 +95,8 @@ function PlatformsCell({ guess, target }) {
 }
 
 function GuessRow({ guess, target, attemptNumber, avatars, country }) {
-  const showPeakViewers = attemptNumber >= 4;
-  const showPlatforms = attemptNumber >= 6;
+  const showPeakViewers = true;
+  const showPlatforms = true;
   const arrowMap = { higher: '↑', lower: '↓', correct: '✓' };
   const avatarUrl = getAvatarUrl(guess, avatars);
 
@@ -403,23 +403,6 @@ export default function ClassicPage() {
               ? won ? '¡Correcto!' : 'Se acabaron los intentos'
               : `${MAX_ATTEMPTS - guesses.length} intento${MAX_ATTEMPTS - guesses.length !== 1 ? 's' : ''} restante${MAX_ATTEMPTS - guesses.length !== 1 ? 's' : ''}`}
           </p>
-        </div>
-
-        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
-          {[{ label: 'Peak Viewers', unlockAt: 4 }, { label: 'Plataformas', unlockAt: 6 }].map(hint => {
-            const unlocked = guesses.length >= hint.unlockAt - 1;
-            return (
-              <div key={hint.label} style={{
-                fontSize: '11px', padding: '3px 10px', borderRadius: '10px',
-                background: unlocked ? '#16A34A22' : 'var(--bg-card)',
-                color: unlocked ? '#16A34A' : 'var(--color-text-secondary)',
-                border: `1px solid ${unlocked ? '#16A34A44' : 'var(--color-border)'}`,
-                fontWeight: '600', transition: 'all 0.3s',
-              }}>
-                {unlocked ? `🔓 ${hint.label}` : `🔒 ${hint.label} — intento ${hint.unlockAt}`}
-              </div>
-            );
-          })}
         </div>
 
         {guesses.length > 0 && (
