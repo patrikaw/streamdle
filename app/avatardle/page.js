@@ -176,7 +176,7 @@ export default function AvatardlePage() {
   useEffect(() => {
     if (!query.trim()) { setSuggestions([]); return; }
     const results = searchStreamers(query, country)
-      .filter(s => !alreadyGuessed.includes(s.id)).slice(0, 6);
+      .filter(s => !alreadyGuessed.includes(s.id)).slice(0, 12);
     setSuggestions(results);
   }, [query, country, alreadyGuessed]);
 

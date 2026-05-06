@@ -214,10 +214,27 @@ export function searchStreamers(query, country = "ALL") {
   const q = query.toLowerCase().trim();
   if (!q) return [];
   let pool = getStreamersByCountry(country);
-  return pool.filter(s => {
-    const fields = [s.name, s.display_name, s.twitch, s.kick, ...s.aliases].map(f => (f || "").toLowerCase());
+
+  const results = pool.filter(s => {
+    const fields = [s.name, s.display_name, s.twitch, s.kick, ...s.aliases]
+      .map(f => (f || '').toLowerCase());
     return fields.some(f => f.includes(q));
   });
+
+  // Ordenar por relevancia
+  results.sort((a, b) => {
+    const score = (s) => {
+      const name = s.display_name.toLowerCase();
+      const aliases = s.aliases.map(a => a.toLowerCase());
+      const allNames = [name, ...aliases];
+      if (allNames.some(n => n.startsWith(q))) return 0;
+      if (allNames.some(n => n.includes(q))) return 1;
+      return 2;
+    };
+    return score(a) - score(b);
+  });
+
+  return results.slice(0, 12);
 }
 
 export function getDailyStreamer(country = "ALL", gameOffset = 0) {
