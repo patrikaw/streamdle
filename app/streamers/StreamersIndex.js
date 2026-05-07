@@ -271,6 +271,13 @@ function StreamerCard({ streamer, avatars, sort }) {
   );
 }
 
+export const metadata = {
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
+
 // ── main component ────────────────────────────────────────────────────────────
 
 export default function StreamersIndex({

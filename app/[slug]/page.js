@@ -1,3 +1,5 @@
+import Head from 'next/head';
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -562,6 +564,11 @@ export default function StreamerPage() {
   crumbs.push({ label: streamer.display_name, href: null });
 
   return (
+  <>
+    <Head>
+      <meta name="robots" content="noindex,follow" />
+    </Head>
+
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
 
       {/* HEADER */}
@@ -1016,5 +1023,6 @@ export default function StreamerPage() {
           style={{ color: 'var(--color-green)', textDecoration: 'none' }}>Pato Wnuk</a>.
       </footer>
     </div>
-  );
+  </>
+);
 }
