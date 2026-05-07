@@ -271,13 +271,6 @@ function StreamerCard({ streamer, avatars, sort }) {
   );
 }
 
-export const metadata = {
-  robots: {
-    index: false,
-    follow: true,
-  },
-};
-
 // ── main component ────────────────────────────────────────────────────────────
 
 export default function StreamersIndex({
@@ -338,7 +331,14 @@ export default function StreamersIndex({
 
     const sorted = sortStreamers(list, effectiveSort);
 
-    return sorted.map(s => ({ ...s, _rank: RANK_MAP[s.id] }));
+    // Rank local cuando hay filtro de país, global cuando es ALL
+    let rankMap = RANK_MAP;
+    if (country !== 'ALL') {
+      const localSorted = [...list].sort((a,b) => toNum(b.total_followers)-toNum(a.total_followers));
+      rankMap = {};
+      localSorted.forEach((s,i) => { rankMap[s.id] = i+1; });
+    }
+    return sorted.map(s => ({ ...s, _rank: rankMap[s.id] }));
   }, [search, country, sort]);
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
@@ -496,7 +496,7 @@ export default function StreamersIndex({
           <span>
             {filtered.length === STREAMERS.length
               ? `${STREAMERS.length} streamers`
-              : `${filtered.length} de ${STREAMERS.length} streamers`}
+              : `${filtered.length} streamer${filtered.length !== 1 ? 's' : ''}`}
           </span>
           {search && (
             <span style={{
