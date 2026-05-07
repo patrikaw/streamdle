@@ -512,8 +512,6 @@ export default function StreamerPage() {
 
   const [avatars,    setAvatars]    = useState({});
   const [imgErr,     setImgErr]     = useState(false);
-  const [clipLoaded, setClipLoaded] = useState(false);
-
   useEffect(() => {
     getAvatars().then(d => setAvatars(d || {}));
   }, []);
@@ -847,7 +845,7 @@ export default function StreamerPage() {
         )}
 
         {/* ── CLIP MÁS VISTO ── */}
-        {streamer.top_clip_id && (
+        {streamer.top_clip_url && (
           <div style={{
             background: 'var(--bg-secondary)', borderRadius: 14,
             border: '1px solid var(--color-border)',
@@ -855,53 +853,45 @@ export default function StreamerPage() {
           }}>
             <h2 style={{
               fontSize: 11, fontWeight: 700, color: 'var(--color-text-secondary)',
-              textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 6,
+              textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: 10,
             }}>🎬 Clip más visto</h2>
-            {streamer.top_clip_title && (
-              <p style={{ fontSize: 13, color: '#fff', fontWeight: 600, marginBottom: 10 }}>
-                "{streamer.top_clip_title}"
-                {streamer.top_clip_views > 0 && (
-                  <span style={{
-                    color: 'var(--color-text-secondary)', fontWeight: 400, marginLeft: 6,
-                  }}>
-                    · {fmtFull(streamer.top_clip_views)} vistas
-                  </span>
-                )}
-              </p>
-            )}
-            <div style={{
-              position: 'relative', paddingBottom: '56.25%',
-              height: 0, borderRadius: 10, overflow: 'hidden',
-            }}>
-              {!clipLoaded ? (
-                <div style={{
-                  position: 'absolute', inset: 0, background: 'var(--bg-card)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  flexDirection: 'column', gap: 10, cursor: 'pointer', borderRadius: 10,
-                }} onClick={() => setClipLoaded(true)}>
+            <a
+              href={streamer.top_clip_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'flex', alignItems: 'center', gap: 14,
+                background: 'var(--bg-card)', borderRadius: 10,
+                border: '1px solid var(--color-border)',
+                padding: '14px 16px', textDecoration: 'none',
+                transition: 'border-color 0.18s',
+              }}
+              onMouseOver={e => e.currentTarget.style.borderColor = 'var(--color-purple)'}
+              onMouseOut={e => e.currentTarget.style.borderColor = 'var(--color-border)'}
+            >
+              <div style={{
+                width: 48, height: 48, borderRadius: '50%', flexShrink: 0,
+                background: 'var(--color-purple)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 20,
+              }}>▶</div>
+              <div style={{ minWidth: 0 }}>
+                {streamer.top_clip_title && (
                   <div style={{
-                    width: 52, height: 52, borderRadius: '50%',
-                    background: 'var(--color-purple)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 22,
-                  }}>▶</div>
-                  <span style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
-                    Click para cargar el clip
-                  </span>
+                    fontSize: 14, fontWeight: 700, color: '#fff',
+                    marginBottom: 4, lineHeight: 1.3,
+                  }}>
+                    {streamer.top_clip_title}
+                  </div>
+                )}
+                <div style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
+                  {streamer.top_clip_views > 0 && (
+                    <span>{fmtFull(streamer.top_clip_views)} vistas · </span>
+                  )}
+                  <span style={{ color: 'var(--color-purple-light)' }}>Ver en Twitch ↗</span>
                 </div>
-              ) : (
-                <iframe
-                  src={`https://clips.twitch.tv/embed?clip=${streamer.top_clip_id}&parent=streamdle.net&autoplay=true`}
-                  style={{
-                    position: 'absolute', top: 0, left: 0,
-                    width: '100%', height: '100%',
-                    border: 'none', borderRadius: 10,
-                  }}
-                  allowFullScreen
-                  title={`Clip de ${streamer.display_name}`}
-                />
-              )}
-            </div>
+              </div>
+            </a>
           </div>
         )}
 
