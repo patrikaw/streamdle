@@ -40,6 +40,19 @@ function saveHighScore(mode, country, score) {
   } catch {}
 }
 
+const LEVELS = [
+  { min: 0,  max: 0,  emoji: '💀', rank: 'Sin canal',          color: '#DC2626', sub: 'Ni un acierto...' },
+  { min: 1,  max: 4,  emoji: '👁️', rank: 'Viewer',             color: '#6B7280', sub: 'Recién llegaste al stream' },
+  { min: 5,  max: 9,  emoji: '🟣', rank: 'Afiliado',           color: '#9146FF', sub: 'Algo sabés del mundillo' },
+  { min: 10, max: 19, emoji: '✓',  rank: 'Partner',            color: '#7C3AED', sub: '¡Conocés bien la escena!' },
+  { min: 20, max: 34, emoji: '🔥', rank: 'Partner Verificado', color: '#F59E0B', sub: 'Nivel élite, la rompés' },
+  { min: 35, max: Infinity, emoji: '👑', rank: 'Streamer Leyenda', color: '#53FC18', sub: '¿Sos Ibai disfrazado?' },
+];
+
+function getLevel(score) {
+  return LEVELS.find(l => score >= l.min && score <= l.max) || LEVELS[0];
+}
+
 function StreamerCard({ streamer, value, label, showValue, result, onClick, disabled, avatars }) {
   const avatarUrl = getAvatarUrl(streamer, avatars);
   const bgColor = result === 'correct' ? 'rgba(22,163,74,0.3)' : result === 'wrong' ? 'rgba(220,38,38,0.3)' : 'transparent';
@@ -127,7 +140,7 @@ function StreamerCard({ streamer, value, label, showValue, result, onClick, disa
 function HigherdleInner() {
   const searchParams = useSearchParams();
   const [mode, setMode] = useState(
-    searchParams.get('mode') === 'hours' ? 'hours' : 
+    searchParams.get('mode') === 'hours' ? 'hours' :
     searchParams.get('mode') === 'peak' ? 'peak' : 'followers'
   );
   const [country, setCountry] = useState('ALL');
@@ -145,9 +158,7 @@ function HigherdleInner() {
 
   const label = mode === 'followers' ? 'Seguidores' : mode === 'hours' ? 'Horas en Stream' : 'Peak Viewers';
 
-  useEffect(() => {
-    getAvatars().then(data => setAvatars(data));
-  }, []);
+  useEffect(() => { getAvatars().then(data => setAvatars(data)); }, []);
 
   const getValue = useCallback((streamer) => {
     if (mode === 'followers') return streamer.total_followers;
@@ -201,8 +212,9 @@ function HigherdleInner() {
   };
 
   const handleShare = () => {
+    const level = getLevel(score);
     const modeLabel = mode === 'followers' ? 'Seguidores' : mode === 'hours' ? 'Horas' : 'Peak Viewers';
-    const text = `📊 Higherdle ${modeLabel}\nRacha: ${score} | Récord: ${Math.max(score, highScore)}\n¿Podés superarme?\nstreamdle.net/higherdle`;
+    const text = `📊 Higherdle ${modeLabel}\nRacha: ${score} — ${level.emoji} ${level.rank}\nRécord: ${Math.max(score, highScore)}\n¿Podés superarme?\nstreamdle.net/higherdle`;
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -214,6 +226,8 @@ function HigherdleInner() {
       <div style={{ color: '#A1A1B5' }}>Cargando...</div>
     </div>
   );
+
+  const currentLevel = getLevel(score);
 
   return (
     <div style={{ minHeight: '100vh', background: '#0D0D14', display: 'flex', flexDirection: 'column' }}>
@@ -230,12 +244,9 @@ function HigherdleInner() {
           </a>
           <div className="game-nav-links" style={{ display: 'flex', gap: '4px' }}>
             {[
-              { href: '/classic', label: '🎯' },
-              { href: '/avatardle', label: '👤' },
-              { href: '/emojidle', label: '😂' },
-              { href: '/categorydle', label: '🎮' },
-              { href: '/chatdle', label: '💬' },
-              { href: '/higherdle', label: '📊' },
+              { href: '/classic', label: '🎯' }, { href: '/avatardle', label: '👤' },
+              { href: '/emojidle', label: '😂' }, { href: '/categorydle', label: '🎮' },
+              { href: '/chatdle', label: '💬' }, { href: '/higherdle', label: '📊' },
             ].map(g => (
               <a key={g.href} href={g.href} style={{
                 background: g.href === '/higherdle' ? '#7C3AED' : 'var(--bg-card)',
@@ -247,11 +258,7 @@ function HigherdleInner() {
           </div>
         </div>
 
-        {/* Botones de modo centrados */}
-        <div style={{
-          display: 'flex', gap: '4px',
-          position: 'absolute', left: '50%', transform: 'translateX(-50%)',
-        }}>
+        <div style={{ display: 'flex', gap: '4px', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
           {[
             { key: 'followers', emoji: '👥', label: 'Seg.' },
             { key: 'hours', emoji: '⏱️', label: 'Hrs' },
@@ -260,10 +267,8 @@ function HigherdleInner() {
             <button key={m.key} onClick={() => setMode(m.key)} className="higherdle-mode-btn" style={{
               background: mode === m.key ? '#7C3AED' : 'var(--bg-card)',
               border: '1px solid var(--color-border)',
-              color: 'white', borderRadius: '8px',
-              padding: '4px 8px',
-              fontSize: '10px', fontWeight: '600', cursor: 'pointer',
-              whiteSpace: 'nowrap',
+              color: 'white', borderRadius: '8px', padding: '4px 8px',
+              fontSize: '10px', fontWeight: '600', cursor: 'pointer', whiteSpace: 'nowrap',
             }}>
               {m.emoji} {m.label}
             </button>
@@ -271,6 +276,12 @@ function HigherdleInner() {
         </div>
 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          {/* Nivel actual visible mientras jugás */}
+          {score > 0 && (
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '10px', color: currentLevel.color, fontWeight: '700' }}>{currentLevel.emoji} {currentLevel.rank}</div>
+            </div>
+          )}
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '10px', color: 'var(--color-text-secondary)' }}>RACHA</div>
             <div style={{ fontSize: '18px', fontWeight: '800', color: '#53FC18' }}>{score}</div>
@@ -289,10 +300,8 @@ function HigherdleInner() {
         borderBottom: '1px solid var(--color-border)', flexWrap: 'wrap',
       }}>
         {[
-          { code: 'ALL', label: '🌎 Todos' },
-          { code: 'AR', label: '🇦🇷 Argentina' },
-          { code: 'MX', label: '🇲🇽 México' },
-          { code: 'ES', label: '🇪🇸 España' },
+          { code: 'ALL', label: '🌎 Todos' }, { code: 'AR', label: '🇦🇷 Argentina' },
+          { code: 'MX', label: '🇲🇽 México' }, { code: 'ES', label: '🇪🇸 España' },
           { code: 'LATAM', label: '🌎 Latam' },
         ].map(c => (
           <button key={c.code} className={`filter-pill ${country === c.code ? 'active' : ''}`}
@@ -329,15 +338,30 @@ function HigherdleInner() {
             animation: 'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)',
             backdropFilter: 'blur(12px)',
           }}>
-            <div style={{ fontSize: '56px', marginBottom: '12px' }}>
-              {score >= 10 ? '🔥' : score >= 5 ? '✅' : '💀'}
-            </div>
-            <h2 style={{ fontSize: '24px', fontWeight: '800', marginBottom: '8px' }}>
-              {score >= 10 ? '¡Increíble!' : score >= 5 ? '¡Bien jugado!' : 'Game Over'}
-            </h2>
-            <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px', marginBottom: '24px' }}>
+            {(() => {
+              const level = getLevel(score);
+              return (
+                <>
+                  <div style={{ fontSize: '52px', marginBottom: '6px' }}>{level.emoji}</div>
+                  <div style={{
+                    fontSize: '12px', fontWeight: '800', letterSpacing: '1.5px',
+                    textTransform: 'uppercase', color: level.color, marginBottom: '4px',
+                  }}>
+                    {level.rank}
+                  </div>
+                  <h2 style={{ fontSize: '22px', fontWeight: '800', marginBottom: '4px' }}>
+                    {score === 0 ? 'Game Over' : score >= 35 ? '¡Increíble!' : score >= 20 ? '¡Crack total!' : score >= 10 ? '¡Muy bien!' : '¡Bien jugado!'}
+                  </h2>
+                  <p style={{ color: 'var(--color-text-secondary)', fontSize: '13px', marginBottom: '4px' }}>
+                    {level.sub}
+                  </p>
+                </>
+              );
+            })()}
+            <p style={{ color: 'var(--color-text-secondary)', fontSize: '12px', marginBottom: '20px' }}>
               Modo: {label}
             </p>
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '28px' }}>
               <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', padding: '16px' }}>
                 <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)', marginBottom: '4px' }}>RACHA</div>
@@ -348,6 +372,7 @@ function HigherdleInner() {
                 <div style={{ fontSize: '36px', fontWeight: '800', color: '#7C3AED' }}>{Math.max(score, highScore)}</div>
               </div>
             </div>
+
             <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
               <button className="btn-green" style={{ flex: 1 }} onClick={() => initGame(pool)}>🔄 Jugar de nuevo</button>
               <button className="btn-primary" style={{ flex: 1 }} onClick={() => window.location.href = '/'}>🎮 Otros juegos</button>
