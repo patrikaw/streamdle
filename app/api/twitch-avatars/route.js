@@ -1,6 +1,15 @@
 import { NextResponse } from 'next/server';
 
+// ── Token cache en memoria del servidor ──────────────────────────────────────
+let cachedToken = null;
+let tokenExpiry = 0;
+
 async function getTwitchToken() {
+  // Reusar token si todavía es válido (con 5 min de margen)
+  if (cachedToken && Date.now() < tokenExpiry - 300_000) {
+    return cachedToken;
+  }
+
   const res = await fetch('https://id.twitch.tv/oauth2/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -10,18 +19,29 @@ async function getTwitchToken() {
       grant_type: 'client_credentials',
     }),
   });
+
   const data = await res.json();
-  return data.access_token;
+  if (!data.access_token) throw new Error('Failed to get Twitch token');
+
+  cachedToken = data.access_token;
+  tokenExpiry = Date.now() + (data.expires_in || 3600) * 1000;
+  return cachedToken;
 }
 
 async function fetchBatch(logins, token) {
-  const query = logins.map(l => `login=${l.trim()}`).join('&');
+  const query = logins.map(l => `login=${encodeURIComponent(l.trim())}`).join('&');
   const res = await fetch(`https://api.twitch.tv/helix/users?${query}`, {
     headers: {
       'Client-ID': process.env.TWITCH_CLIENT_ID,
       'Authorization': `Bearer ${token}`,
     },
   });
+
+  if (!res.ok) {
+    console.error(`Twitch API error: ${res.status} ${res.statusText}`);
+    return [];
+  }
+
   const data = await res.json();
   return data.data || [];
 }
@@ -38,14 +58,13 @@ export async function GET(request) {
     const token = await getTwitchToken();
     const loginList = logins.split(',').map(l => l.trim()).filter(Boolean);
 
-    // Dividir en lotes de 100
+    // Lotes de 100 (límite de Twitch API)
     const batches = [];
     for (let i = 0; i < loginList.length; i += 100) {
       batches.push(loginList.slice(i, i + 100));
     }
 
-    // Fetch de todos los lotes
-    const results = await Promise.all(batches.map(batch => fetchBatch(batch, token)));
+    const results = await Promise.all(batches.map(b => fetchBatch(b, token)));
     const allUsers = results.flat();
 
     const avatars = {};
