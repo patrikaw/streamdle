@@ -85,6 +85,14 @@ function toNum(v) {
   return parseInt(String(v || '0').replace(/,/g, ''), 10) || 0;
 }
 
+// Rank global pre-calculado una sola vez (no dentro del componente)
+const RANK_MAP = (() => {
+  const sorted = [...STREAMERS].sort((a, b) => toNum(b.total_followers) - toNum(a.total_followers));
+  const map = {};
+  sorted.forEach((s, i) => { map[s.id] = i + 1; });
+  return map;
+})();
+
 function sortStreamers(list, sort) {
   if (sort === 'random') return shuffle(list);
   return [...list].sort((a, b) => {
@@ -316,14 +324,14 @@ export default function StreamersIndex({
       );
     }
 
-    const sorted = sortStreamers(list, sort);
+    // Proteger random: en SSR usar followers_desc para evitar error de hidratación
+    const effectiveSort = (sort === 'random' && typeof window === 'undefined')
+      ? 'followers_desc'
+      : sort;
 
-    // Rank global siempre por seguidores
-    const byFollowers = [...STREAMERS].sort((a, b) => toNum(b.total_followers) - toNum(a.total_followers));
-    const rankMap = {};
-    byFollowers.forEach((s, i) => { rankMap[s.id] = i + 1; });
+    const sorted = sortStreamers(list, effectiveSort);
 
-    return sorted.map(s => ({ ...s, _rank: rankMap[s.id] }));
+    return sorted.map(s => ({ ...s, _rank: RANK_MAP[s.id] }));
   }, [search, country, sort]);
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
