@@ -17,8 +17,9 @@ export const metadata = {
     description: 'Más de 190 streamers hispanohablantes. Filtrá por país y ordená como quieras.',
     images: ['https://streamdle.net/og-image.jpg'],
   },
-  alternates: {
-    canonical: 'https://streamdle.net/streamers',
+  robots: {
+    index: false,
+    follow: false,
   },
 };
 

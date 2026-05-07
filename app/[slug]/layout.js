@@ -69,8 +69,9 @@ export async function generateMetadata({ params }) {
       description,
       images: ['https://streamdle.net/og-image.jpg'],
     },
-    alternates: {
-      canonical: `https://streamdle.net/${slug}`,
+    robots: {
+      index: false,
+      follow: false,
     },
   };
 }
