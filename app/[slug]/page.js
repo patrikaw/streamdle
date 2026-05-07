@@ -1,7 +1,6 @@
-import Head from 'next/head';
-
 'use client';
 
+import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { STREAMERS } from '../../data/streamers';
