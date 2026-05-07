@@ -5,6 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 
+function getSlug(s) { return s.display_name.toLowerCase().replace(/\s+/g,'-'); }
+
 function formatNum(n) {
   if (!n || n === 0) return '0';
   if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
@@ -78,9 +80,13 @@ function StreamerCard({ streamer, value, label, showValue, result, onClick, disa
           )}
         </div>
         <div>
-          <div style={{ fontSize: '28px', fontWeight: '800', color: 'white', textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
-            {streamer.display_name}
-          </div>
+          <a href={`/${getSlug(streamer)}`} style={{ textDecoration: 'none' }}>
+            <div style={{ fontSize: '28px', fontWeight: '800', color: 'white', textShadow: '0 2px 8px rgba(0,0,0,0.8)', transition: 'color 0.2s' }}
+              onMouseOver={e => e.currentTarget.style.color = 'var(--color-purple-light)'}
+              onMouseOut={e => e.currentTarget.style.color = 'white'}>
+              {streamer.display_name}
+            </div>
+          </a>
           <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', marginTop: '4px' }}>{streamer.country}</div>
         </div>
         {showValue ? (

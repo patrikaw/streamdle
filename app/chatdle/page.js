@@ -4,6 +4,20 @@ import { useState, useEffect, useRef } from 'react';
 import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 
+function getSlug(s) { return s.display_name.toLowerCase().replace(/\s+/g,'-'); }
+
+function getResultText(country, won, attempts, streamer) {
+  const texts = {
+    ES: { won:["¡Eso es, tío! Lo tenías clarinete 🔥","¿Ves como eres un crack? 😎","¡Ole! Llegaste 😂"], lost:["Anda ya, ¡vergüenza! 😂","¿En serio no lo sabías? 💀","Ponete al día con los streamers 😅"] },
+    AR: { won:["¡La rompisteee! Sos un capo 🔥","¡Qué crack! 😂","¡La pegaste! Sos un fenómeno"], lost:["Andá a ver más streams che 💀","Mirá que mal... 😂","¿No lo conocías? Qué papelón 😅"] },
+    MX: { won:["¡Órale! Le caíste al tiro 🔥","¡A toda máquina! 😂","¡Chingón! Lo sabías de una"], lost:["Ay wey... ¿ni ese conocías? 💀","¡Aguas! A ponerle más ganas 😂","No manches, qué mal 😅"] },
+    default: { won:["¡Lo adivinaste! Sos un crack 🔥","¡Bien jugado! 😎","¡Ahí está!"], lost:["¡Casi! La próxima seguro 💀","¡Andá a ver más streams! 😂","No te preocupes, mañana hay otro 😅"] },
+  };
+  const r = texts[country] || texts.default;
+  const pool = won ? r.won : r.lost;
+  return pool[attempts % pool.length];
+}
+
 const MAX_ATTEMPTS = 6;
 
 function getTodayKey(country) {
@@ -61,9 +75,11 @@ function HintBadge({ label, value, color = '#7C3AED' }) {
   );
 }
 
-function ShareModal({ won, attempts, target, avatars, onClose, onOtherGames }) {
+function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherGames }) {
   const [copied, setCopied] = useState(false);
   const emoji = won ? (attempts <= 2 ? '🔥' : attempts <= 4 ? '✅' : '😅') : '💀';
+  const resultText = getResultText(country, won, attempts, target);
+  const slug = getSlug(target);
   const blocks = Array.from({ length: MAX_ATTEMPTS }).map((_, i) =>
     i < attempts - 1 ? '🟥' : i === attempts - 1 && won ? '🟩' : i < attempts ? '🟥' : '⬛'
   ).join('');
@@ -85,6 +101,7 @@ function ShareModal({ won, attempts, target, avatars, onClose, onOtherGames }) {
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px' }}>
             {won ? `Lo lograste en ${attempts} intento${attempts > 1 ? 's' : ''}` : `Era ${target.display_name}`}
           </p>
+          <p style={{ fontSize: '13px', fontWeight: '600', color: 'white', marginTop: '6px' }}>{resultText}</p>
           <div style={{ fontSize: '22px', letterSpacing: '4px', margin: '10px 0' }}>{blocks}</div>
         </div>
 
@@ -286,7 +303,7 @@ export default function ChatdlePage() {
             Adiviná el streamer por su frase más icónica
           </p>
         </div>
-          {yesterday && <div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>La frase de ayer era de <a href={yesterday.kick ? `https://kick.com/${yesterday.kick}` : `https://twitch.tv/${yesterday.twitch}`} target="_blank" rel="noopener noreferrer" style={{fontWeight:'700',color:yesterday.kick?'#53FC18':'#9146FF',textDecoration:'none'}}>{yesterday.display_name}</a></div>}
+          {yesterday && <div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>La frase de ayer era de <a href={`/${getSlug(yesterday)}`} target="_blank" rel="noopener noreferrer" style={{fontWeight:'700',color:yesterday.kick?'#53FC18':'#9146FF',textDecoration:'none'}}>{yesterday.display_name}</a></div>}
 
         {/* Filtro país */}
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
@@ -429,12 +446,13 @@ export default function ChatdlePage() {
               const isCorrect = guess.id === target.id;
               const gUrl = getAvatarUrl(guess, avatars);
               return (
-                <div key={guess.id} style={{
+                <a key={guess.id} href={`/${getSlug(guess)}`} style={{
                   display: 'flex', alignItems: 'center', gap: '10px',
                   background: isCorrect ? '#16A34A22' : '#DC262622',
                   border: `1px solid ${isCorrect ? '#16A34A44' : '#DC262644'}`,
                   borderRadius: '8px', padding: '8px 12px',
                   animation: 'fadeIn 0.3s ease',
+                  textDecoration: 'none', color: 'inherit',
                 }}>
                   {gUrl ? (
                     <img src={gUrl} alt={guess.display_name}
@@ -447,7 +465,7 @@ export default function ChatdlePage() {
                   )}
                   <span style={{ fontSize: '14px', fontWeight: '600' }}>{guess.display_name}</span>
                   <span style={{ marginLeft: 'auto', fontSize: '16px' }}>{isCorrect ? '✅' : '❌'}</span>
-                </div>
+                </a>
               );
             })}
           </div>
@@ -461,7 +479,7 @@ export default function ChatdlePage() {
       </main>
 
       {showModal && (
-        <ShareModal won={won} attempts={guesses.length} target={target} avatars={avatars}
+        <ShareModal won={won} attempts={guesses.length} target={target} avatars={avatars} country={country}
           onClose={() => setShowModal(false)}
           onOtherGames={() => window.location.href = '/'} />
       )}

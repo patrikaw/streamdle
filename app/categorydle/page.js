@@ -4,6 +4,20 @@ import { useState, useEffect, useRef } from 'react';
 import { STREAMERS, COUNTRIES, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 
+function getSlug(s) { return s.display_name.toLowerCase().replace(/\s+/g,'-'); }
+
+function getResultText(country, won, attempts, streamer) {
+  const texts = {
+    ES: { won:["¡Eso es, tío! Lo tenías clarinete 🔥","¿Ves como eres un crack? 😎","¡Ole! Llegaste 😂"], lost:["Anda ya, ¡vergüenza! 😂","¿En serio no lo sabías? 💀","Ponete al día con los streamers 😅"] },
+    AR: { won:["¡La rompisteee! Sos un capo 🔥","¡Qué crack! 😂","¡La pegaste! Sos un fenómeno"], lost:["Andá a ver más streams che 💀","Mirá que mal... 😂","¿No lo conocías? Qué papelón 😅"] },
+    MX: { won:["¡Órale! Le caíste al tiro 🔥","¡A toda máquina! 😂","¡Chingón! Lo sabías de una"], lost:["Ay wey... ¿ni ese conocías? 💀","¡Aguas! A ponerle más ganas 😂","No manches, qué mal 😅"] },
+    default: { won:["¡Lo adivinaste! Sos un crack 🔥","¡Bien jugado! 😎","¡Ahí está!"], lost:["¡Casi! La próxima seguro 💀","¡Andá a ver más streams! 😂","No te preocupes, mañana hay otro 😅"] },
+  };
+  const r = texts[country] || texts.default;
+  const pool = won ? r.won : r.lost;
+  return pool[attempts % pool.length];
+}
+
 const MAX_ATTEMPTS = 8;
 
 function getCategories(pool) {
@@ -48,9 +62,11 @@ function Countdown() {
   return <span className="countdown">{time}</span>;
 }
 
-  function ShareModal({ won, attempts, target, avatars, guesses, onClose, onOtherGames }) {
+  function ShareModal({ won, attempts, target, avatars, guesses, country, onClose, onOtherGames }) {
   const [copied, setCopied] = useState(false);
   const emoji = won ? (attempts <= 3 ? '🔥' : attempts <= 6 ? '✅' : '😅') : '💀';
+  const resultText = getResultText(country, won, attempts, target);
+  const slug = getSlug(target);
   const blocks = Array.from({ length: MAX_ATTEMPTS }).map((_, i) => {
   const guess = guesses ? guesses[i] : null;
   if (!guess) return '⬛';
@@ -76,6 +92,7 @@ function Countdown() {
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px' }}>
             {won ? `Lo lograste en ${attempts} intento${attempts > 1 ? 's' : ''}` : `Eran: ${target.top_category} + ${target.second_category}`}
           </p>
+          <p style={{ fontSize: '13px', fontWeight: '600', color: 'white', marginTop: '6px' }}>{resultText}</p>
           <div style={{ fontSize: '24px', letterSpacing: '4px', margin: '12px 0' }}>{blocks}</div>
         </div>
 
@@ -276,7 +293,7 @@ export default function CategorydlePage() {
             Encontrá la categoría principal y la segunda más streameada
           </p>
         </div>
-          {yesterday && <div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>El streamer de ayer fue <a href={yesterday.kick ? `https://kick.com/${yesterday.kick}` : `https://twitch.tv/${yesterday.twitch}`} target="_blank" rel="noopener noreferrer" style={{fontWeight:'700',color:yesterday.kick?'#53FC18':'#9146FF',textDecoration:'none'}}>{yesterday.display_name}</a></div>}
+          {yesterday && <div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>El streamer de ayer fue <a href={`/${getSlug(yesterday)}`} target="_blank" rel="noopener noreferrer" style={{fontWeight:'700',color:yesterday.kick?'#53FC18':'#9146FF',textDecoration:'none'}}>{yesterday.display_name}</a></div>}
 
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '20px' }}>
           {COUNTRIES.map(c => (
@@ -425,7 +442,7 @@ export default function CategorydlePage() {
       </main>
 
       {showModal && (
-        <ShareModal won={won} attempts={guesses.length} target={target} avatars={avatars} guesses={guesses}
+        <ShareModal won={won} attempts={guesses.length} target={target} avatars={avatars} guesses={guesses} country={country}
           onClose={() => setShowModal(false)}
           onOtherGames={() => window.location.href = '/'} />
       )}

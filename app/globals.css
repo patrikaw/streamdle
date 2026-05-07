@@ -351,3 +351,6 @@ body {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
+.game-main-content div::-webkit-scrollbar {
+  display: none;
+}
