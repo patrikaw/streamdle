@@ -165,7 +165,7 @@ export default function AvatardlePage() {
         </div>
         <div style={{display:'flex',justifyContent:'center',marginBottom:'24px'}}>
           <div style={{width:'220px',height:'220px',borderRadius:'16px',overflow:'hidden',border:'3px solid var(--color-purple)',boxShadow:'0 0 30px rgba(124,58,237,0.4)',background:'#1A1A2E',display:'flex',alignItems:'center',justifyContent:'center'}}>
-            {avatarUrl?<img src={avatarUrl} alt="¿Quién es?" className={PIXEL_LEVELS[currentPixelLevel]} style={{width:'100%',height:'100%',objectFit:'cover',transition:'filter 0.6s ease'}} onError={e=>{e.target.style.display='none';}}/>
+            {avatarUrl?<img src={avatarUrl} alt="¿Quién es?" className={PIXEL_LEVELS[currentPixelLevel]} draggable={false} style={{width:'100%',height:'100%',objectFit:'cover',transition:'filter 0.6s ease',userSelect:'none',WebkitTouchCallout:'none',pointerEvents:'none'}} onError={e=>{e.target.style.display='none';}}/>
               :<div style={{fontSize:'80px',filter:currentPixelLevel<4?'blur(8px)':'none'}}>👤</div>}
           </div>
         </div>
