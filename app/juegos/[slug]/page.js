@@ -170,6 +170,7 @@ export default async function JuegoPage({ params }) {
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             }}>STREAMDLE</span>
           </Link>
+          <Link href="/explorar" style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '4px 10px', borderRadius: 8, border: '1px solid var(--color-border)', background: 'var(--bg-card)', whiteSpace: 'nowrap' }}>🔍 Explorar</Link>
           <span style={{ color: 'var(--color-border)' }}>/</span>
           <Link href="/juegos" style={{ fontSize: 13, color: 'var(--color-text-secondary)', textDecoration: 'none' }}>Juegos</Link>
           <span style={{ color: 'var(--color-border)' }}>/</span>

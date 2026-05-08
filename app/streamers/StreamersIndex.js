@@ -396,14 +396,17 @@ export default function StreamersIndex({
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         background: 'var(--bg-secondary)', gap: 12, flexWrap: 'wrap',
       }}>
-        <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 20 }}>🎮</span>
-          <span style={{
-            fontSize: 18, fontWeight: 800,
-            background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-          }}>STREAMDLE</span>
-        </a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 20 }}>🎮</span>
+            <span style={{
+              fontSize: 18, fontWeight: 800,
+              background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            }}>STREAMDLE</span>
+          </a>
+          <a href="/explorar" style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '4px 10px', borderRadius: 8, border: '1px solid var(--color-border)', background: 'var(--bg-card)', whiteSpace: 'nowrap' }}>🔍 Explorar</a>
+        </div>
         <div className="game-nav-links" style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
           {[
             { href: '/classic',     label: '🎯 Classic' },
