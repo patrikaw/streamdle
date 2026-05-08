@@ -8,6 +8,7 @@ import {
 import { fetchTwitchGame, fetchIGDBGame, fetchAvatarsBatch } from '../../../lib/twitch-server';
 import { getEventsForCategory } from '../../../data/events';
 import LiveStats from './LiveStats';
+import StreamerGrid from './StreamerGrid';
 
 export const revalidate = 86400;
 
@@ -57,89 +58,6 @@ function fmt(n) {
   return n.toLocaleString('es');
 }
 
-function flagOf(code) {
-  const m = { ES:'🇪🇸', AR:'🇦🇷', MX:'🇲🇽', PE:'🇵🇪', CO:'🇨🇴', CL:'🇨🇱', UY:'🇺🇾', FR:'🇫🇷', NO:'🇳🇴' };
-  return m[code] ?? '🌍';
-}
-
-function getInitials(n) { return (n || '?').slice(0, 2).toUpperCase(); }
-
-function Avatar({ streamer, avatarUrl, size = 48 }) {
-  if (avatarUrl) {
-    return (
-      <img src={avatarUrl} alt={streamer.display_name} width={size} height={size}
-        style={{ borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
-    );
-  }
-  return (
-    <div style={{
-      width: size, height: size, borderRadius: '50%',
-      background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      fontSize: size * 0.32, fontWeight: 800, color: '#fff', flexShrink: 0,
-    }}>
-      {getInitials(streamer.display_name)}
-    </div>
-  );
-}
-
-function StreamerCard({ streamer, avatarUrl, rank, isPrimary }) {
-  const profileUrl = streamer.twitch
-    ? `https://twitch.tv/${streamer.twitch}`
-    : streamer.kick ? `https://kick.com/${streamer.kick}` : '#';
-
-  return (
-    <a
-      href={profileUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="streamer-card"
-      style={{
-        display: 'flex', alignItems: 'center', gap: 12,
-        background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-        borderRadius: 12, padding: '12px 14px',
-        textDecoration: 'none', color: 'inherit',
-        transition: 'border-color 0.15s, transform 0.15s',
-      }}
-    >
-      <div style={{
-        minWidth: 28, fontSize: 12, fontWeight: 700, textAlign: 'right', flexShrink: 0,
-        color: rank <= 3 ? 'var(--game-color)' : 'var(--color-text-secondary)',
-      }}>
-        #{rank}
-      </div>
-
-      <Avatar streamer={streamer} avatarUrl={avatarUrl} size={48} />
-
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
-          <span style={{ fontSize: 14, fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 160 }}>
-            {streamer.display_name}
-          </span>
-          {streamer.broadcaster_type === 'partner' && (
-            <span title="Partner" style={{ fontSize: 11, color: '#9146FF', flexShrink: 0 }}>✓</span>
-          )}
-          <span style={{ fontSize: 12, flexShrink: 0 }}>{flagOf(streamer.country)}</span>
-        </div>
-        <div style={{ display: 'flex', gap: 6, marginTop: 4, alignItems: 'center', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
-            {fmt(streamer.total_followers)} segs
-          </span>
-          {streamer.personality && (
-            <span style={{ fontSize: 10, color: 'var(--color-text-secondary)', background: 'var(--bg-secondary)', borderRadius: 4, padding: '1px 6px' }}>
-              {streamer.personality}
-            </span>
-          )}
-          {!isPrimary && (
-            <span style={{ fontSize: 10, background: 'var(--game-color-bg)', color: 'var(--game-color)', border: '1px solid var(--game-color-border)', borderRadius: 4, padding: '1px 6px' }}>
-              también juega
-            </span>
-          )}
-        </div>
-      </div>
-    </a>
-  );
-}
 
 const EVENT_ICONS = { tournament: '🏆', collab: '🤝', charity: '❤️', event: '🎉', series: '📺' };
 
@@ -206,6 +124,16 @@ export default async function JuegoPage({ params }) {
 
   const boxArt = gameInfo?.box_art_url?.replace('{width}', '285').replace('{height}', '380') ?? null;
   const total = primary.length + secondary.length;
+
+  // Slim data for client components — only fields needed for the cards
+  const slim = list => list.map(s => ({
+    id: s.id, display_name: s.display_name, country: s.country,
+    total_followers: s.total_followers, broadcaster_type: s.broadcaster_type,
+    personality: s.personality, twitch: s.twitch, kick: s.kick,
+    avatarUrl: avatars[s.twitch?.toLowerCase()] ?? null,
+  }));
+  const primarySlim = slim(primary);
+  const secondarySlim = slim(secondary);
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', '--game-color': color, '--game-color-bg': `${color}22`, '--game-color-border': `${color}44` }}>
@@ -329,11 +257,7 @@ export default async function JuegoPage({ params }) {
             <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 16 }}>
               {categoryName} es su categoría principal en Twitch o Kick
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 10 }}>
-              {primary.map((s, i) => (
-                <StreamerCard key={s.id} streamer={s} avatarUrl={avatars[s.twitch?.toLowerCase()] ?? null} rank={i + 1} isPrimary={true} />
-              ))}
-            </div>
+            <StreamerGrid streamers={primarySlim} isPrimary={true} />
           </section>
         )}
 
@@ -351,11 +275,7 @@ export default async function JuegoPage({ params }) {
             <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 16 }}>
               Su segunda categoría más frecuente en el canal
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 10 }}>
-              {secondary.map((s, i) => (
-                <StreamerCard key={s.id} streamer={s} avatarUrl={avatars[s.twitch?.toLowerCase()] ?? null} rank={i + 1} isPrimary={false} />
-              ))}
-            </div>
+            <StreamerGrid streamers={secondarySlim} isPrimary={false} />
           </section>
         )}
 

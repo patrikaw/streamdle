@@ -154,7 +154,7 @@ export default function LiveStats({ slug, color }) {
       {data.topClips?.length > 0 && (
         <div>
           <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--color-text-secondary)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 14 }}>
-            Clips virales en español
+            Clips de la comunidad hispana
           </h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 12 }}>
             {data.topClips.map(clip => (

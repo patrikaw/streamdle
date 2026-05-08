@@ -157,7 +157,7 @@ export default function JuegosPage() {
                         {cat.totalCount} streamers
                       </span>
                       <span style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
-                        {cat.primaryCount} main · {cat.secondaryCount} también
+                        {cat.primaryCount} principal · {cat.secondaryCount} secundaria
                       </span>
                     </div>
                   </div>
