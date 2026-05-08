@@ -118,10 +118,12 @@ function StreamerCard({ streamer, value, label, showValue, result, onClick, disa
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <button onClick={() => !disabled && onClick('higher')} disabled={disabled}
+                aria-label={`El streamer tiene más ${label.toLowerCase()}`}
                 style={{ background: 'rgba(124,58,237,0.8)', border: '2px solid #7C3AED', color: 'white', borderRadius: '10px', padding: '12px 32px', fontSize: '16px', fontWeight: '700', cursor: disabled ? 'default' : 'pointer', transition: 'all 0.2s', backdropFilter: 'blur(4px)' }}>
                 ↑ Más
               </button>
               <button onClick={() => !disabled && onClick('lower')} disabled={disabled}
+                aria-label={`El streamer tiene menos ${label.toLowerCase()}`}
                 style={{ background: 'rgba(124,58,237,0.8)', border: '2px solid #7C3AED', color: 'white', borderRadius: '10px', padding: '12px 32px', fontSize: '16px', fontWeight: '700', cursor: disabled ? 'default' : 'pointer', transition: 'all 0.2s', backdropFilter: 'blur(4px)' }}>
                 ↓ Menos
               </button>
@@ -375,8 +377,8 @@ function HigherdleInner() {
             </div>
 
             <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-              <button className="btn-green" style={{ flex: 1 }} onClick={() => initGame(pool)}>🔄 Jugar de nuevo</button>
-              <button className="btn-primary" style={{ flex: 1 }} onClick={() => window.location.href = '/'}>🎮 Otros juegos</button>
+              <button className="btn-green" style={{ flex: 1 }} aria-label="Jugar de nuevo" onClick={() => initGame(pool)}>🔄 Jugar de nuevo</button>
+              <button className="btn-primary" style={{ flex: 1 }} aria-label="Ver otros juegos de Streamdle" onClick={() => window.location.href = '/'}>🎮 Otros juegos</button>
             </div>
             <button style={{
               width: '100%', background: 'transparent',
@@ -384,7 +386,7 @@ function HigherdleInner() {
               color: copied ? '#53FC18' : 'var(--color-text-secondary)',
               borderRadius: '8px', padding: '8px', fontSize: '13px', cursor: 'pointer',
               transition: 'color 0.2s',
-            }} onClick={handleShare}>
+            }} aria-label="Copiar resultado al portapapeles" onClick={handleShare}>
               {copied ? '✓ ¡Copiado!' : '🔗 Compartir resultado'}
             </button>
           </div>

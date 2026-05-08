@@ -286,18 +286,6 @@ export default function StreamersIndex({
   const [page,    setPage]    = useState(1);
   const [avatars, setAvatars] = useState({});
 
-  const paginatedLogins = useMemo(
-    () => paginated.filter(s => s.twitch).map(s => s.twitch.toLowerCase()),
-    [paginated]
-  );
-
-  useEffect(() => {
-    if (!paginatedLogins.length) return;
-    getAvatarsForLogins(paginatedLogins).then(data =>
-      setAvatars(prev => ({ ...prev, ...data }))
-    );
-  }, [paginatedLogins]);
-
   useEffect(() => { setPage(1); }, [search, country, sort]);
 
   // Redirigir al cambiar el filtro de país (navega a la URL correcta)
@@ -354,6 +342,18 @@ export default function StreamersIndex({
     () => filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
     [filtered, page]
   );
+
+  const paginatedLogins = useMemo(
+    () => paginated.filter(s => s.twitch).map(s => s.twitch.toLowerCase()),
+    [paginated]
+  );
+
+  useEffect(() => {
+    if (!paginatedLogins.length) return;
+    getAvatarsForLogins(paginatedLogins).then(data =>
+      setAvatars(prev => ({ ...prev, ...data }))
+    );
+  }, [paginatedLogins]);
 
   useEffect(() => {
     if (page > 1) window.scrollTo({ top: 0, behavior: 'smooth' });

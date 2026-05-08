@@ -108,12 +108,14 @@ function LockedCell({ label }) {
 
 function HintCell({ label, value, hint, arrow }) {
   const colors = { correct:'#16A34A',wrong:'#DC262299',higher:'#2563EB',lower:'#2563EB' };
+  const fallbackIcons = { correct:'✓', wrong:'✗' };
+  const icon = arrow || fallbackIcons[hint] || null;
   const bg = colors[hint] || '#1A1A2E';
   return (
     <div style={{ background:bg,border:`1px solid ${bg}`,borderRadius:'8px',padding:'8px 6px',textAlign:'center',minWidth:'80px',flex:1,animation:'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)' }}>
       <div style={{ fontSize:'10px',color:'rgba(255,255,255,0.7)',marginBottom:'4px',fontWeight:'500' }}>{label}</div>
       <div style={{ fontSize:'13px',fontWeight:'700',color:'white',lineHeight:1.2 }}>
-        {value}{arrow && <span style={{ marginLeft:'4px' }}>{arrow}</span>}
+        {value}{icon && <span style={{ marginLeft:'4px' }}>{icon}</span>}
       </div>
     </div>
   );
@@ -138,6 +140,7 @@ function PlatformsCell({ guess, target }) {
             {p.label}
           </span>
         ))}
+        <span style={{ fontSize:'11px',fontWeight:'700',marginTop:'2px' }}>{isCorrect ? '✓' : '✗'}</span>
       </div>
     </div>
   );
@@ -279,12 +282,12 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
         </div>
 
         <div style={{ display:'flex',gap:'10px' }}>
-          <button className="btn-green" style={{ flex:1 }} onClick={() => {
+          <button className="btn-green" style={{ flex:1 }} aria-label="Copiar resultado al portapapeles" onClick={() => {
             navigator.clipboard.writeText(shareText).then(() => { setCopied(true); setTimeout(() => setCopied(false),2000); });
           }}>
             {copied ? '✓ ¡Copiado!' : '🔗 Compartir'}
           </button>
-          <button className="btn-primary" style={{ flex:1 }} onClick={onOtherGames}>🎮 Otros juegos</button>
+          <button className="btn-primary" style={{ flex:1 }} aria-label="Ver otros juegos de Streamdle" onClick={onOtherGames}>🎮 Otros juegos</button>
         </div>
       </div>
     </div>
@@ -427,7 +430,8 @@ export default function ClassicPage() {
 
         {!gameOver && (
           <div style={{ position:'relative',marginBottom:'20px' }}>
-            <input ref={inputRef} className="input-base" placeholder="Escribí el nombre del streamer..."
+            <label htmlFor="classic-search" className="sr-only">Buscar streamer</label>
+            <input id="classic-search" ref={inputRef} className="input-base" placeholder="Escribí el nombre del streamer..."
               value={query} onChange={e => setQuery(e.target.value)}
               onKeyDown={e => { if(e.key==='Enter'&&suggestions.length>0)handleGuess(suggestions[0]); if(e.key==='Escape')setSuggestions([]); }}
               autoComplete="off" style={{ fontSize:'15px',padding:'12px 16px' }} />
@@ -462,7 +466,7 @@ export default function ClassicPage() {
 
         {gameOver && !showModal && (
           <div style={{ textAlign:'center',marginTop:'24px' }}>
-            <button className="btn-primary" onClick={() => setShowModal(true)}>Ver resultado</button>
+            <button className="btn-primary" aria-label="Ver resultado de la partida" onClick={() => setShowModal(true)}>Ver resultado</button>
           </div>
         )}
       </main>

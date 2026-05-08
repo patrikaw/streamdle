@@ -131,7 +131,7 @@ function Countdown() {
         </div>
 
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button className="btn-green" style={{ flex: 1 }} onClick={() => {
+          <button className="btn-green" style={{ flex: 1 }} aria-label="Copiar resultado al portapapeles" onClick={() => {
             navigator.clipboard.writeText(shareText).then(() => {
               setCopied(true);
               setTimeout(() => setCopied(false), 2000);
@@ -139,7 +139,7 @@ function Countdown() {
           }}>
             {copied ? '✓ ¡Copiado!' : '🔗 Compartir'}
           </button>
-          <button className="btn-primary" style={{ flex: 1 }} onClick={onOtherGames}>
+          <button className="btn-primary" style={{ flex: 1 }} aria-label="Ver otros juegos de Streamdle" onClick={onOtherGames}>
             🎮 Otros juegos
           </button>
         </div>
@@ -385,7 +385,9 @@ export default function CategorydlePage() {
 
         {!gameOver && (
           <div style={{ position: 'relative', marginBottom: '20px' }}>
+            <label htmlFor="categorydle-search" className="sr-only">Buscar categoría</label>
             <input
+              id="categorydle-search"
               ref={inputRef}
               className="input-base"
               placeholder="Escribí una categoría (ej: Minecraft, GTA V...)"
@@ -439,7 +441,7 @@ export default function CategorydlePage() {
 
         {gameOver && !showModal && (
           <div style={{ textAlign: 'center', marginTop: '24px' }}>
-            <button className="btn-primary" onClick={() => setShowModal(true)}>Ver resultado</button>
+            <button className="btn-primary" aria-label="Ver resultado de la partida" onClick={() => setShowModal(true)}>Ver resultado</button>
           </div>
         )}
       </main>

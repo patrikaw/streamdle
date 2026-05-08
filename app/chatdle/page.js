@@ -146,7 +146,7 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
         </div>
 
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button className="btn-green" style={{ flex: 1 }} onClick={() => {
+          <button className="btn-green" style={{ flex: 1 }} aria-label="Copiar resultado al portapapeles" onClick={() => {
             navigator.clipboard.writeText(shareText).then(() => {
               setCopied(true);
               setTimeout(() => setCopied(false), 2000);
@@ -154,7 +154,7 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
           }}>
             {copied ? '✓ ¡Copiado!' : '🔗 Compartir'}
           </button>
-          <button className="btn-primary" style={{ flex: 1 }} onClick={onOtherGames}>
+          <button className="btn-primary" style={{ flex: 1 }} aria-label="Ver otros juegos de Streamdle" onClick={onOtherGames}>
             🎮 Otros juegos
           </button>
         </div>
@@ -401,7 +401,9 @@ export default function ChatdlePage() {
         {/* Input */}
         {!gameOver && (
           <div style={{ position: 'relative', marginBottom: '20px' }}>
+            <label htmlFor="chatdle-search" className="sr-only">Buscar streamer</label>
             <input
+              id="chatdle-search"
               ref={inputRef}
               className="input-base"
               placeholder="Escribí el nombre del streamer..."
@@ -478,7 +480,7 @@ export default function ChatdlePage() {
 
         {gameOver && !showModal && (
           <div style={{ textAlign: 'center', marginTop: '24px' }}>
-            <button className="btn-primary" onClick={() => setShowModal(true)}>Ver resultado</button>
+            <button className="btn-primary" aria-label="Ver resultado de la partida" onClick={() => setShowModal(true)}>Ver resultado</button>
           </div>
         )}
       </main>

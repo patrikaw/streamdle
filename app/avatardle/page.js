@@ -66,10 +66,10 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
           <Countdown/>
         </div>
         <div style={{display:'flex',gap:'10px'}}>
-          <button className="btn-green" style={{flex:1}} onClick={()=>{navigator.clipboard.writeText(shareText).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);});}}>
+          <button className="btn-green" style={{flex:1}} aria-label="Copiar resultado al portapapeles" onClick={()=>{navigator.clipboard.writeText(shareText).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2000);});}}>
             {copied?'✓ ¡Copiado!':'🔗 Compartir'}
           </button>
-          <button className="btn-primary" style={{flex:1}} onClick={onOtherGames}>🎮 Otros juegos</button>
+          <button className="btn-primary" style={{flex:1}} aria-label="Ver otros juegos de Streamdle" onClick={onOtherGames}>🎮 Otros juegos</button>
         </div>
       </div>
     </div>
@@ -177,7 +177,8 @@ export default function AvatardlePage() {
         </div>
         {!gameOver&&(
           <div style={{position:'relative',marginBottom:'20px'}}>
-            <input ref={inputRef} className="input-base" placeholder="Escribí el nombre del streamer..." value={query} onChange={e=>setQuery(e.target.value)}
+            <label htmlFor="avatardle-search" className="sr-only">Buscar streamer</label>
+            <input id="avatardle-search" ref={inputRef} className="input-base" placeholder="Escribí el nombre del streamer..." value={query} onChange={e=>setQuery(e.target.value)}
               onKeyDown={e=>{if(e.key==='Enter'&&suggestions.length>0)handleGuess(suggestions[0]);if(e.key==='Escape')setSuggestions([]);}}
               autoComplete="off" style={{fontSize:'15px',padding:'12px 16px'}}/>
             {suggestions.length>0&&(
@@ -209,7 +210,7 @@ export default function AvatardlePage() {
             })}
           </div>
         )}
-        {gameOver&&!showModal&&<div style={{textAlign:'center',marginTop:'24px'}}><button className="btn-primary" onClick={()=>setShowModal(true)}>Ver resultado</button></div>}
+        {gameOver&&!showModal&&<div style={{textAlign:'center',marginTop:'24px'}}><button className="btn-primary" aria-label="Ver resultado de la partida" onClick={()=>setShowModal(true)}>Ver resultado</button></div>}
       </main>
       {showModal&&<ShareModal won={won} attempts={guesses.length} target={target} avatars={avatars} country={country} onClose={()=>setShowModal(false)} onOtherGames={()=>window.location.href='/'}/>}
     </div>
