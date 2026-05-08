@@ -196,7 +196,7 @@ export default async function JuegoPage({ params }) {
           fontSize: 12, color: 'var(--color-text-secondary)', flexWrap: 'wrap',
         }}>
           {[
-            { label: 'Streamdle', href: '/' },
+            { label: 'Explorar', href: '/explorar' },
             { label: 'Juegos', href: '/juegos' },
             { label: categoryName, href: null },
           ].map((c, i) => (

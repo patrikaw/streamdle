@@ -380,7 +380,7 @@ export default function StreamersIndex({
 
   // Breadcrumb
   const crumbs = [
-    { label: 'Streamdle', href: '/' },
+    { label: 'Explorar', href: '/explorar' },
     { label: 'Streamers', href: '/streamers' },
   ];
   if (breadcrumbLabel && defaultCountry !== 'ALL') {
