@@ -152,7 +152,8 @@ export default async function JuegoPage({ params }) {
         .clip-card:hover { border-color: var(--game-color) !important; }
         .juego-stats-mobile { display: none; }
         @media (max-width: 640px) {
-          .juego-art-col { display: flex !important; gap: 14px; align-items: flex-start; }
+          .juego-hero-outer { flex-direction: column !important; }
+          .juego-art-col { display: flex !important; gap: 14px; align-items: flex-start; width: 100%; }
           .juego-stats-mobile { display: flex !important; flex-direction: column; gap: 8px; justify-content: center; flex: 1; min-width: 0; }
           .juego-stats-desktop { display: none !important; }
           .juego-text-col { min-width: 0 !important; width: 100%; }
@@ -169,7 +170,7 @@ export default async function JuegoPage({ params }) {
         position: 'sticky', top: 0, zIndex: 10,
         gap: 12, flexWrap: 'wrap',
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
             <span className="header-icon" style={{ fontSize: 20 }}>🎮</span>
             <span style={{
@@ -179,10 +180,6 @@ export default async function JuegoPage({ params }) {
             }}>STREAMDLE</span>
           </Link>
           <Link href="/explorar" style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '4px 10px', borderRadius: 8, border: '1px solid var(--color-border)', background: 'var(--bg-card)', whiteSpace: 'nowrap' }}>🔍 Explorar</Link>
-          <span style={{ color: 'var(--color-border)' }}>/</span>
-          <Link href="/juegos" style={{ fontSize: 13, color: 'var(--color-text-secondary)', textDecoration: 'none' }}>Juegos</Link>
-          <span style={{ color: 'var(--color-border)' }}>/</span>
-          <span style={{ fontSize: 13, color: '#fff', fontWeight: 600 }}>{categoryName}</span>
         </div>
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
           {[{href:'/classic',label:'🎯 Classic'},{href:'/avatardle',label:'👤 Avatardle'},{href:'/emojidle',label:'😂 Emojidle'},{href:'/categorydle',label:'🎮 Categorydle'},{href:'/chatdle',label:'💬 Chatdle'},{href:'/higherdle',label:'📊 Higherdle'}].map(g=>(
@@ -191,13 +188,35 @@ export default async function JuegoPage({ params }) {
         </div>
       </header>
 
+      {/* Breadcrumb */}
+      <div style={{
+        maxWidth: 1000, margin: '0 auto', padding: '12px 24px 0',
+        display: 'flex', alignItems: 'center', gap: 6,
+        fontSize: 12, color: 'var(--color-text-secondary)', flexWrap: 'wrap',
+      }}>
+        {[
+          { label: 'Inicio', href: '/' },
+          { label: 'Juegos', href: '/juegos' },
+          { label: categoryName, href: null },
+        ].map((c, i) => (
+          <span key={i} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            {i > 0 && <span>›</span>}
+            {c.href ? (
+              <Link href={c.href} style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>{c.label}</Link>
+            ) : (
+              <span style={{ color: 'var(--color-purple-light)', fontWeight: 600 }}>{c.label}</span>
+            )}
+          </span>
+        ))}
+      </div>
+
       {/* Hero */}
       <div style={{
         background: `linear-gradient(180deg, ${color}14 0%, transparent 100%)`,
         borderBottom: '1px solid var(--color-border)',
         padding: '40px 24px',
       }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto', display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+        <div className="juego-hero-outer" style={{ maxWidth: 1000, margin: '0 auto', display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap' }}>
 
           {/* Key art + stats mobile */}
           <div className="juego-art-col" style={{ flexShrink: 0 }}>
