@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getCategoryFromSlug, getStreamersByCategory } from '../../../../lib/categories';
+import { getCategoryFromSlug } from '../../../../lib/categories';
 
 let _token = null;
 let _tokenExpiry = 0;
@@ -47,28 +47,12 @@ export async function GET(request, { params }) {
     let liveCount = 0;
     let totalViewers = 0;
     let topStreams = [];
-    let topClips = [];
-
-    // Known logins for this category — used to filter clips to Hispanic streamers
-    const { primary, secondary } = getStreamersByCategory(categoryName);
-    const knownLogins = new Set(
-      [...primary, ...secondary].map(s => s.twitch?.toLowerCase()).filter(Boolean)
-    );
 
     if (game?.id) {
-      // Live streams for this game (language filter unreliable on Twitch API, filtered below)
-      const [streamsRes, clipsRes] = await Promise.all([
-        fetch(
-          `https://api.twitch.tv/helix/streams?game_id=${game.id}&first=100&language=es`,
-          { headers }
-        ),
-        // Fetch more clips so we have enough to filter by our streamers
-        fetch(
-          `https://api.twitch.tv/helix/clips?game_id=${game.id}&first=50`,
-          { headers }
-        ),
-      ]);
-
+      const streamsRes = await fetch(
+        `https://api.twitch.tv/helix/streams?game_id=${game.id}&first=100&language=es`,
+        { headers }
+      );
       const streamsData = await streamsRes.json();
       const streams = streamsData.data ?? [];
       liveCount = streams.length;
@@ -82,31 +66,10 @@ export async function GET(request, { params }) {
           ?.replace('{width}', '320')
           .replace('{height}', '180') ?? null,
       }));
-
-      const clipsData = await clipsRes.json();
-      const allClips = clipsData.data ?? [];
-
-      // Prefer clips from our Hispanic streamers; fall back to top clips if too few
-      const ourClips = allClips.filter(c =>
-        knownLogins.has(c.broadcaster_login?.toLowerCase())
-      );
-      const clipsSource = ourClips.length >= 3 ? ourClips : allClips;
-
-      topClips = clipsSource.slice(0, 6).map(c => ({
-        id: c.id,
-        title: c.title,
-        url: c.url,
-        thumbnail_url: c.thumbnail_url ?? null,
-        view_count: c.view_count,
-        creator_name: c.creator_name,
-        broadcaster_name: c.broadcaster_name,
-        created_at: c.created_at,
-        isOurStreamer: knownLogins.has(c.broadcaster_login?.toLowerCase()),
-      }));
     }
 
     return NextResponse.json(
-      { categoryName, liveCount, totalViewers, topStreams, topClips },
+      { categoryName, liveCount, totalViewers, topStreams },
       { headers: { 'Cache-Control': 's-maxage=300, stale-while-revalidate=600' } }
     );
   } catch (error) {

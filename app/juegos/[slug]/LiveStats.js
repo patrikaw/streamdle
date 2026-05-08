@@ -48,7 +48,7 @@ export default function LiveStats({ slug, color }) {
     );
   }
 
-  if (!data || (data.liveCount === 0 && data.topClips?.length === 0)) return null;
+  if (!data || data.liveCount === 0) return null;
 
   return (
     <div style={{ marginTop: 40 }}>
@@ -142,61 +142,6 @@ export default function LiveStats({ slug, color }) {
                     overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                   }}>
                     {s.title}
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Top clips */}
-      {data.topClips?.length > 0 && (
-        <div>
-          <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--color-text-secondary)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 14 }}>
-            Clips de la comunidad hispana
-          </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 12 }}>
-            {data.topClips.map(clip => (
-              <a
-                key={clip.id}
-                href={clip.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'block', textDecoration: 'none', color: 'inherit',
-                  background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-                  borderRadius: 10, overflow: 'hidden',
-                  transition: 'border-color 0.15s',
-                }}
-                onMouseEnter={e => e.currentTarget.style.borderColor = accentColor}
-                onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--color-border)'}
-              >
-                {clip.thumbnail_url && (
-                  <div style={{ position: 'relative' }}>
-                    <img
-                      src={clip.thumbnail_url}
-                      alt={clip.title}
-                      style={{ width: '100%', height: 130, objectFit: 'cover', display: 'block' }}
-                    />
-                    <span style={{
-                      position: 'absolute', bottom: 6, right: 6,
-                      background: 'rgba(0,0,0,0.75)', color: '#fff',
-                      fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
-                    }}>
-                      {fmt(clip.view_count)} views
-                    </span>
-                  </div>
-                )}
-                <div style={{ padding: '10px 12px' }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', marginBottom: 2 }}>
-                    {clip.broadcaster_name}
-                  </div>
-                  <div style={{
-                    fontSize: 11, color: 'var(--color-text-secondary)',
-                    overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                  }}>
-                    {clip.title}
                   </div>
                 </div>
               </a>

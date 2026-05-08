@@ -5,7 +5,7 @@ import {
   getCategoriesWithMinStreamers,
   getStreamersByCategory,
 } from '../../../lib/categories';
-import { fetchTwitchGame, fetchIGDBGame, fetchAvatarsBatch } from '../../../lib/twitch-server';
+import { fetchTwitchGame, fetchIGDBGame, fetchAvatarsBatch, fetchClipsById } from '../../../lib/twitch-server';
 import { getEventsForCategory } from '../../../data/events';
 import LiveStats from './LiveStats';
 import StreamerGrid from './StreamerGrid';
@@ -116,10 +116,19 @@ export default async function JuegoPage({ params }) {
   const allStreamers = [...primary, ...secondary];
 
   const logins = allStreamers.map(s => s.twitch).filter(Boolean);
-  const [gameInfo, igdbInfo, avatars] = await Promise.all([
+
+  // Top clip IDs from our streamers, sorted by views — guaranteed Hispanic content
+  const topClipIds = allStreamers
+    .filter(s => s.top_clip_id)
+    .sort((a, b) => (b.top_clip_views || 0) - (a.top_clip_views || 0))
+    .slice(0, 20)
+    .map(s => s.top_clip_id);
+
+  const [gameInfo, igdbInfo, avatars, clips] = await Promise.all([
     fetchTwitchGame(categoryName).catch(() => null),
     fetchIGDBGame(categoryName).catch(() => null),
     fetchAvatarsBatch(logins).catch(() => ({})),
+    fetchClipsById(topClipIds).catch(() => []),
   ]);
 
   const boxArt = gameInfo?.box_art_url?.replace('{width}', '285').replace('{height}', '380') ?? null;
@@ -140,6 +149,7 @@ export default async function JuegoPage({ params }) {
       <style>{`
         .streamer-card:hover { border-color: var(--game-color) !important; transform: translateY(-1px); }
         .game-mode-link:hover { border-color: var(--game-color) !important; background: var(--game-color-bg) !important; }
+        .clip-card:hover { border-color: var(--game-color) !important; }
       `}</style>
 
       {/* Header */}
@@ -280,6 +290,61 @@ export default async function JuegoPage({ params }) {
         )}
 
         {/* Events */}
+        {/* Clips — server-rendered, guaranteed Hispanic streamers */}
+        {clips.length > 0 && (
+          <section style={{ marginTop: 52 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 6 }}>
+              Clips virales de la comunidad
+            </h2>
+            <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 18 }}>
+              Los momentos más vistos de los streamers de {categoryName}
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 12 }}>
+              {clips.slice(0, 6).map(clip => (
+                <a
+                  key={clip.id}
+                  href={clip.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="clip-card"
+                  style={{
+                    display: 'block', textDecoration: 'none', color: 'inherit',
+                    background: 'var(--bg-card)', border: '1px solid var(--color-border)',
+                    borderRadius: 10, overflow: 'hidden',
+                    transition: 'border-color 0.15s',
+                  }}
+                >
+                  {clip.thumbnail_url && (
+                    <div style={{ position: 'relative' }}>
+                      <img src={clip.thumbnail_url} alt={clip.title}
+                        style={{ width: '100%', height: 130, objectFit: 'cover', display: 'block' }} />
+                      <span style={{
+                        position: 'absolute', bottom: 6, right: 6,
+                        background: 'rgba(0,0,0,0.78)', color: '#fff',
+                        fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
+                      }}>
+                        {clip.view_count >= 1_000_000
+                          ? (clip.view_count / 1_000_000).toFixed(1) + 'M'
+                          : clip.view_count >= 1_000
+                          ? Math.round(clip.view_count / 1_000) + 'K'
+                          : clip.view_count} views
+                      </span>
+                    </div>
+                  )}
+                  <div style={{ padding: '10px 12px' }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', marginBottom: 2 }}>
+                      {clip.broadcaster_name}
+                    </div>
+                    <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {clip.title}
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
         <section style={{ marginTop: 52 }}>
           <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 18 }}>
             Eventos importantes
