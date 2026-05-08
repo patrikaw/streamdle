@@ -55,6 +55,7 @@ function getLevel(score) {
 
 function StreamerCard({ streamer, value, label, showValue, result, onClick, disabled, avatars }) {
   const avatarUrl = getAvatarUrl(streamer, avatars);
+  const [imgErr, setImgErr] = useState(false);
   const bgColor = result === 'correct' ? 'rgba(22,163,74,0.3)' : result === 'wrong' ? 'rgba(220,38,38,0.3)' : 'transparent';
 
   return (
@@ -63,7 +64,7 @@ function StreamerCard({ streamer, value, label, showValue, result, onClick, disa
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       minHeight: '100vh', background: '#13131F', transition: 'background 0.4s ease',
     }}>
-      {avatarUrl && (
+      {avatarUrl && !imgErr && (
         <div style={{
           position: 'absolute', inset: 0,
           backgroundImage: `url(${avatarUrl})`,
@@ -80,15 +81,15 @@ function StreamerCard({ streamer, value, label, showValue, result, onClick, disa
         <div style={{
           width: '100px', height: '100px', borderRadius: '50%',
           overflow: 'hidden', border: '3px solid rgba(124,58,237,0.6)',
-          boxShadow: '0 0 30px rgba(124,58,237,0.4)', background: '#1A1A2E', flexShrink: 0,
+          boxShadow: '0 0 30px rgba(124,58,237,0.4)', background: '#7C3AED', flexShrink: 0,
         }}>
-          {avatarUrl ? (
+          {avatarUrl && !imgErr ? (
             <img src={avatarUrl} alt={streamer.display_name}
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              onError={e => { e.target.style.display = 'none'; }} />
+              onError={() => setImgErr(true)} />
           ) : (
-            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px', background: '#7C3AED' }}>
-              {streamer.display_name[0]}
+            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px', color: 'white', fontWeight: '800' }}>
+              {streamer.display_name[0].toUpperCase()}
             </div>
           )}
         </div>

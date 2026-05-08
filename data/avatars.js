@@ -99,7 +99,7 @@ export function getAvatarUrl(streamer, avatars = {}) {
   }
   const kickKey = (streamer.kick || '').toLowerCase();
   if (kickKey && KICK_AVATARS[kickKey]) return KICK_AVATARS[kickKey];
+  if (kickKey) return `https://unavatar.io/kick/${kickKey}`;
   if (streamer.twitch) return `https://unavatar.io/twitch/${streamer.twitch}`;
-  if (streamer.kick)   return `https://unavatar.io/kick/${streamer.kick}`;
   return null;
 }
