@@ -90,7 +90,6 @@ export default function AvatardlePage() {
   const [avatars,setAvatars]=useState({});
   const [yesterday,setYesterday]=useState(null);
   const inputRef=useRef(null);
-  const showThumbnails=country==='ALL';
 
   useEffect(()=>{getAvatars().then(data=>setAvatars(data));},[]);
   useEffect(()=>{setYesterday(getYesterdayStreamer(country,'avatardle',17));},[country]);
@@ -116,7 +115,10 @@ export default function AvatardlePage() {
 
   useEffect(()=>{
     if(!query.trim()){setSuggestions([]);return;}
-    setSuggestions(searchStreamers(query,country).filter(s=>!alreadyGuessed.includes(s.id)).slice(0,12));
+    const t=setTimeout(()=>{
+      setSuggestions(searchStreamers(query,country).filter(s=>!alreadyGuessed.includes(s.id)).slice(0,12));
+    },120);
+    return()=>clearTimeout(t);
   },[query,country,alreadyGuessed]);
 
   useEffect(()=>{
@@ -180,12 +182,12 @@ export default function AvatardlePage() {
               autoComplete="off" style={{fontSize:'15px',padding:'12px 16px'}}/>
             {suggestions.length>0&&(
               <div className="suggestions-box">
-                {suggestions.map(s=>{const sUrl=showThumbnails?getAvatarUrl(s,avatars):null; return(
+                {suggestions.map(s=>(
                   <div key={s.id} className="suggestion-item" onClick={()=>handleGuess(s)}>
-                    {sUrl?<img src={sUrl} alt={s.display_name} style={{width:'28px',height:'28px',borderRadius:'50%',filter:country==='ALL'?'grayscale(100%)':'none'}} onError={e=>e.target.style.display='none'}/>
-                      :<div style={{width:'28px',height:'28px',borderRadius:'50%',background:'#3A3A5C',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12px',color:'rgba(255,255,255,0.4)'}}>?</div>}
+                    <div style={{width:'28px',height:'28px',borderRadius:'50%',background:'#3A3A5C',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'13px',fontWeight:'700',color:'rgba(255,255,255,0.5)',flexShrink:0}}>?</div>
                     <div><div style={{fontSize:'14px',fontWeight:'600'}}>{s.display_name}</div><div style={{fontSize:'10px',color:'var(--color-text-secondary)'}}>{s.country} · {formatNum(s.total_followers)} seguidores</div></div>
-                  </div>);})}
+                  </div>
+                ))}
               </div>
             )}
           </div>

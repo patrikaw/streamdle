@@ -242,28 +242,12 @@ export function getDailyStreamerNoRepeat(country="ALL", gameKey="classic", offse
   if (filter) pool = pool.filter(filter);
   const t = new Date();
   const seed = t.getFullYear()*10000+(t.getMonth()+1)*100+t.getDate();
-  let history = [];
-  if (typeof window !== "undefined") {
-    try { history = JSON.parse(localStorage.getItem(`history_${gameKey}_${country}`) || "[]"); } catch {}
-  }
-  const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-30);
-  const recent = history.filter(h=>new Date(h.date)>cutoff).map(h=>h.id);
-  const avail = pool.filter(s=>!recent.includes(s.id));
-  let fp = avail.length > 0 ? avail : pool;
   if (country === "LATAM") {
     const wp = [];
-    fp.forEach(s => { const w = REDUCED_WEIGHT_COUNTRIES.includes(s.country)?6:10; for(let i=0;i<w;i++) wp.push(s); });
-    fp = wp;
+    pool.forEach(s => { const w = REDUCED_WEIGHT_COUNTRIES.includes(s.country)?6:10; for(let i=0;i<w;i++) wp.push(s); });
+    pool = wp;
   }
-  const streamer = fp[(seed+offset)%fp.length];
-  if (typeof window !== "undefined") {
-    const today = t.toISOString().split("T")[0];
-    if (!history.some(h=>h.date===today&&h.game===gameKey)) {
-      history.push({id:streamer.id,date:today,game:gameKey});
-      try { localStorage.setItem(`history_${gameKey}_${country}`, JSON.stringify(history)); } catch {}
-    }
-  }
-  return streamer;
+  return pool[(seed+offset)%pool.length];
 }
 
 export function getYesterdayStreamer(country="ALL", gameKey="classic", offset=0, filter=null) {
