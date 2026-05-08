@@ -1,4 +1,5 @@
 import { STREAMERS } from '../data/streamers';
+import { getCategoriesWithMinStreamers } from '../lib/categories';
 
 export default function sitemap() {
   const baseUrl = 'https://streamdle.net';
@@ -39,8 +40,21 @@ export default function sitemap() {
   //   priority: 0.7,
   // }));
 
+  const juegos_index = [
+    { url: `${baseUrl}/juegos`, lastModified: today, changeFrequency: 'weekly', priority: 0.8 },
+  ];
+
+  const juegos_pages = getCategoriesWithMinStreamers(7).map(c => ({
+    url: `${baseUrl}/juegos/${c.slug}`,
+    lastModified: today,
+    changeFrequency: 'weekly',
+    priority: 0.75,
+  }));
+
   return [
     ...static_pages,
+    ...juegos_index,
+    ...juegos_pages,
     // ...streamers_index,  // descomentar cuando quites noindex
     // ...streamer_pages,   // descomentar cuando quites noindex
   ];

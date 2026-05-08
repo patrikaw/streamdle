@@ -1,0 +1,416 @@
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import {
+  getCategoryFromSlug,
+  getCategoriesWithMinStreamers,
+  getStreamersByCategory,
+} from '../../../lib/categories';
+import { fetchTwitchGame, fetchIGDBGame, fetchAvatarsBatch } from '../../../lib/twitch-server';
+import { getEventsForCategory } from '../../../data/events';
+import LiveStats from './LiveStats';
+
+export const revalidate = 86400;
+
+export async function generateStaticParams() {
+  return getCategoriesWithMinStreamers(7).map(c => ({ slug: c.slug }));
+}
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const name = getCategoryFromSlug(slug);
+  if (!name) return {};
+  return {
+    title: `Streamers de ${name} en Español — Comunidad Hispana | Streamdle`,
+    description: `Descubrí quiénes son los streamers hispanohablantes de ${name}. Ranking, clips virales y toda la cultura streamer alrededor de ${name} en Twitch y Kick.`,
+    keywords: `streamers ${name.toLowerCase()} español, streamers de ${name.toLowerCase()}, ${name.toLowerCase()} streamers hispanos, quien juega ${name.toLowerCase()} twitch, ${name.toLowerCase()} twitch hispano`,
+    openGraph: {
+      title: `Streamers de ${name} en Español | Streamdle`,
+      description: `Comunidad hispana de ${name}: ranking de streamers, clips y cultura.`,
+      url: `https://streamdle.net/juegos/${slug}`,
+    },
+  };
+}
+
+const CATEGORY_COLORS = {
+  'Just Chatting': '#7C3AED',
+  'Minecraft': '#53FC18',
+  'Grand Theft Auto V': '#F97316',
+  'Fortnite': '#38BDF8',
+  'League of Legends': '#EAB308',
+  'Counter-Strike': '#EF4444',
+  'Valorant': '#FF4655',
+  'World of Warcraft': '#AAE0FA',
+  'Kings League': '#F59E0B',
+  'EA Sports FC 26': '#16A34A',
+  'Sports': '#22C55E',
+  'Variety': '#8B5CF6',
+  'Rust': '#D97706',
+  'Clash Royale': '#6366F1',
+};
+
+function getColor(name) { return CATEGORY_COLORS[name] ?? '#7C3AED'; }
+
+function fmt(n) {
+  if (!n) return '—';
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace('.0', '') + 'M';
+  if (n >= 1_000) return Math.round(n / 1_000) + 'K';
+  return n.toLocaleString('es');
+}
+
+function flagOf(code) {
+  const m = { ES:'🇪🇸', AR:'🇦🇷', MX:'🇲🇽', PE:'🇵🇪', CO:'🇨🇴', CL:'🇨🇱', UY:'🇺🇾', FR:'🇫🇷', NO:'🇳🇴' };
+  return m[code] ?? '🌍';
+}
+
+function getInitials(n) { return (n || '?').slice(0, 2).toUpperCase(); }
+
+function Avatar({ streamer, avatarUrl, size = 48 }) {
+  if (avatarUrl) {
+    return (
+      <img src={avatarUrl} alt={streamer.display_name} width={size} height={size}
+        style={{ borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
+    );
+  }
+  return (
+    <div style={{
+      width: size, height: size, borderRadius: '50%',
+      background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontSize: size * 0.32, fontWeight: 800, color: '#fff', flexShrink: 0,
+    }}>
+      {getInitials(streamer.display_name)}
+    </div>
+  );
+}
+
+function StreamerCard({ streamer, avatarUrl, rank, isPrimary }) {
+  const profileUrl = streamer.twitch
+    ? `https://twitch.tv/${streamer.twitch}`
+    : streamer.kick ? `https://kick.com/${streamer.kick}` : '#';
+
+  return (
+    <a
+      href={profileUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="streamer-card"
+      style={{
+        display: 'flex', alignItems: 'center', gap: 12,
+        background: 'var(--bg-card)', border: '1px solid var(--color-border)',
+        borderRadius: 12, padding: '12px 14px',
+        textDecoration: 'none', color: 'inherit',
+        transition: 'border-color 0.15s, transform 0.15s',
+      }}
+    >
+      <div style={{
+        minWidth: 28, fontSize: 12, fontWeight: 700, textAlign: 'right', flexShrink: 0,
+        color: rank <= 3 ? 'var(--game-color)' : 'var(--color-text-secondary)',
+      }}>
+        #{rank}
+      </div>
+
+      <Avatar streamer={streamer} avatarUrl={avatarUrl} size={48} />
+
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
+          <span style={{ fontSize: 14, fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 160 }}>
+            {streamer.display_name}
+          </span>
+          {streamer.broadcaster_type === 'partner' && (
+            <span title="Partner" style={{ fontSize: 11, color: '#9146FF', flexShrink: 0 }}>✓</span>
+          )}
+          <span style={{ fontSize: 12, flexShrink: 0 }}>{flagOf(streamer.country)}</span>
+        </div>
+        <div style={{ display: 'flex', gap: 6, marginTop: 4, alignItems: 'center', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
+            {fmt(streamer.total_followers)} segs
+          </span>
+          {streamer.personality && (
+            <span style={{ fontSize: 10, color: 'var(--color-text-secondary)', background: 'var(--bg-secondary)', borderRadius: 4, padding: '1px 6px' }}>
+              {streamer.personality}
+            </span>
+          )}
+          {!isPrimary && (
+            <span style={{ fontSize: 10, background: 'var(--game-color-bg)', color: 'var(--game-color)', border: '1px solid var(--game-color-border)', borderRadius: 4, padding: '1px 6px' }}>
+              también juega
+            </span>
+          )}
+        </div>
+      </div>
+    </a>
+  );
+}
+
+const EVENT_ICONS = { tournament: '🏆', collab: '🤝', charity: '❤️', event: '🎉', series: '📺' };
+
+function EventCard({ event }) {
+  const icon = EVENT_ICONS[event.type] ?? '📅';
+  const dateStr = event.date?.includes('/')
+    ? event.date.split('/').map(d => new Date(d).toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' })).join(' → ')
+    : event.date ? new Date(event.date).toLocaleDateString('es', { day: 'numeric', month: 'long', year: 'numeric' }) : null;
+
+  return (
+    <div className="event-card" style={{
+      background: 'var(--bg-card)', border: '1px solid var(--color-border)',
+      borderLeft: '3px solid var(--game-color)',
+      borderRadius: 12, padding: '16px 18px',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, flexWrap: 'wrap' }}>
+        <span style={{ fontSize: 16 }}>{icon}</span>
+        <span style={{ fontSize: 15, fontWeight: 700, color: '#fff' }}>{event.title}</span>
+        {event.subtitle && (
+          <span style={{ fontSize: 11, background: 'var(--game-color-bg)', color: 'var(--game-color)', border: '1px solid var(--game-color-border)', borderRadius: 4, padding: '1px 7px' }}>
+            {event.subtitle}
+          </span>
+        )}
+      </div>
+      {dateStr && <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginBottom: 8 }}>📅 {dateStr}</div>}
+      {event.description && <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: 1.5, marginBottom: event.streamers?.length ? 10 : 0 }}>{event.description}</p>}
+      {event.streamers?.length > 0 && (
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          {event.streamers.map(s => (
+            <span key={s} style={{ fontSize: 11, background: 'var(--bg-secondary)', borderRadius: 4, padding: '2px 7px', color: 'var(--color-text-secondary)' }}>{s}</span>
+          ))}
+        </div>
+      )}
+      {event.url && (
+        <a href={event.url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', marginTop: 10, fontSize: 12, color: 'var(--game-color)', textDecoration: 'none' }}>
+          Ver más →
+        </a>
+      )}
+    </div>
+  );
+}
+
+const GAME_MODES = [
+  { slug: 'categorydle', name: 'Categorydle', emoji: '🎮', desc: 'Adiviná las 2 categorías del streamer' },
+  { slug: 'classic', name: 'Streamdle', emoji: '🎯', desc: 'Adiviná el streamer del día' },
+];
+
+export default async function JuegoPage({ params }) {
+  const { slug } = await params;
+  const categoryName = getCategoryFromSlug(slug);
+  if (!categoryName) notFound();
+
+  const { primary, secondary } = getStreamersByCategory(categoryName);
+  const events = getEventsForCategory(categoryName);
+  const color = getColor(categoryName);
+  const allStreamers = [...primary, ...secondary];
+
+  const logins = allStreamers.map(s => s.twitch).filter(Boolean);
+  const [gameInfo, igdbInfo, avatars] = await Promise.all([
+    fetchTwitchGame(categoryName).catch(() => null),
+    fetchIGDBGame(categoryName).catch(() => null),
+    fetchAvatarsBatch(logins).catch(() => ({})),
+  ]);
+
+  const boxArt = gameInfo?.box_art_url?.replace('{width}', '285').replace('{height}', '380') ?? null;
+  const total = primary.length + secondary.length;
+
+  return (
+    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', '--game-color': color, '--game-color-bg': `${color}22`, '--game-color-border': `${color}44` }}>
+      <style>{`
+        .streamer-card:hover { border-color: var(--game-color) !important; transform: translateY(-1px); }
+        .game-mode-link:hover { border-color: var(--game-color) !important; background: var(--game-color-bg) !important; }
+      `}</style>
+
+      {/* Header */}
+      <header style={{
+        borderBottom: '1px solid var(--color-border)',
+        padding: '14px 24px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        background: 'var(--bg-secondary)',
+        position: 'sticky', top: 0, zIndex: 10,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
+            <span style={{ fontSize: 20 }}>🎮</span>
+            <span style={{
+              fontSize: 18, fontWeight: 800,
+              background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            }}>STREAMDLE</span>
+          </Link>
+          <span style={{ color: 'var(--color-border)' }}>/</span>
+          <Link href="/juegos" style={{ fontSize: 13, color: 'var(--color-text-secondary)', textDecoration: 'none' }}>Juegos</Link>
+          <span style={{ color: 'var(--color-border)' }}>/</span>
+          <span style={{ fontSize: 13, color: '#fff', fontWeight: 600 }}>{categoryName}</span>
+        </div>
+      </header>
+
+      {/* Hero */}
+      <div style={{
+        background: `linear-gradient(180deg, ${color}14 0%, transparent 100%)`,
+        borderBottom: '1px solid var(--color-border)',
+        padding: '40px 24px',
+      }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto', display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+          {boxArt && (
+            <img src={boxArt} alt={categoryName} width={130} height={174}
+              style={{ borderRadius: 10, objectFit: 'cover', flexShrink: 0, border: `2px solid ${color}44` }} />
+          )}
+
+          <div style={{ flex: 1, minWidth: 260 }}>
+            {(igdbInfo?.genres?.length > 0 || igdbInfo?.releaseYear || igdbInfo?.developer) && (
+              <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
+                {igdbInfo?.genres?.slice(0, 3).map(g => (
+                  <span key={g} style={{ fontSize: 11, background: `${color}22`, color, border: `1px solid ${color}44`, borderRadius: 6, padding: '2px 9px' }}>
+                    {g}
+                  </span>
+                ))}
+                {igdbInfo?.releaseYear && (
+                  <span style={{ fontSize: 11, background: 'var(--bg-card)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)', borderRadius: 6, padding: '2px 9px' }}>
+                    {igdbInfo.releaseYear}
+                  </span>
+                )}
+                {igdbInfo?.developer && (
+                  <span style={{ fontSize: 11, background: 'var(--bg-card)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)', borderRadius: 6, padding: '2px 9px' }}>
+                    {igdbInfo.developer}
+                  </span>
+                )}
+              </div>
+            )}
+
+            <h1 style={{ fontSize: 'clamp(28px, 5vw, 42px)', fontWeight: 800, lineHeight: 1.15, marginBottom: 10, color: '#fff' }}>
+              {categoryName}
+            </h1>
+
+            <p style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-text-secondary)', maxWidth: 600, marginBottom: 20 }}>
+              {igdbInfo?.summary
+                ? igdbInfo.summary.length > 280
+                  ? igdbInfo.summary.slice(0, 277) + '...'
+                  : igdbInfo.summary
+                : `La comunidad hispanohablante de ${categoryName} en Twitch y Kick reúne a ${total} streamers que han construido culturas únicas, comunidades fieles y momentos virales alrededor de este contenido.`
+              }
+            </p>
+
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                background: 'var(--bg-card)', border: `1px solid ${color}44`, borderRadius: 10, padding: '8px 16px',
+              }}>
+                <span style={{ fontSize: 18 }}>🎙️</span>
+                <div>
+                  <div style={{ fontSize: 18, fontWeight: 800, color: '#fff' }}>{total}</div>
+                  <div style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>streamers hispanos</div>
+                </div>
+              </div>
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 10, padding: '8px 16px',
+              }}>
+                <span style={{ fontSize: 18 }}>⭐</span>
+                <div>
+                  <div style={{ fontSize: 18, fontWeight: 800, color: '#fff' }}>{primary.length}</div>
+                  <div style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>categoría principal</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <main style={{ maxWidth: 1000, margin: '0 auto', padding: '40px 24px 64px' }}>
+
+        {/* Live stats — client component */}
+        <LiveStats slug={slug} color={color} />
+
+        {/* Primary streamers */}
+        {primary.length > 0 && (
+          <section style={{ marginTop: 48 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+              <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff' }}>
+                Top streamers de {categoryName}
+              </h2>
+              <span style={{ fontSize: 12, fontWeight: 700, background: `${color}22`, color, border: `1px solid ${color}44`, borderRadius: 8, padding: '2px 9px' }}>
+                {primary.length}
+              </span>
+            </div>
+            <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 16 }}>
+              {categoryName} es su categoría principal en Twitch o Kick
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 10 }}>
+              {primary.map((s, i) => (
+                <StreamerCard key={s.id} streamer={s} avatarUrl={avatars[s.twitch?.toLowerCase()] ?? null} rank={i + 1} isPrimary={true} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Secondary streamers */}
+        {secondary.length > 0 && (
+          <section style={{ marginTop: 40 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+              <h2 style={{ fontSize: 18, fontWeight: 700, color: '#fff' }}>
+                También juegan {categoryName}
+              </h2>
+              <span style={{ fontSize: 12, background: 'var(--bg-card)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)', borderRadius: 8, padding: '2px 9px' }}>
+                {secondary.length}
+              </span>
+            </div>
+            <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 16 }}>
+              Su segunda categoría más frecuente en el canal
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 10 }}>
+              {secondary.map((s, i) => (
+                <StreamerCard key={s.id} streamer={s} avatarUrl={avatars[s.twitch?.toLowerCase()] ?? null} rank={i + 1} isPrimary={false} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Events */}
+        <section style={{ marginTop: 52 }}>
+          <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 18 }}>
+            Eventos importantes
+          </h2>
+          {events.length > 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {events.map(ev => <EventCard key={ev.id} event={ev} />)}
+            </div>
+          ) : (
+            <div style={{
+              background: 'var(--bg-card)', border: '1px dashed var(--color-border)',
+              borderRadius: 12, padding: '28px 24px', textAlign: 'center',
+            }}>
+              <div style={{ fontSize: 28, marginBottom: 10 }}>🏆</div>
+              <div style={{ fontSize: 14, color: 'var(--color-text-secondary)' }}>
+                Próximamente: torneos, collabs y eventos históricos de la comunidad hispana de {categoryName}.
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* Related game modes */}
+        <section style={{ marginTop: 52 }}>
+          <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 6 }}>Jugá en Streamdle</h2>
+          <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 18 }}>
+            Poné a prueba tu conocimiento de los streamers de {categoryName}
+          </p>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            {GAME_MODES.map(mode => (
+              <Link
+                key={mode.slug}
+                href={`/${mode.slug}`}
+                className="game-mode-link"
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  background: 'var(--bg-card)', border: '1px solid var(--color-border)',
+                  borderRadius: 12, padding: '12px 18px', textDecoration: 'none', color: 'inherit',
+                  transition: 'all 0.15s', minWidth: 200,
+                }}
+              >
+                <span style={{ fontSize: 22 }}>{mode.emoji}</span>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>{mode.name}</div>
+                  <div style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>{mode.desc}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+      </main>
+    </div>
+  );
+}
