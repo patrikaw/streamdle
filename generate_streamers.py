@@ -189,46 +189,60 @@ export function getDailyStreamer(country = "ALL", gameOffset = 0) {
   return pool[(seed+gameOffset)%pool.length];
 }
 
-export function getDailyStreamerNoRepeat(country="ALL", gameKey="classic", offset=0, filter=null) {
+const GAME_COUNTRIES = ['ALL', 'AR', 'MX', 'ES', 'LATAM'];
+const COOLDOWN_DAYS = 30;
+
+function _dateSeed(date) {
+  return date.getFullYear()*10000 + (date.getMonth()+1)*100 + date.getDate();
+}
+
+function _buildPool(country, filter) {
   let pool = getStreamersByCountry(country);
   if (filter) pool = pool.filter(filter);
-  const t = new Date();
-  const seed = t.getFullYear()*10000+(t.getMonth()+1)*100+t.getDate();
-  let history = [];
-  if (typeof window !== "undefined") {
-    try { history = JSON.parse(localStorage.getItem(`history_${gameKey}_${country}`) || "[]"); } catch {}
-  }
-  const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-30);
-  const recent = history.filter(h=>new Date(h.date)>cutoff).map(h=>h.id);
-  const avail = pool.filter(s=>!recent.includes(s.id));
-  let fp = avail.length > 0 ? avail : pool;
-  if (country === "LATAM") {
-    const wp = [];
-    fp.forEach(s => { const w = REDUCED_WEIGHT_COUNTRIES.includes(s.country)?6:10; for(let i=0;i<w;i++) wp.push(s); });
-    fp = wp;
-  }
-  const streamer = fp[(seed+offset)%fp.length];
-  if (typeof window !== "undefined") {
-    const today = t.toISOString().split("T")[0];
-    if (!history.some(h=>h.date===today&&h.game===gameKey)) {
-      history.push({id:streamer.id,date:today,game:gameKey});
-      try { localStorage.setItem(`history_${gameKey}_${country}`, JSON.stringify(history)); } catch {}
+  return pool;
+}
+
+function _pickForDate(country, offset, filter, date) {
+  const seed = _dateSeed(date);
+  const recentIds = new Set();
+  for (let d = 1; d <= COOLDOWN_DAYS; d++) {
+    const past = new Date(date);
+    past.setDate(past.getDate() - d);
+    const pastSeed = _dateSeed(past);
+    for (const c of GAME_COUNTRIES) {
+      const pastPool = _buildPool(c, filter);
+      if (pastPool.length === 0) continue;
+      const picked = pastPool[(pastSeed + offset) % pastPool.length];
+      if (picked) recentIds.add(picked.id);
     }
   }
-  return streamer;
+  const pool = _buildPool(country, filter);
+  let available = pool.filter(s => !recentIds.has(s.id));
+  if (available.length < 3) {
+    const localRecent = new Set();
+    for (let d = 1; d <= 7; d++) {
+      const past = new Date(date);
+      past.setDate(past.getDate() - d);
+      const pastSeed = _dateSeed(past);
+      const pastPool = _buildPool(country, filter);
+      if (pastPool.length === 0) continue;
+      const picked = pastPool[(pastSeed + offset) % pastPool.length];
+      if (picked) localRecent.add(picked.id);
+    }
+    available = pool.filter(s => !localRecent.has(s.id));
+    if (available.length === 0) available = pool;
+  }
+  return available[(seed + offset) % available.length];
+}
+
+export function getDailyStreamerNoRepeat(country="ALL", gameKey="classic", offset=0, filter=null) {
+  return _pickForDate(country, offset, filter, new Date());
 }
 
 export function getYesterdayStreamer(country="ALL", gameKey="classic", offset=0, filter=null) {
-  let pool = getStreamersByCountry(country);
-  if (filter) pool = pool.filter(filter);
-  const y = new Date(); y.setDate(y.getDate()-1);
-  const seed = y.getFullYear()*10000+(y.getMonth()+1)*100+y.getDate();
-  if (country === "LATAM") {
-    const wp = [];
-    pool.forEach(s => { const w = REDUCED_WEIGHT_COUNTRIES.includes(s.country)?6:10; for(let i=0;i<w;i++) wp.push(s); });
-    return wp[(seed+offset)%wp.length];
-  }
-  return pool[(seed+offset)%pool.length];
+  const y = new Date();
+  y.setDate(y.getDate() - 1);
+  return _pickForDate(country, offset, filter, y);
 }
 '''
 
