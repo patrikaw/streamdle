@@ -99,8 +99,8 @@ function CountryFlag({ code }) {
 
 function LockedCell({ label }) {
   return (
-    <div style={{ background:'#1A1A2E',border:'1px dashed #2A2A40',borderRadius:'8px',padding:'8px 6px',textAlign:'center',minWidth:'80px',flex:1,opacity:0.5 }}>
-      <div style={{ fontSize:'10px',color:'rgba(255,255,255,0.4)',marginBottom:'4px',fontWeight:'500' }}>{label}</div>
+    <div style={{ background:'#1A1A2E',border:'1px dashed #2A2A40',borderRadius:'8px',padding:'8px 6px',textAlign:'center',flex:'1 1 0',minWidth:'72px',overflow:'hidden',opacity:0.5 }}>
+      <div style={{ fontSize:'10px',color:'rgba(255,255,255,0.4)',marginBottom:'4px',fontWeight:'500',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis' }}>{label}</div>
       <div style={{ fontSize:'16px' }}>🔒</div>
     </div>
   );
@@ -112,9 +112,9 @@ function HintCell({ label, value, hint, arrow }) {
   const icon = arrow || fallbackIcons[hint] || null;
   const bg = colors[hint] || '#1A1A2E';
   return (
-    <div style={{ background:bg,border:`1px solid ${bg}`,borderRadius:'8px',padding:'8px 6px',textAlign:'center',minWidth:'80px',flex:1,animation:'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)' }}>
-      <div style={{ fontSize:'10px',color:'rgba(255,255,255,0.7)',marginBottom:'4px',fontWeight:'500' }}>{label}</div>
-      <div style={{ fontSize:'13px',fontWeight:'700',color:'white',lineHeight:1.2 }}>
+    <div style={{ background:bg,border:`1px solid ${bg}`,borderRadius:'8px',padding:'8px 6px',textAlign:'center',flex:'1 1 0',minWidth:'72px',overflow:'hidden',animation:'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)' }}>
+      <div style={{ fontSize:'10px',color:'rgba(255,255,255,0.7)',marginBottom:'4px',fontWeight:'500',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis' }}>{label}</div>
+      <div style={{ fontSize:'13px',fontWeight:'700',color:'white',lineHeight:1.2,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis' }}>
         {value}{icon && <span style={{ marginLeft:'4px' }}>{icon}</span>}
       </div>
     </div>
@@ -130,17 +130,17 @@ function PlatformsCell({ guess, target }) {
       background: isCorrect ? '#16A34A' : '#DC262299',
       border: `1px solid ${isCorrect ? '#16A34A' : '#DC262299'}`,
       borderRadius: '8px', padding: '8px 6px', textAlign: 'center',
-      minWidth: '80px', flex: 1,
+      flex:'1 1 0', minWidth:'72px', overflow:'hidden',
       animation: 'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)',
     }}>
-      <div style={{ fontSize:'10px',color:'rgba(255,255,255,0.7)',marginBottom:'4px',fontWeight:'500' }}>Plataformas</div>
-      <div style={{ display:'flex',flexDirection:'column',gap:'2px',alignItems:'center' }}>
+      <div style={{ fontSize:'10px',color:'rgba(255,255,255,0.7)',marginBottom:'4px',fontWeight:'500',whiteSpace:'nowrap' }}>Plataformas</div>
+      <div style={{ display:'flex',flexDirection:'row',gap:'3px',alignItems:'center',justifyContent:'center',flexWrap:'wrap' }}>
         {guessPlatforms.map(p => (
           <span key={p.label} style={{ fontSize:'9px',fontWeight:'700',background:p.color,color:p.textColor||'white',padding:'1px 5px',borderRadius:'3px',whiteSpace:'nowrap' }}>
             {p.label}
           </span>
         ))}
-        <span style={{ fontSize:'11px',fontWeight:'700',marginTop:'2px' }}>{isCorrect ? '✓' : '✗'}</span>
+        <span style={{ fontSize:'11px',fontWeight:'700' }}>{isCorrect ? '✓' : '✗'}</span>
       </div>
     </div>
   );
@@ -422,8 +422,8 @@ export default function ClassicPage() {
 
         {guesses.length > 0 && (
           <div style={{ display:'flex',gap:'6px',marginBottom:'8px',paddingLeft:'138px',overflowX:'auto' }}>
-            {(country==='ALL'?['País','Categoría','Seguidores','Horas en Stream','Activo','Peak Viewers','Plataformas']:['Categoría','Seguidores','Horas en Stream','Activo','Peak Viewers','Plataformas']).map(col => (
-              <div key={col} style={{ flex:1,minWidth:'80px',textAlign:'center',fontSize:'9px',fontWeight:'600',color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.5px' }}>{col}</div>
+            {(country==='ALL'?['País','Categ.','Seguid.','Hrs Stream','Activo','Peak','Plataformas']:['Categ.','Seguid.','Hrs Stream','Activo','Peak','Plataformas']).map(col => (
+              <div key={col} style={{ flex:'1 1 0',minWidth:'72px',textAlign:'center',fontSize:'9px',fontWeight:'600',color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.5px',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap' }}>{col}</div>
             ))}
           </div>
         )}
