@@ -150,6 +150,14 @@ export default async function JuegoPage({ params }) {
         .streamer-card:hover { border-color: var(--game-color) !important; transform: translateY(-1px); }
         .game-mode-link:hover { border-color: var(--game-color) !important; background: var(--game-color-bg) !important; }
         .clip-card:hover { border-color: var(--game-color) !important; }
+        .juego-stats-mobile { display: none; }
+        @media (max-width: 640px) {
+          .juego-art-col { display: flex !important; gap: 14px; align-items: flex-start; }
+          .juego-stats-mobile { display: flex !important; flex-direction: column; gap: 8px; justify-content: center; flex: 1; min-width: 0; }
+          .juego-stats-desktop { display: none !important; }
+          .juego-text-col { min-width: 0 !important; width: 100%; }
+          .header-icon { display: none !important; }
+        }
       `}</style>
 
       {/* Header */}
@@ -163,7 +171,7 @@ export default async function JuegoPage({ params }) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
-            <span style={{ fontSize: 20 }}>🎮</span>
+            <span className="header-icon" style={{ fontSize: 20 }}>🎮</span>
             <span style={{
               fontSize: 18, fontWeight: 800,
               background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
@@ -190,12 +198,33 @@ export default async function JuegoPage({ params }) {
         padding: '40px 24px',
       }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap' }}>
-          {boxArt && (
-            <img src={boxArt} alt={categoryName} width={130} height={174}
-              style={{ borderRadius: 10, objectFit: 'cover', flexShrink: 0, border: `2px solid ${color}44` }} />
-          )}
 
-          <div style={{ flex: 1, minWidth: 260 }}>
+          {/* Key art + stats mobile */}
+          <div className="juego-art-col" style={{ flexShrink: 0 }}>
+            {boxArt && (
+              <img src={boxArt} alt={categoryName} width={130} height={174}
+                style={{ borderRadius: 10, objectFit: 'cover', display: 'block', border: `2px solid ${color}44` }} />
+            )}
+            <div className="juego-stats-mobile">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg-card)', border: `1px solid ${color}44`, borderRadius: 10, padding: '8px 12px' }}>
+                <span style={{ fontSize: 16 }}>🎙️</span>
+                <div>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: '#fff' }}>{total}</div>
+                  <div style={{ fontSize: 10, color: 'var(--color-text-secondary)' }}>streamers hispanos</div>
+                </div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 10, padding: '8px 12px' }}>
+                <span style={{ fontSize: 16 }}>⭐</span>
+                <div>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: '#fff' }}>{primary.length}</div>
+                  <div style={{ fontSize: 10, color: 'var(--color-text-secondary)' }}>categoría principal</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Text + stats desktop */}
+          <div className="juego-text-col" style={{ flex: 1, minWidth: 260 }}>
             {(igdbInfo?.genres?.length > 0 || igdbInfo?.releaseYear || igdbInfo?.developer) && (
               <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
                 {igdbInfo?.genres?.slice(0, 3).map(g => (
@@ -229,7 +258,7 @@ export default async function JuegoPage({ params }) {
               }
             </p>
 
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <div className="juego-stats-desktop" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <div style={{
                 display: 'flex', alignItems: 'center', gap: 8,
                 background: 'var(--bg-card)', border: `1px solid ${color}44`, borderRadius: 10, padding: '8px 16px',
@@ -260,46 +289,9 @@ export default async function JuegoPage({ params }) {
         {/* Live stats — client component */}
         <LiveStats slug={slug} color={color} />
 
-        {/* Primary streamers */}
-        {primary.length > 0 && (
-          <section style={{ marginTop: 48 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-              <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff' }}>
-                Top streamers de {categoryName}
-              </h2>
-              <span style={{ fontSize: 12, fontWeight: 700, background: `${color}22`, color, border: `1px solid ${color}44`, borderRadius: 8, padding: '2px 9px' }}>
-                {primary.length}
-              </span>
-            </div>
-            <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 16 }}>
-              {categoryName} es su categoría principal en Twitch o Kick
-            </p>
-            <StreamerGrid streamers={primarySlim} isPrimary={true} />
-          </section>
-        )}
-
-        {/* Secondary streamers */}
-        {secondary.length > 0 && (
-          <section style={{ marginTop: 40 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-              <h2 style={{ fontSize: 18, fontWeight: 700, color: '#fff' }}>
-                También juegan {categoryName}
-              </h2>
-              <span style={{ fontSize: 12, background: 'var(--bg-card)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)', borderRadius: 8, padding: '2px 9px' }}>
-                {secondary.length}
-              </span>
-            </div>
-            <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 16 }}>
-              Su segunda categoría más frecuente en el canal
-            </p>
-            <StreamerGrid streamers={secondarySlim} isPrimary={false} />
-          </section>
-        )}
-
-        {/* Events */}
         {/* Clips — server-rendered, guaranteed Hispanic streamers */}
         {clips.length > 0 && (
-          <section style={{ marginTop: 52 }}>
+          <section style={{ marginTop: 40 }}>
             <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 6 }}>
               Clips virales de la comunidad
             </h2>
@@ -349,6 +341,42 @@ export default async function JuegoPage({ params }) {
                 </a>
               ))}
             </div>
+          </section>
+        )}
+
+        {/* Primary streamers */}
+        {primary.length > 0 && (
+          <section style={{ marginTop: 52 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+              <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff' }}>
+                Top streamers de {categoryName}
+              </h2>
+              <span style={{ fontSize: 12, fontWeight: 700, background: `${color}22`, color, border: `1px solid ${color}44`, borderRadius: 8, padding: '2px 9px' }}>
+                {primary.length}
+              </span>
+            </div>
+            <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 16 }}>
+              {categoryName} es su categoría principal en Twitch o Kick
+            </p>
+            <StreamerGrid streamers={primarySlim} isPrimary={true} />
+          </section>
+        )}
+
+        {/* Secondary streamers */}
+        {secondary.length > 0 && (
+          <section style={{ marginTop: 40 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+              <h2 style={{ fontSize: 18, fontWeight: 700, color: '#fff' }}>
+                También juegan {categoryName}
+              </h2>
+              <span style={{ fontSize: 12, background: 'var(--bg-card)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)', borderRadius: 8, padding: '2px 9px' }}>
+                {secondary.length}
+              </span>
+            </div>
+            <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 16 }}>
+              Su segunda categoría más frecuente en el canal
+            </p>
+            <StreamerGrid streamers={secondarySlim} isPrimary={false} />
           </section>
         )}
 

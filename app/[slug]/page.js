@@ -248,7 +248,7 @@ function NotFound() {
     <div style={{minHeight:'100vh',background:'var(--bg-primary)',display:'flex',flexDirection:'column'}}>
       <header style={{borderBottom:'1px solid var(--color-border)',padding:'14px 24px',display:'flex',alignItems:'center',gap:8,background:'var(--bg-secondary)'}}>
         <a href="/" style={{textDecoration:'none',display:'flex',alignItems:'center',gap:8}}>
-          <span style={{fontSize:20}}>🎮</span>
+          <span className="header-icon" style={{fontSize:20}}>🎮</span>
           <span style={{fontSize:18,fontWeight:800,background:'linear-gradient(135deg,#7C3AED,#53FC18)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>STREAMDLE</span>
         </a>
       </header>
@@ -314,12 +314,13 @@ export default function StreamerPage() {
           .panel-relacionados{order:99;}
         }
         .panel-datos-mobile{display:none;}
+        @media(max-width:640px){.header-icon{display:none!important;}}
       `}</style>
 
       <header style={{borderBottom:'1px solid var(--color-border)',padding:'14px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--bg-secondary)',gap:12,flexWrap:'wrap'}}>
         <div style={{display:'flex',alignItems:'center',gap:10}}>
           <a href="/" style={{textDecoration:'none',display:'flex',alignItems:'center',gap:8}}>
-            <span style={{fontSize:20}}>🎮</span>
+            <span className="header-icon" style={{fontSize:20}}>🎮</span>
             <span style={{fontSize:18,fontWeight:800,background:'linear-gradient(135deg,#7C3AED,#53FC18)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>STREAMDLE</span>
           </a>
           <a href="/explorar" style={{fontSize:11,fontWeight:600,color:'var(--color-text-secondary)',textDecoration:'none',padding:'4px 10px',borderRadius:8,border:'1px solid var(--color-border)',background:'var(--bg-card)',whiteSpace:'nowrap'}}>🔍 Explorar</a>

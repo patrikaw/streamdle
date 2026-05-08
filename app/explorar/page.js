@@ -106,6 +106,7 @@ export default function ExplorarPage() {
         .explorar-card-inner { transition: border-color 0.18s ease, box-shadow 0.18s ease; }
         .explorar-card:hover .explorar-card-inner { box-shadow: 0 8px 32px rgba(0,0,0,0.35); }
         .explorar-card[data-live="true"]:hover .explorar-card-inner { border-color: var(--card-color) !important; }
+        @media (max-width: 640px) { .header-icon { display: none !important; } }
       `}</style>
 
       {/* Header */}
@@ -116,7 +117,7 @@ export default function ExplorarPage() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 20 }}>🎮</span>
+            <span className="header-icon" style={{ fontSize: 20 }}>🎮</span>
             <span style={{
               fontSize: 18, fontWeight: 800,
               background: 'linear-gradient(135deg, #7C3AED, #53FC18)',

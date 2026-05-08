@@ -73,6 +73,7 @@ export default async function JuegosPage() {
         }
         .juegos-card-accent { transition: opacity 0.18s ease; opacity: 0.5; }
         .juegos-card:hover .juegos-card-accent { opacity: 1; }
+        @media (max-width: 640px) { .header-icon { display: none !important; } }
       `}</style>
 
       {/* Header */}
@@ -84,7 +85,7 @@ export default async function JuegosPage() {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
-            <span style={{ fontSize: 20 }}>🎮</span>
+            <span className="header-icon" style={{ fontSize: 20 }}>🎮</span>
             <span style={{
               fontSize: 18, fontWeight: 800,
               background: 'linear-gradient(135deg, #7C3AED, #53FC18)',

@@ -389,6 +389,7 @@ export default function StreamersIndex({
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+      <style>{`@media(max-width:640px){.header-icon{display:none!important;}}`}</style>
 
       {/* HEADER */}
       <header style={{
@@ -398,7 +399,7 @@ export default function StreamersIndex({
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 20 }}>🎮</span>
+            <span className="header-icon" style={{ fontSize: 20 }}>🎮</span>
             <span style={{
               fontSize: 18, fontWeight: 800,
               background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
