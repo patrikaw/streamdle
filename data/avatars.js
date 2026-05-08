@@ -53,14 +53,21 @@ async function fetchAndCache() {
 
     if (twitchLogins.length === 0) return {};
 
-    const res = await fetch(`/api/twitch-avatars?logins=${twitchLogins.join(',')}`);
-
-    if (!res.ok) {
-      console.error(`Avatar API error: ${res.status}`);
-      return memoryCache || {};
+    // Twitch API acepta hasta 100 logins por request — enviar en chunks
+    const chunks = [];
+    for (let i = 0; i < twitchLogins.length; i += 100) {
+      chunks.push(twitchLogins.slice(i, i + 100));
     }
 
-    const data = await res.json();
+    const results = await Promise.all(
+      chunks.map(chunk =>
+        fetch(`/api/twitch-avatars?logins=${chunk.join(',')}`)
+          .then(r => r.ok ? r.json() : {})
+          .catch(() => ({}))
+      )
+    );
+
+    const data = Object.assign({}, ...results);
 
     if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
       console.warn('Avatar API devolvió datos vacíos');
