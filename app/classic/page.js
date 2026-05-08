@@ -333,7 +333,10 @@ export default function ClassicPage() {
 
   useEffect(() => {
     if (!query.trim()) { setSuggestions([]); return; }
-    setSuggestions(searchStreamers(query, country).filter(s => !alreadyGuessed.includes(s.id)).slice(0,12));
+    const t = setTimeout(() => {
+      setSuggestions(searchStreamers(query, country).filter(s => !alreadyGuessed.includes(s.id)).slice(0,12));
+    }, 120);
+    return () => clearTimeout(t);
   }, [query, country, alreadyGuessed]);
 
   useEffect(() => {

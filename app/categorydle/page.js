@@ -173,7 +173,7 @@ export default function CategorydlePage() {
   }, [country]);
   useEffect(() => {
     const newPool = country === 'ALL' ? STREAMERS : STREAMERS.filter(s => s.country === country);
-    setCategories(getCategories(STREAMERS));
+    setCategories(getCategories(newPool));
     const key = getTodayKey(country);
     const saved = localStorage.getItem(key);
     if (saved) {
@@ -207,11 +207,14 @@ export default function CategorydlePage() {
 
   useEffect(() => {
     if (!query.trim()) { setSuggestions([]); return; }
-    const q = query.toLowerCase();
-    const results = categories
-      .filter(c => c.toLowerCase().includes(q) && !guesses.includes(c))
-      .slice(0, 8);
-    setSuggestions(results);
+    const t = setTimeout(() => {
+      const q = query.toLowerCase();
+      const results = categories
+        .filter(c => c.toLowerCase().includes(q) && !guesses.includes(c))
+        .slice(0, 8);
+      setSuggestions(results);
+    }, 120);
+    return () => clearTimeout(t);
   }, [query, categories, guesses]);
 
   useEffect(() => {
