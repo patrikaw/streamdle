@@ -55,8 +55,13 @@ export async function GET(request) {
       return NextResponse.json({ error: 'No logins provided' }, { status: 400 });
     }
 
-    const token = await getTwitchToken();
     const loginList = logins.split(',').map(l => l.trim()).filter(Boolean);
+
+    if (loginList.length > 150) {
+      return NextResponse.json({ error: 'Too many logins' }, { status: 400 });
+    }
+
+    const token = await getTwitchToken();
 
     // Lotes de 100 (límite de Twitch API)
     const batches = [];

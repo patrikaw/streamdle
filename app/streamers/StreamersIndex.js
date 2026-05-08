@@ -308,6 +308,14 @@ export default function StreamersIndex({
       list = list.filter(s => s.country === country);
     }
 
+    // Rank calculado sobre el pool completo del país, antes del filtro de búsqueda
+    let rankMap = RANK_MAP;
+    if (country !== 'ALL') {
+      const localSorted = [...list].sort((a,b) => toNum(b.total_followers)-toNum(a.total_followers));
+      rankMap = {};
+      localSorted.forEach((s,i) => { rankMap[s.id] = i+1; });
+    }
+
     const q = search.trim().toLowerCase();
     if (q) {
       list = list.filter(s =>
@@ -327,13 +335,6 @@ export default function StreamersIndex({
 
     const sorted = sortStreamers(list, effectiveSort);
 
-    // Rank local cuando hay filtro de país, global cuando es ALL
-    let rankMap = RANK_MAP;
-    if (country !== 'ALL') {
-      const localSorted = [...list].sort((a,b) => toNum(b.total_followers)-toNum(a.total_followers));
-      rankMap = {};
-      localSorted.forEach((s,i) => { rankMap[s.id] = i+1; });
-    }
     return sorted.map(s => ({ ...s, _rank: rankMap[s.id] }));
   }, [search, country, sort]);
 

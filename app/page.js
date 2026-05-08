@@ -135,13 +135,17 @@ export default function Home() {
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '16px',
         }}>
-          {GAMES.map((game) => (
-            <div
+          {GAMES.map((game) => {
+          const isHigherdle = game.slug === 'higherdle';
+          const Wrapper = isHigherdle ? 'div' : 'a';
+          const wrapperProps = isHigherdle ? {} : { href: `/${game.slug}` };
+          return (
+            <Wrapper
               key={game.slug}
-              style={{ textDecoration: 'none', cursor: 'pointer', height: '100%' }}
+              {...wrapperProps}
+              style={{ textDecoration: 'none', height: '100%', display: 'block' }}
               onMouseEnter={() => setHoveredGame(game.slug)}
               onMouseLeave={() => setHoveredGame(null)}
-              onClick={() => { window.location.href = game.slug === 'higherdle' ? '/higherdle' : `/${game.slug}`; }}
             >
               <div style={{
                 background: 'var(--bg-card)',
@@ -200,7 +204,7 @@ export default function Home() {
                       { label: '⏱️ Horas', href: '/higherdle?mode=hours', color: '#0891B2' },
                       { label: '🏆 Peak', href: '/higherdle?mode=peak', color: '#7C3AED' },
                     ].map(btn => (
-                      <a key={btn.href} href={btn.href} onClick={e => e.stopPropagation()} style={{
+                      <a key={btn.href} href={btn.href} style={{
                         color: btn.color, fontSize: '13px', fontWeight: '700',
                         textDecoration: 'none', padding: '4px 0',
                       }}>{btn.label}  </a>
@@ -220,8 +224,9 @@ export default function Home() {
                   </div>
                 )}
               </div>
-            </div>
-          ))}
+            </Wrapper>
+          );
+        })}
         </div>
 
         {/* Footer links */}
