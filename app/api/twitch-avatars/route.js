@@ -57,8 +57,8 @@ export async function GET(request) {
 
     const loginList = logins.split(',').map(l => l.trim()).filter(Boolean);
 
-    if (loginList.length > 150) {
-      return NextResponse.json({ error: 'Too many logins' }, { status: 400 });
+    if (loginList.length === 0) {
+      return NextResponse.json({});
     }
 
     const token = await getTwitchToken();
