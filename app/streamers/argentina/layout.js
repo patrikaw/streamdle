@@ -1,3 +1,5 @@
+import { STREAMERS } from '../../../data/streamers';
+
 export const metadata = {
   title: 'Streamers Argentinos — Ranking Twitch y Kick',
   description: 'Ranking completo de streamers argentinos de Twitch y Kick. Explorá a Spreen, Coscu, Momo, Robleis, Carreraaa y más de 40 streamers de Argentina ordenados por seguidores, peak viewers y horas.',
@@ -23,5 +25,28 @@ export const metadata = {
 };
 
 export default function Layout({ children }) {
-  return children;
+  const streamers = STREAMERS
+    .filter(s => s.country === 'AR')
+    .sort((a, b) => Number(b.total_followers) - Number(a.total_followers));
+
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Streamers Argentinos',
+    url: 'https://streamdle.net/streamers/argentina',
+    numberOfItems: streamers.length,
+    itemListElement: streamers.map((s, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: s.display_name,
+      url: `https://streamdle.net/${s.display_name.toLowerCase().replace(/\s+/g, '-')}`,
+    })),
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      {children}
+    </>
+  );
 }

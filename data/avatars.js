@@ -92,6 +92,28 @@ const KICK_AVATARS = {
   'cristorata7':       'https://files.kick.com/images/user/37748685/profile_image/conversion/bb8c1847-06c9-452b-9800-673997f74107-fullsize.webp',
 };
 
+export async function getAvatarsForLogins(logins) {
+  if (!logins.length) return memoryCache || {};
+
+  const cached = memoryCache || {};
+  const missing = logins.filter(l => !(l in cached));
+
+  if (missing.length === 0) return cached;
+
+  try {
+    const res = await fetch(`/api/twitch-avatars?logins=${missing.join(',')}`);
+    if (!res.ok) return cached;
+    const data = await res.json();
+    if (!data || typeof data !== 'object') return cached;
+
+    memoryCache = { ...cached, ...data };
+    memoryCacheTime = Date.now();
+    return memoryCache;
+  } catch {
+    return cached;
+  }
+}
+
 export function getAvatarUrl(streamer, avatars = {}) {
   if (streamer.twitch) {
     const key = streamer.twitch.toLowerCase();

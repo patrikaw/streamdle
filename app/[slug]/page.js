@@ -295,9 +295,11 @@ export default function StreamerPage() {
         @media(max-width:768px){
           .streamer-grid{grid-template-columns:1fr!important;}
           .community-section-empty{display:none!important;}
-          .panel-datos{order:-1;}
+          .panel-datos{display:none!important;}
+          .panel-datos-mobile{display:block!important;}
           .panel-relacionados{order:99;}
         }
+        .panel-datos-mobile{display:none;}
       `}</style>
 
       <header style={{borderBottom:'1px solid var(--color-border)',padding:'14px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--bg-secondary)',gap:12,flexWrap:'wrap'}}>
@@ -477,6 +479,21 @@ export default function StreamerPage() {
               <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:12}}>🧠 ¿Cuánto sabés de {streamer.display_name}?</div>
               <TriviaSection streamer={streamer}/>
             </div>
+
+            {/* DATOS (solo mobile) */}
+            {extraData.length>0&&(
+              <div className="panel-datos-mobile" style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-border)',padding:'12px 14px'}}>
+                <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Datos</div>
+                <div style={{display:'flex',flexDirection:'column',gap:9}}>
+                  {extraData.map((d,i)=>(
+                    <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:8,paddingBottom:i<extraData.length-1?9:0,borderBottom:i<extraData.length-1?'1px solid var(--color-border)':undefined}}>
+                      <span style={{fontSize:11,color:'var(--color-text-secondary)',flexShrink:0}}>{d.label}</span>
+                      <span style={{fontSize:12,fontWeight:600,color:'#fff',textAlign:'right'}}>{d.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* BANNER JUEGOS */}
             <div style={{background:'linear-gradient(135deg,rgba(124,58,237,0.15),rgba(83,252,24,0.08))',border:'1px solid rgba(124,58,237,0.3)',borderRadius:12,padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10}}>

@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { STREAMERS } from '../../data/streamers';
-import { getAvatars, getAvatarUrl } from '../../data/avatars';
+import { getAvatarsForLogins, getAvatarUrl } from '../../data/avatars';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -286,9 +286,17 @@ export default function StreamersIndex({
   const [page,    setPage]    = useState(1);
   const [avatars, setAvatars] = useState({});
 
+  const paginatedLogins = useMemo(
+    () => paginated.filter(s => s.twitch).map(s => s.twitch.toLowerCase()),
+    [paginated]
+  );
+
   useEffect(() => {
-    getAvatars().then(data => setAvatars(data || {}));
-  }, []);
+    if (!paginatedLogins.length) return;
+    getAvatarsForLogins(paginatedLogins).then(data =>
+      setAvatars(prev => ({ ...prev, ...data }))
+    );
+  }, [paginatedLogins]);
 
   useEffect(() => { setPage(1); }, [search, country, sort]);
 
@@ -342,7 +350,10 @@ export default function StreamersIndex({
   }, [search, country, sort]);
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
-  const paginated  = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const paginated  = useMemo(
+    () => filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+    [filtered, page]
+  );
 
   useEffect(() => {
     if (page > 1) window.scrollTo({ top: 0, behavior: 'smooth' });

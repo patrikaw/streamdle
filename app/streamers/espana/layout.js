@@ -1,3 +1,5 @@
+import { STREAMERS } from '../../../data/streamers';
+
 export const metadata = {
   title: 'Streamers Españoles — Ranking Twitch y Kick',
   description: 'Ranking completo de streamers españoles de Twitch y Kick. Ibai, Auronplay, Rubius, TheGrefg, IlloJuan y más de 80 streamers de España ordenados por seguidores, peak viewers y horas.',
@@ -23,5 +25,28 @@ export const metadata = {
 };
 
 export default function Layout({ children }) {
-  return children;
+  const streamers = STREAMERS
+    .filter(s => s.country === 'ES')
+    .sort((a, b) => Number(b.total_followers) - Number(a.total_followers));
+
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Streamers Españoles',
+    url: 'https://streamdle.net/streamers/espana',
+    numberOfItems: streamers.length,
+    itemListElement: streamers.map((s, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: s.display_name,
+      url: `https://streamdle.net/${s.display_name.toLowerCase().replace(/\s+/g, '-')}`,
+    })),
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      {children}
+    </>
+  );
 }

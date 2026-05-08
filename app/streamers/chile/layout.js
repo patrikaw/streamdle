@@ -1,3 +1,5 @@
+import { STREAMERS } from '../../../data/streamers';
+
 export const metadata = {
   title: 'Streamers Chilenos — Ranking Twitch y Kick',
   description: 'Ranking de streamers chilenos de Twitch y Kick. Los mejores streamers de Chile ordenados por seguidores y peak viewers.',
@@ -23,5 +25,28 @@ export const metadata = {
 };
 
 export default function Layout({ children }) {
-  return children;
+  const streamers = STREAMERS
+    .filter(s => s.country === 'CL')
+    .sort((a, b) => Number(b.total_followers) - Number(a.total_followers));
+
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Streamers Chilenos',
+    url: 'https://streamdle.net/streamers/chile',
+    numberOfItems: streamers.length,
+    itemListElement: streamers.map((s, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: s.display_name,
+      url: `https://streamdle.net/${s.display_name.toLowerCase().replace(/\s+/g, '-')}`,
+    })),
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      {children}
+    </>
+  );
 }
