@@ -5,7 +5,7 @@ import {
   getCategoriesWithMinStreamers,
   getStreamersByCategory,
 } from '../../../lib/categories';
-import { fetchTwitchGame, fetchIGDBGame, fetchAvatarsBatch, fetchClipsById } from '../../../lib/twitch-server';
+import { fetchTwitchGame, fetchIGDBGame, fetchAvatarsBatch, fetchClipsById, fetchClipsByGame } from '../../../lib/twitch-server';
 import { getEventsForCategory } from '../../../data/events';
 import LiveStats from './LiveStats';
 import StreamerGrid from './StreamerGrid';
@@ -117,18 +117,22 @@ export default async function JuegoPage({ params }) {
 
   const logins = allStreamers.map(s => s.twitch).filter(Boolean);
 
-  // Top clip IDs from our streamers, sorted by views — guaranteed Hispanic content
+  // Fallback clip IDs for non-game categories (Just Chatting, Sports, etc.)
   const topClipIds = allStreamers
     .filter(s => s.top_clip_id)
     .sort((a, b) => (b.top_clip_views || 0) - (a.top_clip_views || 0))
     .slice(0, 20)
     .map(s => s.top_clip_id);
 
-  const [gameInfo, igdbInfo, avatars, clips] = await Promise.all([
-    fetchTwitchGame(categoryName).catch(() => null),
+  // Resolve game info first so we can use game_id for category-accurate clips
+  const gameInfo = await fetchTwitchGame(categoryName).catch(() => null);
+
+  const [igdbInfo, avatars, clips] = await Promise.all([
     fetchIGDBGame(categoryName).catch(() => null),
     fetchAvatarsBatch(logins).catch(() => ({})),
-    fetchClipsById(topClipIds).catch(() => []),
+    gameInfo?.id
+      ? fetchClipsByGame(gameInfo.id, logins).catch(() => [])
+      : fetchClipsById(topClipIds).catch(() => []),
   ]);
 
   const boxArt = gameInfo?.box_art_url?.replace('{width}', '285').replace('{height}', '380') ?? null;
