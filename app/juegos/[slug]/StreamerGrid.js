@@ -78,11 +78,6 @@ function StreamerCard({ streamer, rank, isPrimary }) {
               {streamer.personality}
             </span>
           )}
-          {!isPrimary && (
-            <span style={{ fontSize: 10, background: 'var(--game-color-bg)', color: 'var(--game-color)', border: '1px solid var(--game-color-border)', borderRadius: 4, padding: '1px 6px' }}>
-              secundaria
-            </span>
-          )}
         </div>
       </div>
     </a>

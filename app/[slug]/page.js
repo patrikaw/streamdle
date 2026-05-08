@@ -289,7 +289,7 @@ export default function StreamerPage() {
     streamer.kick_followers>0&&{name:'Kick',followers:streamer.kick_followers,hours:streamer.kick_hours,color:'#53FC18',url:kickUrl},
   ].filter(Boolean);
 
-  const crumbs=[{label:'Streamdle',href:'/'},{label:'Streamers',href:'/streamers'}];
+  const crumbs=[{label:'Explorar',href:'/explorar'},{label:'Streamers',href:'/streamers'}];
   const cSlug=countrySlug(streamer.country);
   if(cSlug) crumbs.push({label:`${flagOf(streamer.country)} ${countryName(streamer.country)}`,href:`/streamers/${cSlug}`});
   crumbs.push({label:streamer.display_name,href:null});
