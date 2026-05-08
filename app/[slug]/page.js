@@ -431,16 +431,7 @@ export default function StreamerPage() {
                   )}
                 </div>
               </div>
-            ) : (
-              <div className="community-section-empty" style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-border)',padding:'12px 14px'}}>
-                <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Comunidad & Esports</div>
-                <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                  <div><div style={{fontSize:10,color:'var(--color-text-secondary)',marginBottom:4,fontWeight:600}}>Comunidad</div><span style={{fontSize:12,color:'var(--color-border)'}}>Sin comunidad conocida</span></div>
-                  <div><div style={{fontSize:10,color:'var(--color-text-secondary)',marginBottom:4,fontWeight:600}}>Equipo de Esports</div><span style={{fontSize:12,color:'var(--color-border)'}}>Sin equipo registrado</span></div>
-                  <div><div style={{fontSize:10,color:'var(--color-text-secondary)',marginBottom:4,fontWeight:600}}>Eventos</div><span style={{fontSize:12,color:'var(--color-border)'}}>Sin eventos registrados</span></div>
-                </div>
-              </div>
-            )}
+            ) : null}
 
             {/* CLIP */}
             {streamer.top_clip_id&&(

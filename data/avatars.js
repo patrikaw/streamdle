@@ -102,6 +102,22 @@ const KICK_AVATARS = {
 export async function getAvatarsForLogins(logins) {
   if (!logins.length) return memoryCache || {};
 
+  // Si memoryCache está vacío, intentar cargar desde localStorage primero
+  // (evita un fetch de red cuando el usuario viene de una sesión anterior)
+  if (!memoryCache && typeof window !== 'undefined') {
+    try {
+      const savedTime = localStorage.getItem(STORAGE_TIME_KEY);
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved && savedTime && Date.now() - parseInt(savedTime, 10) < STORAGE_TTL) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object' && Object.keys(parsed).length > 10) {
+          memoryCache = parsed;
+          memoryCacheTime = parseInt(savedTime, 10);
+        }
+      }
+    } catch {}
+  }
+
   const cached = memoryCache || {};
   const missing = logins.filter(l => !(l in cached));
 

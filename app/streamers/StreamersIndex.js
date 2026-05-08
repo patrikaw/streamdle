@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatarsForLogins, getAvatarUrl } from '../../data/avatars';
 
@@ -349,12 +349,30 @@ export default function StreamersIndex({
     [paginated]
   );
 
-  useEffect(() => {
-    if (!paginatedLogins.length) return;
-    getAvatarsForLogins(paginatedLogins).then(data =>
+  // Ref siempre actualizado con los logins visibles — necesario para el handler de bfcache
+  const paginatedLoginsRef = useRef(paginatedLogins);
+  useEffect(() => { paginatedLoginsRef.current = paginatedLogins; }, [paginatedLogins]);
+
+  const loadAvatars = useCallback((logins) => {
+    if (!logins.length) return;
+    getAvatarsForLogins(logins).then(data =>
       setAvatars(prev => ({ ...prev, ...data }))
     );
-  }, [paginatedLogins]);
+  }, []);
+
+  useEffect(() => {
+    loadAvatars(paginatedLogins);
+  }, [paginatedLogins, loadAvatars]);
+
+  // Cuando el browser restaura la página desde bfcache (botón atrás),
+  // los effects de React no se vuelven a ejecutar. Este listener lo compensa.
+  useEffect(() => {
+    const handlePageShow = (e) => {
+      if (e.persisted) loadAvatars(paginatedLoginsRef.current);
+    };
+    window.addEventListener('pageshow', handlePageShow);
+    return () => window.removeEventListener('pageshow', handlePageShow);
+  }, [loadAvatars]);
 
   useEffect(() => {
     if (page > 1) window.scrollTo({ top: 0, behavior: 'smooth' });
