@@ -189,25 +189,27 @@ export default async function JuegoPage({ params }) {
       </header>
 
       {/* Breadcrumb */}
-      <div style={{
-        maxWidth: 1000, margin: '0 auto', padding: '12px 24px 0',
-        display: 'flex', alignItems: 'center', gap: 6,
-        fontSize: 12, color: 'var(--color-text-secondary)', flexWrap: 'wrap',
-      }}>
-        {[
-          { label: 'Inicio', href: '/' },
-          { label: 'Juegos', href: '/juegos' },
-          { label: categoryName, href: null },
-        ].map((c, i) => (
-          <span key={i} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            {i > 0 && <span>›</span>}
-            {c.href ? (
-              <Link href={c.href} style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>{c.label}</Link>
-            ) : (
-              <span style={{ color: 'var(--color-purple-light)', fontWeight: 600 }}>{c.label}</span>
-            )}
-          </span>
-        ))}
+      <div style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--color-border)' }}>
+        <div style={{
+          maxWidth: 1000, margin: '0 auto', padding: '10px 24px 12px',
+          display: 'flex', alignItems: 'center', gap: 6,
+          fontSize: 12, color: 'var(--color-text-secondary)', flexWrap: 'wrap',
+        }}>
+          {[
+            { label: 'Streamdle', href: '/' },
+            { label: 'Juegos', href: '/juegos' },
+            { label: categoryName, href: null },
+          ].map((c, i) => (
+            <span key={i} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              {i > 0 && <span>›</span>}
+              {c.href ? (
+                <Link href={c.href} style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>{c.label}</Link>
+              ) : (
+                <span style={{ color: 'var(--color-purple-light)', fontWeight: 600 }}>{c.label}</span>
+              )}
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Hero */}
