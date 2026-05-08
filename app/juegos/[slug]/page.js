@@ -159,6 +159,7 @@ export default async function JuegoPage({ params }) {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         background: 'var(--bg-secondary)',
         position: 'sticky', top: 0, zIndex: 10,
+        gap: 12, flexWrap: 'wrap',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
@@ -173,6 +174,11 @@ export default async function JuegoPage({ params }) {
           <Link href="/juegos" style={{ fontSize: 13, color: 'var(--color-text-secondary)', textDecoration: 'none' }}>Juegos</Link>
           <span style={{ color: 'var(--color-border)' }}>/</span>
           <span style={{ fontSize: 13, color: '#fff', fontWeight: 600 }}>{categoryName}</span>
+        </div>
+        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
+          {[{href:'/classic',label:'🎯 Classic'},{href:'/avatardle',label:'👤 Avatardle'},{href:'/emojidle',label:'😂 Emojidle'},{href:'/categorydle',label:'🎮 Categorydle'},{href:'/chatdle',label:'💬 Chatdle'},{href:'/higherdle',label:'📊 Higherdle'}].map(g=>(
+            <Link key={g.href} href={g.href} style={{background:'var(--bg-card)',border:'1px solid var(--color-border)',color:'white',borderRadius:8,padding:'5px 12px',fontSize:10,fontWeight:600,textDecoration:'none',whiteSpace:'nowrap'}}>{g.label}</Link>
+          ))}
         </div>
       </header>
 

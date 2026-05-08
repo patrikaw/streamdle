@@ -4,6 +4,9 @@ import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
+import { categoryToSlug, getCategoriesWithMinStreamers } from '../../lib/categories';
+
+const VALID_GAME_SLUGS = new Set(getCategoriesWithMinStreamers(7).map(c => c.slug));
 
 function findStreamer(slug) {
   return STREAMERS.find(s =>
@@ -375,8 +378,20 @@ export default function StreamerPage() {
                 </div>
                 {streamer.description?.trim()&&<p style={{fontSize:13,color:'var(--color-text-secondary)',lineHeight:1.6,margin:'0 0 10px',fontStyle:'italic',borderLeft:'3px solid var(--color-purple)',paddingLeft:12}}>"{streamer.description}"</p>}
                 <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
-                  {streamer.top_category&&<span style={{fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.2)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)'}}>{streamer.top_category}</span>}
-                  {streamer.second_category&&streamer.second_category!=='(No tiene)'&&<span style={{fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.1)',color:'var(--color-text-secondary)',border:'1px solid var(--color-border)'}}>{streamer.second_category}</span>}
+                  {streamer.top_category&&(()=>{
+                    const sl=categoryToSlug(streamer.top_category);
+                    const s={fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.2)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)',textDecoration:'none'};
+                    return VALID_GAME_SLUGS.has(sl)
+                      ?<a href={`/juegos/${sl}`} style={s}>{streamer.top_category}</a>
+                      :<span style={s}>{streamer.top_category}</span>;
+                  })()}
+                  {streamer.second_category&&streamer.second_category!=='(No tiene)'&&(()=>{
+                    const sl=categoryToSlug(streamer.second_category);
+                    const s={fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.1)',color:'var(--color-text-secondary)',border:'1px solid var(--color-border)',textDecoration:'none'};
+                    return VALID_GAME_SLUGS.has(sl)
+                      ?<a href={`/juegos/${sl}`} style={s}>{streamer.second_category}</a>
+                      :<span style={s}>{streamer.second_category}</span>;
+                  })()}
                 </div>
                 {(streamer.top_content||streamer.second_content)&&(
                   <div style={{display:'flex',gap:6,flexWrap:'wrap',marginTop:5}}>
