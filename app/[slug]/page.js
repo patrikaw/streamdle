@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
@@ -263,7 +263,7 @@ export default function StreamerPage() {
   if (!streamer) return <NotFound/>;
 
   const avatarUrl=getAvatarUrl(streamer,avatars);
-  const related=getRelated(streamer);
+  const related=useMemo(()=>getRelated(streamer),[streamer.id]);
   const debut=debutYear(streamer.created_at);
   const age=calcAge(streamer.birth_year, streamer.birth_month, streamer.birth_day);
   const isPartner=streamer.broadcaster_type==='partner';

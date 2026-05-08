@@ -38,7 +38,7 @@ function formatNum(n) {
 
 function getTodayKey(country) {
   const d = new Date();
-  return `categorydle_${country}_${d.getFullYear()}${d.getMonth()}${d.getDate()}`;
+  return `categorydle_${country}_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
 function Countdown() {

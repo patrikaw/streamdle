@@ -22,7 +22,7 @@ const MAX_ATTEMPTS = 6;
 
 function getTodayKey(country) {
   const d = new Date();
-  return `chatdle_${country}_${d.getFullYear()}${d.getMonth()}${d.getDate()}`;
+  return `chatdle_${country}_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
 function formatNum(n) {
@@ -106,10 +106,14 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
         </div>
 
         {/* Frase + streamer */}
-        <div style={{
+        <a href={`/${slug}`} style={{
           background: 'var(--bg-primary)', borderRadius: '12px', padding: '16px',
           marginBottom: '16px', border: '1px solid var(--color-purple)',
-        }}>
+          textDecoration: 'none', color: 'inherit', transition: 'border-color 0.18s', display: 'block',
+        }}
+          onMouseOver={e => e.currentTarget.style.borderColor = 'var(--color-purple-light)'}
+          onMouseOut={e => e.currentTarget.style.borderColor = 'var(--color-purple)'}
+        >
           <p style={{
             fontSize: '15px', fontStyle: 'italic', color: 'white',
             textAlign: 'center', marginBottom: '14px', lineHeight: 1.5,
@@ -134,7 +138,7 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
               </div>
             </div>
           </div>
-        </div>
+        </a>
 
         <div style={{ textAlign: 'center', marginBottom: '16px', padding: '10px', background: 'var(--bg-primary)', borderRadius: '8px' }}>
           <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '4px' }}>Próxima frase en</div>

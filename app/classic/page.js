@@ -303,12 +303,13 @@ export default function ClassicPage() {
   const [alreadyGuessed, setAlreadyGuessed] = useState([]);
   const [avatars, setAvatars] = useState({});
   const [yesterday, setYesterday] = useState(null);
+  const [showSwipeHint, setShowSwipeHint] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => { getAvatars().then(data => setAvatars(data)); }, []);
   useEffect(() => { const yday = getYesterdayStreamer(country,'classic',0); setYesterday(yday); }, [country]);
 
-  const getTodayKey = (c) => { const d = new Date(); return `classic_${c}_${d.getFullYear()}${d.getMonth()}${d.getDate()}`; };
+  const getTodayKey = (c) => { const d = new Date(); return `classic_${c}_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
 
   useEffect(() => {
     const key = getTodayKey(country);
@@ -328,12 +329,19 @@ export default function ClassicPage() {
   useEffect(() => {
     if (!target || guesses.length === 0) return;
     localStorage.setItem(getTodayKey(country), JSON.stringify({ guesses:alreadyGuessed,won,gameOver,targetId:target.id }));
-  }, [guesses, won, gameOver]);
+  }, [guesses, won, gameOver, country]);
 
   useEffect(() => {
     if (!query.trim()) { setSuggestions([]); return; }
     setSuggestions(searchStreamers(query, country).filter(s => !alreadyGuessed.includes(s.id)).slice(0,12));
   }, [query, country, alreadyGuessed]);
+
+  useEffect(() => {
+    if (guesses.length !== 1) return;
+    setShowSwipeHint(true);
+    const t = setTimeout(() => setShowSwipeHint(false), 3000);
+    return () => clearTimeout(t);
+  }, [guesses.length]);
 
   useEffect(() => {
     if (!target) return;
@@ -355,6 +363,17 @@ export default function ClassicPage() {
 
   return (
     <div style={{ minHeight:'100vh',background:'var(--bg-primary)' }}>
+      <style>{`
+        @keyframes swipeHintFade {
+          0%   { opacity:0; transform:translateY(-3px); }
+          15%  { opacity:1; transform:translateY(0); }
+          75%  { opacity:1; }
+          100% { opacity:0; }
+        }
+        @media (max-width: 768px) {
+          .swipe-hint-mobile { display:flex !important; }
+        }
+      `}</style>
       <header style={{ borderBottom:'1px solid var(--color-border)',padding:'14px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--bg-secondary)',gap:'12px',flexWrap:'wrap' }}>
         <a href="/" style={{ textDecoration:'none',display:'flex',alignItems:'center',gap:'8px' }}>
           <span className="hide-mobile" style={{ fontSize:'20px' }}>🎮</span>
@@ -432,6 +451,11 @@ export default function ClassicPage() {
         <div style={{ display:'flex',flexDirection:'column',gap:'8px' }}>
           {guesses.map((guess, i) => <GuessRow key={guess.id} guess={guess} target={target} avatars={avatars} country={country} />)}
         </div>
+        {showSwipeHint && (
+          <div className="swipe-hint-mobile" style={{ display:'none',alignItems:'center',justifyContent:'center',gap:'6px',fontSize:'11px',color:'var(--color-text-secondary)',padding:'6px 0 2px',animation:'swipeHintFade 3s ease forwards',pointerEvents:'none' }}>
+            <span>←</span><span>deslizá para ver más</span><span>→</span>
+          </div>
+        )}
 
         {gameOver && !showModal && (
           <div style={{ textAlign:'center',marginTop:'24px' }}>

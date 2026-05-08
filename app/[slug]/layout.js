@@ -9,7 +9,7 @@ function findStreamer(slug) {
 function fmt(n) {
   if (!n) return '0';
   const num = Number(n);
-  if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace('.0','') + 'M';
+  if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace('.0', '') + 'M';
   if (num >= 1_000) return Math.round(num / 1_000) + 'K';
   return String(num);
 }
@@ -24,6 +24,16 @@ function countryAdj(code) {
   return map[code] || 'hispanohablante';
 }
 
+function countryFull(code) {
+  const map = {
+    ES: 'Spain', AR: 'Argentina', MX: 'Mexico', PE: 'Peru',
+    CO: 'Colombia', CL: 'Chile', VE: 'Venezuela', UY: 'Uruguay',
+    SV: 'El Salvador', PR: 'Puerto Rico', GT: 'Guatemala',
+    DO: 'Dominican Republic', FR: 'France', NO: 'Norway',
+  };
+  return map[code] || code;
+}
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const s = findStreamer(slug);
@@ -32,6 +42,7 @@ export async function generateMetadata({ params }) {
     return {
       title: 'Streamer no encontrado — Streamdle',
       description: 'Este streamer no existe en Streamdle.',
+      robots: { index: false, follow: false },
     };
   }
 
@@ -54,6 +65,10 @@ export async function generateMetadata({ params }) {
     title,
     description,
     keywords,
+    robots: {
+      index: false,
+      follow: false,
+    },
     openGraph: {
       title,
       description,
@@ -69,9 +84,8 @@ export async function generateMetadata({ params }) {
       description,
       images: ['https://streamdle.net/og-image.jpg'],
     },
-    robots: {
-      index: false,
-      follow: false,
+    alternates: {
+      canonical: `https://streamdle.net/${slug}`,
     },
   };
 }
@@ -82,6 +96,53 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function Layout({ children }) {
-  return children;
+// Layout inyecta el Schema.org JSON-LD como script tag
+// Cuando quites el noindex, Google va a leer estos datos estructurados
+export default async function Layout({ children, params }) {
+  const { slug } = await params;
+  const s = findStreamer(slug);
+
+  // Sin streamer → sin schema
+  if (!s) return children;
+
+  const adj = countryAdj(s.country);
+  const description = `${s.display_name}${s.real_name ? ` (${s.real_name})` : ''} es un streamer ${adj} con ${fmt(s.total_followers)} seguidores.`;
+
+  // Construir sameAs con todas las redes disponibles
+  const sameAs = [
+    s.twitch        && `https://twitch.tv/${s.twitch}`,
+    s.kick          && `https://kick.com/${s.kick}`,
+    s.twitter_url,
+    s.instagram_url,
+    s.tiktok_url,
+    s.youtube_url,
+  ].filter(Boolean);
+
+  const schemaOrg = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: s.real_name || s.display_name,
+    alternateName: s.display_name,
+    description,
+    nationality: { '@type': 'Country', name: countryFull(s.country) },
+    url: `https://streamdle.net/${slug}`,
+    ...(sameAs.length > 0 && { sameAs }),
+    jobTitle: 'Streamer',
+    ...(s.birth_year && s.birth_month && s.birth_day && {
+      birthDate: `${s.birth_year}-${String(s.birth_month).padStart(2,'0')}-${String(s.birth_day).padStart(2,'0')}`,
+    }),
+    ...(s.top_category && {
+      knowsAbout: [s.top_category, s.second_category].filter(Boolean),
+    }),
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
+      />
+      {children}
+    </>
+  );
 }

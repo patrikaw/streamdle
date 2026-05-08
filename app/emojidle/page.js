@@ -36,8 +36,7 @@ const STREAMER_EMOJIS = {
   'slakuntv': ['🎮','⚽','👶','🔵'],
   'illojuan': ['🐴','💃','🎙️','👴'],
   'elxokas': ['🍴','🤬','🏔️','🔋'],
-  'silverk': ['🎥','🐀','🔴','🗣️'],
-  'zilverkk': ['🎥','🐀','🔴','🗣️'],
+  'zilverk': ['🎥','🐀','🔴','🗣️'],
   'kingsleague': ['🃏','⚽','🏆','👑'],
   'alexby11': ['🚀','🔫','🌌','🛰️'],
   'vegetta777': ['🦄','🟣','🏰','🧱'],
@@ -192,7 +191,7 @@ function formatNum(n) {
 
 function getTodayKey(country) {
   const d = new Date();
-  return `emojidle_${country}_${d.getFullYear()}${d.getMonth()}${d.getDate()}`;
+  return `emojidle_${country}_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
 function Countdown() {
@@ -218,9 +217,9 @@ function Countdown() {
 
 function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherGames }) {
   const [copied, setCopied] = useState(false);
+  const slug = getSlug(target);
   const emoji = won ? (attempts <= 2 ? '🔥' : attempts <= 4 ? '✅' : '😅') : '💀';
   const resultText = getResultText(country, won, attempts, target);
-  const slug = getSlug(target);
   const emojis = getStreamEmojis(target) || [];
   const blocks = Array.from({ length: MAX_ATTEMPTS }).map((_, i) =>
     i < attempts - 1 ? '🟥' : i === attempts - 1 && won ? '🟩' : i < attempts ? '🟥' : '⬛'
@@ -247,11 +246,15 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
           <div style={{ fontSize: '22px', letterSpacing: '4px', margin: '10px 0' }}>{blocks}</div>
         </div>
 
-        <div style={{
+        <a href={`/${slug}`} style={{
           background: 'var(--bg-primary)', borderRadius: '12px', padding: '16px',
           display: 'flex', alignItems: 'center', gap: '12px',
           marginBottom: '16px', border: '1px solid var(--color-purple)',
-        }}>
+          textDecoration: 'none', color: 'inherit', transition: 'border-color 0.18s',
+        }}
+          onMouseOver={e => e.currentTarget.style.borderColor = 'var(--color-purple-light)'}
+          onMouseOut={e => e.currentTarget.style.borderColor = 'var(--color-purple)'}
+        >
           {avatarUrl ? (
             <img src={avatarUrl} alt={target.display_name}
               style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover' }} />
@@ -264,12 +267,13 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
             <div style={{ fontWeight: '700', fontSize: '16px' }}>{target.display_name}</div>
             <div style={{ fontSize: '20px', marginTop: '4px' }}>{emojis.join(' ')}</div>
             <div style={{ display: 'flex', gap: '5px', marginTop: '6px', flexWrap: 'wrap' }}>
-              {target.twitch && <a href={`https://twitch.tv/${target.twitch}`} target="_blank" rel="noopener noreferrer" className="badge-twitch">Twitch</a>}
-              {target.kick && <a href={`https://kick.com/${target.kick}`} target="_blank" rel="noopener noreferrer" className="badge-kick">Kick</a>}
-              {target.youtube && <a href={`https://youtube.com/${target.youtube}`} target="_blank" rel="noopener noreferrer" className="badge-youtube">YouTube</a>}
+              {target.twitch && <span className="badge-twitch">Twitch</span>}
+              {target.kick && <span className="badge-kick">Kick</span>}
+              {target.youtube && <span className="badge-youtube">YouTube</span>}
             </div>
+            <div style={{ fontSize: '11px', color: 'var(--color-purple-light)', marginTop: '4px', fontWeight: '600' }}>Ver perfil completo →</div>
           </div>
-        </div>
+        </a>
 
         <div style={{ textAlign: 'center', marginBottom: '16px', padding: '10px', background: 'var(--bg-primary)', borderRadius: '8px' }}>
           <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '4px' }}>Próximos emojis en</div>
