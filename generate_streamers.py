@@ -137,6 +137,13 @@ for r in rows:
         'top_clip_id:' + jv(cl_id),
         'top_clip_title:' + jv(r.get('top_clip_title','').strip() or None),
         'top_clip_views:' + str(si('top_clip_views')),
+        'top_content:' + jv(r.get('top_content','').strip() or None),
+        'second_content:' + jv(r.get('second_content','').strip() or None),
+        'bio:' + jv(r.get('bio','').strip() or None),
+        'trivia_q:' + jv(r.get('trivia_q','').strip() or None),
+        'trivia_a:' + jv(r.get('trivia_a','').strip() or None),
+        'trivia_opts:' + jv([o.strip() for o in r.get('trivia_opts','').split('|') if o.strip()] or None),
+        'trivia_exp:' + jv(r.get('trivia_exp','').strip() or None),
     ]
     entries.append('{' + ', '.join(parts) + '}')
 

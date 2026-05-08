@@ -18,8 +18,8 @@ export const metadata = {
     images: ['https://streamdle.net/og-image.jpg'],
   },
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
   },
 };
 

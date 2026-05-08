@@ -94,23 +94,34 @@ function getRelated(streamer) {
 
 function generateTrivia(streamer) {
   const rnd = arr => [...arr].sort(()=>Math.random()-0.5);
-  const qs = [];
+  const autoQs = [];
 
   const othersPhrase = STREAMERS.filter(s=>s.id!==streamer.id&&s.catchphrase?.trim());
   if (streamer.catchphrase?.trim() && othersPhrase.length>=3) {
     const wrongs = rnd(othersPhrase).slice(0,3).map(s=>s.catchphrase);
-    qs.push({ q:`¿Cuál de estas frases es de ${streamer.display_name}?`, options:rnd([streamer.catchphrase,...wrongs]), answer:streamer.catchphrase, exp:`"${streamer.catchphrase}" es una de las frases más reconocibles de ${streamer.display_name}.` });
+    autoQs.push({ q:`¿Cuál de estas frases es de ${streamer.display_name}?`, options:rnd([streamer.catchphrase,...wrongs]), answer:streamer.catchphrase, exp:`"${streamer.catchphrase}" es una de las frases más reconocibles de ${streamer.display_name}.` });
   }
 
   const debut = debutYear(streamer.created_at);
   if (debut) {
     const wrongs = rnd([debut-3,debut+2,debut-1,debut+1]).slice(0,3);
-    qs.push({ q:`¿En qué año creó ${streamer.display_name} su canal de Twitch?`, options:rnd([debut,...wrongs]).map(String), answer:String(debut), exp:`${streamer.display_name} abrió su canal en ${debut}, lleva ${yearsActive(streamer.created_at)} años en Twitch.` });
+    autoQs.push({ q:`¿En qué año creó ${streamer.display_name} su canal de Twitch?`, options:rnd([debut,...wrongs]).map(String), answer:String(debut), exp:`${streamer.display_name} abrió su canal en ${debut}, lleva ${yearsActive(streamer.created_at)} años en Twitch.` });
   }
 
+  const othersEmoji = STREAMERS.filter(s=>s.id!==streamer.id&&s.emojis?.trim());
+  if (streamer.emojis?.trim() && othersEmoji.length>=3) {
+    const wrongs = rnd(othersEmoji).slice(0,3).map(s=>s.emojis);
+    autoQs.push({ q:`¿Cuál de estos grupos de emojis representa a ${streamer.display_name}?`, options:rnd([streamer.emojis,...wrongs]), answer:streamer.emojis, exp:`${streamer.emojis} son los emojis que representan a ${streamer.display_name} en Streamdle.` });
+  }
 
+  const hasCustom = streamer.trivia_q?.trim() && streamer.trivia_a?.trim() && streamer.trivia_opts?.length >= 1;
+  const pool = rnd(autoQs).slice(0, hasCustom ? 3 : 4);
 
-  return rnd(qs).slice(0,4);
+  if (!hasCustom) return pool;
+
+  const customOpts = rnd([streamer.trivia_a, ...streamer.trivia_opts.slice(0,3)]);
+  const customQ = { q: streamer.trivia_q, options: customOpts, answer: streamer.trivia_a, exp: streamer.trivia_exp || '' };
+  return [customQ, ...pool];
 }
 
 function TriviaSection({ streamer }) {
@@ -367,6 +378,12 @@ export default function StreamerPage() {
                   {streamer.top_category&&<span style={{fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.2)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)'}}>{streamer.top_category}</span>}
                   {streamer.second_category&&streamer.second_category!=='(No tiene)'&&<span style={{fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.1)',color:'var(--color-text-secondary)',border:'1px solid var(--color-border)'}}>{streamer.second_category}</span>}
                 </div>
+                {(streamer.top_content||streamer.second_content)&&(
+                  <div style={{display:'flex',gap:6,flexWrap:'wrap',marginTop:5}}>
+                    {streamer.top_content&&<span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:20,background:'rgba(245,158,11,0.15)',color:'#FBBF24',border:'1px solid rgba(245,158,11,0.3)'}}>🎯 {streamer.top_content}</span>}
+                    {streamer.second_content&&<span style={{fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(245,158,11,0.08)',color:'#D97706',border:'1px solid rgba(245,158,11,0.2)'}}>🎯 {streamer.second_content}</span>}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -402,7 +419,7 @@ export default function StreamerPage() {
             {(streamer.community||streamer.esports_team||(streamer.events&&streamer.events.length>0)) ? (
               <div className="community-section" style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-border)',padding:'12px 14px'}}>
                 <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Comunidad & Esports</div>
-                <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                <div style={{display:'flex',flexDirection:'row',flexWrap:'wrap',gap:12,alignItems:'flex-start'}}>
                   {streamer.community&&(
                     <div>
                       <div style={{fontSize:10,color:'var(--color-text-secondary)',marginBottom:4,fontWeight:600}}>Comunidad</div>
@@ -503,14 +520,17 @@ export default function StreamerPage() {
             {/* SEO */}
             <div style={{padding:'14px 16px',borderRadius:12,border:'1px solid var(--color-border)',background:'var(--bg-secondary)'}}>
               <h2 style={{fontSize:14,fontWeight:700,marginBottom:7}}>Sobre {streamer.display_name}</h2>
-              <p style={{fontSize:13,color:'var(--color-text-secondary)',lineHeight:1.7,margin:0}}>
-                {streamer.display_name} es un streamer de {countryName(streamer.country)}{streamer.real_name?`, cuyo nombre real es ${streamer.real_name}`:''}
-                {age?` (${age} años)`:''}.{debut?` Activo en Twitch desde ${debut},`:''} acumula {fmtFull(streamer.total_followers)} seguidores y {fmtFull(streamer.total_hours)} horas de transmisión.
-                {streamer.top_category?` Su contenido principal es ${streamer.top_category}`:''}
-                {streamer.second_category&&streamer.second_category!=='(No tiene)'?` y ${streamer.second_category}`:''}.
-                {streamer.peak_viewers>0?` Su pico histórico fue de ${fmtFull(streamer.peak_viewers)} espectadores simultáneos.`:''}
-                {streamer.is_active?' Actualmente sigue activo.':''}
-              </p>
+              {streamer.bio?.trim()
+                ? <p style={{fontSize:13,color:'var(--color-text-secondary)',lineHeight:1.7,margin:0}}>{streamer.bio}</p>
+                : <p style={{fontSize:13,color:'var(--color-text-secondary)',lineHeight:1.7,margin:0}}>
+                    {streamer.display_name} es un streamer de {countryName(streamer.country)}{streamer.real_name?`, cuyo nombre real es ${streamer.real_name}`:''}
+                    {age?` (${age} años)`:''}.{debut?` Activo en Twitch desde ${debut},`:''} acumula {fmtFull(streamer.total_followers)} seguidores y {fmtFull(streamer.total_hours)} horas de transmisión.
+                    {streamer.top_category?` Su contenido principal es ${streamer.top_category}`:''}
+                    {streamer.second_category&&streamer.second_category!=='(No tiene)'?` y ${streamer.second_category}`:''}.
+                    {streamer.peak_viewers>0?` Su pico histórico fue de ${fmtFull(streamer.peak_viewers)} espectadores simultáneos.`:''}
+                    {streamer.is_active?' Actualmente sigue activo.':''}
+                  </p>
+              }
             </div>
           </div>
 

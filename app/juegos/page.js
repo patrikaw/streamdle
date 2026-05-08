@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import { getCategoriesWithMinStreamers } from '../../lib/categories';
+import { fetchTwitchGame } from '../../lib/twitch-server';
+
+export const revalidate = 86400;
 
 export const metadata = {
   title: 'Juegos — Streamers Hispanohablantes por Categoría | Streamdle',
@@ -45,8 +48,19 @@ function flagOf(code) {
   return m[code] ?? '🌍';
 }
 
-export default function JuegosPage() {
+export default async function JuegosPage() {
   const categories = getCategoriesWithMinStreamers(7);
+
+  const artResults = await Promise.allSettled(
+    categories.map(cat => fetchTwitchGame(cat.name))
+  );
+  const artMap = {};
+  artResults.forEach((res, i) => {
+    if (res.status === 'fulfilled' && res.value?.box_art_url) {
+      artMap[categories[i].name] = res.value.box_art_url
+        .replace('{width}', '120').replace('{height}', '160');
+    }
+  });
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
@@ -130,9 +144,10 @@ export default function JuegosPage() {
                   style={{
                     background: 'var(--bg-card)',
                     border: '1px solid var(--color-border)',
-                    borderRadius: 14, padding: '20px 22px',
+                    borderRadius: 14, padding: '16px 18px',
                     position: 'relative', overflow: 'hidden',
                     transition: 'border-color 0.18s ease',
+                    display: 'flex', gap: 14, alignItems: 'flex-start',
                   }}
                 >
                   <div
@@ -143,44 +158,65 @@ export default function JuegosPage() {
                     }}
                   />
 
-                  <div style={{ marginTop: 4, marginBottom: 12 }}>
-                    <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 4 }}>
-                      {cat.name}
-                    </h2>
-                    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                      <span style={{
-                        fontSize: 12, fontWeight: 700,
-                        background: `${color}22`, color,
-                        border: `1px solid ${color}44`,
-                        borderRadius: 8, padding: '2px 8px',
-                      }}>
-                        {cat.totalCount} streamers
-                      </span>
-                      <span style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
-                        {cat.primaryCount} principal · {cat.secondaryCount} secundaria
-                      </span>
-                    </div>
+                  {/* Key art */}
+                  <div style={{
+                    width: 60, height: 80, flexShrink: 0, borderRadius: 8,
+                    overflow: 'hidden', marginTop: 4,
+                    background: `${color}22`,
+                    border: `1px solid ${color}33`,
+                  }}>
+                    {artMap[cat.name]
+                      ? <img src={artMap[cat.name]} alt={cat.name} width={60} height={80}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                      : <div style={{
+                          width: '100%', height: '100%',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          fontSize: 22, color,
+                        }}>🎮</div>
+                    }
                   </div>
 
-                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                    {cat.topStreamers.map(s => (
-                      <span key={s.id} style={{
-                        display: 'inline-flex', alignItems: 'center', gap: 4,
-                        fontSize: 12, color: 'var(--color-text-secondary)',
-                        background: 'var(--bg-secondary)', borderRadius: 6, padding: '3px 8px',
-                      }}>
-                        {flagOf(s.country)} {s.display_name}
-                        <span style={{ color: '#555', fontSize: 11 }}>{fmt(s.total_followers)}</span>
-                      </span>
-                    ))}
-                    {cat.totalCount > 3 && (
-                      <span style={{
-                        fontSize: 12, color: 'var(--color-text-secondary)',
-                        background: 'var(--bg-secondary)', borderRadius: 6, padding: '3px 8px',
-                      }}>
-                        +{cat.totalCount - 3} más
-                      </span>
-                    )}
+                  {/* Text */}
+                  <div style={{ flex: 1, minWidth: 0, marginTop: 4 }}>
+                    <div style={{ marginBottom: 10 }}>
+                      <h2 style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginBottom: 5, lineHeight: 1.2 }}>
+                        {cat.name}
+                      </h2>
+                      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                        <span style={{
+                          fontSize: 12, fontWeight: 700,
+                          background: `${color}22`, color,
+                          border: `1px solid ${color}44`,
+                          borderRadius: 8, padding: '2px 8px',
+                        }}>
+                          {cat.totalCount} streamers
+                        </span>
+                        <span style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
+                          {cat.primaryCount} principal · {cat.secondaryCount} sec.
+                        </span>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+                      {cat.topStreamers.map(s => (
+                        <span key={s.id} style={{
+                          display: 'inline-flex', alignItems: 'center', gap: 4,
+                          fontSize: 11, color: 'var(--color-text-secondary)',
+                          background: 'var(--bg-secondary)', borderRadius: 6, padding: '3px 7px',
+                        }}>
+                          {flagOf(s.country)} {s.display_name}
+                          <span style={{ color: '#555', fontSize: 10 }}>{fmt(s.total_followers)}</span>
+                        </span>
+                      ))}
+                      {cat.totalCount > 3 && (
+                        <span style={{
+                          fontSize: 11, color: 'var(--color-text-secondary)',
+                          background: 'var(--bg-secondary)', borderRadius: 6, padding: '3px 7px',
+                        }}>
+                          +{cat.totalCount - 3} más
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </Link>
