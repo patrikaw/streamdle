@@ -1,13 +1,10 @@
-const title = 'Categorydle — Adiviná las Categorías del Streamer';
-const description = 'Adiviná las 2 categorías que más streameó el streamer del día. ¿Conocés sus juegos favoritos?';
-
 export const metadata = {
-  title,
-  description,
-  keywords: 'categorias streamer twitch, adivinar juego streamer, wordle categorias twitch',
+  title: 'Categorydle — Adiviná las Categorías del Streamer',
+  description: '¿Sabés qué juegos transmite cada streamer hispano? Adiviná al streamer del día usando sus dos categorías favoritas en Twitch y Kick.',
+  keywords: ['categorydle', 'adivinar streamer por categoría', 'categorias streamers twitch', 'wordle categorias', 'categorydle hispano', 'juegos streamers twitch'],
   openGraph: {
-    title,
-    description,
+    title: 'Categorydle · ¿Sabés qué juega cada streamer hispano?',
+    description: 'Dos categorías, un streamer. Adiviná al hispano del día solo con sus juegos favoritos de Twitch y Kick.',
     url: 'https://streamdle.net/categorydle',
     siteName: 'Streamdle',
     images: [{ url: 'https://streamdle.net/og-image.jpg', width: 1200, height: 630 }],
@@ -16,9 +13,10 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title,
-    description,
+    title: 'Categorydle · ¿Sabés qué juega cada streamer hispano?',
+    description: 'Dos categorías, un streamer. Adiviná al hispano del día solo con sus juegos favoritos de Twitch y Kick.',
     images: ['https://streamdle.net/og-image.jpg'],
   },
+  alternates: { canonical: 'https://streamdle.net/categorydle' },
 };
 export default function Layout({ children }) { return children; }

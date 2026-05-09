@@ -1,13 +1,10 @@
-const title = 'Avatardle — Adiviná el Streamer por su Foto';
-const description = 'Adiviná el streamer hispanohablante por su foto de perfil pixelada. ¿Podés reconocerlo antes de que se aclare?';
-
 export const metadata = {
-  title,
-  description,
-  keywords: 'adivinar streamer foto, wordle foto streamer, streamer pixelado',
+  title: 'Avatardle — Adiviná el Streamer por su Foto',
+  description: 'La foto del streamer empieza pixelada y se va aclarando con cada intento. ¿Reconocés la cara del streamer hispano antes que nadie?',
+  keywords: ['avatardle', 'adivinar streamer por foto', 'streamer foto pixelada', 'wordle foto streamer', 'avatardle hispano', 'streamer pixelado twitch'],
   openGraph: {
-    title,
-    description,
+    title: 'Avatardle · ¿Reconocés al streamer por su foto pixelada?',
+    description: 'La foto empieza pixelada. Cada intento la aclara un poco más. ¿Podés adivinar al streamer hispano antes de agotar los intentos?',
     url: 'https://streamdle.net/avatardle',
     siteName: 'Streamdle',
     images: [{ url: 'https://streamdle.net/og-image.jpg', width: 1200, height: 630 }],
@@ -16,9 +13,10 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title,
-    description,
+    title: 'Avatardle · ¿Reconocés al streamer por su foto pixelada?',
+    description: 'La foto empieza pixelada. Cada intento la aclara un poco más. ¿Podés adivinar al streamer hispano antes de agotar los intentos?',
     images: ['https://streamdle.net/og-image.jpg'],
   },
+  alternates: { canonical: 'https://streamdle.net/avatardle' },
 };
 export default function Layout({ children }) { return children; }
