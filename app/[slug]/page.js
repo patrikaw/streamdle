@@ -389,28 +389,30 @@ export default function StreamerPage() {
                   </div>
                 </div>
                 {streamer.description?.trim()&&<p style={{fontSize:13,color:'var(--color-text-secondary)',lineHeight:1.6,margin:'0 0 10px',fontStyle:'italic',borderLeft:'3px solid var(--color-purple)',paddingLeft:12}}>"{streamer.description}"</p>}
-                <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
-                  {streamer.top_category&&(()=>{
-                    const sl=categoryToSlug(streamer.top_category);
-                    const s={fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.2)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)',textDecoration:'none'};
-                    return VALID_GAME_SLUGS.has(sl)
-                      ?<a href={`/juegos/${sl}`} style={s}>{streamer.top_category}</a>
-                      :<span style={s}>{streamer.top_category}</span>;
-                  })()}
-                  {streamer.second_category&&streamer.second_category!=='(No tiene)'&&(()=>{
-                    const sl=categoryToSlug(streamer.second_category);
-                    const s={fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.1)',color:'var(--color-text-secondary)',border:'1px solid var(--color-border)',textDecoration:'none'};
-                    return VALID_GAME_SLUGS.has(sl)
-                      ?<a href={`/juegos/${sl}`} style={s}>{streamer.second_category}</a>
-                      :<span style={s}>{streamer.second_category}</span>;
-                  })()}
-                </div>
-                {(streamer.top_content||streamer.second_content)&&(
-                  <div style={{display:'flex',gap:6,flexWrap:'wrap',marginTop:5}}>
-                    {streamer.top_content&&<span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:20,background:'rgba(245,158,11,0.15)',color:'#FBBF24',border:'1px solid rgba(245,158,11,0.3)'}}>🎯 {streamer.top_content}</span>}
-                    {streamer.second_content&&<span style={{fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(245,158,11,0.08)',color:'#D97706',border:'1px solid rgba(245,158,11,0.2)'}}>🎯 {streamer.second_content}</span>}
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:6}}>
+                  <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+                    {streamer.top_category&&(()=>{
+                      const sl=categoryToSlug(streamer.top_category);
+                      const s={fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.2)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)',textDecoration:'none'};
+                      return VALID_GAME_SLUGS.has(sl)
+                        ?<a href={`/juegos/${sl}`} style={s}>{streamer.top_category}</a>
+                        :<span style={s}>{streamer.top_category}</span>;
+                    })()}
+                    {streamer.second_category&&streamer.second_category!=='(No tiene)'&&(()=>{
+                      const sl=categoryToSlug(streamer.second_category);
+                      const s={fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.1)',color:'var(--color-text-secondary)',border:'1px solid var(--color-border)',textDecoration:'none'};
+                      return VALID_GAME_SLUGS.has(sl)
+                        ?<a href={`/juegos/${sl}`} style={s}>{streamer.second_category}</a>
+                        :<span style={s}>{streamer.second_category}</span>;
+                    })()}
                   </div>
-                )}
+                  {(streamer.top_content||streamer.second_content)&&(
+                    <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+                      {streamer.top_content&&<span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:20,background:'rgba(245,158,11,0.15)',color:'#FBBF24',border:'1px solid rgba(245,158,11,0.3)'}}>🎯 {streamer.top_content}</span>}
+                      {streamer.second_content&&<span style={{fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(245,158,11,0.08)',color:'#D97706',border:'1px solid rgba(245,158,11,0.2)'}}>🎯 {streamer.second_content}</span>}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
