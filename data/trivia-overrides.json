@@ -148,5 +148,55 @@
     "trivia_a2": "Brasil",
     "trivia_opts2": ["Argentina", "España", "México"],
     "trivia_exp2": "Brasil derrotó a Chile 6-2 en la final de enero de 2026, logrando el título por segundo año consecutivo."
+  },
+  "16": {
+    "trivia_q1": "Alexby es el creador de una de las series más icónicas de la historia de Twitch España. ¿Cómo se llama esta serie de supervivencia?",
+    "trivia_a1": "Egoland",
+    "trivia_opts1": ["Tortillaland", "Karmaland", "Pirataland"],
+    "trivia_exp1": "Alexby fue el cerebro y organizador principal detrás de Egoland (Rust), la serie que marcó el inicio de 2021 y reunió a los streamers más grandes.",
+    "trivia_q2": "¿Cuál es el nombre del famoso grupo de amigos que Alexby formó en los inicios de su carrera junto a Mangel, Staxx y otros?",
+    "trivia_a2": "La \"Crew\"",
+    "trivia_opts2": ["Los Compas", "El Escuadrón Salchichón", "Los Chicos del Barrio"],
+    "trivia_exp2": "Fue uno de los primeros grupos colaborativos de YouTube España, marcando una época dorada de vlogs y videojuegos."
+  },
+  "17": {
+    "trivia_q1": "Samuel de Luque es famoso por su obsesión con el orden y la estética en Minecraft. ¿Cómo se llama su mítica casa de color morado en Karmaland?",
+    "trivia_a1": "La Mansión Batracia",
+    "trivia_opts1": ["La Mansión Vegetta", "El Castillo del Rey", "La Fortaleza Morada"],
+    "trivia_exp1": "Vegetta bautizó así a su hogar, que siempre destaca por su arquitectura perfecta y, por supuesto, por ser de color morado.",
+    "trivia_q2": "¿Cuál es el nombre de la saga de libros que Vegetta777 escribió junto a su inseparable amigo Willyrex?",
+    "trivia_a2": "Wigetta",
+    "trivia_opts2": ["Los Secretos de Minecraft", "El Mundo de Samuel", "Crónicas de Karmaland"],
+    "trivia_exp2": "La saga Wigetta se convirtió en un fenómeno editorial juvenil, contando las aventuras de sus alter egos y sus mascotas Trotuman y Vakypandy."
+  },
+  "18": {
+    "trivia_q1": "Cristinini hizo historia al unirse a un evento deportivo masivo como voz principal y presentadora. ¿De qué programa se trata?",
+    "trivia_a1": "Grand Prix",
+    "trivia_opts1": ["El Chiringuito", "La Velada del Año", "Kings League"],
+    "trivia_exp1": "En 2023, Cris se convirtió en la presentadora encargada de las redes y el contenido digital en el regreso del mítico programa de TV española.",
+    "trivia_q2": "¿En qué organización de esports trabajó Cristinini como presentadora y creadora de contenido antes de ser streamer independiente top?",
+    "trivia_a2": "Vodafone Giants",
+    "trivia_opts2": ["KOI", "Movistar Riders", "Team Heretics"],
+    "trivia_exp2": "Cris fue la cara visible de Giants durante mucho tiempo, presentando sus programas y eventos oficiales."
+  },
+  "19": {
+    "trivia_q1": "Antes de ser un streamer de éxito, Luzu vivía en Estados Unidos y tenía un canal de vlogs muy famoso. ¿En qué ciudad residía?",
+    "trivia_a1": "San Francisco",
+    "trivia_opts1": ["Nueva York", "Los Ángeles", "Miami"],
+    "trivia_exp1": "Luzu se hizo mundialmente conocido por sus vlogs en San Francisco, donde mostraba su vida y sus reflexiones en el canal LuzuVlogs.",
+    "trivia_q2": "¿Cómo se llamaba el alter ego 'malvado' que Luzu interpretó durante la cuarta temporada de Karmaland?",
+    "trivia_a2": "Evil Luzu",
+    "trivia_opts2": ["Dark Luzu", "Luzu el Alcalde", "El Vengador"],
+    "trivia_exp2": "Tras perder las elecciones en el juego, Luzu desarrolló un personaje oscuro que se volvió uno de los arcos narrativos más queridos."
+  },
+  "20": {
+    "trivia_q1": "BarcaGamer es conocido por su gran amistad y colaboración constante con otro grupo de streamers mexicanos. ¿Cómo se llama su grupo?",
+    "trivia_a1": "Esos 4",
+    "trivia_opts1": ["Los Compas", "La Crew MX", "El Cuarteto de Monterrey"],
+    "trivia_exp1": "El grupo está formado por Barca, RobertoCein, Ded y JuanSGuarnizo (aunque a veces varía, ellos son el núcleo histórico).",
+    "trivia_q2": "¿Cuál es el objeto físico que se volvió un símbolo en los directos de BarcaGamer, incluso apareciendo en sus emotes?",
+    "trivia_a2": "Sus lentes (gafas)",
+    "trivia_opts2": ["Una gorra hacia atrás", "Una taza de café", "Unos cascos rosas"],
+    "trivia_exp2": "Los lentes de Barca son su sello de identidad visual y han protagonizado infinidad de bromas y memes en su comunidad."
   }
 }
