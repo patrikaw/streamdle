@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { STREAMERS } from '../../data/streamers';
+import SearchBar from '../components/SearchBar';
 import { getCategoriesWithMinStreamers } from '../../lib/categories';
 
 export const metadata = {
@@ -124,7 +125,7 @@ export default function ExplorarPage() {
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             }}>STREAMDLE</span>
           </Link>
-          <span style={{ color: 'var(--color-text-secondary)', fontSize: 13 }}>/ Explorar</span>
+          <SearchBar />
         </div>
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
           {GAME_NAV.map(g => (

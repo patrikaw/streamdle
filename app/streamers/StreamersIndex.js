@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import SearchBar from '../components/SearchBar';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatarsForLogins, getAvatarUrl } from '../../data/avatars';
 
@@ -406,7 +407,7 @@ export default function StreamersIndex({
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             }}>STREAMDLE</span>
           </a>
-          <a href="/explorar" style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '4px 10px', borderRadius: 8, border: '1px solid var(--color-border)', background: 'var(--bg-card)', whiteSpace: 'nowrap' }}>🔍 Explorar</a>
+          <SearchBar />
         </div>
         <div className="game-nav-links" style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
           {[

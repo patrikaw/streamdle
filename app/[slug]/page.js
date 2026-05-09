@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
+import SearchBar from '../components/SearchBar';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { categoryToSlug, getCategoriesWithMinStreamers } from '../../lib/categories';
@@ -323,7 +324,7 @@ export default function StreamerPage() {
             <span className="header-icon" style={{fontSize:20}}>🎮</span>
             <span style={{fontSize:18,fontWeight:800,background:'linear-gradient(135deg,#7C3AED,#53FC18)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>STREAMDLE</span>
           </a>
-          <a href="/explorar" style={{fontSize:11,fontWeight:600,color:'var(--color-text-secondary)',textDecoration:'none',padding:'4px 10px',borderRadius:8,border:'1px solid var(--color-border)',background:'var(--bg-card)',whiteSpace:'nowrap'}}>🔍 Explorar</a>
+          <SearchBar />
         </div>
         <div className="game-nav-links" style={{display:'flex',gap:4,flexWrap:'wrap',justifyContent:'center'}}>
           {[{href:'/classic',label:'🎯 Classic'},{href:'/avatardle',label:'👤 Avatardle'},{href:'/emojidle',label:'😂 Emojidle'},{href:'/categorydle',label:'🎮 Categorydle'},{href:'/chatdle',label:'💬 Chatdle'},{href:'/higherdle',label:'📊 Higherdle'}].map(g=>(

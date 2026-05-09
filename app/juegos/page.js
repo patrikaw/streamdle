@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getCategoriesWithMinStreamers } from '../../lib/categories';
+import SearchBar from '../components/SearchBar';
 import { fetchTwitchGame } from '../../lib/twitch-server';
 
 export const revalidate = 86400;
@@ -92,7 +93,7 @@ export default async function JuegosPage() {
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             }}>STREAMDLE</span>
           </Link>
-          <Link href="/explorar" style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '4px 10px', borderRadius: 8, border: '1px solid var(--color-border)', background: 'var(--bg-card)', whiteSpace: 'nowrap' }}>🔍 Explorar</Link>
+          <SearchBar />
         </div>
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
           {[{href:'/classic',label:'🎯 Classic'},{href:'/avatardle',label:'👤 Avatardle'},{href:'/emojidle',label:'😂 Emojidle'},{href:'/categorydle',label:'🎮 Categorydle'},{href:'/chatdle',label:'💬 Chatdle'},{href:'/higherdle',label:'📊 Higherdle'}].map(g=>(
