@@ -6,7 +6,7 @@ export default function Page() {
       defaultCountry="ES"
       pageTitle="Streamers de España"
       pageDesc="Explorá el ranking completo de streamers españoles en Twitch y Kick. Desde Ibai, Auronplay y Rubius hasta streamers emergentes. Más de 80 streamers de España."
-      breadcrumbLabel="🇪🇸 España"
+      breadcrumbLabel="España"
       canonicalSlug="españa"
     />
   );

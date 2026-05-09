@@ -6,7 +6,7 @@ export default function Page() {
       defaultCountry="PE"
       pageTitle="Streamers de Perú"
       pageDesc="Explorá los streamers peruanos en Twitch y Kick. ElZeein, SandraSkins y más."
-      breadcrumbLabel="🇵🇪 Perú"
+      breadcrumbLabel="Perú"
       canonicalSlug="peru"
     />
   );

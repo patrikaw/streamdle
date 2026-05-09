@@ -6,7 +6,7 @@ export default function Page() {
       defaultCountry="CL"
       pageTitle="Streamers de Chile"
       pageDesc="Explorá los streamers chilenos en Twitch y Kick, ordenados por seguidores, peak viewers y horas de stream."
-      breadcrumbLabel="🇨🇱 Chile"
+      breadcrumbLabel="Chile"
       canonicalSlug="chile"
     />
   );

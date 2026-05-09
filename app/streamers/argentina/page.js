@@ -6,7 +6,7 @@ export default function Page() {
       defaultCountry="AR"
       pageTitle="Streamers de Argentina"
       pageDesc="Explorá el ranking completo de streamers argentinos en Twitch y Kick. Desde Spreen, Coscu y Robleis hasta streamers emergentes. Filtrá por seguidores, peak viewers u horas de stream."
-      breadcrumbLabel="🇦🇷 Argentina"
+      breadcrumbLabel="Argentina"
       canonicalSlug="argentina"
     />
   );

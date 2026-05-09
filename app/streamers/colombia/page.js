@@ -6,7 +6,7 @@ export default function Page() {
       defaultCountry="CO"
       pageTitle="Streamers de Colombia"
       pageDesc="Explorá los streamers colombianos en Twitch y Kick. La Liendra, JhDeLaCruz, Pelicanger y más."
-      breadcrumbLabel="🇨🇴 Colombia"
+      breadcrumbLabel="Colombia"
       canonicalSlug="colombia"
     />
   );
