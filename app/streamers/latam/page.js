@@ -17,14 +17,27 @@ export const metadata = {
   alternates: { canonical: 'https://streamdle.net/streamers/latam' },
 };
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://streamdle.net/' },
+    { '@type': 'ListItem', position: 2, name: 'Streamers', item: 'https://streamdle.net/streamers' },
+    { '@type': 'ListItem', position: 3, name: 'LATAM', item: 'https://streamdle.net/streamers/latam' },
+  ],
+};
+
 export default function Page() {
   return (
-    <StreamersIndex
-      defaultCountry="LATAM"
-      pageTitle="Streamers de LATAM"
-      pageDesc="Explorá el ranking de streamers latinoamericanos en Twitch y Kick. Argentina, México, Colombia, Perú, Chile y más países de habla hispana."
-      breadcrumbLabel="LATAM"
-      canonicalSlug="latam"
-    />
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <StreamersIndex
+        defaultCountry="LATAM"
+        pageTitle="Streamers de LATAM"
+        pageDesc="Explorá el ranking de streamers latinoamericanos en Twitch y Kick. Argentina, México, Colombia, Perú, Chile y más países de habla hispana."
+        breadcrumbLabel="LATAM"
+        canonicalSlug="latam"
+      />
+    </>
   );
 }

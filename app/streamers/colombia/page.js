@@ -17,14 +17,27 @@ export const metadata = {
   alternates: { canonical: 'https://streamdle.net/streamers/colombia' },
 };
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://streamdle.net/' },
+    { '@type': 'ListItem', position: 2, name: 'Streamers', item: 'https://streamdle.net/streamers' },
+    { '@type': 'ListItem', position: 3, name: 'Colombia', item: 'https://streamdle.net/streamers/colombia' },
+  ],
+};
+
 export default function Page() {
   return (
-    <StreamersIndex
-      defaultCountry="CO"
-      pageTitle="Streamers de Colombia"
-      pageDesc="Explorá los streamers colombianos en Twitch y Kick. La Liendra, JhDeLaCruz, Pelicanger y más."
-      breadcrumbLabel="Colombia"
-      canonicalSlug="colombia"
-    />
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <StreamersIndex
+        defaultCountry="CO"
+        pageTitle="Streamers de Colombia"
+        pageDesc="Explorá los streamers colombianos en Twitch y Kick. La Liendra, JhDeLaCruz, Pelicanger y más."
+        breadcrumbLabel="Colombia"
+        canonicalSlug="colombia"
+      />
+    </>
   );
 }

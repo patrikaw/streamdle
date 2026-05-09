@@ -17,14 +17,27 @@ export const metadata = {
   alternates: { canonical: 'https://streamdle.net/streamers/chile' },
 };
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://streamdle.net/' },
+    { '@type': 'ListItem', position: 2, name: 'Streamers', item: 'https://streamdle.net/streamers' },
+    { '@type': 'ListItem', position: 3, name: 'Chile', item: 'https://streamdle.net/streamers/chile' },
+  ],
+};
+
 export default function Page() {
   return (
-    <StreamersIndex
-      defaultCountry="CL"
-      pageTitle="Streamers de Chile"
-      pageDesc="Explorá los streamers chilenos en Twitch y Kick, ordenados por seguidores, peak viewers y horas de stream."
-      breadcrumbLabel="Chile"
-      canonicalSlug="chile"
-    />
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <StreamersIndex
+        defaultCountry="CL"
+        pageTitle="Streamers de Chile"
+        pageDesc="Explorá los streamers chilenos en Twitch y Kick, ordenados por seguidores, peak viewers y horas de stream."
+        breadcrumbLabel="Chile"
+        canonicalSlug="chile"
+      />
+    </>
   );
 }

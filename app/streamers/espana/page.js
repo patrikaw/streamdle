@@ -17,14 +17,27 @@ export const metadata = {
   alternates: { canonical: 'https://streamdle.net/streamers/espana' },
 };
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://streamdle.net/' },
+    { '@type': 'ListItem', position: 2, name: 'Streamers', item: 'https://streamdle.net/streamers' },
+    { '@type': 'ListItem', position: 3, name: 'España', item: 'https://streamdle.net/streamers/espana' },
+  ],
+};
+
 export default function Page() {
   return (
-    <StreamersIndex
-      defaultCountry="ES"
-      pageTitle="Streamers de España"
-      pageDesc="Explorá el ranking completo de streamers españoles en Twitch y Kick. Desde Ibai, Auronplay y Rubius hasta streamers emergentes. Más de 80 streamers de España."
-      breadcrumbLabel="España"
-      canonicalSlug="españa"
-    />
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <StreamersIndex
+        defaultCountry="ES"
+        pageTitle="Streamers de España"
+        pageDesc="Explorá el ranking completo de streamers españoles en Twitch y Kick. Desde Ibai, Auronplay y Rubius hasta streamers emergentes. Más de 80 streamers de España."
+        breadcrumbLabel="España"
+        canonicalSlug="españa"
+      />
+    </>
   );
 }

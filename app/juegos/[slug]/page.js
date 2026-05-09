@@ -187,10 +187,21 @@ export default async function JuegoPage({ params }) {
     avatarUrl: avatars[s.twitch?.toLowerCase()] ?? null,
   }));
   const primarySlim = slim(primary);
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://streamdle.net/' },
+      { '@type': 'ListItem', position: 2, name: 'Juegos', item: 'https://streamdle.net/juegos' },
+      { '@type': 'ListItem', position: 3, name: categoryName, item: `https://streamdle.net/juegos/${slug}` },
+    ],
+  };
   const secondarySlim = slim(secondary);
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', '--game-color': color, '--game-color-bg': `${color}22`, '--game-color-border': `${color}44` }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <style>{`
         .streamer-card:hover { border-color: var(--game-color) !important; transform: translateY(-1px); }
         .game-mode-link:hover { border-color: var(--game-color) !important; background: var(--game-color-bg) !important; }

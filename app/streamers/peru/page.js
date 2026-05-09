@@ -17,14 +17,27 @@ export const metadata = {
   alternates: { canonical: 'https://streamdle.net/streamers/peru' },
 };
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://streamdle.net/' },
+    { '@type': 'ListItem', position: 2, name: 'Streamers', item: 'https://streamdle.net/streamers' },
+    { '@type': 'ListItem', position: 3, name: 'Perú', item: 'https://streamdle.net/streamers/peru' },
+  ],
+};
+
 export default function Page() {
   return (
-    <StreamersIndex
-      defaultCountry="PE"
-      pageTitle="Streamers de Perú"
-      pageDesc="Explorá los streamers peruanos en Twitch y Kick. ElZeein, SandraSkins y más."
-      breadcrumbLabel="Perú"
-      canonicalSlug="peru"
-    />
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <StreamersIndex
+        defaultCountry="PE"
+        pageTitle="Streamers de Perú"
+        pageDesc="Explorá los streamers peruanos en Twitch y Kick. ElZeein, SandraSkins y más."
+        breadcrumbLabel="Perú"
+        canonicalSlug="peru"
+      />
+    </>
   );
 }

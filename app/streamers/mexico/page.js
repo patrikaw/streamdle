@@ -17,14 +17,27 @@ export const metadata = {
   alternates: { canonical: 'https://streamdle.net/streamers/mexico' },
 };
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://streamdle.net/' },
+    { '@type': 'ListItem', position: 2, name: 'Streamers', item: 'https://streamdle.net/streamers' },
+    { '@type': 'ListItem', position: 3, name: 'México', item: 'https://streamdle.net/streamers/mexico' },
+  ],
+};
+
 export default function Page() {
   return (
-    <StreamersIndex
-      defaultCountry="MX"
-      pageTitle="Streamers de México"
-      pageDesc="Explorá el ranking completo de streamers mexicanos en Twitch y Kick. Desde JuanSGuarnizo, ElMariana y AriGameplays hasta streamers emergentes. Más de 30 streamers de México."
-      breadcrumbLabel="México"
-      canonicalSlug="mexico"
-    />
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <StreamersIndex
+        defaultCountry="MX"
+        pageTitle="Streamers de México"
+        pageDesc="Explorá el ranking completo de streamers mexicanos en Twitch y Kick. Desde JuanSGuarnizo, ElMariana y AriGameplays hasta streamers emergentes. Más de 30 streamers de México."
+        breadcrumbLabel="México"
+        canonicalSlug="mexico"
+      />
+    </>
   );
 }

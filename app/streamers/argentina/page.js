@@ -17,14 +17,27 @@ export const metadata = {
   alternates: { canonical: 'https://streamdle.net/streamers/argentina' },
 };
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://streamdle.net/' },
+    { '@type': 'ListItem', position: 2, name: 'Streamers', item: 'https://streamdle.net/streamers' },
+    { '@type': 'ListItem', position: 3, name: 'Argentina', item: 'https://streamdle.net/streamers/argentina' },
+  ],
+};
+
 export default function Page() {
   return (
-    <StreamersIndex
-      defaultCountry="AR"
-      pageTitle="Streamers de Argentina"
-      pageDesc="Explorá el ranking completo de streamers argentinos en Twitch y Kick. Desde Spreen, Coscu y Robleis hasta streamers emergentes. Filtrá por seguidores, peak viewers u horas de stream."
-      breadcrumbLabel="Argentina"
-      canonicalSlug="argentina"
-    />
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <StreamersIndex
+        defaultCountry="AR"
+        pageTitle="Streamers de Argentina"
+        pageDesc="Explorá el ranking completo de streamers argentinos en Twitch y Kick. Desde Spreen, Coscu y Robleis hasta streamers emergentes. Filtrá por seguidores, peak viewers u horas de stream."
+        breadcrumbLabel="Argentina"
+        canonicalSlug="argentina"
+      />
+    </>
   );
 }
