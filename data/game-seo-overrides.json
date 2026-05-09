@@ -1,0 +1,65 @@
+{
+  "just-chatting": {
+    "title": "Los streamers de Just Chatting más vistos en español",
+    "description": "Ibai, Auronplay, Rubius y los reyes del entretenimiento hispano en Twitch. La Velada, las Campanadas y todo el streaming de variedades en un lugar.",
+    "keywords": ["streamers just chatting", "just chatting twitch", "streamers de just chatting", "streamers hispanos twitch", "ibai twitch", "streams de entretenimiento"],
+    "openGraphTitle": "Top Just Chatting: Ibai, Auronplay y la crema hispana",
+    "openGraphDescription": "La categoría que manda en Twitch hispano. Ibai, Auronplay, Rubius y 140+ streamers de entretenimiento, humor y variedades."
+  },
+  "minecraft": {
+    "title": "Los streamers de Minecraft más vistos en español",
+    "description": "Descubre streamers hispanos de Minecraft, clips virales, trivia, stats y los creadores más populares de Twitch y Kick.",
+    "keywords": ["streamers minecraft", "minecraft twitch", "streamers de minecraft", "minecraft hispano", "streamers kick minecraft"],
+    "openGraphTitle": "Top streamers hispanos de Minecraft",
+    "openGraphDescription": "Los creadores de Minecraft más populares del streaming en español."
+  },
+  "fortnite": {
+    "title": "Los streamers de Fortnite más vistos en español",
+    "description": "TheGrefg tiene su propia skin en Fortnite y 12.7M fans en Twitch. Descubrí los mejores streamers hispanos de Fortnite, clips y stats.",
+    "keywords": ["streamers fortnite", "fortnite twitch", "streamers de fortnite", "fortnite hispano", "grefg fortnite skin", "streamers kick fortnite"],
+    "openGraphTitle": "Top Fortnite: TheGrefg, Ari y los mejores hispanos",
+    "openGraphDescription": "TheGrefg tiene skin propia y 12.7M seguidores. Fortnite y el streaming hispano, en un solo lugar."
+  },
+  "grand-theft-auto-v": {
+    "title": "Los streamers de GTA V más vistos en español",
+    "description": "Marbella Vice, El Dios de Todo y el mejor GTA RP hispano. JuanSGuarnizo, Cristinini y los streamers más creativos de GTA V en Twitch.",
+    "keywords": ["streamers gta v", "gta rp español", "streamers grand theft auto", "marbella vice twitch", "streamers gta twitch", "gta roleplay hispano"],
+    "openGraphTitle": "Top GTA V: roleplay, Marbella Vice y streaming hispano",
+    "openGraphDescription": "El GTA RP más viral del español: Marbella Vice, El Dios de Todo y los mejores roleplayers de Twitch y Kick."
+  },
+  "league-of-legends": {
+    "title": "Los streamers de League of Legends en español",
+    "description": "Ibai empezó en LoL y nunca lo dejó. Descubrí los mejores streamers hispanos de League of Legends en Twitch, con stats, trivia y clips.",
+    "keywords": ["streamers league of legends", "lol twitch español", "streamers lol hispanos", "league of legends español", "streamers lol", "lol streaming hispano"],
+    "openGraphTitle": "Top LoL: Ibai y los mejores streamers hispanos",
+    "openGraphDescription": "League of Legends nunca deja de crecer en la escena hispana. Stats, clips y trivia de los mejores streamers de LoL."
+  },
+  "valorant": {
+    "title": "Los streamers de Valorant más vistos en español",
+    "description": "biyin, Ampeterby7, k1ng y los mejores streamers hispanos de Valorant. Stats, clips y trivia de la escena competitiva en Twitch.",
+    "keywords": ["streamers valorant", "valorant twitch español", "streamers de valorant", "valorant hispano", "k1ng biyin valorant", "streamers kick valorant"],
+    "openGraphTitle": "Top Valorant: biyin, k1ng y la escena hispana",
+    "openGraphDescription": "El FPS más competitivo del streaming hispano. biyin, Ampeterby7, k1ng y todos los jugadores de Valorant en Twitch."
+  },
+  "counter-strike": {
+    "title": "Los streamers de Counter-Strike en español",
+    "description": "VEGETTA777, bysTaXx, goncho y los mejores streamers hispanos de CS2. Stats, clips y trivia de la escena competitiva de Counter-Strike.",
+    "keywords": ["streamers counter-strike", "cs twitch español", "streamers cs2", "counter strike hispano", "streamers kick cs", "cs2 streamers español"],
+    "openGraphTitle": "Top CS2: VEGETTA777, bysTaXx y la escena hispana",
+    "openGraphDescription": "Counter-Strike 2 y el streaming hispano: VEGETTA, bysTaXx y los mejores clutcheros de Twitch. Stats y clips."
+  },
+  "slots": {
+    "title": "Los streamers de Slots más vistos en español",
+    "description": "MarkitoNavaja, ElcanaldeJoaco y los streamers hispanos de Slots en Twitch y Kick. Descubrí el contenido de casino más popular en español.",
+    "keywords": ["streamers slots", "slots twitch español", "streamers de casino", "streamers slots hispanos", "markitonavaja slots", "kick slots español"],
+    "openGraphTitle": "Top Slots: MarkitoNavaja y la escena hispana de casino",
+    "openGraphDescription": "El contenido de casino más visto en español: MarkitoNavaja, ElcanaldeJoaco y los mejores streamers de Slots en Twitch y Kick."
+  },
+  "irl": {
+    "title": "Los streamers de IRL más vistos en español",
+    "description": "Alanalarana, nilojeda y los streamers hispanos que hacen IRL en Twitch. Calles, viajes y la vida real en directo, en español.",
+    "keywords": ["streamers irl", "irl twitch español", "streams al aire libre", "streamers vida real", "irl hispano twitch", "streamers just travel"],
+    "openGraphTitle": "Top IRL: streamers hispanos en la calle y el mundo",
+    "openGraphDescription": "Calles, viajes y vida real en español. Alanalarana, nilojeda y los mejores streamers de IRL en Twitch y Kick."
+  }
+}

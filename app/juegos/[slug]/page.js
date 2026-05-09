@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import gameSeoOverrides from '../../../data/game-seo-overrides.json';
 import SearchBar from '../../components/SearchBar';
 import {
   getCategoryFromSlug,
@@ -23,6 +24,27 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const name = getCategoryFromSlug(slug);
   if (!name) return {};
+
+  const seo = gameSeoOverrides[slug];
+  if (seo) {
+    return {
+      title: seo.title,
+      description: seo.description,
+      keywords: seo.keywords,
+      openGraph: {
+        title: seo.openGraphTitle,
+        description: seo.openGraphDescription,
+        url: `https://streamdle.net/juegos/${slug}`,
+      },
+      twitter: {
+        card: 'summary',
+        title: seo.openGraphTitle,
+        description: seo.openGraphDescription,
+      },
+      alternates: { canonical: `https://streamdle.net/juegos/${slug}` },
+    };
+  }
+
   return {
     title: `Streamers de ${name} en Español — Comunidad Hispana | Streamdle`,
     description: `Descubrí quiénes son los streamers hispanohablantes de ${name}. Ranking, clips virales y toda la cultura streamer alrededor de ${name} en Twitch y Kick.`,
@@ -32,6 +54,7 @@ export async function generateMetadata({ params }) {
       description: `Comunidad hispana de ${name}: ranking de streamers, clips y cultura.`,
       url: `https://streamdle.net/juegos/${slug}`,
     },
+    alternates: { canonical: `https://streamdle.net/juegos/${slug}` },
   };
 }
 
