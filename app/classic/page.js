@@ -381,10 +381,13 @@ export default function ClassicPage() {
         }
       `}</style>
       <header style={{ borderBottom:'1px solid var(--color-border)',padding:'14px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--bg-secondary)',gap:'12px',flexWrap:'wrap' }}>
-        <a href="/" style={{ textDecoration:'none',display:'flex',alignItems:'center',gap:'8px' }}>
-          <span className="hide-mobile" style={{ fontSize:'20px' }}>🎮</span>
-          <span style={{ fontSize:'18px',fontWeight:'800',background:'linear-gradient(135deg,#7C3AED,#53FC18)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text' }}>STREAMDLE</span>
-        </a>
+        <div style={{ display:'flex',alignItems:'center',gap:'10px' }}>
+          <a href="/" style={{ textDecoration:'none',display:'flex',alignItems:'center',gap:'8px' }}>
+            <span className="hide-mobile" style={{ fontSize:'20px' }}>🎮</span>
+            <span style={{ fontSize:'18px',fontWeight:'800',background:'linear-gradient(135deg,#7C3AED,#53FC18)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text' }}>STREAMDLE</span>
+          </a>
+          <a href="/explorar" style={{ fontSize:'11px',fontWeight:600,color:'var(--color-text-secondary)',textDecoration:'none',padding:'4px 10px',borderRadius:'8px',border:'1px solid var(--color-border)',background:'var(--bg-card)',whiteSpace:'nowrap' }}>🔍 Explorar</a>
+        </div>
         <div style={{ display:'flex',gap:'4px',flexWrap:'wrap',justifyContent:'center' }}>
           {[{href:'/classic',label:'🎯 Classic'},{href:'/avatardle',label:'👤 Avatardle'},{href:'/emojidle',label:'😂 Emojidle'},{href:'/categorydle',label:'🎮 Categorydle'},{href:'/chatdle',label:'💬 Chatdle'},{href:'/higherdle',label:'📊 Higherdle'}].map(g => (
             <a key={g.href} href={g.href} style={{ background:g.href==='/classic'?'#7C3AED':'var(--bg-card)',border:'1px solid var(--color-border)',color:'white',borderRadius:'8px',padding:'5px 12px',fontSize:'10px',fontWeight:'600',textDecoration:'none',whiteSpace:'nowrap' }}>{g.label}</a>

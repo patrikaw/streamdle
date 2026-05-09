@@ -85,6 +85,7 @@ export default function Home() {
           }}>STREAMDLE</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <a href="/explorar" style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '4px 10px', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--bg-card)', whiteSpace: 'nowrap' }}>🔍 Explorar</a>
           <span style={{
             fontSize: '12px',
             color: 'var(--color-text-secondary)',

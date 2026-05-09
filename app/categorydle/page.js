@@ -265,10 +265,13 @@ export default function CategorydlePage() {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         background: 'var(--bg-secondary)', gap: '12px', flexWrap: 'wrap',
       }}>
-        <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span className="hide-mobile" style={{ fontSize: '20px' }}>🎮</span>
-          <span style={{ fontSize: '18px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
-        </a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span className="hide-mobile" style={{ fontSize: '20px' }}>🎮</span>
+            <span style={{ fontSize: '18px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
+          </a>
+          <a href="/explorar" style={{ fontSize: '11px', fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '4px 10px', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--bg-card)', whiteSpace: 'nowrap' }}>🔍 Explorar</a>
+        </div>
         <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'center' }}>
           {[
             { href: '/classic', label: '🎯 Classic' },

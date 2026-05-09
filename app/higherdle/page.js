@@ -245,6 +245,7 @@ function HigherdleInner() {
             <span className="hide-mobile" style={{ fontSize: '16px' }}>🎮</span>
             <span style={{ fontSize: '14px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
           </a>
+          <a href="/explorar" style={{ fontSize: '11px', fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '4px 10px', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--bg-card)', whiteSpace: 'nowrap' }}>🔍 Explorar</a>
           <div className="game-nav-links" style={{ display: 'flex', gap: '4px' }}>
             {[
               { href: '/classic', label: '🎯' }, { href: '/avatardle', label: '👤' },
