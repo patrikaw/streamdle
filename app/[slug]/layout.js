@@ -1,4 +1,5 @@
 import { STREAMERS } from '../../data/streamers';
+import seoOverrides from '../../data/seo-overrides.json';
 
 function findStreamer(slug) {
   return STREAMERS.find(s =>
@@ -46,32 +47,37 @@ export async function generateMetadata({ params }) {
     };
   }
 
+  const seo = seoOverrides[slug];
   const adj = countryAdj(s.country);
-  const title = `${s.display_name} — Streamer ${adj} | Streamdle`;
-  const description = `${s.display_name}${s.real_name ? ` (${s.real_name})` : ''} es un streamer ${adj} con ${fmt(s.total_followers)} seguidores en Twitch${s.kick ? ' y Kick' : ''}. Peak histórico: ${fmt(s.peak_viewers)} espectadores. Trivia, estadísticas y clip más visto en Streamdle.`;
 
-  const keywords = [
-    s.display_name,
-    s.real_name,
-    `streamer ${adj}`,
-    `${s.display_name} twitch`,
-    `${s.display_name} seguidores`,
-    `${s.display_name} edad`,
-    `${s.display_name} nombre real`,
-    `streamers ${adj}s`,
-  ].filter(Boolean).join(', ');
+  const title = seo?.title ?? `${s.display_name} — Streamer ${adj} | Streamdle`;
+  const description = seo?.description ?? `${s.display_name}${s.real_name ? ` (${s.real_name})` : ''} es un streamer ${adj} con ${fmt(s.total_followers)} seguidores en Twitch${s.kick ? ' y Kick' : ''}. Peak histórico: ${fmt(s.peak_viewers)} espectadores. Trivia, estadísticas y clip más visto en Streamdle.`;
+  const ogTitle = seo?.openGraphTitle ?? title;
+  const ogDescription = seo?.openGraphDescription ?? description;
+
+  const keywords = seo?.keywords
+    ? seo.keywords.join(', ')
+    : [
+        s.display_name,
+        s.real_name,
+        `streamer ${adj}`,
+        `${s.display_name} twitch`,
+        `${s.display_name} seguidores`,
+        `${s.display_name} edad`,
+        `${s.display_name} nombre real`,
+        `streamers ${adj}s`,
+      ].filter(Boolean).join(', ');
 
   return {
     title,
     description,
     keywords,
-    robots: {
-      index: false,
-      follow: false,
-    },
+    robots: seo
+      ? { index: true, follow: true }
+      : { index: false, follow: false },
     openGraph: {
-      title,
-      description,
+      title: ogTitle,
+      description: ogDescription,
       url: `https://streamdle.net/${slug}`,
       siteName: 'Streamdle',
       images: [{ url: 'https://streamdle.net/og-image.jpg', width: 1200, height: 630 }],
@@ -80,8 +86,8 @@ export async function generateMetadata({ params }) {
     },
     twitter: {
       card: 'summary_large_image',
-      title,
-      description,
+      title: ogTitle,
+      description: ogDescription,
       images: ['https://streamdle.net/og-image.jpg'],
     },
     alternates: {

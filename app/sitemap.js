@@ -1,5 +1,6 @@
 import { STREAMERS } from '../data/streamers';
 import { getCategoriesWithMinStreamers } from '../lib/categories';
+import seoOverrides from '../data/seo-overrides.json';
 
 export default function sitemap() {
   const baseUrl = 'https://streamdle.net';
@@ -32,13 +33,15 @@ export default function sitemap() {
     { url: `${baseUrl}/streamers/peru`,        lastModified: today, changeFrequency: 'weekly', priority: 0.6 },
   ];
 
-  // Fichas individuales — descomentar cuando las bios estén cargadas
-  // const streamer_pages = STREAMERS.map(s => ({
-  //   url: `${baseUrl}/${s.display_name.toLowerCase().replace(/\s+/g, '-')}`,
-  //   lastModified: today,
-  //   changeFrequency: 'weekly',
-  //   priority: 0.7,
-  // }));
+  // Fichas individuales — sólo las que tienen SEO aprobado (seo-overrides.json)
+  const streamer_pages = STREAMERS
+    .filter(s => seoOverrides[s.display_name.toLowerCase().replace(/\s+/g, '-')])
+    .map(s => ({
+      url: `${baseUrl}/${s.display_name.toLowerCase().replace(/\s+/g, '-')}`,
+      lastModified: today,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    }));
 
   const juegos_index = [
     { url: `${baseUrl}/juegos`, lastModified: today, changeFrequency: 'weekly', priority: 0.8 },
@@ -54,8 +57,8 @@ export default function sitemap() {
   return [
     ...static_pages,
     ...streamers_index,
+    ...streamer_pages,
     ...juegos_index,
     ...juegos_pages,
-    // ...streamer_pages,   // descomentar cuando las bios estén cargadas
   ];
 }
