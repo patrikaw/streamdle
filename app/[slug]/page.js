@@ -44,7 +44,7 @@ const RANK_BY_HOURS = (() => {
 })();
 
 function countryName(code) {
-  const map = { ES:'España',AR:'Argentina',MX:'México',PE:'Perú',CO:'Colombia',CL:'Chile',SV:'El Salvador',PR:'Puerto Rico',VE:'Venezuela',UY:'Uruguay',GT:'Guatemala',DO:'Rep. Dominicana',FR:'Francia',NO:'Noruega' };
+  const map = { ES:'España',AR:'Argentina',MX:'México',PE:'Perú',CO:'Colombia',CL:'Chile',SV:'El Salvador',PR:'Puerto Rico',VE:'Venezuela',UY:'Uruguay',GT:'Guatemala',DO:'Rep. Dominicana',CU:'Cuba',FR:'Francia',NO:'Noruega' };
   return map[code] || code;
 }
 function countrySlug(code) {
@@ -52,7 +52,7 @@ function countrySlug(code) {
   return map[code] || null;
 }
 function flagOf(code) {
-  const map = { ES:'🇪🇸',AR:'🇦🇷',MX:'🇲🇽',PE:'🇵🇪',CO:'🇨🇴',CL:'🇨🇱',SV:'🇸🇻',PR:'🇵🇷',VE:'🇻🇪',UY:'🇺🇾',GT:'🇬🇹',DO:'🇩🇴',FR:'🇫🇷',NO:'🇳🇴' };
+  const map = { ES:'🇪🇸',AR:'🇦🇷',MX:'🇲🇽',PE:'🇵🇪',CO:'🇨🇴',CL:'🇨🇱',SV:'🇸🇻',PR:'🇵🇷',VE:'🇻🇪',UY:'🇺🇾',GT:'🇬🇹',DO:'🇩🇴',CU:'🇨🇺',FR:'🇫🇷',NO:'🇳🇴' };
   return map[code] || '🌍';
 }
 function debutYear(iso) {
