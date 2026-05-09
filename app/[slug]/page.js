@@ -118,14 +118,21 @@ function generateTrivia(streamer) {
     autoQs.push({ q:`¿Cuál de estos grupos de emojis representa a ${streamer.display_name}?`, options:rnd([streamer.emojis,...wrongs]), answer:streamer.emojis, exp:`${streamer.emojis} son los emojis que representan a ${streamer.display_name} en Streamdle.` });
   }
 
-  const hasCustom = streamer.trivia_q?.trim() && streamer.trivia_a?.trim() && streamer.trivia_opts?.length >= 1;
-  const pool = rnd(autoQs).slice(0, hasCustom ? 3 : 4);
+  const hasQ1 = streamer.trivia_q1?.trim() && streamer.trivia_a1?.trim() && streamer.trivia_opts1?.length >= 1;
+  const hasQ2 = streamer.trivia_q2?.trim() && streamer.trivia_a2?.trim() && streamer.trivia_opts2?.length >= 1;
+  const customCount = (hasQ1 ? 1 : 0) + (hasQ2 ? 1 : 0);
+  const pool = rnd(autoQs).slice(0, Math.max(0, 4 - customCount));
 
-  if (!hasCustom) return pool;
-
-  const customOpts = rnd([streamer.trivia_a, ...streamer.trivia_opts.slice(0,3)]);
-  const customQ = { q: streamer.trivia_q, options: customOpts, answer: streamer.trivia_a, exp: streamer.trivia_exp || '' };
-  return [customQ, ...pool];
+  const customs = [];
+  if (hasQ1) {
+    const opts = rnd([streamer.trivia_a1, ...streamer.trivia_opts1.slice(0,3)]);
+    customs.push({ q: streamer.trivia_q1, options: opts, answer: streamer.trivia_a1, exp: streamer.trivia_exp1 || '' });
+  }
+  if (hasQ2) {
+    const opts = rnd([streamer.trivia_a2, ...streamer.trivia_opts2.slice(0,3)]);
+    customs.push({ q: streamer.trivia_q2, options: opts, answer: streamer.trivia_a2, exp: streamer.trivia_exp2 || '' });
+  }
+  return [...customs, ...pool];
 }
 
 function TriviaSection({ streamer }) {
