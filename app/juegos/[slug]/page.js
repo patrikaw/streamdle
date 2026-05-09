@@ -5,7 +5,7 @@ import {
   getCategoriesWithMinStreamers,
   getStreamersByCategory,
 } from '../../../lib/categories';
-import { fetchTwitchGame, fetchIGDBGame, fetchAvatarsBatch, fetchClipsById, fetchClipsByGame } from '../../../lib/twitch-server';
+import { fetchTwitchGame, fetchIGDBGame, fetchAvatarsBatch, fetchClipsById, fetchClipsByBroadcastersForGame } from '../../../lib/twitch-server';
 import { getEventsForCategory } from '../../../data/events';
 import LiveStats from './LiveStats';
 import StreamerGrid from './StreamerGrid';
@@ -127,13 +127,28 @@ export default async function JuegoPage({ params }) {
   // Resolve game info first so we can use game_id for category-accurate clips
   const gameInfo = await fetchTwitchGame(categoryName).catch(() => null);
 
-  const [igdbInfo, avatars, clips] = await Promise.all([
+  const [igdbInfo, userData] = await Promise.all([
     fetchIGDBGame(categoryName).catch(() => null),
     fetchAvatarsBatch(logins).catch(() => ({})),
-    gameInfo?.id
-      ? fetchClipsByGame(gameInfo.id, logins).then(c => c.length ? c : fetchClipsById(topClipIds)).catch(() => [])
-      : fetchClipsById(topClipIds).catch(() => []),
   ]);
+
+  // avatars map: login → url (for streamer cards)
+  const avatars = Object.fromEntries(Object.entries(userData).map(([k, v]) => [k, v.url ?? v]));
+
+  // Top 8 primary streamers by followers → broadcaster IDs for game-specific clips
+  const topBroadcasterIds = primary
+    .slice().sort((a, b) => (b.total_followers || 0) - (a.total_followers || 0))
+    .slice(0, 8)
+    .map(s => userData[s.twitch?.toLowerCase()]?.id)
+    .filter(Boolean);
+
+  const clips = await (
+    gameInfo?.id && topBroadcasterIds.length
+      ? fetchClipsByBroadcastersForGame(topBroadcasterIds, gameInfo.id)
+          .then(c => c.length ? c : fetchClipsById(topClipIds))
+          .catch(() => fetchClipsById(topClipIds).catch(() => []))
+      : fetchClipsById(topClipIds).catch(() => [])
+  );
 
   const boxArt = gameInfo?.box_art_url?.replace('{width}', '285').replace('{height}', '380') ?? null;
   const total = primary.length + secondary.length;
