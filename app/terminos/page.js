@@ -1,3 +1,9 @@
+export const metadata = {
+  title: 'Términos de Uso — Streamdle',
+  description: 'Términos y condiciones de uso de Streamdle. Reglas, licencias y todo lo que necesitás saber antes de jugar.',
+  alternates: { canonical: 'https://streamdle.net/terminos' },
+};
+
 export default function TerminosPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>

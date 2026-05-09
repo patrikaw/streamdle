@@ -1,3 +1,9 @@
+export const metadata = {
+  title: 'Política de Privacidad — Streamdle',
+  description: 'Leé la política de privacidad de Streamdle. Cómo manejamos tus datos, cookies y todo lo que necesitás saber sobre tu información.',
+  alternates: { canonical: 'https://streamdle.net/privacidad' },
+};
+
 export default function PrivacidadPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>

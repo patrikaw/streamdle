@@ -6,14 +6,20 @@ import { fetchTwitchGame } from '../../lib/twitch-server';
 export const revalidate = 86400;
 
 export const metadata = {
-  title: 'Juegos — Streamers Hispanohablantes por Categoría | Streamdle',
-  description: 'Explorá la comunidad hispana de streamers por juego. Fortnite, Minecraft, GTA V, League of Legends y más — quién los juega, cuántos hay y toda la cultura del streaming en español.',
-  keywords: 'streamers hispanos por juego, streamers fortnite español, streamers minecraft hispanos, streamers gta hispanos, comunidad streaming latina',
+  title: 'Juegos — Streamers Hispanos por Categoría | Streamdle',
+  description: 'Explorá qué streamers hispanos juegan Minecraft, Fortnite, GTA V, LoL y más. Ranking, clips y cultura de cada juego en Twitch y Kick.',
+  keywords: ['streamers por juego', 'streamers minecraft español', 'streamers fortnite hispanos', 'streamers gta v twitch', 'categorias streamers twitch', 'comunidad streaming latina'],
   openGraph: {
-    title: 'Juegos — Cultura streamer hispana por categoría | Streamdle',
-    description: 'Descubrí qué streamers hispanohablantes juegan cada juego.',
+    title: 'Juegos · La cultura streamer hispana alrededor de cada juego',
+    description: 'Minecraft, Fortnite, GTA V, LoL y más. Descubrí los streamers hispanos de cada juego con clips, stats y trivia.',
     url: 'https://streamdle.net/juegos',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Juegos · La cultura streamer hispana alrededor de cada juego',
+    description: 'Minecraft, Fortnite, GTA V, LoL y más. Descubrí los streamers hispanos de cada juego con clips, stats y trivia.',
+  },
+  alternates: { canonical: 'https://streamdle.net/juegos' },
 };
 
 const CATEGORY_COLORS = {
@@ -68,6 +74,7 @@ export default async function JuegosPage() {
       <style>{`
         .juegos-card { transition: transform 0.18s ease, box-shadow 0.18s ease; }
         .juegos-card:hover { transform: translateY(-2px); }
+        .breadcrumb-link:hover { color: #fff !important; }
         .juegos-card:hover .juegos-card-inner {
           border-color: var(--card-color) !important;
           box-shadow: 0 6px 24px rgba(0,0,0,0.3);
@@ -102,8 +109,15 @@ export default async function JuegosPage() {
         </div>
       </header>
 
+      {/* Breadcrumb */}
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '10px 24px 0', display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--color-text-secondary)', flexWrap: 'wrap' }}>
+        <Link href="/explorar" className="breadcrumb-link" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>Explorar</Link>
+        <span>›</span>
+        <span style={{ color: '#fff', fontWeight: 600 }}>Juegos</span>
+      </div>
+
       {/* Hero */}
-      <div style={{ textAlign: 'center', padding: '52px 24px 36px' }}>
+      <div style={{ textAlign: 'center', padding: '32px 24px 36px' }}>
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: 8,
           background: 'var(--bg-card)', border: '1px solid var(--color-border)',

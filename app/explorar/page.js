@@ -6,10 +6,10 @@ import { getCategoriesWithMinStreamers } from '../../lib/categories';
 export const metadata = {
   title: 'Explorar — Streamers, Juegos, Comunidades y más | Streamdle',
   description: 'Descubrí todo lo que tiene Streamdle: el ranking de streamers hispanohablantes, juegos por categoría, comunidades, equipos de esports y tipos de contenido.',
-  keywords: 'streamers hispanos, juegos twitch español, comunidades streamers, esports hispano, contenido streaming latino',
+  keywords: ['streamers hispanos', 'juegos twitch español', 'comunidades streamers', 'esports hispano', 'contenido streaming latino', 'explorar streamers'],
   openGraph: {
-    title: 'Explorar Streamdle — Streamers, Juegos, Comunidades y más',
-    description: 'Todo el universo del streaming hispanohablante en un solo lugar.',
+    title: 'Explorar Streamdle — Todo el streaming hispano en un lugar',
+    description: 'Streamers por país, juegos, comunidades, esports y mucho más. El mapa completo de la cultura streamer hispanohablante.',
     url: 'https://streamdle.net/explorar',
     siteName: 'Streamdle',
     images: [{ url: 'https://streamdle.net/og-image.jpg', width: 1200, height: 630 }],
@@ -18,8 +18,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Explorar Streamdle',
-    description: 'Todo el universo del streaming hispanohablante en un solo lugar.',
+    title: 'Explorar Streamdle — Todo el streaming hispano en un lugar',
+    description: 'Streamers por país, juegos, comunidades, esports y mucho más. El mapa completo de la cultura streamer hispanohablante.',
     images: ['https://streamdle.net/og-image.jpg'],
   },
   alternates: { canonical: 'https://streamdle.net/explorar' },
