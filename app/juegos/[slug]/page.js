@@ -131,7 +131,7 @@ export default async function JuegoPage({ params }) {
     fetchIGDBGame(categoryName).catch(() => null),
     fetchAvatarsBatch(logins).catch(() => ({})),
     gameInfo?.id
-      ? fetchClipsByGame(gameInfo.id, logins).catch(() => [])
+      ? fetchClipsByGame(gameInfo.id, logins).then(c => c.length ? c : fetchClipsById(topClipIds)).catch(() => [])
       : fetchClipsById(topClipIds).catch(() => []),
   ]);
 

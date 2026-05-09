@@ -291,7 +291,7 @@ export default function StreamerPage() {
 
   const crumbs=[{label:'Explorar',href:'/explorar'},{label:'Streamers',href:'/streamers'}];
   const cSlug=countrySlug(streamer.country);
-  if(cSlug) crumbs.push({label:`${flagOf(streamer.country)} ${countryName(streamer.country)}`,href:`/streamers/${cSlug}`});
+  crumbs.push({label:`${flagOf(streamer.country)} ${countryName(streamer.country)}`,href:cSlug?`/streamers/${cSlug}`:null});
   crumbs.push({label:streamer.display_name,href:null});
 
   const extraData=[
