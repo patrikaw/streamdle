@@ -98,5 +98,55 @@
     "trivia_a2": "Parkour y exploración urbana",
     "trivia_opts2": ["Skateboarding", "Motocross", "Salto base"],
     "trivia_exp2": "Tarifa se hizo viral por sus videos escalando edificios y grúas (urbex) y haciendo acrobacias arriesgadas."
+  },
+  "11": {
+    "trivia_q1": "¿Por qué el canal cambió de 'slakun10' a 'SLAKUNTV' a finales de 2025?",
+    "trivia_a1": "Por derechos de transmisión (NBA, NFL, etc.)",
+    "trivia_opts1": ["Por un baneo", "Por un patrocinio de TV", "Fue un hackeo"],
+    "trivia_exp1": "El Kun evolucionó su canal hacia un modelo de 'broadcaster' multimedia al adquirir derechos de eventos deportivos masivos para 2026.",
+    "trivia_q2": "¿Quién es el jugador de KRÜ Esports que anotó el icónico 'penal de carta' contra Los Aliens FC en mayo de 2026?",
+    "trivia_a2": "Facu Gamarra",
+    "trivia_opts2": ["Sergio Agüero", "Markito Navaja", "Lionel Messi"],
+    "trivia_exp2": "Gamarra hizo efectivo el penal comodín en un partido crucial de la Kings League Américas transmitido por SLAKUNTV."
+  },
+  "12": {
+    "trivia_q1": "Antes de ser la cara más visible de Twitch España, Juan alcanzó la fama en YouTube bajo el pseudónimo 'LMDShow'. ¿Qué significan exactamente esas siglas?",
+    "trivia_a1": "La Mala Dicción Show",
+    "trivia_opts1": ["La Mejor Diversión Show", "Los Mejores Directos Show", "Los Más Duros Show"],
+    "trivia_exp1": "Juan eligió este nombre de forma irónica debido a su fuerte acento malagueño y su forma de hablar al inicio de su carrera.",
+    "trivia_q2": "¿En qué categoría de los Premios ESLAND 2024 se coronó IlloJuan como ganador indiscutible?",
+    "trivia_a2": "Mejor Streamer de Variedad",
+    "trivia_opts2": ["Streamer del Año", "Streamer Revelación", "Mejor Serie de Contenido"],
+    "trivia_exp2": "Aunque estuvo nominado a Streamer del Año, Juan ha dominado la categoría de variedad gracias a su capacidad de jugar desde clásicos de PS1 hasta estrenos actuales."
+  },
+  "13": {
+    "trivia_q1": "ElXokas trabajó profesionalmente en una organización deportiva antes de dedicarse al 100% al streaming. ¿Cuál era su puesto?",
+    "trivia_a1": "Editor de video del Real Madrid",
+    "trivia_opts1": ["Jugador profesional de WoW", "Analista de datos de la LVP", "Community Manager de la Selección Española"],
+    "trivia_exp1": "Xokas ha mencionado en repetidas ocasiones su etapa trabajando en las oficinas del Real Madrid editando contenido antes de su explosión en Twitch.",
+    "trivia_q2": "¿Cómo llamó Xokas a su ambicioso proyecto de reforma integral de su casa, el cual documentó ampliamente en sus directos?",
+    "trivia_a2": "Operación Fénix",
+    "trivia_opts2": ["La Mansión del Xokas", "El Palacio de Lugo", "Proyecto Nueva Era"],
+    "trivia_exp2": "Se inspiró en el nombre de la operación de Ibai para describir la reconstrucción total de su vivienda, la cual tuvo varios problemas con los obreros iniciales."
+  },
+  "14": {
+    "trivia_q1": "El avatar de la 'rata roja' de ZilverK se volvió su identidad definitiva tras un evento fortuito en 2018. ¿Qué avatar usaba justo antes de ese cambio?",
+    "trivia_a1": "Un tacuache deforme (estilo Flareon)",
+    "trivia_opts1": ["Una mona china", "Un Knuckles de Uganda", "Un modelo humano de sí mismo"],
+    "trivia_exp1": "ZilverK usó la rata roja por primera vez en un 'Squid Games' en BR porque no quería usar su avatar anterior de tacuache, y a la gente le encantó.",
+    "trivia_q2": "¿Cómo se llama el grupo o 'crew' de VTubers que ZilverK fundó y que se volvió viral por sus momentos de caos en VRChat?",
+    "trivia_a2": "La Ratiza",
+    "trivia_opts2": ["Los V-Locos", "La Z-Crew", "Los Tacuaches"],
+    "trivia_exp2": "Aunque es el nombre de su comunidad, ZilverK formalizó 'La Ratiza' como el grupo principal de personajes y creadores que lo acompañan en sus aventuras de realidad virtual."
+  },
+  "15": {
+    "trivia_q1": "¿Quién se consagró como el primer campeón histórico de la Kings League España en el Spotify Camp Nou?",
+    "trivia_a1": "El Barrio",
+    "trivia_opts1": ["Porcinos FC", "Aniquiladores FC", "xBuyer Team"],
+    "trivia_exp1": "El equipo de Adri Contreras venció 3-0 a Aniquiladores en la primera Final Four celebrada en marzo de 2023.",
+    "trivia_q2": "¿Qué equipo hizo historia al convertirse en el primer bicampeón del Mundial de Naciones de Kings League en enero de 2026?",
+    "trivia_a2": "Brasil",
+    "trivia_opts2": ["Argentina", "España", "México"],
+    "trivia_exp2": "Brasil derrotó a Chile 6-2 en la final de enero de 2026, logrando el título por segundo año consecutivo."
   }
 }
