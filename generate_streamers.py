@@ -1,4 +1,4 @@
-import csv, re, json
+import csv, re, json, os
 
 def norm_url(url, platform):
     if not url or not url.strip(): return ''
@@ -63,6 +63,19 @@ def jv(v):
 
 with open('c:/Users/Usuario/Downloads/Stream Data - Sheet1.csv', encoding='utf-8') as f:
     rows = list(csv.DictReader(f))
+
+# Trivia overrides: persisten entre regeneraciones (no vienen del CSV)
+_trivia_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'trivia-overrides.json')
+_trivia_overrides = {}
+if os.path.exists(_trivia_file):
+    with open(_trivia_file, encoding='utf-8') as f:
+        _trivia_overrides = json.load(f)
+
+def get_trivia(streamer_id, key, csv_row):
+    csv_val = csv_row.get(key, '').strip()
+    if csv_val:
+        return csv_val
+    return _trivia_overrides.get(str(streamer_id), {}).get(key)
 
 entries = []
 for r in rows:
@@ -140,10 +153,14 @@ for r in rows:
         'top_content:' + jv(r.get('top_content','').strip() or None),
         'second_content:' + jv(r.get('second_content','').strip() or None),
         'bio:' + jv(r.get('bio','').strip() or None),
-        'trivia_q:' + jv(r.get('trivia_q','').strip() or None),
-        'trivia_a:' + jv(r.get('trivia_a','').strip() or None),
-        'trivia_opts:' + jv([o.strip() for o in r.get('trivia_opts','').split('|') if o.strip()] or None),
-        'trivia_exp:' + jv(r.get('trivia_exp','').strip() or None),
+        'trivia_q1:' + jv(get_trivia(si('id'), 'trivia_q1', r)),
+        'trivia_a1:' + jv(get_trivia(si('id'), 'trivia_a1', r)),
+        'trivia_opts1:' + jv([o.strip() for o in r.get('trivia_opts1','').split('|') if o.strip()] or _trivia_overrides.get(str(si('id')), {}).get('trivia_opts1')),
+        'trivia_exp1:' + jv(get_trivia(si('id'), 'trivia_exp1', r)),
+        'trivia_q2:' + jv(get_trivia(si('id'), 'trivia_q2', r)),
+        'trivia_a2:' + jv(get_trivia(si('id'), 'trivia_a2', r)),
+        'trivia_opts2:' + jv([o.strip() for o in r.get('trivia_opts2','').split('|') if o.strip()] or _trivia_overrides.get(str(si('id')), {}).get('trivia_opts2')),
+        'trivia_exp2:' + jv(get_trivia(si('id'), 'trivia_exp2', r)),
     ]
     entries.append('{' + ', '.join(parts) + '}')
 

@@ -1,0 +1,102 @@
+{
+  "1": {
+    "trivia_q1": "¿En qué año y evento Ibai Llanos hizo su debut oficial como caster de League of Legends en la LVP (Liga de Videojuegos Profesional)?",
+    "trivia_a1": "2014 — Final Cup 7",
+    "trivia_opts1": ["2012 — Final Cup 3", "2015 — Gamergy", "2013 — Madrid Games Week"],
+    "trivia_exp1": "Ibai debutó en 2014 junto a Ander Cortés, narrando una partida de la Superliga que cambiaría su carrera para siempre.",
+    "trivia_q2": "¿Cuál fue el nombre del primer equipo de eSports profesional que fichó a Ibai como creador de contenido tras su salida de la LVP en 2020?",
+    "trivia_a2": "G2 Esports",
+    "trivia_opts2": ["KOI", "Fnatic", "Team Liquid"],
+    "trivia_exp2": "Carlos \"Ocelote\" lo fichó para formar un equipo de creadores junto a Ander, Reven y BarbeQ, marcando su transición total al streaming."
+  },
+  "2": {
+    "trivia_q1": "Antes de Twitch, Auron era el 'rey' de las video-críticas en YouTube. ¿Cuál es el nombre del muñeco que siempre aparecía de fondo en sus primeros videos y que los fans consideran un emblema?",
+    "trivia_a1": "El muñeco de Saw (Billy)",
+    "trivia_opts1": ["Rodolfo", "El niño de la máscara", "Chuck Norris"],
+    "trivia_exp1": "El muñeco en el triciclo de la película Saw estuvo presente en casi toda su etapa de YouTube 'old school'.",
+    "trivia_q2": "¿Cuál fue el nombre del primer servidor de GTA V Roleplay que Auronplay pisó, iniciando el fenómeno masivo de 'Gustabo'?",
+    "trivia_a2": "SpainRP",
+    "trivia_opts2": ["Marbella Vice", "Infames RP", "London Eye"],
+    "trivia_exp2": "En SpainRP nació la química entre Gustabo (Auron), Horacio (Perxitaa) y Volkov (Reborn) antes de pasar a otros servidores."
+  },
+  "3": {
+    "trivia_q1": "¿Cuál es el nombre real del libro/cómic interactivo que Rubius lanzó en 2014 y que batió récords de ventas en todo el mundo hispano?",
+    "trivia_a1": "El libro Troll",
+    "trivia_opts1": ["El libro de los secretos", "Virtual Hero", "Escuela de Gamers"],
+    "trivia_exp1": "Fue su primer gran éxito editorial, lleno de desafíos y retos absurdos para sus seguidores.",
+    "trivia_q2": "¿En qué ciudad japonesa se perdió Rubius durante su famoso documental 'Rubius X' o sus vlogs de viajes antiguos que marcaron un antes y un después?",
+    "trivia_a2": "Tokio",
+    "trivia_opts2": ["Osaka", "Kyoto", "Nara"],
+    "trivia_exp2": "Sus vlogs en Tokio (especialmente en Akihabara) son considerados piezas de culto por su edición y estilo visual."
+  },
+  "4": {
+    "trivia_q1": "¿Cuál fue el primer equipo de eSports que fundó Grefg junto a Goorgo antes de la evolución actual de su organización?",
+    "trivia_a1": "Team Heretics",
+    "trivia_opts1": ["Grefg eSports", "Squad Heretics", "Cream Real Betis"],
+    "trivia_exp1": "Fundó Heretics en 2016, convirtiéndose en una de las organizaciones más valiosas de Europa.",
+    "trivia_q2": "¿Cómo se llama el desafío extremo de Grefg donde subió una montaña en Andorra para 'entrenar' físicamente antes de un evento?",
+    "trivia_a2": "El cambio físico",
+    "trivia_opts2": ["El reto del Everest", "Operación Grefg", "El camino del Guerrero"],
+    "trivia_exp2": "Su transformación física y los retos en la montaña andorrana fueron tendencia durante meses en YouTube y Twitch."
+  },
+  "5": {
+    "trivia_q1": "Antes de ser un streamer top, Juan era reconocido en la comunidad por su talento en otra área. ¿Cuál era su profesión/oficio principal?",
+    "trivia_a1": "Diseñador gráfico",
+    "trivia_opts1": ["Editor de video", "Guionista", "Jugador de Halo profesional"],
+    "trivia_exp1": "Juan hacía las miniaturas y el diseño artístico de muchos youtubers famosos antes de lanzarse a hacer directos.",
+    "trivia_q2": "¿Cuál es el nombre de la prestigiosa serie de premios de cine y televisión a la que JuanSGuarnizo fue invitado a presentar una categoría en 2023?",
+    "trivia_a2": "Premios Platino",
+    "trivia_opts2": ["Premios Goya", "Premios Óscar", "Premios Grammy Latinos"],
+    "trivia_exp2": "Juan marcó un hito para los streamers al presentar un premio en la X edición de los Premios Platino del Cine Iberoamericano."
+  },
+  "6": {
+    "trivia_q1": "Antes de ser conocido como 'ElMariana', Osvaldo jugaba competitivamente y hacía contenido de un shooter específico. ¿De qué juego se trata?",
+    "trivia_a1": "Gears of War",
+    "trivia_opts1": ["Call of Duty", "Halo", "Overwatch"],
+    "trivia_exp1": "Osvaldo comenzó en el mundo de los videojuegos destacando en Gears of War antes de dar el salto al contenido de entretenimiento general y Roblox.",
+    "trivia_q2": "¿Cuál es el nombre del primer 'rival' ficticio de cartón que ElMariana presentó en su set y con el cual solía bromear en sus inicios?",
+    "trivia_a2": "El Ingeniero",
+    "trivia_opts2": ["El Primo", "Casimiro", "El Richie"],
+    "trivia_exp2": "El personaje del 'Ingeniero' (un recorte de cartón) se volvió icónico en sus directos, representando la profesión que Osvaldo estudió."
+  },
+  "7": {
+    "trivia_q1": "¿En qué edición de 'La Velada del Año' participó AriGameplays como boxeadora, enfrentándose a la española Paracetamor?",
+    "trivia_a1": "La Velada del Año II",
+    "trivia_opts1": ["La Velada del Año I", "La Velada del Año III", "No ha participado"],
+    "trivia_exp1": "Ari dio una de las mejores peleas de la historia del evento en 2022, llevándose la victoria tras un entrenamiento intenso con Julio César Chávez.",
+    "trivia_q2": "¿Cómo se llama la marca de ropa y accesorios que Ari lanzó al mercado, enfocada en el estilo 'gamer' y femenino?",
+    "trivia_a2": "Envy by Ari",
+    "trivia_opts2": ["Ari Shop", "AriGameplays Collection", "Pink Power"],
+    "trivia_exp2": "Bajo el sello de Envy, Ari ha lanzado diversas colecciones de ropa y productos que reflejan su estilo personal."
+  },
+  "8": {
+    "trivia_q1": "Samy Rivers hizo historia en 2023 al ser la primera persona en realizar dos peleas de boxeo en la misma noche de La Velada del Año III. ¿Contra quién fue su segunda pelea (la secreta)?",
+    "trivia_a1": "Mayichi",
+    "trivia_opts1": ["Marina Rivers", "Paracetamor", "AriGameplays"],
+    "trivia_exp1": "Tras perder contra Marina Rivers, Samy regresó al ring como 'La Elegida' para pelear contra Mayichi, obteniendo la victoria.",
+    "trivia_q2": "¿Cuál es el nombre del equipo de la Kings League del cual Samy es presidenta?",
+    "trivia_a2": "Pio FC",
+    "trivia_opts2": ["Aniquiladores", "Saiyans FC", "El Barrio"],
+    "trivia_exp2": "Samy es la presidenta de Pio FC, equipo con el cual ha logrado una conexión masiva con su audiencia mexicana y española."
+  },
+  "9": {
+    "trivia_q1": "Quackity es bilingüe y tiene dos canales principales. ¿En qué famoso servidor de Minecraft angloparlante se consolidó como una estrella internacional antes del QSMP?",
+    "trivia_a1": "Dream SMP",
+    "trivia_opts1": ["Hermitcraft", "2b2t", "Origins SMP"],
+    "trivia_exp1": "Su participación en el Dream SMP con su personaje político y sus 'lore streams' lo catapultaron a la fama global.",
+    "trivia_q2": "¿Cómo se llama el ambicioso proyecto de Minecraft creado por Quackity que introdujo la traducción en tiempo real para streamers de distintos idiomas?",
+    "trivia_a2": "QSMP (Quackity Survival MultiPlayer)",
+    "trivia_opts2": ["Tortillaland", "Squid Craft Games", "Minecraft Extremo"],
+    "trivia_exp2": "El QSMP es el primer servidor multilingüe con un sistema de traducción simultánea que une a comunidades de todo el mundo."
+  },
+  "10": {
+    "trivia_q1": "ByTarifa fue uno de los pilares de una de las 'Squads' más famosas de la historia de YouTube España. ¿Cómo se llamaba este grupo?",
+    "trivia_a1": "Escuadrón Salchichón",
+    "trivia_opts1": ["Los Compas", "Squad Heretics", "Crazy Crew"],
+    "trivia_exp1": "Formó parte del grupo junto a TheGrefg, Ampeter y Agustin51, viviendo juntos y creando contenido diario durante años.",
+    "trivia_q2": "¿En qué deporte extremo o actividad física se especializó Tarifa en su canal, diferenciándose por sus retos de altura y parkour?",
+    "trivia_a2": "Parkour y exploración urbana",
+    "trivia_opts2": ["Skateboarding", "Motocross", "Salto base"],
+    "trivia_exp2": "Tarifa se hizo viral por sus videos escalando edificios y grúas (urbex) y haciendo acrobacias arriesgadas."
+  }
+}
