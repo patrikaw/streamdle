@@ -8,8 +8,10 @@ import {
 } from '../../../lib/categories';
 import { fetchTwitchGame, fetchIGDBGame, fetchAvatarsBatch, fetchClipsById, fetchClipsByBroadcastersForGame } from '../../../lib/twitch-server';
 import { getEventsForCategory } from '../../../data/events';
+import { GAME_TRIVIA } from '../../../data/game-trivia';
 import LiveStats from './LiveStats';
 import StreamerGrid from './StreamerGrid';
+import GameTrivia from './GameTrivia';
 
 export const revalidate = 86400;
 
@@ -329,6 +331,25 @@ export default async function JuegoPage({ params }) {
 
         {/* Live stats — client component */}
         <LiveStats slug={slug} color={color} />
+
+        {/* Trivia de la categoría */}
+        {GAME_TRIVIA[slug]?.length > 0 && (
+          <section style={{ marginTop: 40 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 6 }}>
+              ¿Cuánto sabés de {categoryName}?
+            </h2>
+            <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 18 }}>
+              Poné a prueba tu conocimiento de la comunidad hispana
+            </p>
+            <div style={{
+              background: 'var(--bg-card)', border: '1px solid var(--color-border)',
+              borderTop: `3px solid ${color}`,
+              borderRadius: 12, padding: '20px 20px 22px',
+            }}>
+              <GameTrivia questions={GAME_TRIVIA[slug]} color={color} />
+            </div>
+          </section>
+        )}
 
         {/* Clips — server-rendered, guaranteed Hispanic streamers */}
         {clips.length > 0 && (
