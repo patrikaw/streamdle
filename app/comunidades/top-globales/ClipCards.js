@@ -13,10 +13,11 @@ function ClipCard({ clip }) {
   const [thumbOk, setThumbOk] = useState(true);
   const color = ACCENT[clip.streamer] ?? '#7C3AED';
   const thumbUrl = `https://clips.kick.com/clips/${clip.id}/thumbnail.webp`;
+  const kickUrl = `https://kick.com/clip/${clip.id}`;
 
   return (
     <a
-      href={clip.url}
+      href={kickUrl}
       target="_blank"
       rel="noopener noreferrer"
       style={{
@@ -77,7 +78,7 @@ function ClipCard({ clip }) {
           fontSize: 9, fontWeight: 800, borderRadius: 3, padding: '2px 6px',
           letterSpacing: '0.3px',
         }}>
-          KICK
+          VER EN KICK ↗
         </span>
       </div>
 

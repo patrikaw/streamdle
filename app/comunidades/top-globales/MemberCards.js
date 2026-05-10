@@ -25,14 +25,14 @@ function SocialIcon({ href, type }) {
     <a href={href} target="_blank" rel="noopener noreferrer" title={type}
       style={{
         display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-        width: 34, height: 34, borderRadius: 8,
+        width: 30, height: 30, borderRadius: 7,
         background: hov ? d.color + '22' : 'var(--bg-card)',
         border: `1px solid ${hov ? d.color : 'var(--color-border)'}`,
         color: hov ? d.color : 'var(--color-text-secondary)',
         transition: 'all 0.18s', textDecoration: 'none', flexShrink: 0,
       }}
       onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
         <path d={d.path} />
       </svg>
     </a>
@@ -128,7 +128,7 @@ export default function MemberCards({ members }) {
             </div>
 
             {/* Social icons */}
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: 4, flexWrap: 'nowrap', justifyContent: 'center' }}>
               <SocialIcon href={`https://kick.com/${m.kick}`} type="kick" />
               <SocialIcon href={m.youtube} type="youtube" />
               <SocialIcon href={m.twitter} type="twitter" />

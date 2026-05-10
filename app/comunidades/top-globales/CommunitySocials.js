@@ -32,7 +32,7 @@ function SocialIcon({ href, type }) {
 
 export default function CommunitySocials({ socials }) {
   return (
-    <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap', justifyContent: 'center' }}>
+    <div className="comm-socials" style={{ display: 'flex', flexDirection: 'column', gap: 7, alignItems: 'center' }}>
       {socials.map(s => (
         <SocialIcon key={s.type} href={s.href} type={s.type} />
       ))}

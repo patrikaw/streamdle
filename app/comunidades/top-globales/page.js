@@ -193,6 +193,7 @@ export default async function TopGlobalesPage() {
           .hero-inner  { flex-direction: column !important; }
           .hero-badge-col { width: 100% !important; flex-direction: row !important; align-items: center; gap: 16px !important; }
           .comm-badge  { width: 64px !important; height: 64px !important; flex-shrink: 0; }
+          .comm-socials { flex-direction: row !important; flex-wrap: wrap !important; }
           .clips-grid  { grid-template-columns: 1fr !important; }
           .guests-grid { grid-template-columns: repeat(2, 1fr) !important; }
           .header-icon { display: none !important; }
@@ -365,11 +366,8 @@ export default async function TopGlobalesPage() {
             <p style={{ fontSize: 14, lineHeight: 1.75, color: 'var(--color-text-secondary)', marginBottom: 12 }}>
               Top Globales es una comunidad de streamers argentinos formada por Coscu, Goncho, DuendePablo, Zeko, Coker y varios invitados recurrentes que explotó en Kick gracias a sus streams diarios, el gaming constante y el caos total que manejan juntos.
             </p>
-            <p style={{ fontSize: 14, lineHeight: 1.75, color: 'var(--color-text-secondary)', marginBottom: 12 }}>
-              En una época donde gran parte del streaming hispano se había movido hacia slots, reacciones e IRL, el grupo empezó a destacar por algo bastante simple: volver a jugar videojuegos durante horas y hacer contenido como si fuese 2020 otra vez.
-            </p>
             <p style={{ fontSize: 14, lineHeight: 1.75, color: 'var(--color-text-secondary)', margin: 0 }}>
-              Con series, momentos virales, invitados sorpresa y una futura casa en Miami, Top Globales se convirtió rápidamente en uno de los fenómenos más comentados del streaming argentino.
+              En una época donde gran parte del streaming hispano se había movido hacia slots, reacciones e IRL, el grupo empezó a destacar por algo bastante simple: volver a jugar videojuegos durante horas y hacer contenido como si fuese 2020 otra vez.
             </p>
           </div>
         </section>
@@ -380,7 +378,7 @@ export default async function TopGlobalesPage() {
             Los clips más virales del grupo
           </h2>
           <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 18 }}>
-            Momentos out of context, jugadas imposibles, gritos y escenas que explotaron en TikTok y Kick.
+            Momentos out of context, jugadas imposibles, gritos y escenas que explotaron en TikTok y Kick. Hacé click para verlos directamente en Kick.
           </p>
           <ClipCards clips={CLIPS} />
         </section>
@@ -481,10 +479,10 @@ export default async function TopGlobalesPage() {
                     {fmt(g.followers)} seguidores
                   </div>
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', textAlign: 'center', lineHeight: 1.5 }}>
+                <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', textAlign: 'center', lineHeight: 1.5, flex: 1 }}>
                   {g.desc}
                 </div>
-                <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', justifyContent: 'center', marginTop: 'auto' }}>
                   <GuestSocialIcon href={`https://kick.com/${g.kick}`} type="kick" />
                   <GuestSocialIcon href={g.twitter} type="twitter" />
                   <GuestSocialIcon href={g.instagram} type="instagram" />
