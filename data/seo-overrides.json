@@ -138,5 +138,40 @@
     "keywords": ["barcagamer", "barca gamer", "barcagamer twitch", "streamer uruguayo", "twitch uruguay", "diego balsa"],
     "openGraphTitle": "BarcaGamer · El orgullo de Uruguay en Twitch",
     "openGraphDescription": "2.5M seguidores y el mejor embajador del streaming uruguayo. Stats, trivia y clips de BarcaGamer en Twitch."
+  },
+  "coscu": {
+    "title": "Coscu — Stats, trivia y clips | Streamdle",
+    "description": "Martín Pérez Disalvo, alias Coscu, es el fundador de la Coscu Army y líder del gaming argentino en Kick. 4.5M seguidores, creador de Top Globales y referente del streaming en Argentina.",
+    "keywords": ["coscu", "coscu army", "martin perez disalvo", "coscu kick", "coscu twitch", "coscu top globales", "streamer argentino"],
+    "openGraphTitle": "Coscu · El fundador del gaming argentino",
+    "openGraphDescription": "4.5M seguidores y creador de la Coscu Army. Stats, trivia y clips del streamer más influyente de Argentina."
+  },
+  "goncho": {
+    "title": "Goncho — Stats, trivia y clips | Streamdle",
+    "description": "Gonzalo Banzas, alias Goncho o Tibioncho, es uno de los streamers argentinos más carismáticos y co-fundador de Top Globales en Kick. 1.6M seguidores.",
+    "keywords": ["goncho", "tibioncho", "gonzalo banzas", "goncho kick", "goncho twitch", "goncho top globales", "streamer argentino"],
+    "openGraphTitle": "Goncho · El Tibioncho de Top Globales",
+    "openGraphDescription": "1.6M seguidores y co-fundador de Top Globales. Stats, trivia y clips del streamer más honesto del gaming argentino."
+  },
+  "duendepablo": {
+    "title": "DuendePablo — Stats, trivia y clips | Streamdle",
+    "description": "Pablo Ballon, alias DuendePablo, es el creador de La Comarca y uno de los streamers argentinos más veteranos. Inmortal según el lore. Parte de Top Globales en Kick.",
+    "keywords": ["duendepablo", "duende pablo", "pablo ballon", "la comarca", "duendepablo kick", "duendepablo twitch", "streamer argentino"],
+    "openGraphTitle": "DuendePablo · El inmortal de La Comarca",
+    "openGraphDescription": "1M seguidores y creador de La Comarca. Stats, trivia y clips del streamer más veterano de Top Globales."
+  },
+  "c0ker": {
+    "title": "c0ker — Stats, trivia y clips | Streamdle",
+    "description": "Mathias Vasile, alias c0ker o Coker, es el Streamer del Año 2026 según los Coscu Army Awards. 963K seguidores entre Twitch y Kick. Integrante de Top Globales.",
+    "keywords": ["c0ker", "coker", "mathias vasile", "coker kick", "coker twitch", "coker top globales", "streamer del año", "streamer argentino"],
+    "openGraphTitle": "c0ker · Streamer del Año 2026 y Top Globales",
+    "openGraphDescription": "963K seguidores y Streamer del Año 2026. Stats, trivia y clips del integrante con más aura de Top Globales."
+  },
+  "zeko": {
+    "title": "zEkO — Stats, trivia y clips | Streamdle",
+    "description": "Federico Cristalino, alias zEkO o Zeko, es el tryhard por excelencia del gaming argentino. 1.4M seguidores, ex-9z Team y uno de los cinco integrantes de Top Globales en Kick.",
+    "keywords": ["zeko", "zEkO", "federico cristalino", "zeko kick", "zeko twitch", "zeko top globales", "9z team", "streamer argentino"],
+    "openGraphTitle": "zEkO · El tryhard de Top Globales",
+    "openGraphDescription": "1.4M seguidores y ex-9z Team. Stats, trivia y clips del jugador más competitivo del gaming argentino."
   }
 }
