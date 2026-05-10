@@ -54,11 +54,16 @@ export default function sitemap() {
     priority: 0.75,
   }));
 
+  const comunidades_pages = [
+    { url: `${baseUrl}/comunidades/top-globales`, lastModified: today, changeFrequency: 'weekly', priority: 0.8 },
+  ];
+
   return [
     ...static_pages,
     ...streamers_index,
     ...streamer_pages,
     ...juegos_index,
     ...juegos_pages,
+    ...comunidades_pages,
   ];
 }
