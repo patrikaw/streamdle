@@ -105,7 +105,7 @@ const CLIPS = [
   { id: 'clip_01KNR3PEF60Q5W84BVWNVY743D', url: 'https://kick.com/goncho/clips/clip_01KNR3PEF60Q5W84BVWNVY743D', title: 'Zeko sacando 5 botellas de abajo de la oficina', streamer: 'Goncho' },
   { id: 'clip_01KQBMBMXZ7QFXZ4WMBXM02KPQ', url: 'https://kick.com/zeko/clips/clip_01KQBMBMXZ7QFXZ4WMBXM02KPQ', title: 'JASDJSDAJDASJDSAJSA QUEEEEE', streamer: 'Zeko' },
   { id: 'clip_01KNR2V77THZK75VJVY2DY6ZZ5', url: 'https://kick.com/duendepablo/clips/clip_01KNR2V77THZK75VJVY2DY6ZZ5', title: 'Mira como se reía el viejo', streamer: 'DuendePablo' },
-  { id: 'clip_01KPYQ0FHB8KXMEBGYY1F96XS5', url: 'https://kick.com/coscu/clips/clip_01KPYQ0FHB8KXMEBGYY1F96XS5', title: 'asd', streamer: 'Coscu' },
+  { id: 'clip_01KPYQ0FHB8KXMEBGYY1F96XS5', url: 'https://kick.com/coscu/clips/clip_01KPYQ0FHB8KXMEBGYY1F96XS5', title: 'Te garcho?', streamer: 'Coscu' },
 ];
 
 const COMMUNITY_SOCIALS = [
