@@ -32,36 +32,37 @@ export async function generateMetadata() {
 
 const COLOR = '#7C3AED';
 
+// login = Twitch username usado solo para fetchAvatarsBatch (no se muestra)
 const MEMBERS_BASE = [
   {
-    login: 'coscu', displayName: 'Coscu', kick: 'coscu', twitch: 'coscu',
+    login: 'coscu', displayName: 'Coscu', kick: 'coscu',
     twitter: 'https://x.com/Martinpdisalvo', instagram: 'https://www.instagram.com/martinpdisalvo/',
     tiktok: 'https://www.tiktok.com/@adictoalvegetal', youtube: null,
     followers: 4504221, role: 'Fundador',
     desc: 'El creador del gaming. Leyenda del streaming argentino y motor del grupo.',
   },
   {
-    login: 'goncho', displayName: 'Goncho', kick: 'goncho', twitch: 'goncho',
+    login: 'goncho', displayName: 'Goncho', kick: 'goncho',
     twitter: 'https://x.com/gonchobanzas', instagram: 'https://www.instagram.com/gonchobanzas/',
     tiktok: 'https://www.tiktok.com/@gonchotwm', youtube: null,
     followers: 1664179, role: 'El estratega',
     desc: 'FIFA, FPS y el que lleva la vibe del grupo. Siempre con algo para decir.',
   },
   {
-    login: 'duendepablo', displayName: 'DuendePablo', kick: 'duendepablo', twitch: 'duendepablo',
+    login: 'duendepablo', displayName: 'DuendePablo', kick: 'duendepablo',
     twitter: null, instagram: null, tiktok: null, youtube: null,
     followers: 1038786, role: 'El Doctor',
     desc: '"Creador del gaming" según él mismo. Sus compañeros no están del todo seguros.',
   },
   {
-    login: 'c0ker', displayName: 'Coker', kick: 'coker', twitch: 'c0ker',
+    login: 'c0ker', displayName: 'Coker', kick: 'coker',
     twitter: 'https://x.com/c0ker_', instagram: 'https://www.instagram.com/c0ker_/',
     tiktok: null, youtube: 'https://www.youtube.com/@c0ker',
     followers: 963591, role: 'Streamer del Año 2026',
     desc: 'Ganó el premio en los Coscu Army Awards 2026. Nivel aura completamente desbloqueado.',
   },
   {
-    login: 'zeko', displayName: 'Zeko', kick: 'zeko', twitch: 'zeko',
+    login: 'zeko', displayName: 'Zeko', kick: 'zeko',
     twitter: 'https://x.com/fedecristalino', instagram: 'https://www.instagram.com/federicocristalino/',
     tiktok: 'https://www.tiktok.com/@federicocristalino', youtube: null,
     followers: 1407477, role: 'El tryhard',
@@ -71,63 +72,38 @@ const MEMBERS_BASE = [
 
 const GUESTS_BASE = [
   {
-    login: 'k1ng', displayName: 'K1ng', kick: 'k1ng', twitch: 'k1ng',
+    login: 'k1ng', displayName: 'K1ng', kick: 'k1ng',
     twitter: 'https://x.com/k1ng', instagram: 'https://www.instagram.com/k1ngclips/',
     followers: 2160610, desc: 'Prodigio. Aparece en el stream y explota todo.',
   },
   {
-    login: 'robergalati', displayName: 'Rober Galati', kick: 'robergalati', twitch: 'robergalati',
+    login: 'robergalati', displayName: 'Rober Galati', kick: 'robergalati',
     twitter: null, instagram: null,
     followers: 769613, desc: 'Miembro oficial según TopGlo. Galán reconocido por la comunidad.',
   },
   {
-    login: 'unicornio', displayName: 'Unicornio', kick: 'unicornio', twitch: 'unicornio',
+    login: 'unicornio', displayName: 'Unicornio', kick: 'unicornio',
     twitter: null, instagram: 'https://www.instagram.com/germanusinger/',
     followers: 1373539, desc: 'El chill del grupo. Siempre suma buena onda.',
   },
   {
-    login: 'carreraaa', displayName: 'Carreraaa', kick: 'carreraaa', twitch: 'carreraaa',
+    login: 'carreraaa', displayName: 'Carreraaa', kick: 'carreraaa',
     twitter: 'https://x.com/rodricarreraaa', instagram: 'https://www.instagram.com/rodricarreraaa/',
     followers: 5514712, desc: 'La visita más grande del grupo: 5.5M de seguidores.',
   },
   {
-    login: 'momoladinastia', displayName: 'Momo', kick: 'momoladinastia', twitch: 'momoladinastia',
+    login: 'momoladinastia', displayName: 'Momo', kick: 'momoladinastia',
     twitter: 'https://x.com/momorelojero', instagram: 'https://www.instagram.com/gero.momo',
     followers: 1405247, desc: 'La Dinastía. Clips y caos garantizado cuando está en el stream.',
   },
 ];
 
 const CLIPS = [
-  {
-    url: 'https://kick.com/coker/clips/clip_01KPS6QRV6D5571KS8HSWWAJYQ',
-    title: '24 HORAS CONTRASTE',
-    streamer: 'Coker',
-    accent: '#7C3AED',
-  },
-  {
-    url: 'https://kick.com/goncho/clips/clip_01KNR3PEF60Q5W84BVWNVY743D',
-    title: 'Zeko sacando 5 botellas de abajo de la oficina',
-    streamer: 'Goncho',
-    accent: '#22C55E',
-  },
-  {
-    url: 'https://kick.com/zeko/clips/clip_01KQBMBMXZ7QFXZ4WMBXM02KPQ',
-    title: 'JASDJSDAJDASJDSAJSA QUEEEEE',
-    streamer: 'Zeko',
-    accent: '#EF4444',
-  },
-  {
-    url: 'https://kick.com/duendepablo/clips/clip_01KNR2V77THZK75VJVY2DY6ZZ5',
-    title: 'Mira como se reía el viejo',
-    streamer: 'DuendePablo',
-    accent: '#3B82F6',
-  },
-  {
-    url: 'https://kick.com/coscu/clips/clip_01KPYQ0FHB8KXMEBGYY1F96XS5',
-    title: 'asd',
-    streamer: 'Coscu',
-    accent: '#F59E0B',
-  },
+  { id: 'clip_01KPS6QRV6D5571KS8HSWWAJYQ', title: '24 HORAS CONTRASTE', streamer: 'Coker' },
+  { id: 'clip_01KNR3PEF60Q5W84BVWNVY743D', title: 'Zeko sacando 5 botellas de abajo de la oficina', streamer: 'Goncho' },
+  { id: 'clip_01KQBMBMXZ7QFXZ4WMBXM02KPQ', title: 'JASDJSDAJDASJDSAJSA QUEEEEE', streamer: 'Zeko' },
+  { id: 'clip_01KNR2V77THZK75VJVY2DY6ZZ5', title: 'Mira como se reía el viejo', streamer: 'DuendePablo' },
+  { id: 'clip_01KPYQ0FHB8KXMEBGYY1F96XS5', title: 'asd', streamer: 'Coscu' },
 ];
 
 const COMMUNITY_SOCIALS = [
@@ -139,6 +115,31 @@ const COMMUNITY_SOCIALS = [
 
 const TAGS = ['variedad', 'tryhard', 'irl'];
 
+// SVG paths for guest social icons (server-rendered, no hover state needed)
+const SOCIAL_SVG = {
+  kick:      { path: 'M4 2h16a2 2 0 012 2v16a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2zm3 4v12h2.5v-4l4.5 4H17l-5-5 4.5-4.5h-2.8L9.5 12.5V6H7z', color: '#53FC18', bg: 'rgba(83,252,24,0.12)', border: 'rgba(83,252,24,0.3)' },
+  twitter:   { path: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z', color: '#1DA1F2', bg: 'rgba(29,161,242,0.12)', border: 'rgba(29,161,242,0.3)' },
+  instagram: { path: 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z', color: '#E1306C', bg: 'rgba(225,48,108,0.12)', border: 'rgba(225,48,108,0.3)' },
+};
+
+function GuestSocialIcon({ href, type }) {
+  if (!href) return null;
+  const d = SOCIAL_SVG[type];
+  if (!d) return null;
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" title={type} style={{
+      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+      width: 32, height: 32, borderRadius: 8,
+      background: d.bg, border: `1px solid ${d.border}`,
+      color: d.color, textDecoration: 'none', flexShrink: 0,
+    }}>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+        <path d={d.path} />
+      </svg>
+    </a>
+  );
+}
+
 function fmt(n) {
   if (!n) return '—';
   if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace('.0', '') + 'M';
@@ -148,22 +149,23 @@ function fmt(n) {
 
 export default async function TopGlobalesPage() {
   const allLogins = [
-    ...MEMBERS_BASE.map(m => m.twitch),
-    ...GUESTS_BASE.map(g => g.twitch).filter(Boolean),
+    ...MEMBERS_BASE.map(m => m.login),
+    ...GUESTS_BASE.map(g => g.login),
   ].filter(Boolean);
 
   const userData = await fetchAvatarsBatch(allLogins).catch(() => ({}));
   const avatarOf = login => userData[login?.toLowerCase()]?.url ?? null;
 
-  const members = MEMBERS_BASE.map(m => ({ ...m, avatarUrl: avatarOf(m.login) }));
-  const guests = GUESTS_BASE.map(g => ({ ...g, avatarUrl: avatarOf(g.login) }));
+  // Strip internal `login` field before passing to client components
+  const members = MEMBERS_BASE.map(({ login, ...rest }) => ({ ...rest, avatarUrl: avatarOf(login) }));
+  const guests  = GUESTS_BASE.map(({ login, ...rest })  => ({ ...rest, avatarUrl: avatarOf(login) }));
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://streamdle.net/' },
-      { '@type': 'ListItem', position: 2, name: 'Comunidades', item: 'https://streamdle.net/comunidades' },
+      { '@type': 'ListItem', position: 1, name: 'Inicio',       item: 'https://streamdle.net/' },
+      { '@type': 'ListItem', position: 2, name: 'Comunidades',  item: 'https://streamdle.net/comunidades' },
       { '@type': 'ListItem', position: 3, name: 'Top Globales', item: 'https://streamdle.net/comunidades/top-globales' },
     ],
   };
@@ -183,14 +185,13 @@ export default async function TopGlobalesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
       <style>{`
         .member-card:hover { border-color: ${COLOR} !important; transform: translateY(-2px); }
-        .clip-card:hover { border-color: rgba(255,255,255,0.25) !important; transform: translateY(-1px); }
-        .guest-card:hover { border-color: ${COLOR} !important; }
-        .comm-social:hover { opacity: 0.8; }
+        .guest-card:hover  { border-color: ${COLOR} !important; }
+        .comm-social:hover { opacity: 0.75; }
         @media (max-width: 640px) {
-          .hero-inner { flex-direction: column !important; }
+          .hero-inner  { flex-direction: column !important; }
           .hero-badge-col { width: 100% !important; flex-direction: row !important; align-items: center; gap: 16px !important; }
-          .comm-badge { width: 60px !important; height: 60px !important; font-size: 22px !important; flex-shrink: 0; }
-          .clips-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .comm-badge  { width: 64px !important; height: 64px !important; flex-shrink: 0; }
+          .clips-grid  { grid-template-columns: 1fr !important; }
           .guests-grid { grid-template-columns: repeat(2, 1fr) !important; }
           .header-icon { display: none !important; }
         }
@@ -261,23 +262,25 @@ export default async function TopGlobalesPage() {
       }}>
         <div className="hero-inner" style={{ maxWidth: 1000, margin: '0 auto', display: 'flex', gap: 32, alignItems: 'flex-start' }}>
 
-          {/* Badge + social */}
+          {/* Logo + social links */}
           <div className="hero-badge-col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, flexShrink: 0 }}>
-            <div className="comm-badge" style={{
-              width: 90, height: 90, borderRadius: '50%',
-              background: `linear-gradient(135deg, ${COLOR}, #9D5FF5)`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 30, fontWeight: 900, color: '#fff', letterSpacing: '-1px',
-              border: `3px solid ${COLOR}66`, flexShrink: 0,
-            }}>
-              TG
-            </div>
+            <img
+              src="/top-globales-logo.jpg"
+              alt="Top Globales"
+              className="comm-badge"
+              style={{
+                width: 90, height: 90, borderRadius: '50%',
+                objectFit: 'cover', display: 'block',
+                border: `3px solid ${COLOR}66`,
+              }}
+            />
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: '100%', minWidth: 110 }}>
               {COMMUNITY_SOCIALS.map(s => (
                 <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer" className="comm-social"
                   style={{
                     display: 'block', fontSize: 11, fontWeight: 600, textAlign: 'center',
-                    background: 'var(--bg-card)', border: `1px solid ${COLOR}44`, color: 'var(--color-text-secondary)',
+                    background: 'var(--bg-card)', border: `1px solid ${COLOR}44`,
+                    color: 'var(--color-text-secondary)',
                     borderRadius: 6, padding: '5px 10px', textDecoration: 'none',
                     transition: 'opacity 0.15s',
                   }}>
@@ -289,7 +292,6 @@ export default async function TopGlobalesPage() {
 
           {/* Text */}
           <div style={{ flex: 1, minWidth: 240 }}>
-            {/* Tags */}
             <div style={{ display: 'flex', gap: 6, marginBottom: 14, flexWrap: 'wrap' }}>
               {TAGS.map(tag => (
                 <span key={tag} style={{
@@ -383,59 +385,40 @@ export default async function TopGlobalesPage() {
           </div>
         </section>
 
-        {/* ── 3. Clips virales ── */}
+        {/* ── 3. Clips virales (embeds) ── */}
         <section style={{ marginTop: 52 }}>
           <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 6 }}>
             Los clips más virales del grupo
           </h2>
           <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 18 }}>
-            Momentos out of context, jugadas imposibles, peleas, gritos — los clips que explotaron en Twitter, TikTok y Kick.
+            Momentos out of context, jugadas imposibles, gritos y escenas que explotaron en TikTok y Kick.
           </p>
-          <div className="clips-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 10 }}>
-            {CLIPS.map((clip) => (
-              <a
-                key={clip.url}
-                href={clip.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="clip-card"
-                style={{
-                  display: 'block', textDecoration: 'none', color: 'inherit',
-                  background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-                  borderRadius: 10, overflow: 'hidden', transition: 'border-color 0.15s, transform 0.15s',
-                }}
-              >
-                {/* Thumbnail placeholder with accent color */}
-                <div style={{
-                  height: 100, background: `linear-gradient(135deg, ${clip.accent}33, ${clip.accent}11)`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  borderBottom: `1px solid ${clip.accent}33`, position: 'relative',
-                }}>
-                  <div style={{
-                    width: 36, height: 36, borderRadius: '50%',
-                    background: `${clip.accent}33`, border: `2px solid ${clip.accent}66`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 14,
-                  }}>
-                    ▶
-                  </div>
-                  <span style={{
-                    position: 'absolute', top: 8, right: 8,
-                    fontSize: 9, fontWeight: 700, color: '#53FC18',
-                    background: 'rgba(0,0,0,0.6)', borderRadius: 3, padding: '2px 5px',
-                  }}>
-                    KICK
-                  </span>
+          <div className="clips-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: 16 }}>
+            {CLIPS.map(clip => (
+              <div key={clip.id} style={{
+                background: 'var(--bg-card)', border: '1px solid var(--color-border)',
+                borderRadius: 12, overflow: 'hidden',
+              }}>
+                {/* 16:9 iframe wrapper */}
+                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, background: '#000' }}>
+                  <iframe
+                    src={`https://kick.com/embed/clip/${clip.id}`}
+                    title={clip.title}
+                    allowFullScreen
+                    frameBorder="0"
+                    loading="lazy"
+                    style={{
+                      position: 'absolute', top: 0, left: 0,
+                      width: '100%', height: '100%',
+                      border: 'none',
+                    }}
+                  />
                 </div>
-                <div style={{ padding: '10px 12px' }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: clip.accent, marginBottom: 3 }}>
-                    {clip.streamer}
-                  </div>
-                  <div style={{ fontSize: 11, color: '#fff', lineHeight: 1.4, fontWeight: 600 }}>
-                    {clip.title}
-                  </div>
+                <div style={{ padding: '10px 14px 12px' }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: '#53FC18', marginBottom: 2 }}>{clip.streamer}</div>
+                  <div style={{ fontSize: 13, color: '#fff', fontWeight: 600, lineHeight: 1.4 }}>{clip.title}</div>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </section>
@@ -456,7 +439,7 @@ export default async function TopGlobalesPage() {
           </div>
         </section>
 
-        {/* ── 5. ¿Qué son los Top Globales? ── */}
+        {/* ── 5. ¿Qué son? ── */}
         <section style={{ marginTop: 52 }}>
           <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 14 }}>
             ¿Qué son los Top Globales?
@@ -474,7 +457,7 @@ export default async function TopGlobalesPage() {
           </div>
         </section>
 
-        {/* ── 6. La casa de Miami ── */}
+        {/* ── 6. Casa de Miami ── */}
         <section style={{ marginTop: 40 }}>
           <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 14 }}>
             La futura casa de Miami
@@ -482,13 +465,7 @@ export default async function TopGlobalesPage() {
           <div style={{
             background: 'var(--bg-card)', border: `1px solid ${COLOR}33`,
             borderRadius: 12, padding: '22px 24px',
-            position: 'relative', overflow: 'hidden',
           }}>
-            <div style={{
-              position: 'absolute', top: -20, right: -20,
-              width: 120, height: 120, borderRadius: '50%',
-              background: `${COLOR}08`,
-            }} />
             <div style={{ display: 'flex', gap: 14, marginBottom: 14, alignItems: 'flex-start' }}>
               <span style={{ fontSize: 28, flexShrink: 0 }}>🏠</span>
               <div>
@@ -504,7 +481,7 @@ export default async function TopGlobalesPage() {
           </div>
         </section>
 
-        {/* ── 7. Invitados recurrentes ── */}
+        {/* ── 7. Invitados ── */}
         <section style={{ marginTop: 52 }}>
           <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff', marginBottom: 6 }}>
             Los invitados que ya deberían ser parte del grupo
@@ -514,7 +491,7 @@ export default async function TopGlobalesPage() {
           </p>
           <div className="guests-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))', gap: 10 }}>
             {guests.map(g => (
-              <div key={g.login} className="guest-card" style={{
+              <div key={g.kick} className="guest-card" style={{
                 background: 'var(--bg-card)', border: '1px solid var(--color-border)',
                 borderRadius: 12, padding: '16px 14px',
                 display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
@@ -546,24 +523,9 @@ export default async function TopGlobalesPage() {
                   {g.desc}
                 </div>
                 <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', justifyContent: 'center' }}>
-                  {g.kick && (
-                    <a href={`https://kick.com/${g.kick}`} target="_blank" rel="noopener noreferrer" style={{
-                      fontSize: 10, fontWeight: 700, background: '#53FC18', color: '#0D0D14',
-                      borderRadius: 4, padding: '2px 6px', textDecoration: 'none',
-                    }}>Kick</a>
-                  )}
-                  {g.twitter && (
-                    <a href={g.twitter} target="_blank" rel="noopener noreferrer" style={{
-                      fontSize: 10, fontWeight: 700, background: 'rgba(29,161,242,0.15)', color: '#fff',
-                      border: '1px solid rgba(29,161,242,0.3)', borderRadius: 4, padding: '2px 6px', textDecoration: 'none',
-                    }}>X</a>
-                  )}
-                  {g.instagram && (
-                    <a href={g.instagram} target="_blank" rel="noopener noreferrer" style={{
-                      fontSize: 10, fontWeight: 700, background: 'rgba(225,48,108,0.15)', color: '#fff',
-                      border: '1px solid rgba(225,48,108,0.3)', borderRadius: 4, padding: '2px 6px', textDecoration: 'none',
-                    }}>IG</a>
-                  )}
+                  <GuestSocialIcon href={`https://kick.com/${g.kick}`} type="kick" />
+                  <GuestSocialIcon href={g.twitter} type="twitter" />
+                  <GuestSocialIcon href={g.instagram} type="instagram" />
                 </div>
               </div>
             ))}

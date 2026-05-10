@@ -15,10 +15,6 @@ const FAQS = [
     a: 'Por su enfoque en gaming cuando gran parte del streaming hispano apostaba a slots y reacciones. Sus streams grupales, el lore entre integrantes y el sentido de "si no entrás hoy, te perdés algo" generaron una comunidad muy fiel.',
   },
   {
-    q: '¿En qué plataforma streamean?',
-    a: 'Principalmente en Kick, donde hacen sus streams en vivo. Varios integrantes también tienen presencia en Twitch, pero Kick es su plataforma principal.',
-  },
-  {
     q: '¿Qué juegos juegan?',
     a: 'El grupo es conocido por hacer variedad: FIFA, CS, Valorant, GTA V y muchas sesiones grupales de Discord y just chatting donde ocurren los momentos más virales.',
   },
