@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 function fmt(n) {
   if (!n) return '—';
@@ -66,12 +67,13 @@ export default function MemberCards({ members }) {
         const isLive = status?.live;
 
         return (
-          <div key={m.kick} className="member-card" style={{
+          <Link key={m.kick} href={m.slug} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+          <div className="member-card" style={{
             background: 'var(--bg-card)',
             border: `1px solid ${isLive ? 'rgba(34,197,94,0.5)' : 'var(--color-border)'}`,
-            borderRadius: 14, padding: '18px 14px',
+            borderRadius: 14, padding: '18px 14px', height: '100%',
             display: 'flex', flexDirection: 'column', alignItems: 'center',
-            gap: 10, transition: 'border-color 0.2s, transform 0.15s',
+            gap: 10, transition: 'border-color 0.2s, transform 0.15s', cursor: 'pointer',
           }}>
 
             {/* Avatar */}
@@ -136,6 +138,7 @@ export default function MemberCards({ members }) {
               <SocialIcon href={m.tiktok} type="tiktok" />
             </div>
           </div>
+          </Link>
         );
       })}
     </div>

@@ -37,34 +37,34 @@ const COLOR = '#7C3AED';
 // login = Twitch username usado solo para fetchAvatarsBatch (no se muestra)
 const MEMBERS_BASE = [
   {
-    login: 'coscu', displayName: 'Coscu', kick: 'coscu',
+    login: 'coscu', displayName: 'Coscu', kick: 'coscu', slug: '/coscu',
     twitter: 'https://x.com/Martinpdisalvo', instagram: 'https://www.instagram.com/martinpdisalvo/',
     tiktok: 'https://www.tiktok.com/@adictoalvegetal', youtube: null,
     followers: 4504221, role: 'Fundador',
     desc: 'El creador del gaming. Leyenda del streaming argentino y motor del grupo.',
   },
   {
-    login: 'goncho', displayName: 'Goncho', kick: 'goncho',
+    login: 'goncho', displayName: 'Goncho', kick: 'goncho', slug: '/goncho',
     twitter: 'https://x.com/gonchobanzas', instagram: 'https://www.instagram.com/gonchobanzas/',
     tiktok: 'https://www.tiktok.com/@gonchotwm', youtube: null,
     followers: 1664179, role: 'El estratega',
     desc: 'FIFA, FPS y el que lleva la vibe del grupo. Siempre con algo para decir.',
   },
   {
-    login: 'duendepablo', displayName: 'DuendePablo', kick: 'duendepablo',
+    login: 'duendepablo', displayName: 'DuendePablo', kick: 'duendepablo', slug: '/duendepablo',
     twitter: null, instagram: null, tiktok: null, youtube: null,
     followers: 1038786, role: 'El Doctor',
     desc: '"Creador del gaming" según él mismo. Sus compañeros no están del todo seguros.',
   },
   {
-    login: 'c0ker', displayName: 'Coker', kick: 'coker',
+    login: 'c0ker', displayName: 'Coker', kick: 'coker', slug: '/c0ker',
     twitter: 'https://x.com/c0ker_', instagram: 'https://www.instagram.com/c0ker_/',
     tiktok: null, youtube: 'https://www.youtube.com/@c0ker',
     followers: 963591, role: 'Streamer del Año 2026',
     desc: 'Ganó el premio en los Coscu Army Awards 2026. Nivel aura completamente desbloqueado.',
   },
   {
-    login: 'zeko', displayName: 'Zeko', kick: 'zeko',
+    login: 'zeko', displayName: 'Zeko', kick: 'zeko', slug: '/zeko',
     twitter: 'https://x.com/fedecristalino', instagram: 'https://www.instagram.com/federicocristalino/',
     tiktok: 'https://www.tiktok.com/@federicocristalino', youtube: null,
     followers: 1407477, role: 'El tryhard',
@@ -74,38 +74,38 @@ const MEMBERS_BASE = [
 
 const GUESTS_BASE = [
   {
-    login: 'k1ng', displayName: 'K1ng', kick: 'k1ng',
+    login: 'k1ng', displayName: 'K1ng', kick: 'k1ng', slug: '/k1ng',
     twitter: 'https://x.com/k1ng', instagram: 'https://www.instagram.com/k1ngclips/',
     followers: 2160610, desc: 'Prodigio. Aparece en el stream y explota todo.',
   },
   {
-    login: 'robergalati', displayName: 'Rober Galati', kick: 'robergalati',
+    login: 'robergalati', displayName: 'Rober Galati', kick: 'robergalati', slug: '/robergalati',
     twitter: null, instagram: null,
     followers: 769613, desc: 'Miembro oficial según TopGlo. Galán reconocido por la comunidad.',
   },
   {
-    login: 'unicornio', displayName: 'Unicornio', kick: 'unicornio',
+    login: 'unicornio', displayName: 'Unicornio', kick: 'unicornio', slug: '/unicornio',
     twitter: null, instagram: 'https://www.instagram.com/germanusinger/',
     followers: 1373539, desc: 'El chill del grupo. Siempre suma buena onda.',
   },
   {
-    login: 'carreraaa', displayName: 'Carreraaa', kick: 'carreraaa',
+    login: 'carreraaa', displayName: 'Carreraaa', kick: 'carreraaa', slug: '/carreraaa',
     twitter: 'https://x.com/rodricarreraaa', instagram: 'https://www.instagram.com/rodricarreraaa/',
     followers: 5514712, desc: 'La visita más grande del grupo: 5.5M de seguidores.',
   },
   {
-    login: 'momoladinastia', displayName: 'Momo', kick: 'momoladinastia',
+    login: 'momoladinastia', displayName: 'Momo', kick: 'momoladinastia', slug: '/momoladinastia',
     twitter: 'https://x.com/momorelojero', instagram: 'https://www.instagram.com/gero.momo',
     followers: 1405247, desc: 'La Dinastía. Clips y caos garantizado cuando está en el stream.',
   },
 ];
 
 const CLIPS = [
-  { id: 'clip_01KPS6QRV6D5571KS8HSWWAJYQ', title: '24 HORAS CONTRASTE', streamer: 'Coker' },
-  { id: 'clip_01KNR3PEF60Q5W84BVWNVY743D', title: 'Zeko sacando 5 botellas de abajo de la oficina', streamer: 'Goncho' },
-  { id: 'clip_01KQBMBMXZ7QFXZ4WMBXM02KPQ', title: 'JASDJSDAJDASJDSAJSA QUEEEEE', streamer: 'Zeko' },
-  { id: 'clip_01KNR2V77THZK75VJVY2DY6ZZ5', title: 'Mira como se reía el viejo', streamer: 'DuendePablo' },
-  { id: 'clip_01KPYQ0FHB8KXMEBGYY1F96XS5', title: 'asd', streamer: 'Coscu' },
+  { id: 'clip_01KPS6QRV6D5571KS8HSWWAJYQ', url: 'https://kick.com/coker/clips/clip_01KPS6QRV6D5571KS8HSWWAJYQ', title: '24 HORAS CONTRASTE', streamer: 'Coker' },
+  { id: 'clip_01KNR3PEF60Q5W84BVWNVY743D', url: 'https://kick.com/goncho/clips/clip_01KNR3PEF60Q5W84BVWNVY743D', title: 'Zeko sacando 5 botellas de abajo de la oficina', streamer: 'Goncho' },
+  { id: 'clip_01KQBMBMXZ7QFXZ4WMBXM02KPQ', url: 'https://kick.com/zeko/clips/clip_01KQBMBMXZ7QFXZ4WMBXM02KPQ', title: 'JASDJSDAJDASJDSAJSA QUEEEEE', streamer: 'Zeko' },
+  { id: 'clip_01KNR2V77THZK75VJVY2DY6ZZ5', url: 'https://kick.com/duendepablo/clips/clip_01KNR2V77THZK75VJVY2DY6ZZ5', title: 'Mira como se reía el viejo', streamer: 'DuendePablo' },
+  { id: 'clip_01KPYQ0FHB8KXMEBGYY1F96XS5', url: 'https://kick.com/coscu/clips/clip_01KPYQ0FHB8KXMEBGYY1F96XS5', title: 'asd', streamer: 'Coscu' },
 ];
 
 const COMMUNITY_SOCIALS = [
@@ -451,11 +451,12 @@ export default async function TopGlobalesPage() {
           </p>
           <div className="guests-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))', gap: 10 }}>
             {guests.map(g => (
-              <div key={g.kick} className="guest-card" style={{
+              <Link key={g.kick} href={g.slug} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+              <div className="guest-card" style={{
                 background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-                borderRadius: 12, padding: '16px 14px',
+                borderRadius: 12, padding: '16px 14px', height: '100%',
                 display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
-                transition: 'border-color 0.2s',
+                transition: 'border-color 0.2s', cursor: 'pointer',
               }}>
                 {g.avatarUrl ? (
                   <img src={g.avatarUrl} alt={g.displayName} width={56} height={56} style={{
@@ -488,6 +489,7 @@ export default async function TopGlobalesPage() {
                   <GuestSocialIcon href={g.instagram} type="instagram" />
                 </div>
               </div>
+              </Link>
             ))}
           </div>
         </section>
