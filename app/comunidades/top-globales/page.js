@@ -4,6 +4,8 @@ import { fetchAvatarsBatch } from '../../../lib/twitch-server';
 import MemberCards from './MemberCards';
 import CommunityTrivia from './CommunityTrivia';
 import CommunityFAQ from './CommunityFAQ';
+import CommunitySocials from './CommunitySocials';
+import ClipCards from './ClipCards';
 
 export const revalidate = 86400;
 
@@ -107,10 +109,10 @@ const CLIPS = [
 ];
 
 const COMMUNITY_SOCIALS = [
-  { href: 'https://x.com/i/communities/2018712266821034398', label: 'X / Twitter' },
-  { href: 'https://www.youtube.com/@TopGlobalesOficial', label: 'YouTube' },
-  { href: 'https://www.instagram.com/topglobalesoficial/', label: 'Instagram' },
-  { href: 'https://www.tiktok.com/@topglobalesoficial', label: 'TikTok' },
+  { type: 'twitter',   href: 'https://x.com/i/communities/2018712266821034398' },
+  { type: 'youtube',   href: 'https://www.youtube.com/@TopGlobalesOficial' },
+  { type: 'instagram', href: 'https://www.instagram.com/topglobalesoficial/' },
+  { type: 'tiktok',    href: 'https://www.tiktok.com/@topglobalesoficial' },
 ];
 
 const TAGS = ['variedad', 'tryhard', 'irl'];
@@ -274,20 +276,7 @@ export default async function TopGlobalesPage() {
                 border: `3px solid ${COLOR}66`,
               }}
             />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: '100%', minWidth: 110 }}>
-              {COMMUNITY_SOCIALS.map(s => (
-                <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer" className="comm-social"
-                  style={{
-                    display: 'block', fontSize: 11, fontWeight: 600, textAlign: 'center',
-                    background: 'var(--bg-card)', border: `1px solid ${COLOR}44`,
-                    color: 'var(--color-text-secondary)',
-                    borderRadius: 6, padding: '5px 10px', textDecoration: 'none',
-                    transition: 'opacity 0.15s',
-                  }}>
-                  {s.label}
-                </a>
-              ))}
-            </div>
+            <CommunitySocials socials={COMMUNITY_SOCIALS} />
           </div>
 
           {/* Text */}
@@ -393,34 +382,7 @@ export default async function TopGlobalesPage() {
           <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 18 }}>
             Momentos out of context, jugadas imposibles, gritos y escenas que explotaron en TikTok y Kick.
           </p>
-          <div className="clips-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: 16 }}>
-            {CLIPS.map(clip => (
-              <div key={clip.id} style={{
-                background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-                borderRadius: 12, overflow: 'hidden',
-              }}>
-                {/* 16:9 iframe wrapper */}
-                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, background: '#000' }}>
-                  <iframe
-                    src={`https://kick.com/embed/clip/${clip.id}`}
-                    title={clip.title}
-                    allowFullScreen
-                    frameBorder="0"
-                    loading="lazy"
-                    style={{
-                      position: 'absolute', top: 0, left: 0,
-                      width: '100%', height: '100%',
-                      border: 'none',
-                    }}
-                  />
-                </div>
-                <div style={{ padding: '10px 14px 12px' }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: '#53FC18', marginBottom: 2 }}>{clip.streamer}</div>
-                  <div style={{ fontSize: 13, color: '#fff', fontWeight: 600, lineHeight: 1.4 }}>{clip.title}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <ClipCards clips={CLIPS} />
         </section>
 
         {/* ── 4. Trivia ── */}

@@ -41,17 +41,21 @@ function SocialIcon({ href, type }) {
 
 export default function MemberCards({ members }) {
   const [liveStatus, setLiveStatus] = useState({});
+  const [statusLoaded, setStatusLoaded] = useState(false);
 
   useEffect(() => {
     const usernames = members.map(m => m.kick).filter(Boolean).join(',');
     if (!usernames) return;
     fetch(`/api/kick-live?users=${usernames}`)
       .then(r => r.json())
-      .then(data => setLiveStatus(data))
-      .catch(() => {});
+      .then(data => { setLiveStatus(data); setStatusLoaded(true); })
+      .catch(() => setStatusLoaded(true));
   }, []);
 
+  const anyLive = statusLoaded && Object.values(liveStatus).some(s => s?.live);
+
   return (
+    <div>
     <div className="member-grid" style={{
       display: 'grid',
       gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))',
@@ -134,6 +138,21 @@ export default function MemberCards({ members }) {
           </div>
         );
       })}
+    </div>
+
+    {/* Offline banner */}
+    {statusLoaded && !anyLive && (
+      <div style={{
+        marginTop: 14, padding: '11px 16px',
+        background: 'rgba(161,161,181,0.06)', border: '1px solid var(--color-border)',
+        borderRadius: 10, textAlign: 'center',
+        fontSize: 13, color: 'var(--color-text-secondary)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+      }}>
+        <span style={{ fontSize: 16 }}>💤</span>
+        Ningún integrante está en vivo ahora mismo — volvé más tarde
+      </div>
+    )}
     </div>
   );
 }
