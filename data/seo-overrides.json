@@ -173,5 +173,222 @@
     "keywords": ["zeko", "zEkO", "federico cristalino", "zeko kick", "zeko twitch", "zeko top globales", "9z team", "streamer argentino"],
     "openGraphTitle": "zEkO · El tryhard de Top Globales",
     "openGraphDescription": "1.4M seguidores y ex-9z Team. Stats, trivia y clips del jugador más competitivo del gaming argentino."
+  },
+  "shelao": {
+    "title": "shelao — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de shelao en Streamdle.",
+    "keywords": ["shelao", "shelao twitch", "shelao streamer"],
+    "openGraphTitle": "shelao · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de shelao en Streamdle."
+  },
+  "sandraskins": {
+    "title": "SandraSkins — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de SandraSkins en Streamdle.",
+    "keywords": ["sandraskins", "sandra skins", "sandraskins twitch", "sandraskins streamer"],
+    "openGraphTitle": "SandraSkins · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de SandraSkins en Streamdle."
+  },
+  "byviruzz": {
+    "title": "byViruZz — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de byViruZz en Streamdle.",
+    "keywords": ["byviruzz", "viruzz", "byviruzz twitch", "byviruzz streamer"],
+    "openGraphTitle": "byViruZz · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de byViruZz en Streamdle."
+  },
+  "nissaxter": {
+    "title": "Nissaxter — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de Nissaxter en Streamdle.",
+    "keywords": ["nissaxter", "nissa", "nissaxter twitch", "nissaxter streamer"],
+    "openGraphTitle": "Nissaxter · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de Nissaxter en Streamdle."
+  },
+  "mernuel": {
+    "title": "Mernuel — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de Mernuel en Streamdle.",
+    "keywords": ["mernuel", "mernuel twitch", "mernuel kick", "mernuel streamer"],
+    "openGraphTitle": "Mernuel · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de Mernuel en Streamdle."
+  },
+  "iaaras2": {
+    "title": "iaaraS2 — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de iaaraS2 en Streamdle.",
+    "keywords": ["iaaras2", "iaara", "iaaras2 twitch", "iaaras2 streamer"],
+    "openGraphTitle": "iaaraS2 · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de iaaraS2 en Streamdle."
+  },
+  "werlyb": {
+    "title": "Werlyb — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de Werlyb en Streamdle.",
+    "keywords": ["werlyb", "werly", "werlyb twitch", "werlyb streamer"],
+    "openGraphTitle": "Werlyb · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de Werlyb en Streamdle."
+  },
+  "bichouu": {
+    "title": "Bichouu — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de Bichouu en Streamdle.",
+    "keywords": ["bichouu", "bicho", "bichouu twitch", "bichouu streamer"],
+    "openGraphTitle": "Bichouu · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de Bichouu en Streamdle."
+  },
+  "elded": {
+    "title": "elded — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de elded en Streamdle.",
+    "keywords": ["elded", "ded", "elded twitch", "elded streamer"],
+    "openGraphTitle": "elded · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de elded en Streamdle."
+  },
+  "crystalmolly": {
+    "title": "CrystalMolly — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de CrystalMolly en Streamdle.",
+    "keywords": ["crystalmolly", "molly", "crystalmolly twitch", "crystalmolly streamer"],
+    "openGraphTitle": "CrystalMolly · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de CrystalMolly en Streamdle."
+  },
+  "peereira7": {
+    "title": "Peereira7 — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de Peereira7 en Streamdle.",
+    "keywords": ["peereira7", "pere", "peereira7 twitch", "peereira7 streamer"],
+    "openGraphTitle": "Peereira7 · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de Peereira7 en Streamdle."
+  },
+  "mixwell": {
+    "title": "Mixwell — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de Mixwell en Streamdle.",
+    "keywords": ["mixwell", "mix", "mixwell twitch", "mixwell streamer"],
+    "openGraphTitle": "Mixwell · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de Mixwell en Streamdle."
+  },
+  "karchez": {
+    "title": "Karchez — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de Karchez en Streamdle.",
+    "keywords": ["karchez", "karches", "karchez twitch", "karchez streamer"],
+    "openGraphTitle": "Karchez · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de Karchez en Streamdle."
+  },
+  "alanalarana": {
+    "title": "Alanalarana — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de Alanalarana en Streamdle.",
+    "keywords": ["alanalarana", "alana", "alanalarana twitch", "alanalarana streamer"],
+    "openGraphTitle": "Alanalarana · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de Alanalarana en Streamdle."
+  },
+  "amablitz": {
+    "title": "amablitz — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de amablitz en Streamdle.",
+    "keywords": ["amablitz", "ama", "amablitz twitch", "amablitz streamer"],
+    "openGraphTitle": "amablitz · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de amablitz en Streamdle."
+  },
+  "mishoamoli": {
+    "title": "MishoAmoli — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de MishoAmoli en Streamdle.",
+    "keywords": ["mishoamoli", "misho", "mishoamoli twitch", "mishoamoli streamer"],
+    "openGraphTitle": "MishoAmoli · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de MishoAmoli en Streamdle."
+  },
+  "spursito": {
+    "title": "Spursito — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de Spursito en Streamdle.",
+    "keywords": ["spursito", "spur", "spursito twitch", "spursito streamer"],
+    "openGraphTitle": "Spursito · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de Spursito en Streamdle."
+  },
+  "jaggerprincesa": {
+    "title": "jaggerprincesa — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de jaggerprincesa en Streamdle.",
+    "keywords": ["jaggerprincesa", "jagger", "jaggerprincesa twitch", "jaggerprincesa streamer"],
+    "openGraphTitle": "jaggerprincesa · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de jaggerprincesa en Streamdle."
+  },
+  "guanyar": {
+    "title": "Guanyar — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de Guanyar en Streamdle.",
+    "keywords": ["guanyar", "guai", "guanyar twitch", "guanyar streamer"],
+    "openGraphTitle": "Guanyar · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de Guanyar en Streamdle."
+  },
+  "robertocein": {
+    "title": "RobertoCein — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de RobertoCein en Streamdle.",
+    "keywords": ["robertocein", "cein", "robertocein twitch", "robertocein streamer"],
+    "openGraphTitle": "RobertoCein · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de RobertoCein en Streamdle."
+  },
+  "nataliamx": {
+    "title": "nataliamx — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de nataliamx en Streamdle.",
+    "keywords": ["nataliamx", "natalia", "nataliamx twitch", "nataliamx streamer"],
+    "openGraphTitle": "nataliamx · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de nataliamx en Streamdle."
+  },
+  "carlosbelcastt": {
+    "title": "CarlosBelcastt — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de CarlosBelcastt en Streamdle.",
+    "keywords": ["carlosbelcastt", "carlos belcast", "carlosbelcastt twitch", "carlosbelcastt streamer"],
+    "openGraphTitle": "CarlosBelcastt · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de CarlosBelcastt en Streamdle."
+  },
+  "benjaz": {
+    "title": "benjaz — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de benjaz en Streamdle.",
+    "keywords": ["benjaz", "benja", "benjaz kick", "benjaz streamer"],
+    "openGraphTitle": "benjaz · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de benjaz en Streamdle."
+  },
+  "robergalati": {
+    "title": "robergalati — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de robergalati en Streamdle.",
+    "keywords": ["robergalati", "rober galati", "robergalati twitch", "robergalati streamer"],
+    "openGraphTitle": "robergalati · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de robergalati en Streamdle."
+  },
+  "adrianozendejas32": {
+    "title": "adrianozendejas32 — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de adrianozendejas32 en Streamdle.",
+    "keywords": ["adrianozendejas32", "adriano", "adrianozendejas32 kick", "adrianozendejas32 streamer"],
+    "openGraphTitle": "adrianozendejas32 · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de adrianozendejas32 en Streamdle."
+  },
+  "nexxuz": {
+    "title": "nexxuz — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de nexxuz en Streamdle.",
+    "keywords": ["nexxuz", "nexuz", "nexxuz twitch", "nexxuz streamer"],
+    "openGraphTitle": "nexxuz · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de nexxuz en Streamdle."
+  },
+  "cristorata7": {
+    "title": "cristorata7 — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de cristorata7 en Streamdle.",
+    "keywords": ["cristorata7", "cristo rata", "cristorata7 kick", "cristorata7 streamer"],
+    "openGraphTitle": "cristorata7 · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de cristorata7 en Streamdle."
+  },
+  "rickyedit": {
+    "title": "rickyedit — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de rickyedit en Streamdle.",
+    "keywords": ["rickyedit", "ricky", "rickyedit twitch", "rickyedit streamer"],
+    "openGraphTitle": "rickyedit · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de rickyedit en Streamdle."
+  },
+  "vickypalami": {
+    "title": "vickypalami — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de vickypalami en Streamdle.",
+    "keywords": ["vickypalami", "vicky", "vickypalami twitch", "vickypalami streamer"],
+    "openGraphTitle": "vickypalami · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de vickypalami en Streamdle."
+  },
+  "jelty": {
+    "title": "Jelty — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de Jelty en Streamdle.",
+    "keywords": ["jelty", "jelty twitch", "jelty streamer"],
+    "openGraphTitle": "Jelty · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de Jelty en Streamdle."
+  },
+  "staryuuki": {
+    "title": "Staryuuki — Stats, trivia y clips | Streamdle",
+    "description": "Stats, clips y datos de Staryuuki en Streamdle.",
+    "keywords": ["staryuuki", "star yuuki", "staryuuki twitch", "staryuuki streamer"],
+    "openGraphTitle": "Staryuuki · Stats y clips | Streamdle",
+    "openGraphDescription": "Seguidores, clips y estadísticas de Staryuuki en Streamdle."
   }
 }
