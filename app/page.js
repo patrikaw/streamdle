@@ -137,11 +137,9 @@ export default function Home() {
           gap: '16px',
         }}>
           {GAMES.map((game) => {
-          const isHigherdle = game.slug === 'higherdle';
-          const Wrapper = isHigherdle ? 'div' : 'a';
-          const wrapperProps = isHigherdle ? {} : { href: `/${game.slug}` };
+          const wrapperProps = { href: `/${game.slug}` };
           return (
-            <Wrapper
+            <a
               key={game.slug}
               {...wrapperProps}
               style={{ textDecoration: 'none', height: '100%', display: 'block' }}
@@ -225,7 +223,7 @@ export default function Home() {
                   </div>
                 )}
               </div>
-            </Wrapper>
+            </a>
           );
         })}
         </div>
