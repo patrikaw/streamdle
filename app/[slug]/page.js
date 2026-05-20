@@ -9,6 +9,10 @@ import { categoryToSlug, getCategoriesWithMinStreamers } from '../../lib/categor
 
 const VALID_GAME_SLUGS = new Set(getCategoriesWithMinStreamers(7).map(c => c.slug));
 
+const EVENT_URLS = {
+  'La Velada del Año VI': '/eventos/la-velada-del-ano-6',
+};
+
 function findStreamer(slug) {
   return STREAMERS.find(s =>
     s.display_name.toLowerCase().replace(/\s+/g, '-') === slug.toLowerCase()
@@ -469,9 +473,13 @@ export default function StreamerPage() {
                     <div>
                       <div style={{fontSize:10,color:'var(--color-text-secondary)',marginBottom:4,fontWeight:600}}>Eventos</div>
                       <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
-                        {streamer.events.map(e=>(
-                          <span key={e} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.15)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)'}}>🎪 {e}</span>
-                        ))}
+                        {streamer.events.map(e=>{
+                          const url=EVENT_URLS[e];
+                          const chip=<span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.15)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)'}}>🎪 {e}</span>;
+                          return url
+                            ?<a key={e} href={url} style={{textDecoration:'none'}}>{chip}</a>
+                            :<span key={e} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.15)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)'}}>🎪 {e}</span>;
+                        })}
                       </div>
                     </div>
                   )}

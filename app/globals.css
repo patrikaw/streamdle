@@ -358,7 +358,7 @@ body {
     display: none !important;
   }
 }
-@media (max-width: 640px) {
+@media (max-width: 480px) {
   .games-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }

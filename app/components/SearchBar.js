@@ -39,7 +39,13 @@ const INDEX = (() => {
     href: `/juegos/${c.slug}`,
     tokens: norm(c.name),
   }));
-  return [...streamers, ...games];
+  const events = [
+    { type: 'event', label: 'La Velada del Año VI', sub: 'Ibai Llanos · 25 jul 2026', href: '/eventos/la-velada-del-ano-6', tokens: norm('la velada del año 6 vi ibai llanos boxeo combates peleas') },
+  ];
+  const communities = [
+    { type: 'community', label: 'Top Globales', sub: 'Comunidades · Streamers', href: '/comunidades/top-globales', tokens: norm('top globales comunidades streamers') },
+  ];
+  return [...streamers, ...games, ...events, ...communities];
 })();
 
 export default function SearchBar() {
@@ -52,15 +58,17 @@ export default function SearchBar() {
 
   const matches = useMemo(() => {
     const q = norm(query);
-    if (!q) return { streamers: [], games: [] };
+    if (!q) return { streamers: [], games: [], events: [], communities: [] };
     const all = INDEX.filter(it => it.tokens.includes(q));
     return {
-      streamers: all.filter(it => it.type === 'streamer').slice(0, 5),
-      games:     all.filter(it => it.type === 'game').slice(0, 4),
+      streamers:   all.filter(it => it.type === 'streamer').slice(0, 5),
+      games:       all.filter(it => it.type === 'game').slice(0, 4),
+      events:      all.filter(it => it.type === 'event').slice(0, 3),
+      communities: all.filter(it => it.type === 'community').slice(0, 3),
     };
   }, [query]);
 
-  const flat = [...matches.streamers, ...matches.games];
+  const flat = [...matches.streamers, ...matches.games, ...matches.events, ...matches.communities];
   const hasResults = flat.length > 0;
 
   function go(item) {
@@ -143,6 +151,22 @@ export default function SearchBar() {
                   border={matches.streamers.length > 0}
                 />
               )}
+              {matches.events.length > 0 && (
+                <Section
+                  label="Eventos" items={matches.events}
+                  active={active} offset={matches.streamers.length + matches.games.length}
+                  onSelect={go} onHover={setActive}
+                  border={matches.streamers.length + matches.games.length > 0}
+                />
+              )}
+              {matches.communities.length > 0 && (
+                <Section
+                  label="Comunidades" items={matches.communities}
+                  active={active} offset={matches.streamers.length + matches.games.length + matches.events.length}
+                  onSelect={go} onHover={setActive}
+                  border={matches.streamers.length + matches.games.length + matches.events.length > 0}
+                />
+              )}
             </>
           ) : query.length >= 2 ? (
             <div style={{ padding: '14px 12px', fontSize: 13, color: 'var(--color-text-secondary)', textAlign: 'center' }}>
@@ -178,7 +202,9 @@ function Section({ label, items, active, offset, onSelect, onHover, border }) {
               transition: 'background 0.1s',
             }}
           >
-            <span style={{ fontSize: 14, flexShrink: 0 }}>{item.type === 'streamer' ? '🎙️' : '🎮'}</span>
+            <span style={{ fontSize: 14, flexShrink: 0 }}>
+              {item.type === 'streamer' ? '🎙️' : item.type === 'event' ? '🎪' : item.type === 'community' ? '👥' : '🎮'}
+            </span>
             <div style={{ minWidth: 0 }}>
               <div style={{ fontSize: 13, fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {item.label}
