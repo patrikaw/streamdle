@@ -78,7 +78,7 @@ export default function VoteSection() {
   const totalPicked = Object.keys(picks).length;
 
   return (
-    <section style={{ maxWidth: 860, margin: '0 auto', padding: '0 16px 60px' }}>
+    <section style={{ maxWidth: 1000, margin: '0 auto', padding: '0 24px 60px' }}>
       <style>{`
         .fight-half { transition: opacity 0.25s ease, box-shadow 0.25s ease; cursor: pointer; }
         .fight-half:hover { opacity: 0.92 !important; }
@@ -109,20 +109,28 @@ export default function VoteSection() {
         <span style={{ color: '#FCA5A5' }}>🇪🇸 España</span>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {FIGHTS.map(fight => {
           const picked = side => mounted ? picks[fight.id] === side : false;
           const hasPick = mounted && !!picks[fight.id];
-
-          const leftBg  = 'linear-gradient(135deg, #1e3a8a 0%, #1D4ED8 100%)';
-          const rightBg = 'linear-gradient(135deg, #7f1d1d 0%, #DC2626 100%)';
 
           const f1Avatar = fight.f1.twitch ? avatars[fight.f1.twitch] : null;
           const f2Avatar = fight.f2.twitch ? avatars[fight.f2.twitch] : null;
 
           return (
-            <div key={fight.id} style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.07)' }}>
-              <div className="fight-row" style={{ display: 'flex', minHeight: 120 }}>
+            <div key={fight.id} style={{ borderRadius: 12, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)', background: 'var(--bg-card)' }}>
+
+              {/* Fight number header */}
+              <div style={{
+                background: 'rgba(255,255,255,0.04)', padding: '7px 16px',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                borderBottom: '1px solid rgba(255,255,255,0.06)',
+              }}>
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.07em', color: '#64748b' }}>COMBATE {fight.n}</span>
+                {hasPick && <span style={{ fontSize: 10, fontWeight: 700, color: '#53FC18' }}>✓ predicción guardada</span>}
+              </div>
+
+              <div className="fight-row" style={{ display: 'flex', minHeight: 110 }}>
 
                 {/* Fighter 1 */}
                 <div
@@ -130,31 +138,28 @@ export default function VoteSection() {
                   onClick={() => vote(fight.id, 'f1')}
                   style={{
                     flex: 1,
-                    background: leftBg,
-                    padding: '18px 18px',
-                    opacity: hasPick && !picked('f1') ? 0.35 : 1,
-                    boxShadow: picked('f1') ? 'inset 0 0 0 3px #93C5FD, 0 0 28px #2563EB55' : 'none',
+                    background: 'linear-gradient(135deg, #0f2352 0%, #1a3a7a 100%)',
+                    padding: '16px 18px',
+                    opacity: hasPick && !picked('f1') ? 0.3 : 1,
+                    boxShadow: picked('f1') ? 'inset 0 0 0 3px #93C5FD, 0 0 24px #2563EB44' : 'none',
                     cursor: hasPick ? 'default' : 'pointer',
                     position: 'relative',
                   }}
                 >
-                  {picked('f1') && (
-                    <div style={{ position: 'absolute', top: 8, right: 8, fontSize: 16 }}>✅</div>
-                  )}
+                  {picked('f1') && <div style={{ position: 'absolute', top: 8, right: 8, fontSize: 16 }}>✅</div>}
                   <Avatar url={f1Avatar} flag={fight.f1.flag} align="left" />
-                  <div style={{ fontSize: 'clamp(13px, 2.5vw, 17px)', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>{fight.f1.name}</div>
+                  <div style={{ fontSize: 'clamp(13px, 2.5vw, 16px)', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>{fight.f1.name}</div>
                   <div style={{ fontSize: 11, color: '#93C5FD', marginTop: 4, fontWeight: 600 }}>
-                    {f1Avatar ? `${fight.f1.flag} ` : ''}{fight.f1.country}
+                    {fight.f1.flag} {fight.f1.country}
                   </div>
                 </div>
 
                 {/* VS center */}
                 <div className="fight-vs" style={{
-                  width: 56, flexShrink: 0, background: '#0a0a0f',
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2,
+                  width: 44, flexShrink: 0, background: '#06060c',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <div style={{ fontSize: 9, color: '#475569', fontWeight: 700, letterSpacing: 1 }}>C{fight.n}</div>
-                  <div style={{ fontSize: 15, fontWeight: 900, color: '#fff', letterSpacing: 1 }}>VS</div>
+                  <div style={{ fontSize: 13, fontWeight: 900, color: 'rgba(255,255,255,0.4)', letterSpacing: 1 }}>VS</div>
                 </div>
 
                 {/* Fighter 2 */}
@@ -163,22 +168,20 @@ export default function VoteSection() {
                   onClick={() => vote(fight.id, 'f2')}
                   style={{
                     flex: 1,
-                    background: rightBg,
-                    padding: '18px 18px',
+                    background: 'linear-gradient(135deg, #4a0a0a 0%, #7a1a1a 100%)',
+                    padding: '16px 18px',
                     textAlign: 'right',
-                    opacity: hasPick && !picked('f2') ? 0.35 : 1,
-                    boxShadow: picked('f2') ? 'inset 0 0 0 3px #FCA5A5, 0 0 28px #DC262655' : 'none',
+                    opacity: hasPick && !picked('f2') ? 0.3 : 1,
+                    boxShadow: picked('f2') ? 'inset 0 0 0 3px #FCA5A5, 0 0 24px #DC262644' : 'none',
                     cursor: hasPick ? 'default' : 'pointer',
                     position: 'relative',
                   }}
                 >
-                  {picked('f2') && (
-                    <div style={{ position: 'absolute', top: 8, left: 8, fontSize: 16 }}>✅</div>
-                  )}
+                  {picked('f2') && <div style={{ position: 'absolute', top: 8, left: 8, fontSize: 16 }}>✅</div>}
                   <Avatar url={f2Avatar} flag={fight.f2.flag} align="right" />
-                  <div style={{ fontSize: 'clamp(13px, 2.5vw, 17px)', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>{fight.f2.name}</div>
+                  <div style={{ fontSize: 'clamp(13px, 2.5vw, 16px)', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>{fight.f2.name}</div>
                   <div style={{ fontSize: 11, color: '#FCA5A5', marginTop: 4, fontWeight: 600 }}>
-                    {f2Avatar ? `${fight.f2.flag} ` : ''}{fight.f2.country}
+                    {fight.f2.flag} {fight.f2.country}
                   </div>
                 </div>
               </div>
