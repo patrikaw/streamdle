@@ -138,19 +138,25 @@ export default function VoteSection() {
                   onClick={() => vote(fight.id, 'f1')}
                   style={{
                     flex: 1,
-                    background: 'linear-gradient(135deg, #0f2352 0%, #1a3a7a 100%)',
+                    background: '#0a0a14',
                     padding: '16px 18px',
                     opacity: hasPick && !picked('f1') ? 0.3 : 1,
-                    boxShadow: picked('f1') ? 'inset 0 0 0 3px #93C5FD, 0 0 24px #2563EB44' : 'none',
+                    boxShadow: picked('f1') ? 'inset 0 0 0 3px #93C5FD, 0 0 24px #2563EB44' : 'inset 0 0 0 2px rgba(37,99,235,0.45)',
                     cursor: hasPick ? 'default' : 'pointer',
-                    position: 'relative',
+                    position: 'relative', overflow: 'hidden',
                   }}
                 >
-                  {picked('f1') && <div style={{ position: 'absolute', top: 8, right: 8, fontSize: 16 }}>✅</div>}
-                  <Avatar url={f1Avatar} flag={fight.f1.flag} align="left" />
-                  <div style={{ fontSize: 'clamp(13px, 2.5vw, 16px)', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>{fight.f1.name}</div>
-                  <div style={{ fontSize: 11, color: '#93C5FD', marginTop: 4, fontWeight: 600 }}>
-                    {fight.f1.flag} {fight.f1.country}
+                  {f1Avatar
+                    ? <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${f1Avatar})`, backgroundSize: 'cover', backgroundPosition: 'center top', filter: 'blur(18px) brightness(0.18)', transform: 'scale(1.15)' }} />
+                    : <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #0f2352 0%, #1a3a7a 100%)' }} />
+                  }
+                  {picked('f1') && <div style={{ position: 'absolute', top: 8, right: 8, fontSize: 16, zIndex: 2 }}>✅</div>}
+                  <div style={{ position: 'relative', zIndex: 1 }}>
+                    <Avatar url={f1Avatar} flag={fight.f1.flag} align="left" />
+                    <div style={{ fontSize: 'clamp(13px, 2.5vw, 16px)', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>{fight.f1.name}</div>
+                    <div style={{ fontSize: 11, color: '#93C5FD', marginTop: 4, fontWeight: 600 }}>
+                      {fight.f1.flag} {fight.f1.country}
+                    </div>
                   </div>
                 </div>
 
@@ -168,20 +174,26 @@ export default function VoteSection() {
                   onClick={() => vote(fight.id, 'f2')}
                   style={{
                     flex: 1,
-                    background: 'linear-gradient(135deg, #4a0a0a 0%, #7a1a1a 100%)',
+                    background: '#0a0a14',
                     padding: '16px 18px',
                     textAlign: 'right',
                     opacity: hasPick && !picked('f2') ? 0.3 : 1,
-                    boxShadow: picked('f2') ? 'inset 0 0 0 3px #FCA5A5, 0 0 24px #DC262644' : 'none',
+                    boxShadow: picked('f2') ? 'inset 0 0 0 3px #FCA5A5, 0 0 24px #DC262644' : 'inset 0 0 0 2px rgba(220,38,38,0.45)',
                     cursor: hasPick ? 'default' : 'pointer',
-                    position: 'relative',
+                    position: 'relative', overflow: 'hidden',
                   }}
                 >
-                  {picked('f2') && <div style={{ position: 'absolute', top: 8, left: 8, fontSize: 16 }}>✅</div>}
-                  <Avatar url={f2Avatar} flag={fight.f2.flag} align="right" />
-                  <div style={{ fontSize: 'clamp(13px, 2.5vw, 16px)', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>{fight.f2.name}</div>
-                  <div style={{ fontSize: 11, color: '#FCA5A5', marginTop: 4, fontWeight: 600 }}>
-                    {fight.f2.flag} {fight.f2.country}
+                  {f2Avatar
+                    ? <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${f2Avatar})`, backgroundSize: 'cover', backgroundPosition: 'center top', filter: 'blur(18px) brightness(0.18)', transform: 'scale(1.15)' }} />
+                    : <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #4a0a0a 0%, #7a1a1a 100%)' }} />
+                  }
+                  {picked('f2') && <div style={{ position: 'absolute', top: 8, left: 8, fontSize: 16, zIndex: 2 }}>✅</div>}
+                  <div style={{ position: 'relative', zIndex: 1 }}>
+                    <Avatar url={f2Avatar} flag={fight.f2.flag} align="right" />
+                    <div style={{ fontSize: 'clamp(13px, 2.5vw, 16px)', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>{fight.f2.name}</div>
+                    <div style={{ fontSize: 11, color: '#FCA5A5', marginTop: 4, fontWeight: 600 }}>
+                      {fight.f2.flag} {fight.f2.country}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import SearchBar from '../../components/SearchBar';
 import { fetchAvatarsBatch } from '../../../lib/twitch-server';
 import MemberCards from './MemberCards';
+import GuestCards from './GuestCards';
 import CommunityTrivia from './CommunityTrivia';
 import CommunityFAQ from './CommunityFAQ';
 import CommunitySocials from './CommunitySocials';
@@ -449,49 +450,7 @@ export default async function TopGlobalesPage() {
           <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 18 }}>
             Aparecen tan seguido que la comunidad ya los considera parte del multiverso Top Globales.
           </p>
-          <div className="guests-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))', gap: 10 }}>
-            {guests.map(g => (
-              <Link key={g.kick} href={g.slug} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-              <div className="guest-card" style={{
-                background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-                borderRadius: 12, padding: '16px 14px', height: '100%',
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
-                transition: 'border-color 0.2s', cursor: 'pointer',
-              }}>
-                {g.avatarUrl ? (
-                  <img src={g.avatarUrl} alt={g.displayName} width={56} height={56} style={{
-                    borderRadius: '50%', objectFit: 'cover', display: 'block',
-                    border: '2px solid var(--color-border)',
-                  }} />
-                ) : (
-                  <div style={{
-                    width: 56, height: 56, borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #2A2A40, #3A3A60)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 20, fontWeight: 800, color: '#fff',
-                    border: '2px solid var(--color-border)',
-                  }}>
-                    {g.displayName[0]}
-                  </div>
-                )}
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 14, fontWeight: 800, color: '#fff' }}>{g.displayName}</div>
-                  <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginTop: 2 }}>
-                    {fmt(g.followers)} seguidores
-                  </div>
-                </div>
-                <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', textAlign: 'center', lineHeight: 1.5, flex: 1 }}>
-                  {g.desc}
-                </div>
-                <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', justifyContent: 'center', marginTop: 'auto' }}>
-                  <GuestSocialIcon href={`https://kick.com/${g.kick}`} type="kick" />
-                  <GuestSocialIcon href={g.twitter} type="twitter" />
-                  <GuestSocialIcon href={g.instagram} type="instagram" />
-                </div>
-              </div>
-              </Link>
-            ))}
-          </div>
+          <GuestCards guests={guests} />
         </section>
 
         {/* ── 8. FAQs ── */}

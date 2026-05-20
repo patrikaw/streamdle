@@ -108,7 +108,7 @@ export default async function VeladaPage() {
         @media (max-width: 640px) {
           .hero-inner { flex-direction: column !important; }
           .hero-badge-col { width: 100% !important; flex-direction: row !important; align-items: center; gap: 16px !important; }
-          .event-badge { width: 64px !important; height: 64px !important; flex-shrink: 0; }
+          .event-badge { width: 80px !important; height: 80px !important; flex-shrink: 0; }
           .velada-socials { flex-direction: row !important; }
           .header-icon { display: none !important; }
         }
@@ -168,11 +168,23 @@ export default async function VeladaPage() {
 
       {/* Hero */}
       <div style={{
-        background: 'linear-gradient(180deg, rgba(124,58,237,0.08) 0%, transparent 100%)',
+        position: 'relative',
+        overflow: 'hidden',
         borderBottom: '1px solid var(--color-border)',
         padding: '44px 24px 40px',
       }}>
-        <div className="hero-inner" style={{ maxWidth: 1000, margin: '0 auto', display: 'flex', gap: 32, alignItems: 'flex-start' }}>
+        <div style={{
+          position: 'absolute', inset: 0,
+          backgroundImage: 'url("https://www.infobae.com/resizer/v2/FQGHRHFGH5CM7HTZZNKSBK36E4.jpg?auth=07dcd7c19353c7a54f4b1f4fc291576b012d7e3e85d43e492c641181ccec1996&smart=true&width=1200&height=1200&quality=85")',
+          backgroundSize: 'cover', backgroundPosition: 'center',
+          filter: 'blur(28px) brightness(0.12)',
+          transform: 'scale(1.08)',
+        }} />
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(13,8,26,0.7) 100%)',
+        }} />
+        <div className="hero-inner" style={{ maxWidth: 1000, margin: '0 auto', display: 'flex', gap: 32, alignItems: 'flex-start', position: 'relative' }}>
 
           {/* Left: image + socials */}
           <div className="hero-badge-col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, flexShrink: 0 }}>
@@ -180,7 +192,7 @@ export default async function VeladaPage() {
               src="https://www.infobae.com/resizer/v2/FQGHRHFGH5CM7HTZZNKSBK36E4.jpg?auth=07dcd7c19353c7a54f4b1f4fc291576b012d7e3e85d43e492c641181ccec1996&smart=true&width=1200&height=1200&quality=85"
               alt="La Velada del Año VI"
               className="event-badge"
-              style={{ width: 90, height: 90, borderRadius: 12, objectFit: 'cover', display: 'block', border: '3px solid rgba(124,58,237,0.5)' }}
+              style={{ width: 130, height: 130, borderRadius: 14, objectFit: 'cover', display: 'block', border: '3px solid rgba(124,58,237,0.6)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
             />
             <div className="velada-socials" style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
               {OFFICIAL_SOCIALS.map(({ href, type }) => {
