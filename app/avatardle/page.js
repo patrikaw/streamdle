@@ -50,7 +50,7 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
         </div>
         <a href={`/${slug}`} style={{background:'var(--bg-primary)',borderRadius:'12px',padding:'16px',display:'flex',alignItems:'center',gap:'12px',marginBottom:'16px',border:'1px solid var(--color-purple)',textDecoration:'none',color:'inherit',transition:'border-color 0.18s'}}
           onMouseOver={e=>e.currentTarget.style.borderColor='var(--color-purple-light)'} onMouseOut={e=>e.currentTarget.style.borderColor='var(--color-purple)'}>
-          {avatarUrl?<img src={avatarUrl} alt={target.display_name} style={{width:'56px',height:'56px',borderRadius:'50%',objectFit:'cover'}}/>
+          {avatarUrl?<img src={avatarUrl} alt={target.display_name} style={{width:'56px',height:'56px',borderRadius:'50%',objectFit:'cover'}} onError={e=>{e.target.style.display='none';}}/>
             :<div style={{width:'56px',height:'56px',borderRadius:'50%',background:'#7C3AED',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'24px'}}>{target.display_name[0]}</div>}
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontWeight:'700',fontSize:'18px'}}>{target.display_name}</div>
@@ -89,10 +89,12 @@ export default function AvatardlePage() {
   const [currentPixelLevel,setCurrentPixelLevel]=useState(0);
   const [avatars,setAvatars]=useState({});
   const [yesterday,setYesterday]=useState(null);
+  const [mainImgErr,setMainImgErr]=useState(false);
   const inputRef=useRef(null);
 
   useEffect(()=>{getAvatars().then(data=>setAvatars(data));},[]);
   useEffect(()=>{setYesterday(getYesterdayStreamer(country,'avatardle',17));},[country]);
+  useEffect(()=>{setMainImgErr(false);},[target?.id]);
 
   useEffect(()=>{
     const key=getTodayKey(country),saved=localStorage.getItem(key);
@@ -168,7 +170,7 @@ export default function AvatardlePage() {
         </div>
         <div style={{display:'flex',justifyContent:'center',marginBottom:'24px'}}>
           <div style={{width:'220px',height:'220px',borderRadius:'16px',overflow:'hidden',border:'3px solid var(--color-purple)',boxShadow:'0 0 30px rgba(124,58,237,0.4)',background:'#1A1A2E',display:'flex',alignItems:'center',justifyContent:'center'}}>
-            {avatarUrl?<img src={avatarUrl} alt="¿Quién es?" className={PIXEL_LEVELS[currentPixelLevel]} draggable={false} style={{width:'100%',height:'100%',objectFit:'cover',transition:'filter 0.6s ease',userSelect:'none',WebkitTouchCallout:'none',pointerEvents:'none'}} onError={e=>{e.target.style.display='none';}}/>
+            {avatarUrl&&!mainImgErr?<img src={avatarUrl} alt="¿Quién es?" className={PIXEL_LEVELS[currentPixelLevel]} draggable={false} style={{width:'100%',height:'100%',objectFit:'cover',transition:'filter 0.6s ease',userSelect:'none',WebkitTouchCallout:'none',pointerEvents:'none'}} onError={()=>setMainImgErr(true)}/>
               :<div style={{fontSize:'80px',filter:currentPixelLevel<4?'blur(8px)':'none'}}>👤</div>}
           </div>
         </div>

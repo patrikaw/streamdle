@@ -29,7 +29,7 @@ const INDEX = (() => {
     type: 'streamer',
     label: s.display_name,
     sub: `${FLAG[s.country] ?? '🌍'} · ${fmt(s.total_followers)}`,
-    href: `/${s.name}`,
+    href: `/${s.display_name.toLowerCase().replace(/\s+/g, '-')}`,
     tokens: norm([s.display_name, s.name, ...(Array.isArray(s.aliases) ? s.aliases : [])].join(' ')),
   }));
   const games = getCategoriesWithMinStreamers(7).map(c => ({

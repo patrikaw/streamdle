@@ -67,6 +67,23 @@ async function fetchAndCache() {
       return memoryCache || {};
     }
 
+    // Fetch avatars for kick-only streamers (no Twitch account)
+    const kickOnly = STREAMERS.filter(s => !s.twitch?.trim() && s.kick?.trim());
+    if (kickOnly.length > 0) {
+      try {
+        const kickLogins = kickOnly.map(s => s.kick.trim()).join(',');
+        const kickRes = await fetch(`/api/kick-live?users=${kickLogins}`);
+        if (kickRes.ok) {
+          const kickData = await kickRes.json();
+          kickOnly.forEach(s => {
+            const key = s.kick.trim().toLowerCase();
+            const av = kickData[s.kick.trim()]?.avatar || kickData[key]?.avatar;
+            if (av) data[`__kick__${key}`] = { avatar: av };
+          });
+        }
+      } catch {}
+    }
+
     memoryCache     = data;
     memoryCacheTime = Date.now();
 
@@ -137,7 +154,10 @@ export function getAvatarUrl(streamer, avatars = {}) {
     return `https://unavatar.io/twitch/${streamer.twitch}`;
   }
   const kickKey = (streamer.kick || '').toLowerCase();
-  if (kickKey && KICK_AVATARS[kickKey]) return KICK_AVATARS[kickKey];
-  if (kickKey) return `https://unavatar.io/kick/${kickKey}`;
+  if (kickKey) {
+    if (avatars[`__kick__${kickKey}`]?.avatar) return avatars[`__kick__${kickKey}`].avatar;
+    if (KICK_AVATARS[kickKey]) return KICK_AVATARS[kickKey];
+    return `https://unavatar.io/kick/${kickKey}`;
+  }
   return null;
 }

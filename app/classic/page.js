@@ -255,7 +255,7 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
           onMouseOut={e => e.currentTarget.style.borderColor='var(--color-purple)'}
         >
           {avatarUrl ? (
-            <img src={avatarUrl} alt={target.display_name} style={{ width:'56px',height:'56px',borderRadius:'50%',objectFit:'cover' }} />
+            <img src={avatarUrl} alt={target.display_name} style={{ width:'56px',height:'56px',borderRadius:'50%',objectFit:'cover' }} onError={e=>{e.target.style.display='none';}} />
           ) : (
             <div style={{ width:'56px',height:'56px',borderRadius:'50%',background:'#7C3AED',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'24px' }}>
               {target.display_name[0]}
