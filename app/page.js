@@ -203,10 +203,10 @@ export default function Home() {
                       { label: '⏱️ Horas', href: '/higherdle?mode=hours', color: '#0891B2' },
                       { label: '🏆 Peak', href: '/higherdle?mode=peak', color: '#7C3AED' },
                     ].map(btn => (
-                      <a key={btn.href} href={btn.href} style={{
+                      <button key={btn.href} onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = btn.href; }} style={{
                         color: btn.color, fontSize: '13px', fontWeight: '700',
-                        textDecoration: 'none', padding: '4px 0',
-                      }}>{btn.label}  </a>
+                        background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0',
+                      }}>{btn.label}</button>
                     ))}
                   </div>
                 ) : (

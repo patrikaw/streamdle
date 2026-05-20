@@ -3,15 +3,15 @@ import { useState, useEffect } from 'react';
 import { getAvatarsForLogins } from '../../../data/avatars';
 
 const FIGHTS = [
-  { id: 'c1', n: 1, f1: { name: 'Gastón Edul',    country: 'Argentina',     flag: '🇦🇷' },              f2: { name: 'Edu Aguirre',       country: 'España',        flag: '🇪🇸' } },
-  { id: 'c2', n: 2, f1: { name: 'La Parce',        country: 'Colombia',      flag: '🇨🇴' },              f2: { name: 'Fabiana Sevillano', country: 'España',        flag: '🇪🇸' } },
-  { id: 'c3', n: 3, f1: { name: 'Natalia MX',      country: 'México',        flag: '🇲🇽', twitch: 'nataliamx' },    f2: { name: 'Clersss',           country: 'España/México', flag: '🇪🇸' } },
-  { id: 'c4', n: 4, f1: { name: 'Lit Killah',      country: 'Argentina',     flag: '🇦🇷', twitch: 'litkillah' },    f2: { name: 'Kidd Keo',          country: 'España',        flag: '🇪🇸' } },
-  { id: 'c5', n: 5, f1: { name: 'Alondrissa',      country: 'Puerto Rico',   flag: '🇵🇷', twitch: 'alondrissa' },   f2: { name: 'Angie Velasco',     country: 'Argentina',     flag: '🇦🇷', twitch: 'angievelasco08' } },
-  { id: 'c6', n: 6, f1: { name: 'Gero Arias',      country: 'Argentina',     flag: '🇦🇷' },              f2: { name: 'Viruzz',            country: 'España',        flag: '🇪🇸', twitch: 'byviruzz' } },
-  { id: 'c7', n: 7, f1: { name: 'Samy Rivers',     country: 'México',        flag: '🇲🇽', twitch: 'rivers_gg' },   f2: { name: 'Roro',              country: 'España',        flag: '🇪🇸' } },
-  { id: 'c8', n: 8, f1: { name: 'Tatiana Kaer',    country: 'España',        flag: '🇪🇸' },              f2: { name: 'Marta Díaz',        country: 'España',        flag: '🇪🇸' } },
-  { id: 'c9', n: 9, f1: { name: 'Fernanfloo',      country: 'El Salvador',   flag: '🇸🇻', twitch: 'fernanfloo' },  f2: { name: 'Yo Soy Plex',       country: 'España',        flag: '🇪🇸' } },
+  { id: 'c1', n: 1, f1: { name: 'Gastón Edul',    country: 'Argentina',     flag: '🇦🇷', avatar: 'https://pbs.twimg.com/profile_images/1604577891299229698/iJ7vfJKJ_400x400.jpg' }, f2: { name: 'Edu Aguirre',       country: 'España',        flag: '🇪🇸', avatar: 'https://pbs.twimg.com/profile_images/1933481737650118656/dAZg_F7o_400x400.jpg' } },
+  { id: 'c2', n: 2, f1: { name: 'La Parce',        country: 'Colombia',      flag: '🇨🇴', twitch: 'laparce' },                                                                        f2: { name: 'Fabiana Sevillano', country: 'España',        flag: '🇪🇸', avatar: 'https://unavatar.io/instagram/fabiana.sevillano' } },
+  { id: 'c3', n: 3, f1: { name: 'Natalia MX',      country: 'México',        flag: '🇲🇽', twitch: 'nataliamx' },                                                                      f2: { name: 'Clersss',           country: 'España/México', flag: '🇪🇸', avatar: 'https://unavatar.io/instagram/clersssss' } },
+  { id: 'c4', n: 4, f1: { name: 'Lit Killah',      country: 'Argentina',     flag: '🇦🇷', twitch: 'litkillah' },                                                                      f2: { name: 'Kidd Keo',          country: 'España',        flag: '🇪🇸', avatar: 'https://pbs.twimg.com/profile_images/2021381890448527360/o6bS7IGO_400x400.jpg' } },
+  { id: 'c5', n: 5, f1: { name: 'Alondrissa',      country: 'Puerto Rico',   flag: '🇵🇷', twitch: 'alondrissa' },                                                                     f2: { name: 'Angie Velasco',     country: 'Argentina',     flag: '🇦🇷', twitch: 'angievelasco08' } },
+  { id: 'c6', n: 6, f1: { name: 'Gero Arias',      country: 'Argentina',     flag: '🇦🇷', avatar: 'https://unavatar.io/instagram/geroooo_arias2.0' },                               f2: { name: 'Viruzz',            country: 'España',        flag: '🇪🇸', twitch: 'byviruzz' } },
+  { id: 'c7', n: 7, f1: { name: 'Samy Rivers',     country: 'México',        flag: '🇲🇽', twitch: 'rivers_gg' },                                                                     f2: { name: 'Roro',              country: 'España',        flag: '🇪🇸', avatar: 'https://unavatar.io/instagram/whoisroro' } },
+  { id: 'c8', n: 8, f1: { name: 'Tatiana Kaer',    country: 'España',        flag: '🇪🇸', avatar: 'https://unavatar.io/instagram/tatianakaer' },                                    f2: { name: 'Marta Díaz',        country: 'España',        flag: '🇪🇸', avatar: 'https://unavatar.io/instagram/martaa_diiaz' } },
+  { id: 'c9', n: 9, f1: { name: 'Fernanfloo',      country: 'El Salvador',   flag: '🇸🇻', twitch: 'fernanfloo' },                                                                    f2: { name: 'Yo Soy Plex',       country: 'España',        flag: '🇪🇸', avatar: 'https://pbs.twimg.com/profile_images/1758039020066471936/gbTcSQzz_400x400.jpg' } },
 ];
 
 const LS_KEY = 'velada6_picks';
@@ -114,8 +114,8 @@ export default function VoteSection() {
           const picked = side => mounted ? picks[fight.id] === side : false;
           const hasPick = mounted && !!picks[fight.id];
 
-          const f1Avatar = fight.f1.twitch ? avatars[fight.f1.twitch] : null;
-          const f2Avatar = fight.f2.twitch ? avatars[fight.f2.twitch] : null;
+          const f1Avatar = fight.f1.twitch ? avatars[fight.f1.twitch] : (fight.f1.avatar || null);
+          const f2Avatar = fight.f2.twitch ? avatars[fight.f2.twitch] : (fight.f2.avatar || null);
 
           return (
             <div key={fight.id} style={{ borderRadius: 12, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)', background: 'var(--bg-card)' }}>
