@@ -94,7 +94,7 @@ export default function AvatardlePage() {
 
   useEffect(()=>{getAvatars().then(data=>setAvatars(data));},[]);
   useEffect(()=>{setYesterday(getYesterdayStreamer(country,'avatardle',17));},[country]);
-  useEffect(()=>{setMainImgErr(false);},[target?.id]);
+  useEffect(()=>{setMainImgErr(false);},[target?.id,avatars]);
 
   useEffect(()=>{
     const key=getTodayKey(country),saved=localStorage.getItem(key);
