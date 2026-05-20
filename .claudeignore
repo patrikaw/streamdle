@@ -1,6 +1,16 @@
 node_modules/
 .git/
 .vercel/
-*.pdf
 dist/
 build/
+.next/
+public/
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.ico
+*.svg
+*.csv
+package-lock.json
