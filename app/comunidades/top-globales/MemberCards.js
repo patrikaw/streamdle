@@ -42,6 +42,7 @@ function SocialIcon({ href, type }) {
 
 export default function MemberCards({ members }) {
   const [liveStatus, setLiveStatus] = useState({});
+  const [kickAvatars, setKickAvatars] = useState({});
   const [statusLoaded, setStatusLoaded] = useState(false);
 
   useEffect(() => {
@@ -49,7 +50,13 @@ export default function MemberCards({ members }) {
     if (!usernames) return;
     fetch(`/api/kick-live?users=${usernames}`)
       .then(r => r.json())
-      .then(data => { setLiveStatus(data); setStatusLoaded(true); })
+      .then(data => {
+        setLiveStatus(data);
+        const avs = {};
+        Object.entries(data).forEach(([k, v]) => { if (v?.avatar) avs[k] = v.avatar; });
+        setKickAvatars(avs);
+        setStatusLoaded(true);
+      })
       .catch(() => setStatusLoaded(true));
   }, []);
 
@@ -66,6 +73,8 @@ export default function MemberCards({ members }) {
         const status = liveStatus[m.kick];
         const isLive = status?.live;
 
+        const avatarUrl = kickAvatars[m.kick] || m.avatarUrl;
+
         return (
           <Link key={m.kick} href={m.slug} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
           <div className="member-card" style={{
@@ -78,8 +87,8 @@ export default function MemberCards({ members }) {
 
             {/* Avatar */}
             <div style={{ position: 'relative', flexShrink: 0 }}>
-              {m.avatarUrl ? (
-                <img src={m.avatarUrl} alt={m.displayName} width={72} height={72} style={{
+              {avatarUrl ? (
+                <img src={avatarUrl} alt={m.displayName} width={72} height={72} style={{
                   borderRadius: '50%', objectFit: 'cover', display: 'block',
                   border: `2px solid ${isLive ? '#22C55E' : 'var(--color-border)'}`,
                 }} />

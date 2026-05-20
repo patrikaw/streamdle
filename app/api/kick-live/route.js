@@ -19,9 +19,10 @@ export async function GET(request) {
           results[u] = {
             live: !!data.livestream,
             viewers: data.livestream?.viewer_count ?? 0,
+            avatar: data.user?.profile_pic ?? null,
           };
         } else {
-          results[u] = { live: false, viewers: 0 };
+          results[u] = { live: false, viewers: 0, avatar: null };
         }
       } catch {
         results[u] = { live: false, viewers: 0 };

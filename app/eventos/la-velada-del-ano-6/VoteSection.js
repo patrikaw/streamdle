@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { getAvatarsForLogins } from '../../../data/avatars';
 
 const FIGHTS = [
   { id: 'c1', n: 1, f1: { name: 'Gastón Edul',    country: 'Argentina',     flag: '🇦🇷' },              f2: { name: 'Edu Aguirre',       country: 'España',        flag: '🇪🇸' } },
@@ -20,10 +21,12 @@ const TWITCH_LOGINS = [...new Set(
 )];
 
 function Avatar({ url, flag, size = 52, align = 'left' }) {
-  if (url) {
+  const [err, setErr] = useState(false);
+  if (url && !err) {
     return (
       <img
         src={url}
+        onError={() => setErr(true)}
         style={{
           width: size, height: size,
           borderRadius: '50%',
@@ -54,16 +57,15 @@ export default function VoteSection() {
 
   useEffect(() => {
     if (!TWITCH_LOGINS.length) return;
-    fetch(`/api/twitch-avatars?logins=${TWITCH_LOGINS.join(',')}`)
-      .then(r => r.json())
-      .then(data => {
-        const map = {};
-        Object.entries(data).forEach(([login, info]) => {
-          if (info?.avatar) map[login] = info.avatar;
-        });
-        setAvatars(map);
-      })
-      .catch(() => {});
+    getAvatarsForLogins(TWITCH_LOGINS).then(data => {
+      const map = {};
+      TWITCH_LOGINS.forEach(login => {
+        const key = login.toLowerCase();
+        const url = data[key]?.avatar || `https://unavatar.io/twitch/${login}`;
+        map[login] = url;
+      });
+      setAvatars(map);
+    }).catch(() => {});
   }, []);
 
   function vote(fightId, side) {
