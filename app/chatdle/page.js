@@ -123,7 +123,7 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             {avatarUrl ? (
               <img src={avatarUrl} alt={target.display_name}
-                style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }} />
+                style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }} onError={e=>{e.target.style.display='none';}} />
             ) : (
               <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>
                 {target.display_name[0]}
