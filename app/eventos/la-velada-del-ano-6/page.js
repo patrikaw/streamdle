@@ -94,6 +94,18 @@ export default async function VeladaPage() {
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     image: 'https://www.infobae.com/resizer/v2/FQGHRHFGH5CM7HTZZNKSBK36E4.jpg?auth=07dcd7c19353c7a54f4b1f4fc291576b012d7e3e85d43e492c641181ccec1996&smart=true&width=1200&height=1200&quality=85',
     url: 'https://streamdle.net/eventos/la-velada-del-ano-6',
+    offers: {
+      '@type': 'Offer',
+      url: 'https://www.infolavelada.com/',
+      availability: 'https://schema.org/InStock',
+    },
+    performer: [
+      'Gastón Edul', 'Edu Aguirre', 'La Parce', 'Fabiana Sevillano',
+      'Natalia MX', 'Clersss', 'Lit Killah', 'Kidd Keo',
+      'Alondrissa', 'Angie Velasco', 'Gero Arias', 'Viruzz',
+      'Samy Rivers', 'Roro', 'Tatiana Kaer', 'Marta Díaz',
+      'Fernanfloo', 'Yo Soy Plex',
+    ].map(name => ({ '@type': 'Person', name })),
   };
 
   return (
