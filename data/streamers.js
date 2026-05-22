@@ -238,11 +238,18 @@ export function getDailyStreamer(country = "ALL", gameOffset = 0) {
   return pool[(seed+gameOffset)%pool.length];
 }
 
-const GAME_COUNTRIES = ['ALL', 'AR', 'MX', 'ES', 'LATAM'];
-const COOLDOWN_DAYS = 30;
+const GAME_COUNTRIES      = ['ALL', 'AR', 'MX', 'ES', 'LATAM'];
+const PICK_ORDER          = ['ALL', 'LATAM', 'AR', 'MX', 'ES'];
+const COOLDOWN_DAYS       = 30;
+const TODOS_EXTRA_COOLDOWN = 14;
+const EPOCH_STR           = '2026-05-03';
 
 function _dateSeed(date) {
   return date.getFullYear()*10000 + (date.getMonth()+1)*100 + date.getDate();
+}
+
+function _dateStr(date) {
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
 }
 
 function _buildPool(country, filter) {
@@ -251,45 +258,90 @@ function _buildPool(country, filter) {
   return pool;
 }
 
-function _pickForDate(country, offset, filter, date) {
-  const seed = _dateSeed(date);
-  const recentIds = new Set();
-  for (let d = 1; d <= COOLDOWN_DAYS; d++) {
-    const past = new Date(date);
-    past.setDate(past.getDate() - d);
-    const pastSeed = _dateSeed(past);
-    for (const c of GAME_COUNTRIES) {
-      const pastPool = _buildPool(c, filter);
-      if (pastPool.length === 0) continue;
-      const picked = pastPool[(pastSeed + offset) % pastPool.length];
-      if (picked) recentIds.add(picked.id);
+const _dayMemo = new Map();
+
+function _computeDayPicks(gameKey, offset, filter, targetDate) {
+  const targetStr = _dateStr(targetDate);
+  const targetKey = `${gameKey}_${targetStr}`;
+  if (_dayMemo.has(targetKey)) return _dayMemo.get(targetKey);
+
+  const current = new Date(`${EPOCH_STR}T12:00:00`);
+  while (_dateStr(current) <= targetStr) {
+    const dateStr = _dateStr(current);
+    const key = `${gameKey}_${dateStr}`;
+
+    if (!_dayMemo.has(key)) {
+      const seed = _dateSeed(current);
+      const dayPicks = {};
+
+      for (const country of PICK_ORDER) {
+        const recentIds = new Set();
+
+        // Picks reales de los últimos COOLDOWN_DAYS días en todas las regiones
+        for (let d = 1; d <= COOLDOWN_DAYS; d++) {
+          const past = new Date(current);
+          past.setDate(past.getDate() - d);
+          if (_dateStr(past) < EPOCH_STR) continue;
+          const pastPicks = _dayMemo.get(`${gameKey}_${_dateStr(past)}`) || {};
+          for (const c of GAME_COUNTRIES) {
+            if (pastPicks[c]) recentIds.add(pastPicks[c].id);
+          }
+        }
+
+        // Dedup mismo día: excluir regiones ya computadas hoy (ALL tiene prioridad)
+        for (const c of PICK_ORDER) {
+          if (c === country) break;
+          if (dayPicks[c]) recentIds.add(dayPicks[c].id);
+        }
+
+        const pool = _buildPool(country, filter);
+        let available = pool.filter(s => !recentIds.has(s.id));
+
+        if (available.length < 3) {
+          // Fallback: Todos 14 días + local 7 días (más permisivo que el cooldown global)
+          const fallbackIds = new Set();
+          for (let d = 1; d <= TODOS_EXTRA_COOLDOWN; d++) {
+            const past = new Date(current);
+            past.setDate(past.getDate() - d);
+            if (_dateStr(past) < EPOCH_STR) continue;
+            const pp = _dayMemo.get(`${gameKey}_${_dateStr(past)}`) || {};
+            if (pp['ALL']) fallbackIds.add(pp['ALL'].id);
+          }
+          for (let d = 1; d <= 7; d++) {
+            const past = new Date(current);
+            past.setDate(past.getDate() - d);
+            if (_dateStr(past) < EPOCH_STR) continue;
+            const pp = _dayMemo.get(`${gameKey}_${_dateStr(past)}`) || {};
+            if (pp[country]) fallbackIds.add(pp[country].id);
+          }
+          for (const c of PICK_ORDER) {
+            if (c === country) break;
+            if (dayPicks[c]) fallbackIds.add(dayPicks[c].id);
+          }
+          available = pool.filter(s => !fallbackIds.has(s.id));
+          if (available.length === 0) available = pool;
+        }
+
+        dayPicks[country] = available[(seed + offset) % available.length] ?? null;
+      }
+
+      _dayMemo.set(key, dayPicks);
     }
+
+    current.setDate(current.getDate() + 1);
   }
-  const pool = _buildPool(country, filter);
-  let available = pool.filter(s => !recentIds.has(s.id));
-  if (available.length < 3) {
-    const localRecent = new Set();
-    for (let d = 1; d <= 7; d++) {
-      const past = new Date(date);
-      past.setDate(past.getDate() - d);
-      const pastSeed = _dateSeed(past);
-      const pastPool = _buildPool(country, filter);
-      if (pastPool.length === 0) continue;
-      const picked = pastPool[(pastSeed + offset) % pastPool.length];
-      if (picked) localRecent.add(picked.id);
-    }
-    available = pool.filter(s => !localRecent.has(s.id));
-    if (available.length === 0) available = pool;
-  }
-  return available[(seed + offset) % available.length];
+
+  return _dayMemo.get(targetKey) || {};
 }
 
 export function getDailyStreamerNoRepeat(country="ALL", gameKey="classic", offset=0, filter=null) {
-  return _pickForDate(country, offset, filter, new Date());
+  const picks = _computeDayPicks(gameKey, offset, filter, new Date());
+  return picks[country] ?? null;
 }
 
 export function getYesterdayStreamer(country="ALL", gameKey="classic", offset=0, filter=null) {
   const y = new Date();
   y.setDate(y.getDate() - 1);
-  return _pickForDate(country, offset, filter, y);
+  const picks = _computeDayPicks(gameKey, offset, filter, y);
+  return picks[country] ?? null;
 }

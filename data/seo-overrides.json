@@ -390,5 +390,40 @@
     "keywords": ["staryuuki", "star yuuki", "staryuuki twitch", "staryuuki streamer"],
     "openGraphTitle": "Staryuuki · Stats y clips | Streamdle",
     "openGraphDescription": "Seguidores, clips y estadísticas de Staryuuki en Streamdle."
+  },
+  "reborn": {
+    "title": "Reborn — Stats, trivia y clips | Streamdle",
+    "description": "Adrián Álvarez, alias Reborn o 'señor esquizo', es uno de los streamers más intensos de España con 2.5M seguidores. Especialista en Just Chatting y GTA V con picos de 113K espectadores.",
+    "keywords": ["reborn", "reborn live", "reborn_live", "adrián álvarez", "señor esquizo", "reborn twitch", "streamer español"],
+    "openGraphTitle": "Reborn · El señor esquizo del streaming español",
+    "openGraphDescription": "2.5M seguidores y una de las personalidades más intensas de España. Stats, trivia y clips de Reborn en Twitch."
+  },
+  "bystaxx": {
+    "title": "bysTaXx — Stats, trivia y clips | Streamdle",
+    "description": "Frank Ramírez Garnes, alias bysTaXx o sTaXx, es el referente del Counter-Strike en España con 2.2M seguidores y picos de 269K espectadores. Veterano de CS y Rust.",
+    "keywords": ["bystaxx", "bystaxxx", "staxxx", "frank garnes", "bystaxx twitch", "counter-strike español", "streamer español cs"],
+    "openGraphTitle": "bysTaXx · El rey del Counter-Strike en España",
+    "openGraphDescription": "2.2M seguidores y 269K de pico histórico. Stats, trivia y clips del referente del CS español en Twitch."
+  },
+  "k1ng": {
+    "title": "k1ng — Stats, trivia y clips | Streamdle",
+    "description": "Thiago Bautista Lapp, alias k1ng, es el pro player argentino de Fortnite y VALORANT con 2.2M seguidores. Miembro de la Coscu Army, exjugador de 9z y actualmente en FaZe.",
+    "keywords": ["k1ng", "k1ng fortnite", "k1ng twitch", "thiago lapp", "9z k1ng", "faze k1ng", "coscu army", "fortnite argentino", "streamer argentino"],
+    "openGraphTitle": "k1ng · El pro player de Fortnite de la Coscu Army",
+    "openGraphDescription": "2.2M seguidores, FaZe y la Coscu Army. Stats, trivia y clips del jugador competitivo más reconocido del gaming argentino."
+  },
+  "djmariio": {
+    "title": "DjMaRiiO — Stats, trivia y clips | Streamdle",
+    "description": "Mario Alonso Gallardo, alias DjMaRiiO o NepeFlipao, es el streamer español referente de la Kings League y el FIFA con 2M seguidores. Cara visible del fútbol en Twitch España.",
+    "keywords": ["djmariio", "dj mariio", "mario alonso gallardo", "nepeflipaoo", "djmariio twitch", "kings league", "ea fc twitch", "streamer español futbol"],
+    "openGraphTitle": "DjMaRiiO · Kings League y fútbol en Twitch España",
+    "openGraphDescription": "2M seguidores y referente del fútbol en Twitch. Stats, trivia y clips de DjMaRiiO, el NepeFlipao de la Kings League."
+  },
+  "shadoune666": {
+    "title": "Shadoune666 — Stats, trivia y clips | Streamdle",
+    "description": "Gabriel Marolt Perez, alias Shadoune, es el streamer español de Minecraft con casi 2M seguidores y un pico histórico de 690K espectadores, uno de los más altos del streaming hispano.",
+    "keywords": ["shadoune666", "shadoune", "gabriel shadoune", "gabriel marolt", "shadoune666 twitch", "shadoune minecraft", "streamer español minecraft"],
+    "openGraphTitle": "Shadoune666 · 690K de pico y el Minecraft español",
+    "openGraphDescription": "Casi 2M seguidores y 690K de pico histórico. Stats, trivia y clips de Shadoune666, el rey del Minecraft en España."
   }
 }
