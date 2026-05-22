@@ -332,7 +332,7 @@ export default function ClassicPage() {
   useEffect(() => {
     if (!target || guesses.length === 0) return;
     localStorage.setItem(getTodayKey(country), JSON.stringify({ guesses:alreadyGuessed,won,gameOver,targetId:target.id }));
-  }, [guesses, won, gameOver, country]);
+  }, [guesses, won, gameOver]);
 
   useEffect(() => {
     if (!query.trim()) { setSuggestions([]); return; }
