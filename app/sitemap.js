@@ -33,15 +33,16 @@ export default function sitemap() {
     { url: `${baseUrl}/streamers/peru`,        lastModified: today, changeFrequency: 'weekly', priority: 0.6 },
   ];
 
-  // Fichas individuales — sólo las que tienen SEO aprobado (seo-overrides.json)
-  const streamer_pages = STREAMERS
-    .filter(s => seoOverrides[s.display_name.toLowerCase().replace(/\s+/g, '-')])
-    .map(s => ({
-      url: `${baseUrl}/${s.display_name.toLowerCase().replace(/\s+/g, '-')}`,
+  // Fichas individuales — todas; las que tienen override en seo-overrides.json van con más prioridad
+  const streamer_pages = STREAMERS.map(s => {
+    const slug = s.display_name.toLowerCase().replace(/\s+/g, '-');
+    return {
+      url: `${baseUrl}/${slug}`,
       lastModified: today,
       changeFrequency: 'weekly',
-      priority: 0.8,
-    }));
+      priority: seoOverrides[slug] ? 0.8 : 0.6,
+    };
+  });
 
   const juegos_index = [
     { url: `${baseUrl}/juegos`, lastModified: today, changeFrequency: 'weekly', priority: 0.8 },
@@ -58,6 +59,10 @@ export default function sitemap() {
     { url: `${baseUrl}/comunidades/top-globales`, lastModified: today, changeFrequency: 'weekly', priority: 0.8 },
   ];
 
+  const eventos_pages = [
+    { url: `${baseUrl}/eventos/la-velada-del-ano-6`, lastModified: today, changeFrequency: 'weekly', priority: 0.7 },
+  ];
+
   return [
     ...static_pages,
     ...streamers_index,
@@ -65,5 +70,6 @@ export default function sitemap() {
     ...juegos_index,
     ...juegos_pages,
     ...comunidades_pages,
+    ...eventos_pages,
   ];
 }

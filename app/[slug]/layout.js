@@ -72,9 +72,7 @@ export async function generateMetadata({ params }) {
     title,
     description,
     keywords,
-    robots: seo
-      ? { index: true, follow: true }
-      : { index: false, follow: false },
+    robots: { index: true, follow: true },
     openGraph: {
       title: ogTitle,
       description: ogDescription,
