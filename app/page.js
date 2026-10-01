@@ -22,6 +22,20 @@ const GAMES = [
     daily: true,
   },
   {
+    slug: 'blindle',
+    name: 'Blindle',
+    emoji: '🙈',
+    description: 'Adiviná la palabra del día… a ciegas. 5 letras, 8 intentos. Juego para móvil (iPhone y Android).',
+    color: '#0EA5E9',
+    available: true,
+    badge: 'MÓVIL',
+    cta: 'Descargar →',
+    href: 'https://masten.app/blindle/es?src=streamdle',
+    external: true,
+    image: '/blindle.png',
+    until: '2026-10-11T13:46:44-03:00',
+  },
+  {
     slug: 'emojidle',
     name: 'Emojidle',
     emoji: '😂',
@@ -40,15 +54,6 @@ const GAMES = [
     daily: true,
   },
   {
-    slug: 'chatdle',
-    name: 'Chatdle',
-    emoji: '💬',
-    description: 'Adiviná el streamer por su frase más icónica',
-    color: '#B45309',
-    available: true,
-    daily: true,
-  },
-  {
     slug: 'higherdle',
     name: 'Higherdle',
     emoji: '📊',
@@ -57,10 +62,20 @@ const GAMES = [
     available: true,
     daily: false,
   },
+  {
+    slug: 'chatdle',
+    name: 'Chatdle',
+    emoji: '💬',
+    description: 'Adiviná el streamer por su frase más icónica',
+    color: '#B45309',
+    available: true,
+    daily: true,
+  },
 ];
 
 export default function Home() {
   const [hoveredGame, setHoveredGame] = useState(null);
+  const visibleGames = GAMES.filter(g => !g.until || Date.now() <= new Date(g.until).getTime());
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
@@ -136,13 +151,16 @@ export default function Home() {
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '16px',
         }}>
-          {GAMES.map((game) => {
-          const wrapperProps = { href: `/${game.slug}` };
+          {visibleGames.map((game) => {
+          const wrapperProps = game.external
+            ? { href: game.href, target: '_blank', rel: 'sponsored noopener noreferrer' }
+            : { href: `/${game.slug}` };
           return (
             <a
               key={game.slug}
               {...wrapperProps}
               style={{ textDecoration: 'none', height: '100%', display: 'block' }}
+              onClick={game.external ? () => window.gtag?.('event', 'sponsor_click', { sponsor: game.slug }) : undefined}
               onMouseEnter={() => setHoveredGame(game.slug)}
               onMouseLeave={() => setHoveredGame(null)}
             >
@@ -171,7 +189,9 @@ export default function Home() {
                 }} />
 
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <span style={{ fontSize: '32px' }}>{game.emoji}</span>
+                  {game.image
+                    ? <img src={game.image} alt={game.name} width={40} height={40} style={{ borderRadius: '10px' }} />
+                    : <span style={{ fontSize: '32px' }}>{game.emoji}</span>}
                   <span style={{
                     fontSize: '10px',
                     fontWeight: '700',
@@ -180,7 +200,7 @@ export default function Home() {
                     padding: '3px 8px',
                     borderRadius: '8px',
                     border: `1px solid ${game.color}44`,
-                  }}>{game.daily ? 'DIARIO' : 'INFINITO'}</span>
+                  }}>{game.badge || (game.daily ? 'DIARIO' : 'INFINITO')}</span>
                 </div>
 
                 <h2 style={{
@@ -219,7 +239,7 @@ export default function Home() {
                     fontSize: '13px',
                     fontWeight: '600',
                   }}>
-                    Jugar ahora →
+                    {game.cta || 'Jugar ahora →'}
                   </div>
                 )}
               </div>
