@@ -35,6 +35,17 @@ function countryFull(code) {
   return map[code] || code;
 }
 
+const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+function edadDe(s) {
+  const { birth_year: y, birth_month: m, birth_day: d } = s;
+  if (!y || !m || !d) return null;
+  const hoy = new Date();
+  let edad = hoy.getUTCFullYear() - y;
+  if (hoy.getUTCMonth() + 1 < m || (hoy.getUTCMonth() + 1 === m && hoy.getUTCDate() < d)) edad--;
+  return { edad, fecha: `${d} de ${MESES[m - 1]} de ${y}` };
+}
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const s = findStreamer(slug);
@@ -50,8 +61,13 @@ export async function generateMetadata({ params }) {
   const seo = seoOverrides[slug];
   const adj = countryAdj(s.country);
 
-  const title = seo?.title ?? `${s.display_name} — Streamer ${adj} | Streamdle`;
-  const description = seo?.description ?? `${s.display_name}${s.real_name ? ` (${s.real_name})` : ''} es un streamer ${adj} con ${fmt(s.total_followers)} seguidores en Twitch${s.kick ? ' y Kick' : ''}. Peak histórico: ${fmt(s.peak_viewers)} espectadores. Trivia, estadísticas y clip más visto en Streamdle.`;
+  const ed = edadDe(s);
+  const titleBase = seo?.title ?? `${s.display_name} — Streamer ${adj} | Streamdle`;
+  const title = ed ? `${s.display_name}: edad, fecha de nacimiento y datos | Streamdle` : titleBase;
+  const descBase = seo?.description ?? `${s.display_name}${s.real_name ? ` (${s.real_name})` : ''} es un streamer ${adj} con ${fmt(s.total_followers)} seguidores en Twitch${s.kick ? ' y Kick' : ''}. Peak histórico: ${fmt(s.peak_viewers)} espectadores. Trivia, estadísticas y clip más visto en Streamdle.`;
+  const description = ed
+    ? `${s.display_name} tiene ${ed.edad} años (nació el ${ed.fecha}${s.real_name ? `, nombre real: ${s.real_name}` : ''}). ${s.display_name} es un streamer ${adj} con ${fmt(s.total_followers)} seguidores${s.kick ? ' entre Twitch y Kick' : ' en Twitch'}. Stats, trivia y clip más visto.`
+    : descBase;
   const ogTitle = seo?.openGraphTitle ?? title;
   const ogDescription = seo?.openGraphDescription ?? description;
 
@@ -140,12 +156,29 @@ export default async function Layout({ children, params }) {
     }),
   };
 
+  const ed = edadDe(s);
+  const faq = ed ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: `¿Cuántos años tiene ${s.display_name}?`, acceptedAnswer: { '@type': 'Answer', text: `${s.display_name} tiene ${ed.edad} años. Nació el ${ed.fecha}.` } },
+      { '@type': 'Question', name: `¿Cuándo nació ${s.display_name}?`, acceptedAnswer: { '@type': 'Answer', text: `${s.display_name} nació el ${ed.fecha}.` } },
+      ...(s.real_name ? [{ '@type': 'Question', name: `¿Cuál es el nombre real de ${s.display_name}?`, acceptedAnswer: { '@type': 'Answer', text: `El nombre real de ${s.display_name} es ${s.real_name}.` } }] : []),
+    ],
+  } : null;
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
       />
+      {faq && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }}
+        />
+      )}
       {children}
     </>
   );
