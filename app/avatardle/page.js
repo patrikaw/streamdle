@@ -162,7 +162,7 @@ export default function AvatardlePage() {
       <main className="game-main-content" style={{maxWidth:'600px',margin:'0 auto',padding:'24px 16px 48px'}}>
         <div style={{textAlign:'center',marginBottom:'24px'}}>
           <h1 style={{fontSize:'22px',fontWeight:'800',marginBottom:'6px'}}>👤 ¿Quién es este streamer?</h1>
-          <p style={{color:'var(--color-text-secondary)',fontSize:'14px'}}>La foto se va aclarando con cada intento fallido</p>
+          <p style={{color:'var(--color-text-secondary)',fontSize:'14px'}}>La foto se va aclarando con cada intento fallido. Los primeros 4 intentos, en blanco y negro</p>
         </div>
         {yesterday&&<div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>El streamer de ayer fue <a href={`/${getSlug(yesterday)}`} style={{fontWeight:'700',color:yesterday.kick?'#53FC18':'#9146FF',textDecoration:'none'}}>{yesterday.display_name}</a></div>}
         <div style={{display:'flex',gap:'8px',justifyContent:'center',flexWrap:'wrap',marginBottom:'24px'}}>
@@ -170,7 +170,7 @@ export default function AvatardlePage() {
         </div>
         <div style={{display:'flex',justifyContent:'center',marginBottom:'24px'}}>
           <div style={{width:'220px',height:'220px',borderRadius:'16px',overflow:'hidden',border:'3px solid var(--color-purple)',boxShadow:'0 0 30px rgba(124,58,237,0.4)',background:'#1A1A2E',display:'flex',alignItems:'center',justifyContent:'center'}}>
-            {avatarUrl&&!mainImgErr?<img src={avatarUrl} alt="¿Quién es?" className={PIXEL_LEVELS[currentPixelLevel]} draggable={false} style={{width:'100%',height:'100%',objectFit:'cover',transition:'filter 0.6s ease',userSelect:'none',WebkitTouchCallout:'none',pointerEvents:'none'}} onError={()=>setMainImgErr(true)}/>
+            {avatarUrl&&!mainImgErr?<img key={`${country}-${target?.id}`} src={avatarUrl} alt="¿Quién es?" className={PIXEL_LEVELS[currentPixelLevel]+(!gameOver&&guesses.length<4?' avatar-bw':'')} draggable={false} style={{width:'100%',height:'100%',objectFit:'cover',transition:'filter 0.6s ease',userSelect:'none',WebkitTouchCallout:'none',pointerEvents:'none'}} onError={()=>setMainImgErr(true)}/>
               :<div style={{fontSize:'80px',filter:currentPixelLevel<4?'blur(8px)':'none'}}>👤</div>}
           </div>
         </div>

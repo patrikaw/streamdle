@@ -228,6 +228,11 @@ body {
 .pixel-4 { image-rendering: pixelated; filter: blur(3px);  }
 .pixel-5 { image-rendering: pixelated; filter: blur(1px);  }
 .pixel-0 { image-rendering: pixelated; filter: none; }
+/* Primeros 3 intentos en blanco y negro */
+.avatar-bw.pixel-1 { filter: blur(16px) brightness(0.7) grayscale(1); }
+.avatar-bw.pixel-2 { filter: blur(10px) brightness(0.8) grayscale(1); }
+.avatar-bw.pixel-3 { filter: blur(6px) brightness(0.9) grayscale(1); }
+.avatar-bw.pixel-4 { filter: blur(3px) grayscale(1); }
 
 /* Countdown timer */
 .countdown {

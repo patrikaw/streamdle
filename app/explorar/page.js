@@ -240,6 +240,33 @@ export default function ExplorarPage() {
           })}
         </div>
 
+        {/* Listas de streamers */}
+        <div style={{
+          marginTop: 52, background: 'var(--bg-card)', border: '1px solid var(--color-border)',
+          borderRadius: 16, padding: '28px 24px',
+        }}>
+          <div style={{ marginBottom: 18 }}>
+            <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 6 }}>🔮 Streamers por signo, edad y personalidad</h2>
+            <p style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>
+              ¿Qué streamers son Escorpio? ¿Cuáles son de la Gen Z? Listas armadas con los datos de cada ficha.
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {[
+              { href: '/streamers/signo', label: '♈ Por signo' },
+              { href: '/streamers/generacion', label: '👥 Por generación' },
+              { href: '/streamers/nacimiento', label: '🎂 Por año de nacimiento' },
+              { href: '/streamers/personalidad', label: '🎭 Por personalidad' },
+            ].map(l => (
+              <Link key={l.href} href={l.href} style={{
+                background: 'var(--bg-secondary)', border: '1px solid var(--color-border)',
+                color: 'white', borderRadius: 10, padding: '8px 16px',
+                fontSize: 13, fontWeight: 600, textDecoration: 'none',
+              }}>{l.label}</Link>
+            ))}
+          </div>
+        </div>
+
         {/* Juegos diarios */}
         <div style={{
           marginTop: 52, background: 'linear-gradient(135deg, rgba(124,58,237,0.12), rgba(83,252,24,0.06))',

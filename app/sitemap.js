@@ -1,6 +1,7 @@
 import { STREAMERS } from '../data/streamers';
 import { getCategoriesWithMinStreamers } from '../lib/categories';
 import seoOverrides from '../data/seo-overrides.json';
+import { TIPOS, gruposDe } from '../lib/agrupaciones';
 
 export default function sitemap() {
   const baseUrl = 'https://streamdle.net';
@@ -32,6 +33,13 @@ export default function sitemap() {
     { url: `${baseUrl}/streamers/chile`,       lastModified: today, changeFrequency: 'weekly', priority: 0.6 },
     { url: `${baseUrl}/streamers/peru`,        lastModified: today, changeFrequency: 'weekly', priority: 0.6 },
   ];
+
+  const agrupaciones = Object.values(TIPOS).flatMap((t) => [
+    { url: `${baseUrl}/streamers/${t.ruta}`, lastModified: today, changeFrequency: 'monthly', priority: 0.7 },
+    ...gruposDe(t.ruta).filter((g) => g.indexable).map((g) => ({
+      url: `${baseUrl}/streamers/${t.ruta}/${g.slug}`, lastModified: today, changeFrequency: 'monthly', priority: 0.6,
+    })),
+  ]);
 
   // Fichas individuales — todas; las que tienen override en seo-overrides.json van con más prioridad
   const streamer_pages = STREAMERS.map(s => {
@@ -66,6 +74,7 @@ export default function sitemap() {
   return [
     ...static_pages,
     ...streamers_index,
+    ...agrupaciones,
     ...streamer_pages,
     ...juegos_index,
     ...juegos_pages,

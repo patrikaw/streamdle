@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import SearchBar from '../components/SearchBar';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
+import { enlacesDeFicha } from '../../lib/agrupaciones';
 import { categoryToSlug, getCategoriesWithMinStreamers } from '../../lib/categories';
 
 const VALID_GAME_SLUGS = new Set(getCategoriesWithMinStreamers(7).map(c => c.slug));
@@ -306,13 +307,14 @@ export default function StreamerPage() {
   crumbs.push({label:countryName(streamer.country),href:cSlug?`/streamers/${cSlug}`:null});
   crumbs.push({label:streamer.display_name,href:null});
 
+  const enlaces=enlacesDeFicha(streamer);
   const extraData=[
     streamer.real_name&&{label:'Nombre real',value:streamer.real_name},
     age&&{label:'Edad',value:`${age} años`},
-    streamer.birth_date&&{label:'Fecha de nac.',value:streamer.birth_date},
-    streamer.zodiac&&{label:'Signo',value:streamer.zodiac},
-    streamer.generation&&{label:'Generación',value:streamer.generation},
-    streamer.personality&&{label:'Personalidad',value:streamer.personality},
+    streamer.birth_date&&{label:'Fecha de nac.',value:streamer.birth_date,href:enlaces.nacimiento},
+    streamer.zodiac&&{label:'Signo',value:streamer.zodiac,href:enlaces.signo},
+    streamer.generation&&{label:'Generación',value:streamer.generation,href:enlaces.generacion},
+    streamer.personality&&{label:'Personalidad',value:streamer.personality,href:enlaces.personalidad},
   ].filter(Boolean);
 
   return (
@@ -399,14 +401,14 @@ export default function StreamerPage() {
                       const sl=categoryToSlug(streamer.top_category);
                       const s={fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.2)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)',textDecoration:'none'};
                       return VALID_GAME_SLUGS.has(sl)
-                        ?<a href={`/juegos/${sl}`} style={s}>{streamer.top_category}</a>
+                        ?<a href={`/juegos/${sl}`} title={`Ver streamers de ${streamer.top_category}`} style={s}>{streamer.top_category} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>
                         :<span style={s}>{streamer.top_category}</span>;
                     })()}
                     {streamer.second_category&&streamer.second_category!=='(No tiene)'&&(()=>{
                       const sl=categoryToSlug(streamer.second_category);
                       const s={fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.1)',color:'var(--color-text-secondary)',border:'1px solid var(--color-border)',textDecoration:'none'};
                       return VALID_GAME_SLUGS.has(sl)
-                        ?<a href={`/juegos/${sl}`} style={s}>{streamer.second_category}</a>
+                        ?<a href={`/juegos/${sl}`} title={`Ver streamers de ${streamer.second_category}`} style={s}>{streamer.second_category} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>
                         :<span style={s}>{streamer.second_category}</span>;
                     })()}
                   </div>
@@ -477,7 +479,7 @@ export default function StreamerPage() {
                           const url=EVENT_URLS[e];
                           const chip=<span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.15)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)'}}>🎪 {e}</span>;
                           return url
-                            ?<a key={e} href={url} style={{textDecoration:'none'}}>{chip}</a>
+                            ?<a key={e} href={url} title={`Ver ${e}`} style={{textDecoration:'none'}}><span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.15)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)'}}>🎪 {e} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></span></a>
                             :<span key={e} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:20,background:'rgba(124,58,237,0.15)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)'}}>🎪 {e}</span>;
                         })}
                       </div>
@@ -533,7 +535,7 @@ export default function StreamerPage() {
                   {extraData.map((d,i)=>(
                     <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:8,paddingBottom:i<extraData.length-1?9:0,borderBottom:i<extraData.length-1?'1px solid var(--color-border)':undefined}}>
                       <span style={{fontSize:11,color:'var(--color-text-secondary)',flexShrink:0}}>{d.label}</span>
-                      <span style={{fontSize:12,fontWeight:600,color:'#fff',textAlign:'right'}}>{d.value}</span>
+                      <span style={{fontSize:12,fontWeight:600,color:'#fff',textAlign:'right'}}>{d.href?<a href={d.href} title={`Ver más streamers: ${d.value}`} style={{color:'var(--color-purple-light)',textDecoration:'none'}}>{d.value} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>:d.value}</span>
                     </div>
                   ))}
                 </div>
@@ -580,7 +582,7 @@ export default function StreamerPage() {
                   {extraData.map((d,i)=>(
                     <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:8,paddingBottom:i<extraData.length-1?9:0,borderBottom:i<extraData.length-1?'1px solid var(--color-border)':undefined}}>
                       <span style={{fontSize:11,color:'var(--color-text-secondary)',flexShrink:0}}>{d.label}</span>
-                      <span style={{fontSize:12,fontWeight:600,color:'#fff',textAlign:'right'}}>{d.value}</span>
+                      <span style={{fontSize:12,fontWeight:600,color:'#fff',textAlign:'right'}}>{d.href?<a href={d.href} title={`Ver más streamers: ${d.value}`} style={{color:'var(--color-purple-light)',textDecoration:'none'}}>{d.value} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>:d.value}</span>
                     </div>
                   ))}
                 </div>

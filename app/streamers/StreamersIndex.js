@@ -523,6 +523,22 @@ export default function StreamersIndex({
           </div>
         </div>
 
+        {/* LISTAS */}
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center', margin: '4px 0 14px' }}>
+          <span style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>Explorá por:</span>
+          {[
+            { href: '/streamers/signo',        label: '♈ Signo' },
+            { href: '/streamers/generacion',   label: '👥 Generación' },
+            { href: '/streamers/nacimiento',   label: '🎂 Año de nacimiento' },
+            { href: '/streamers/personalidad', label: '🎭 Personalidad' },
+          ].map(l => (
+            <a key={l.href} href={l.href} style={{
+              background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff',
+              borderRadius: 20, padding: '5px 12px', fontSize: 12, fontWeight: 600, textDecoration: 'none',
+            }}>{l.label}</a>
+          ))}
+        </div>
+
         {/* COUNT */}
         <div style={{
           fontSize: 13, color: 'var(--color-text-secondary)',
@@ -641,6 +657,10 @@ export default function StreamersIndex({
       }}>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}>
           {[
+            { href: '/streamers/signo',        label: 'Por signo' },
+            { href: '/streamers/generacion',   label: 'Por generación' },
+            { href: '/streamers/nacimiento',   label: 'Por año de nacimiento' },
+            { href: '/streamers/personalidad', label: 'Por personalidad' },
             { href: '/como-jugar', label: 'Cómo jugar' },
             { href: '/contacto',   label: 'Contacto' },
             { href: '/privacidad', label: 'Privacidad' },
