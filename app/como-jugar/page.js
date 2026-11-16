@@ -210,7 +210,6 @@ export default function ComoJugarPage() {
             { href: '/contacto',   label: 'Contacto' },
             { href: '/privacidad', label: 'Privacidad' },
             { href: '/terminos',   label: 'Términos' },
-            { href: 'https://ko-fi.com/streamdlenet', label: '☕ Apoyá Streamdle' },
           ].map(l => (
             <a key={l.href} href={l.href}
               target={l.href.startsWith('http') ? '_blank' : undefined}

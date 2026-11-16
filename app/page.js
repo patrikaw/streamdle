@@ -70,7 +70,7 @@ const GAMES = [
     color: '#DB2777',
     available: true,
     daily: true,
-    badge: 'NUEVO',
+    nuevo: true,
   },
   {
     slug: 'chatdle',
@@ -91,6 +91,12 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+      <style>{`
+        .ribbon-nuevo { position: absolute; top: 14px; right: -34px; width: 130px; text-align: center; transform: rotate(40deg);
+          background: linear-gradient(90deg, #F59E0B, #EC4899, #8B5CF6); background-size: 200% 100%; color: #fff; font-size: 11px; font-weight: 900;
+          letter-spacing: 1px; padding: 4px 0; box-shadow: 0 2px 10px rgba(236,72,153,.6); animation: nuevoBrillo 2.4s linear infinite; z-index: 2; }
+        @keyframes nuevoBrillo { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
+      `}</style>
       {/* Header */}
       <header style={{
         borderBottom: '1px solid var(--color-border)',
@@ -191,6 +197,7 @@ export default function Home() {
                 display: 'flex',
                 flexDirection: 'column',
               }}>
+                {game.nuevo && <div className="ribbon-nuevo">¡NUEVO!</div>}
                 {/* Glow top bar */}
                 <div style={{
                   position: 'absolute',
@@ -276,14 +283,14 @@ export default function Home() {
   { label: 'Contacto', href: '/contacto' },
   { label: 'Privacidad', href: '/privacidad' },
   { label: 'Términos', href: '/terminos' },
-  { label: '☕ Apoyá Streamdle', href: 'https://ko-fi.com/streamdlenet' },
+  { label: 'Pispeo · reseñas de herramientas', href: 'https://pispeo.com.ar' },
 ].map(link => (
   <a key={link.label} href={link.href} target={link.href.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer" style={{
-    color: link.href.startsWith('https://ko-fi') ? '#FF5E5B' : 'var(--color-text-secondary)',
+    color: 'var(--color-text-secondary)',
     fontSize: '13px',
     textDecoration: 'none',
     cursor: 'pointer',
-    fontWeight: link.href.startsWith('https://ko-fi') ? '600' : 'normal',
+    fontWeight: 'normal',
   }}>{link.label}</a>
 ))}
  

@@ -667,7 +667,7 @@ export default function StreamersIndex({
             { href: '/contacto',   label: 'Contacto' },
             { href: '/privacidad', label: 'Privacidad' },
             { href: '/terminos',   label: 'Términos' },
-            { href: 'https://ko-fi.com/streamdlenet', label: '☕ Apoyá Streamdle' },
+            { href: 'https://pispeo.com.ar', label: 'Pispeo · reseñas de herramientas' },
           ].map(l => (
             <a key={l.href} href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined}
               rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}

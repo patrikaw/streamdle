@@ -16,6 +16,15 @@ function fmt(n) {
 
 const GAMES = [{ href: '/', label: '🎮 Nuestros juegos' }];
 
+const FOOTER_TILES = [
+  { href: '/tendencias', emoji: '🔥', titulo: 'En tendencia', desc: 'Quiénes más crecen este mes', color: '#F97316' },
+  { href: '/streamers', emoji: '🏆', titulo: 'Ranking', desc: 'Todos los streamers por seguidores', color: '#7C3AED' },
+  { href: '/classic', emoji: '🎯', titulo: 'Jugá Streamdle', desc: 'El Wordle de streamers, cada día', color: '#DC2626' },
+  { href: '/edadle', emoji: '🎂', titulo: 'Edadle', desc: 'Adiviná cuántos años tiene', color: '#DB2777' },
+  { href: '/comunidades', emoji: '👥', titulo: 'Comunidades', desc: 'Grupos y squads de streamers', color: '#16A34A' },
+  { href: '/', emoji: '🎮', titulo: 'Todos los juegos', desc: '7 juegos diarios', color: '#2563EB' },
+];
+
 export function Shell({ crumbs, children }) {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
@@ -53,10 +62,34 @@ export function Shell({ crumbs, children }) {
 
       <main style={{ maxWidth: 1100, margin: '0 auto', padding: '8px 16px 48px' }}>{children}</main>
 
-      <footer style={{ borderTop: '1px solid var(--color-border)', padding: '20px 16px', textAlign: 'center', fontSize: 12, color: 'var(--color-text-secondary)' }}>
-        {[{ href: '/streamers', label: 'Ranking' }, ...TIPOS_LISTA.map((t) => ({ href: `/streamers/${TIPOS[t.tipo].ruta}`, label: t.label })), { href: '/privacidad', label: 'Privacidad' }, { href: '/contacto', label: 'Contacto' }].map((l, i) => (
-          <span key={l.href}>{i > 0 && ' · '}<Link href={l.href} style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>{l.label}</Link></span>
-        ))}
+      <footer style={{ borderTop: '1px solid var(--color-border)', background: 'var(--bg-secondary)', marginTop: 24 }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '36px 16px 20px' }}>
+          <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 6 }}>Seguí explorando Streamdle</h2>
+          <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginBottom: 18 }}>Rankings, tendencias y juegos diarios de streamers hispanos de Twitch y Kick.</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: 12 }}>
+            {FOOTER_TILES.map((t) => (
+              <Link key={t.href} href={t.href} className="agr-card" style={{
+                display: 'block', textDecoration: 'none', color: '#fff', borderRadius: 14, padding: '16px 18px',
+                background: `linear-gradient(135deg, ${t.color}33, var(--bg-card))`, border: `1px solid ${t.color}66`,
+              }}>
+                <div style={{ fontSize: 22, marginBottom: 6 }}>{t.emoji}</div>
+                <div style={{ fontSize: 15, fontWeight: 800 }}>{t.titulo}</div>
+                <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 3 }}>{t.desc}</div>
+              </Link>
+            ))}
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 20 }}>
+            {[{ href: '/streamers/signo', label: '♈ Por signo' }, { href: '/streamers/generacion', label: '🧬 Por generación' }, { href: '/streamers/personalidad', label: '🎭 Por personalidad' }, { href: '/streamers/nacimiento', label: '🎂 Por año de nacimiento' }, { href: '/tendencias/latam', label: '🌎 Tendencia Latam' }, { href: '/tendencias/espana', label: '🇪🇸 Tendencia España' }, { href: '/tendencias/argentina', label: '🇦🇷 Tendencia Argentina' }, { href: '/tendencias/mexico', label: '🇲🇽 Tendencia México' }].map((l) => (
+              <Link key={l.href} href={l.href} className="agr-chip" style={{ fontSize: 12, fontWeight: 600, color: '#fff', textDecoration: 'none', padding: '6px 14px', borderRadius: 20, border: '1px solid var(--color-border)', background: 'var(--bg-card)' }}>{l.label}</Link>
+            ))}
+          </div>
+          <div style={{ borderTop: '1px solid var(--color-border)', marginTop: 24, paddingTop: 16, display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center', fontSize: 12, color: 'var(--color-text-secondary)' }}>
+            {[{ href: '/como-jugar', label: 'Cómo jugar' }, { href: '/contacto', label: 'Contacto' }, { href: '/privacidad', label: 'Privacidad' }, { href: '/terminos', label: 'Términos' }].map((l) => (
+              <Link key={l.href} href={l.href} style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>{l.label}</Link>
+            ))}
+            <a href="https://pispeo.com.ar" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>Pispeo · reseñas de herramientas</a>
+          </div>
+        </div>
       </footer>
     </div>
   );
