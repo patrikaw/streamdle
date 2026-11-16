@@ -70,6 +70,7 @@ const GAMES = [
     color: '#DB2777',
     available: true,
     daily: true,
+    badge: 'NUEVO',
   },
   {
     slug: 'chatdle',
@@ -84,7 +85,9 @@ const GAMES = [
 
 export default function Home() {
   const [hoveredGame, setHoveredGame] = useState(null);
-  const visibleGames = GAMES.filter(g => !g.until || Date.now() <= new Date(g.until).getTime());
+  const ORDEN = ['classic', 'chatdle', 'avatardle', 'emojidle', 'edadle', 'higherdle', 'categorydle'];
+  const rango = (g) => { const i = ORDEN.indexOf(g.slug); return i === -1 ? -1 : i; };
+  const visibleGames = GAMES.filter(g => !g.until || Date.now() <= new Date(g.until).getTime()).sort((a, b) => rango(a) - rango(b));
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
