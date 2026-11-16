@@ -19,15 +19,11 @@ function fmt(n) {
 function getInitials(n) { return (n || '?').slice(0, 2).toUpperCase(); }
 
 function StreamerCard({ streamer, rank, isPrimary }) {
-  const profileUrl = streamer.twitch
-    ? `https://twitch.tv/${streamer.twitch}`
-    : streamer.kick ? `https://kick.com/${streamer.kick}` : '#';
+  const fichaUrl = `/${streamer.display_name.toLowerCase().replace(/\s+/g, '-')}`;
 
   return (
     <a
-      href={profileUrl}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={fichaUrl}
       className="streamer-card"
       style={{
         display: 'flex', alignItems: 'center', gap: 12,

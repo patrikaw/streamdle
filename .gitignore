@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .claude/
+
+# reporte del script de actualización
+scripts/ultimo-reporte.md

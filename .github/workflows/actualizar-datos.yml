@@ -1,0 +1,47 @@
+name: Actualizar datos de streamers
+
+# Los días 1 y 16 de cada mes (~cada 15 días). También se puede lanzar a mano
+# desde la pestaña Actions -> "Actualizar datos de streamers" -> Run workflow.
+on:
+  schedule:
+    - cron: '0 12 1,16 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Actualizar seguidores de Twitch y Kick
+        env:
+          TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
+          TWITCH_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
+        run: node scripts/actualizar-datos.mjs --write
+
+      - name: Abrir pull request para revisar
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet data/streamers.js; then
+            echo "Sin cambios."
+            exit 0
+          fi
+          rama="datos/$(date +%Y-%m-%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$rama"
+          git add data/streamers.js
+          git commit -m "Actualización automática de seguidores ($(date +%Y-%m-%d))"
+          git push origin "$rama"
+          gh pr create --base main --head "$rama" \
+            --title "Actualización de seguidores $(date +%Y-%m-%d)" \
+            --body-file scripts/ultimo-reporte.md
