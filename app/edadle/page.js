@@ -21,11 +21,13 @@ function claveDelDia(country) {
   return `edadle_${country}_${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-function pista(diff) {
+function pista(diff, conDistancia) {
   const d = Math.abs(diff);
   if (d === 0) return { txt: '¡Exacto!', color: '#16A34A' };
+  const dir = diff > 0 ? 'es mayor ↑' : 'es menor ↓';
+  if (!conDistancia) return { txt: dir, color: '#A78BFA' };
   const calor = d <= 1 ? 'Muy cerca' : d <= 3 ? 'Cerca' : d <= 6 ? 'Lejos' : 'Muy lejos';
-  return { txt: `${calor} · ${diff < 0 ? 'es mayor ↑' : 'es menor ↓'}`, color: d <= 3 ? '#F59E0B' : '#DC2626' };
+  return { txt: `${calor} · ${dir}`, color: d <= 3 ? '#F59E0B' : '#DC2626' };
 }
 
 function Cuenta() {
@@ -127,14 +129,14 @@ export default function EdadlePage() {
         <a href="/" style={{ textDecoration: 'none', fontSize: 18, fontWeight: 800, background: 'linear-gradient(135deg,#7C3AED,#53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</a>
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
           {GAMES.map((g) => (
-            <a key={g.href} href={g.href} style={{ background: '#7C3AED', border: '1px solid var(--color-border)', color: 'white', borderRadius: 8, padding: '4px 8px', fontSize: 10, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>{g.label}</a>
+            <a key={g.href} href={g.href} style={{ background: '#7C3AED', border: '1px solid var(--color-border)', color: 'white', borderRadius: 8, padding: '9px 22px', fontSize: 14, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>{g.label}</a>
           ))}
         </div>
       </header>
       <main className="game-main-content" style={{ maxWidth: 600, margin: '0 auto', padding: '24px 16px 48px' }}>
         <div style={{ textAlign: 'center', marginBottom: 20 }}>
           <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 6 }}>🎂 ¿Cuántos años tiene este streamer?</h1>
-          <p style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>Tenés {MAX_ATTEMPTS} intentos. Te decimos si es mayor o menor y qué tan cerca estás.</p>
+          <p style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>Tenés {MAX_ATTEMPTS} intentos. Te decimos si es mayor o menor, y desde el 3.er intento también qué tan cerca estás.</p>
         </div>
         {ayer && <div style={{ textAlign: 'center', marginBottom: 12, fontSize: 13, color: 'var(--color-text-secondary)' }}>El de ayer fue <a href={`/${slugDe(ayer)}`} style={{ fontWeight: 700, color: '#9146FF', textDecoration: 'none' }}>{ayer.display_name}</a> ({edadDe(ayer)} años)</div>}
         <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
@@ -164,7 +166,7 @@ export default function EdadlePage() {
         {guesses.length > 0 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {guesses.map((n, i) => {
-              const p = pista(edad - n);
+              const p = pista(edad - n, guesses.length >= 3);
               return (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: `${p.color}22`, border: `1px solid ${p.color}55`, borderRadius: 8, padding: '10px 14px' }}>
                   <span style={{ fontSize: 18, fontWeight: 800 }}>{n} años</span>

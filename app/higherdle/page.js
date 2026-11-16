@@ -251,8 +251,8 @@ function HigherdleInner() {
               <a key={g.href} href={g.href} style={{
                 background: '#7C3AED',
                 border: '1px solid var(--color-border)',
-                color: 'white', borderRadius: '6px', padding: '3px 7px',
-                fontSize: '12px', textDecoration: 'none',
+                color: 'white', borderRadius: '10px', padding: '9px 22px',
+                fontSize: '14px', textDecoration: 'none',
               }}>{g.label}</a>
             ))}
           </div>

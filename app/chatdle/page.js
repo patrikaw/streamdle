@@ -290,8 +290,8 @@ export default function ChatdlePage() {
             <a key={g.href} href={g.href} style={{
               background: '#7C3AED',
               border: '1px solid var(--color-border)',
-              color: 'white', borderRadius: '8px', padding: '5px 12px',
-              fontSize: '10px', fontWeight: '600', textDecoration: 'none', whiteSpace: 'nowrap',
+              color: 'white', borderRadius: '10px', padding: '5px 12px',
+              fontSize: '14px', fontWeight: '600', textDecoration: 'none', whiteSpace: 'nowrap',
             }}>{g.label}</a>
           ))}
         </div>

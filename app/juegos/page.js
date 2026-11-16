@@ -104,7 +104,7 @@ export default async function JuegosPage() {
         </div>
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
           {[{ href: '/', label: '🎮 Nuestros juegos' }].map(g=>(
-            <Link key={g.href} href={g.href} style={{background:'var(--bg-card)',border:'1px solid var(--color-border)',color:'white',borderRadius:8,padding:'5px 12px',fontSize:10,fontWeight:600,textDecoration:'none',whiteSpace:'nowrap'}}>{g.label}</Link>
+            <Link key={g.href} href={g.href} style={{background:'var(--bg-card)',border:'1px solid var(--color-border)',color:'white',borderRadius:8,padding: '9px 22px',fontSize: 14,fontWeight:600,textDecoration:'none',whiteSpace:'nowrap'}}>{g.label}</Link>
           ))}
         </div>
       </header>
