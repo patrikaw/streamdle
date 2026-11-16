@@ -20,6 +20,7 @@ export default function sitemap() {
     { url: `${baseUrl}/avatardle`,           lastModified: estatica, changeFrequency: 'daily',   priority: 0.9 },
     { url: `${baseUrl}/emojidle`,            lastModified: estatica, changeFrequency: 'daily',   priority: 0.9 },
     { url: `${baseUrl}/categorydle`,         lastModified: estatica, changeFrequency: 'daily',   priority: 0.9 },
+    { url: `${baseUrl}/gta-6`,               lastModified: today, changeFrequency: 'hourly', priority: 0.8 },
     { url: `${baseUrl}/edadle`,             lastModified: estatica, changeFrequency: 'daily',   priority: 0.9 },
     { url: `${baseUrl}/chatdle`,             lastModified: estatica, changeFrequency: 'daily',   priority: 0.9 },
     { url: `${baseUrl}/higherdle`,           lastModified: estatica, changeFrequency: 'daily',   priority: 0.8 },
