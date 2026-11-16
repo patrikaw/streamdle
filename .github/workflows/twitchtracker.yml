@@ -30,22 +30,22 @@ jobs:
       - name: Leer TwitchTracker
         run: python scripts/twitchtracker.py --write
 
-      - name: Abrir pull request para revisar
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publicar los cambios en main
         run: |
-          if git diff --quiet data/streamers.js; then
-            echo "Sin cambios (o TwitchTracker bloqueó la consulta). Ver scripts/ultimo-reporte-tt.md"
-            cat scripts/ultimo-reporte-tt.md
+          if git diff --quiet -- data/streamers.js; then
+            echo "Sin cambios."
+            cat scripts/ultimo-reporte-tt.md 2>/dev/null || true
             exit 0
           fi
-          rama="twitchtracker/$(date +%Y-%m-%d)"
+          cp data/streamers.js /tmp/control.mjs
+          node --check /tmp/control.mjs
+          n=$(grep -c '^  {id:' data/streamers.js)
+          if [ "$n" -lt 200 ]; then
+            echo "El archivo de datos quedó con solo $n streamers: no se publica."
+            exit 1
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$rama"
           git add data/streamers.js
-          git commit -m "Actualización de TwitchTracker ($(date +%Y-%m-%d))"
-          git push origin "$rama"
-          gh pr create --base main --head "$rama" \
-            --title "TwitchTracker $(date +%Y-%m-%d)" \
-            --body-file scripts/ultimo-reporte-tt.md
+          git commit -m "Actualización automática de TwitchTracker ($(date +%Y-%m-%d))"
+          git push origin HEAD:main

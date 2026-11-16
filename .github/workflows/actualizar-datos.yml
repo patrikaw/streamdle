@@ -27,21 +27,22 @@ jobs:
           TWITCH_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
         run: node scripts/actualizar-datos.mjs --write
 
-      - name: Abrir pull request para revisar
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publicar los cambios en main
         run: |
-          if git diff --quiet data/streamers.js; then
+          if git diff --quiet -- data/streamers.js data/historial.json; then
             echo "Sin cambios."
+            cat scripts/ultimo-reporte.md 2>/dev/null || true
             exit 0
           fi
-          rama="datos/$(date +%Y-%m-%d)"
+          cp data/streamers.js /tmp/control.mjs
+          node --check /tmp/control.mjs
+          n=$(grep -c '^  {id:' data/streamers.js)
+          if [ "$n" -lt 200 ]; then
+            echo "El archivo de datos quedó con solo $n streamers: no se publica."
+            exit 1
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b "$rama"
           git add data/streamers.js data/historial.json
           git commit -m "Actualización automática de seguidores ($(date +%Y-%m-%d))"
-          git push origin "$rama"
-          gh pr create --base main --head "$rama" \
-            --title "Actualización de seguidores $(date +%Y-%m-%d)" \
-            --body-file scripts/ultimo-reporte.md
+          git push origin HEAD:main
