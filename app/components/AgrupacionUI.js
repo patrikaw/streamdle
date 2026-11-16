@@ -17,7 +17,7 @@ function fmt(n) {
 const GAMES = [
   { href: '/classic', label: '🎯 Classic' }, { href: '/avatardle', label: '👤 Avatardle' },
   { href: '/emojidle', label: '😂 Emojidle' }, { href: '/categorydle', label: '🎮 Categorydle' },
-  { href: '/chatdle', label: '💬 Chatdle' }, { href: '/higherdle', label: '📊 Higherdle' },
+  { href: '/chatdle', label: '💬 Chatdle' }, { href: '/edadle', label: '🎂 Edadle' }, { href: '/higherdle', label: '📊 Higherdle' },
 ];
 
 export function Shell({ crumbs, children }) {

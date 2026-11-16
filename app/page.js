@@ -63,6 +63,15 @@ const GAMES = [
     daily: false,
   },
   {
+    slug: 'edadle',
+    name: 'Edadle',
+    emoji: '🎂',
+    description: '¿Cuántos años tiene?',
+    color: '#DB2777',
+    available: true,
+    daily: true,
+  },
+  {
     slug: 'chatdle',
     name: 'Chatdle',
     emoji: '💬',
