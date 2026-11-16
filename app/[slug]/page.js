@@ -327,7 +327,7 @@ function ActividadPanel({streamer}){
           )}
         </div>
       )}
-      <div style={{fontSize:9,color:'var(--color-text-secondary)',marginTop:8,opacity:0.7}}>Según los directos guardados en Twitch y Kick. El resumen mensual se actualiza el día 1.</div>
+      <div style={{fontSize:9,color:'var(--color-text-secondary)',marginTop:8,opacity:0.7}}>Según los directos guardados en Twitch y Kick.</div>
     </div>
   );
 }
@@ -579,82 +579,6 @@ export default function StreamerPage() {
             )}
 
             {/* TRIVIA */}
-            <div style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-purple)',padding:'12px 14px'}}>
-              <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:12}}>🧠 ¿Cuánto sabés de {streamer.display_name}?</div>
-              <TriviaSection streamer={streamer}/>
-            </div>
-
-            {/* DATOS (solo mobile) */}
-            {extraData.length>0&&(
-              <div className="panel-datos-mobile" style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-border)',padding:'12px 14px'}}>
-                <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Datos</div>
-                <div style={{display:'flex',flexDirection:'column',gap:9}}>
-                  {extraData.map((d,i)=>(
-                    <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:8,paddingBottom:i<extraData.length-1?9:0,borderBottom:i<extraData.length-1?'1px solid var(--color-border)':undefined}}>
-                      <span style={{fontSize:11,color:'var(--color-text-secondary)',flexShrink:0}}>{d.label}</span>
-                      <span style={{fontSize:12,fontWeight:600,color:'#fff',textAlign:'right'}}>{d.href?<a href={d.href} title={`Ver más streamers: ${d.value}`} style={{color:'var(--color-purple-light)',textDecoration:'none'}}>{d.value} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>:d.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* BANNER JUEGOS */}
-            <div style={{background:'linear-gradient(135deg,rgba(124,58,237,0.15),rgba(83,252,24,0.08))',border:'1px solid rgba(124,58,237,0.3)',borderRadius:12,padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10}}>
-              <div>
-                <div style={{fontSize:13,fontWeight:800,marginBottom:2}}>¿Habrá salido {streamer.display_name} hoy?</div>
-                <div style={{fontSize:11,color:'var(--color-text-secondary)'}}>Descubrilo en nuestros juegos diarios</div>
-              </div>
-              <div style={{display:'flex',gap:5,flexWrap:'nowrap',overflowX:'auto'}}>
-                {[{ href: '/', label: '🎮 Nuestros juegos' }].map(g=>(
-                  <a key={g.href} href={g.href} style={{background:'var(--color-purple)',color:'#fff',borderRadius:8,padding: '9px 22px',fontSize: 14,fontWeight:600,textDecoration:'none',transition:'opacity 0.2s',whiteSpace:'nowrap',flexShrink:0}}
-                    onMouseOver={e=>e.currentTarget.style.opacity='0.85'} onMouseOut={e=>e.currentTarget.style.opacity='1'}>{g.label}</a>
-                ))}
-              </div>
-            </div>
-
-            {/* SEO */}
-            <div style={{padding:'14px 16px',borderRadius:12,border:'1px solid var(--color-border)',background:'var(--bg-secondary)'}}>
-              <h2 style={{fontSize:14,fontWeight:700,marginBottom:7}}>Sobre {streamer.display_name}</h2>
-              {streamer.bio?.trim()
-                ? <p style={{fontSize:13,color:'var(--color-text-secondary)',lineHeight:1.7,margin:0}}>{streamer.bio}</p>
-                : <p style={{fontSize:13,color:'var(--color-text-secondary)',lineHeight:1.7,margin:0}}>
-                    {streamer.display_name} es un streamer de {countryName(streamer.country)}{streamer.real_name?`, cuyo nombre real es ${streamer.real_name}`:''}
-                    {age?` (${age} años)`:''}.{debut?` Activo en Twitch desde ${debut},`:''} acumula {fmtFull(streamer.total_followers)} seguidores y {fmtFull(streamer.total_hours)} horas de transmisión.
-                    {streamer.top_category?` Su contenido principal es ${streamer.top_category}`:''}
-                    {streamer.second_category&&streamer.second_category!=='(No tiene)'?` y ${streamer.second_category}`:''}.
-                    {streamer.peak_viewers>0?` Su pico histórico fue de ${fmtFull(streamer.peak_viewers)} espectadores simultáneos.`:''}
-                    {streamer.is_active?' Actualmente sigue activo.':''}
-                  </p>
-              }
-            </div>
-          </div>
-
-          {/* DERECHA */}
-          <div style={{display:'flex',flexDirection:'column',gap:12}}>
-            {extraData.length>0&&(
-              <div className="panel-datos" style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-border)',padding:'12px 14px'}}>
-                <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Datos</div>
-                <div style={{display:'flex',flexDirection:'column',gap:9}}>
-                  {extraData.map((d,i)=>(
-                    <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:8,paddingBottom:i<extraData.length-1?9:0,borderBottom:i<extraData.length-1?'1px solid var(--color-border)':undefined}}>
-                      <span style={{fontSize:11,color:'var(--color-text-secondary)',flexShrink:0}}>{d.label}</span>
-                      <span style={{fontSize:12,fontWeight:600,color:'#fff',textAlign:'right'}}>{d.href?<a href={d.href} title={`Ver más streamers: ${d.value}`} style={{color:'var(--color-purple-light)',textDecoration:'none'}}>{d.value} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>:d.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-            <ActividadPanel streamer={streamer}/>
-            <div style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-purple)',padding:'12px 14px'}}>
-              <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Jugá con streamers</div>
-              <div style={{display:'flex',flexDirection:'column',gap:6}}>
-                {[['/classic','🎯 Streamdle Classic'],['/chatdle','💬 Chatdle · adiviná la frase'],['/avatardle','👤 Avatardle · adiviná la foto'],['/edadle','🎂 Edadle · adiviná la edad']].map(([h,l])=>(
-                  <a key={h} href={h} style={{fontSize:13,fontWeight:700,color:'#fff',textDecoration:'none',padding:'8px 12px',borderRadius:8,background:'var(--bg-card)',border:'1px solid var(--color-border)'}}>{l}</a>
-                ))}
-                <a href="/" style={{fontSize:12,fontWeight:600,color:'var(--color-purple-light)',textDecoration:'none',padding:'4px 2px'}}>Ver todos los juegos →</a>
-              </div>
-            </div>
             {related.length>0&&(
               <div className="panel-relacionados" style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-border)',padding:'12px 14px'}}>
                 <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Relacionados</div>
@@ -663,6 +587,7 @@ export default function StreamerPage() {
                 </div>
               </div>
             )}
+            <a href="/" style={{display:'block',textAlign:'center',fontSize:13,fontWeight:700,color:'#fff',textDecoration:'none',padding:'9px 12px',borderRadius:10,background:'var(--color-purple)'}}>🎮 Jugá con streamers →</a>
           </div>
         </div>
       </main>
