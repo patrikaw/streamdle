@@ -294,6 +294,7 @@ export default function Home() {
               { href: '/comunidades', emoji: '👥', titulo: 'Comunidades', texto: 'Top Globales, W Crew, Coscu Army y los grupos que mueven el streaming.', color: '#16A34A' },
               { href: '/streamers', emoji: '🏆', titulo: 'Ranking y fichas', texto: 'Más de 200 fichas con edad, actividad del mes y clip más visto.', color: '#7C3AED' },
               { href: '/streamers/signo', emoji: '♈', titulo: 'Por signo, generación y personalidad', texto: 'Explorá a los streamers agrupados de otra manera.', color: '#2563EB' },
+              { href: '/clips/hoy', emoji: '🎬', titulo: 'Mejores clips de hoy', texto: 'Los clips más vistos de los streamers hispanos, del día, la semana y el mes.', color: '#0EA5E9' },
               { href: '/gta-6', emoji: '🎮', titulo: 'GTA 6 en español', texto: 'Quién lo juega en vivo entre los streamers hispanos y sus mejores clips.', color: '#0EA5E9' },
               { href: '/eventos/la-velada-del-ano-6', emoji: '🥊', titulo: 'La Velada del Año VI', texto: 'Resultados de los diez combates: TheGrefg vs IlloJuan y más.', color: '#EF4444' },
             ].map((n) => (

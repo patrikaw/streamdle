@@ -84,6 +84,12 @@ export default async function Page() {
         Quiénes juegan GTA 6 ahora entre los streamers hispanos de Streamdle y cuáles son sus clips más vistos. El juego sale el <strong style={{ color: '#fff' }}>19 de noviembre de 2026</strong> en consolas, según Take-Two y Rockstar.
       </p>
 
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 14 }}>
+        {[['/gta-6/clips/hoy', '🎬 Mejores clips de hoy'], ['/gta-6/clips/semana', 'Clips de la semana'], ['/gta-6/clips/mes', 'Clips del mes']].map(([h, l]) => (
+          <Link key={h} href={h} className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 20, padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{l}</Link>
+        ))}
+      </div>
+
       {d && (
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 16 }}>
           {[[d.totalEs, 'directos en español ahora'], [d.nuestros.length, 'de streamers con ficha'], [d.totalVivos, 'directos en total (mundo)']].map(([v, l]) => (
