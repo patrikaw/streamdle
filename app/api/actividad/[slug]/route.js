@@ -3,6 +3,7 @@ import { STREAMERS } from '../../../../data/streamers';
 import actividadMensual from '../../../../data/actividad.json';
 import { getTwitchToken } from '../../../../lib/twitch-server';
 import { sesionesDe, resumen, NOMBRE_DIA } from '../../../../lib/actividad.mjs';
+import { juegosDe } from '../../../../lib/muestreo';
 
 const DIAS = 30;
 const MS_DIA = 86400000;
@@ -26,10 +27,12 @@ export async function GET(_req, { params }) {
   const ses = await sesionesDe(s, { token, clientId: process.env.TWITCH_CLIENT_ID });
   const ahora = Date.now();
   const r = resumen(ses, ahora - DIAS * MS_DIA, ahora + MS_DIA, s.country);
+  const jg = juegosDe(slugDe(s), 30);
+  const juegos = jg.total >= 6 ? jg.juegos : [];
   if (!r && !meses.length) return NextResponse.json({ ok: false }, { headers: cabecera });
 
   return NextResponse.json({
-    ok: true, dias: DIAS, meses,
+    ok: true, dias: DIAS, meses, juegos,
     reciente: r && {
       sesiones: r.sesiones, horas: Math.round(r.horas), promHoras: Math.round((r.horas / r.sesiones) * 10) / 10, diasActivos: r.diasActivos,
       ultimo: new Date(r.ultimo).toISOString(), porDia: r.porDia.map((v) => Math.round(v * 10) / 10), nombresDia: NOMBRE_DIA,

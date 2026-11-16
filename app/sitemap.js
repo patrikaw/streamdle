@@ -5,6 +5,7 @@ import { TIPOS, gruposDe } from '../lib/agrupaciones';
 import { REGIONES, tendenciasDe, periodosArchivo } from '../lib/tendencias';
 import { COMUNIDADES, esIndexable } from '../lib/comunidades';
 import contenido from '../data/contenido.json';
+import { rankingJuego, GTA } from '../lib/muestreo';
 import historial from '../data/historial.json';
 
 export default function sitemap() {
@@ -99,6 +100,8 @@ export default function sitemap() {
     ];
   });
 
+  const ranking_gta = rankingJuego(GTA, 0).length >= 4 ? [{ url: `${baseUrl}/gta-6/ranking`, lastModified: today, changeFrequency: 'daily', priority: 0.7 }] : [];
+
   const eventos_pages = [
     { url: `${baseUrl}/eventos/la-velada-del-ano-6`, lastModified: today, changeFrequency: 'weekly', priority: 0.7 },
   ];
@@ -117,5 +120,6 @@ export default function sitemap() {
     ...comunidades_extra,
     ...eventos_pages,
     ...clips_pages,
+    ...ranking_gta,
   ];
 }

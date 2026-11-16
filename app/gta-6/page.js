@@ -85,7 +85,7 @@ export default async function Page() {
       </p>
 
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 14 }}>
-        {[['/gta-6/clips/hoy', '🎬 Mejores clips de hoy'], ['/gta-6/clips/semana', 'Clips de la semana'], ['/gta-6/clips/mes', 'Clips del mes']].map(([h, l]) => (
+        {[['/gta-6/clips/hoy', '🎬 Mejores clips de hoy'], ['/gta-6/clips/semana', 'Clips de la semana'], ['/gta-6/clips/mes', 'Clips del mes'], ['/gta-6/ranking', '🏆 Quién más lo jugó']].map(([h, l]) => (
           <Link key={h} href={h} className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 20, padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{l}</Link>
         ))}
       </div>

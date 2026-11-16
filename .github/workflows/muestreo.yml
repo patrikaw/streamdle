@@ -1,0 +1,46 @@
+name: Muestreo de juegos por streamer
+
+# Cuatro veces al día, durante 5 horas, mira cada hora qué juega cada streamer (Twitch y Kick) y lo suma a data/muestreo.json.
+# Con eso se calcula en qué juegos pasa el tiempo cada uno y el ranking de GTA 6.
+on:
+  schedule:
+    - cron: '10 0,6,12,18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: muestreo
+  cancel-in-progress: false
+
+jobs:
+  muestreo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 345
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Tomar las muestras (6, una por hora)
+        env:
+          TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
+          TWITCH_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
+        run: node scripts/muestreo.mjs --veces=6 --cada=60
+
+      - name: Publicar los cambios en main
+        run: |
+          if git diff --quiet -- data/muestreo.json; then
+            echo "Sin cambios."
+            exit 0
+          fi
+          node -e "JSON.parse(require('fs').readFileSync('data/muestreo.json','utf8'))"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/muestreo.json
+          git commit -m "Muestreo de juegos ($(date +%Y-%m-%d) $(date +%H)h)"
+          git pull --rebase origin main
+          git push origin HEAD:main

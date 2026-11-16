@@ -313,8 +313,20 @@ function ActividadPanel({streamer}){
           Suele empezar cerca de las <strong style={{color:'#fff'}}>{r.horaTipica}</strong> (hora de {r.zona}), sobre todo los <strong style={{color:'#fff'}}>{r.diaTop}</strong>. Último directo {dias<=0?'hoy':dias===1?'ayer':`hace ${dias} días`}.
         </div>
       </>)}
-      {ult&&(
+      {a.juegos&&a.juegos.length>0&&(
         <div style={{marginTop:r?12:0,paddingTop:r?10:0,borderTop:r?'1px solid var(--color-border)':'none'}}>
+          <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:6}}>Lo que más jugó · últimos 30 días</div>
+          {a.juegos.map(j=>(
+            <div key={j.juego} style={{display:'flex',alignItems:'center',gap:8,marginBottom:4}}>
+              <div style={{flex:1,fontSize:12,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{j.juego}</div>
+              <div style={{width:70,height:6,background:'var(--color-border)',borderRadius:3,overflow:'hidden'}}><div style={{width:`${j.pct}%`,height:'100%',background:'var(--color-purple)'}}/></div>
+              <div style={{fontSize:11,color:'var(--color-text-secondary)',minWidth:34,textAlign:'right'}}>{j.pct}%</div>
+            </div>
+          ))}
+        </div>
+      )}
+      {ult&&(
+        <div style={{marginTop:r||(a.juegos&&a.juegos.length>0)?12:0,paddingTop:r?10:0,borderTop:r?'1px solid var(--color-border)':'none'}}>
           <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:6}}>Mes anterior · {ult.mes}</div>
           <div style={{fontSize:13,lineHeight:1.5}}>
             <strong>{ult.horas} h</strong> en {ult.sesiones} directos, activo {ult.diasActivos} días
