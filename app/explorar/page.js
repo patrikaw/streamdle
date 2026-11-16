@@ -32,6 +32,7 @@ const GAME_NAV = [
   { href: '/categorydle', label: '🎮 Categorydle' },
   { href: '/chatdle',     label: '💬 Chatdle' },
   { href: '/edadle',      label: '🎂 Edadle' },
+  { href: '/ruleta',      label: '🎲 Ruleta de streamers' },
   { href: '/higherdle',   label: '📊 Higherdle' },
 ];
 

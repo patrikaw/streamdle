@@ -29,6 +29,7 @@ for (const g of ['classic', 'chatdle', 'avatardle', 'emojidle', 'edadle', 'highe
 // Páginas clave
 exige('index.html', ['Lo nuevo en Streamdle', '<h1']);
 exige('tendencias.html', ['<h1']);
+exige('ruleta.html', ['<h1', 'Ruleta de streamers']);
 exige('comunidades.html', ['<h1']);
 
 // Una URL inexistente tiene que dar 404 real (el layout de las fichas llama a notFound())

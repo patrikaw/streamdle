@@ -36,6 +36,13 @@ for (const l of fs.readFileSync(path.join(RAIZ, 'data', 'streamers.js'), 'utf8')
 const slugDe = (s) => s.display_name.toLowerCase().replace(/\s+/g, '-');
 const activos = streamers.filter((s) => s.is_active !== false);
 
+async function seguidoresTwitch(userId, token) {
+  try {
+    const r = await fetch(`https://api.twitch.tv/helix/channels/followers?broadcaster_id=${userId}`, { headers: { 'Client-Id': id, Authorization: `Bearer ${token}` } });
+    return r.ok ? (await r.json()).total : null;
+  } catch { return null; }
+}
+
 async function tokenTwitch() {
   if (!id || !secreto) return null;
   const t = await (await fetch('https://id.twitch.tv/oauth2/token', {
@@ -58,7 +65,7 @@ async function muestra(token) {
         if (!r.ok) continue;
         for (const v of (await r.json()).data || []) {
           const s = lote.find((x) => x.twitch.toLowerCase() === v.user_login.toLowerCase());
-          if (s && v.game_name) vivos.set(slugDe(s), { juego: v.game_name, esp: v.viewer_count });
+          if (s && v.game_name) vivos.set(slugDe(s), { juego: v.game_name, esp: v.viewer_count, twitchId: v.user_id });
         }
       } catch { /* sigue */ }
     }
@@ -71,7 +78,7 @@ async function muestra(token) {
       const d = await r.json();
       const ls = d.livestream;
       const juego = ls?.categories?.[0]?.name;
-      if (ls && juego) vivos.set(slugDe(s), { juego, esp: Number(ls.viewer_count) || 0 });
+      if (ls && juego) vivos.set(slugDe(s), { juego, esp: Number(ls.viewer_count) || 0, kickSeguidores: Number(d.followers_count) || null });
     } catch { /* sigue */ }
     await dormir(250);
   }
@@ -80,6 +87,7 @@ async function muestra(token) {
 
 const datos = fs.existsSync(ARCHIVO) ? JSON.parse(fs.readFileSync(ARCHIVO, 'utf8')) : { cada: CADA, dias: {} };
 datos.cada = CADA;
+datos.gta6 = datos.gta6 || {};
 const token = await tokenTwitch();
 
 for (let i = 0; i < VECES; i++) {
@@ -90,7 +98,16 @@ for (let i = 0; i < VECES; i++) {
   for (const [slug, v] of vivos) {
     d.s[slug] = d.s[slug] || {};
     d.s[slug][v.juego] = (d.s[slug][v.juego] || 0) + 1;
-    if (v.juego === GTA) d.g[slug] = Math.max(d.g[slug] || 0, v.esp);
+    if (v.juego === GTA) {
+      d.g[slug] = Math.max(d.g[slug] || 0, v.esp);
+      // Acumulado de GTA VI desde que empezamos a medir
+      const a = (datos.gta6[slug] = datos.gta6[slug] || { m: 0, vh: 0, pico: 0, primera: new Date().toISOString(), seg0: null, seg1: null });
+      a.m += 1;
+      a.vh = Math.round((a.vh + v.esp * (CADA / 60)) * 10) / 10; // espectadores acumulados, en "horas vistas"
+      a.pico = Math.max(a.pico, v.esp);
+      const seg = v.kickSeguidores ?? (token && v.twitchId ? await seguidoresTwitch(v.twitchId, token) : null);
+      if (seg) { if (a.seg0 === null) a.seg0 = seg; a.seg1 = seg; }
+    }
   }
   console.log(`Muestra ${i + 1}/${VECES}: ${vivos.size} streamers en vivo, ${[...vivos.values()].filter((v) => v.juego === GTA).length} en ${GTA}`);
   if (i < VECES - 1) await dormir(CADA * 60000);

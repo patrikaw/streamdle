@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Ruleta from './components/Ruleta';
 
 const GAMES = [
   {
@@ -282,6 +283,11 @@ export default function Home() {
           );
         })}
         </div>
+
+        {/* Ruleta */}
+        <section style={{ marginTop: '48px' }}>
+          <Ruleta conTitulo />
+        </section>
 
         {/* Novedades */}
         <section id="novedades" style={{ marginTop: '48px' }}>

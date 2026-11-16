@@ -416,7 +416,7 @@ export default function StreamerPage() {
           <SearchBar />
         </div>
         <div className="game-nav-links" style={{display:'flex',gap:4,flexWrap:'wrap',justifyContent:'center'}}>
-          {[{ href: '/', label: '🎮 Nuestros juegos' }].map(g=>(
+          {[{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', label: '🎲 Descubrí un streamer' }].map(g=>(
             <a key={g.href} href={g.href} style={{background:'var(--bg-card)',border:'1px solid var(--color-border)',color:'white',borderRadius:8,padding: '9px 22px',fontSize: 14,fontWeight:600,textDecoration:'none',whiteSpace:'nowrap'}}>{g.label}</a>
           ))}
         </div>
@@ -628,7 +628,7 @@ export default function StreamerPage() {
                 <div style={{fontSize:11,color:'var(--color-text-secondary)'}}>Descubrilo en nuestros juegos diarios</div>
               </div>
               <div style={{display:'flex',gap:5,flexWrap:'nowrap',overflowX:'auto'}}>
-                {[{ href: '/', label: '🎮 Nuestros juegos' }].map(g=>(
+                {[{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', label: '🎲 Descubrí un streamer' }].map(g=>(
                   <a key={g.href} href={g.href} style={{background:'var(--color-purple)',color:'#fff',borderRadius:8,padding: '9px 22px',fontSize: 14,fontWeight:600,textDecoration:'none',transition:'opacity 0.2s',whiteSpace:'nowrap',flexShrink:0}}
                     onMouseOver={e=>e.currentTarget.style.opacity='0.85'} onMouseOut={e=>e.currentTarget.style.opacity='1'}>{g.label}</a>
                 ))}
@@ -677,6 +677,7 @@ export default function StreamerPage() {
               </div>
             )}
             <a href="/" style={{display:'block',textAlign:'center',fontSize:13,fontWeight:700,color:'#fff',textDecoration:'none',padding:'9px 12px',borderRadius:10,background:'var(--color-purple)'}}>🎮 Jugá con streamers →</a>
+            <a href="/ruleta" style={{display:'block',textAlign:'center',fontSize:13,fontWeight:700,color:'#fff',textDecoration:'none',padding:'9px 12px',borderRadius:10,background:'var(--bg-card)',border:'1px solid var(--color-purple)'}}>🎲 Descubrí otro streamer →</a>
           </div>
         </div>
       </main>

@@ -14,7 +14,7 @@ function fmt(n) {
   return String(n);
 }
 
-const GAMES = [{ href: '/', label: '🎮 Nuestros juegos' }];
+const GAMES = [{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', label: '🎲 Descubrí un streamer' }];
 
 const FOOTER_TILES = [
   { href: '/tendencias', emoji: '🔥', titulo: 'En tendencia', desc: 'Quiénes más crecen este mes', color: '#F97316' },
@@ -22,6 +22,7 @@ const FOOTER_TILES = [
   { href: '/classic', emoji: '🎯', titulo: 'Jugá Streamdle', desc: 'El Wordle de streamers, cada día', color: '#DC2626' },
   { href: '/edadle', emoji: '🎂', titulo: 'Edadle', desc: 'Adiviná cuántos años tiene', color: '#DB2777' },
   { href: '/comunidades', emoji: '👥', titulo: 'Comunidades', desc: 'Grupos y squads de streamers', color: '#16A34A' },
+  { href: '/ruleta', emoji: '🎲', titulo: 'Ruleta de streamers', desc: 'Descubrí uno al azar', color: '#A855F7' },
   { href: '/clips/hoy', emoji: '🎬', titulo: 'Mejores clips', desc: 'Los más vistos de hoy, la semana y el mes', color: '#0EA5E9' },
   { href: '/', emoji: '🎮', titulo: 'Todos los juegos', desc: '7 juegos diarios', color: '#2563EB' },
 ];

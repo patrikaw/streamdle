@@ -7,7 +7,7 @@ import { getAvatars, getAvatarUrl } from '../../data/avatars';
 const MAX_ATTEMPTS = 6;
 const tieneEdad = (s) => !!(s.birth_year && s.birth_month && s.birth_day);
 const slugDe = (s) => s.display_name.toLowerCase().replace(/\s+/g, '-');
-const GAMES = [{ href: '/', label: '🎮 Nuestros juegos' }];
+const GAMES = [{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', label: '🎲 Descubrí un streamer' }];
 
 function edadDe(s) {
   const h = new Date();
