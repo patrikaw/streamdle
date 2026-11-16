@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { STREAMERS } from '../../data/streamers';
 import seoOverrides from '../../data/seo-overrides.json';
 
@@ -122,8 +123,8 @@ export default async function Layout({ children, params }) {
   const { slug } = await params;
   const s = findStreamer(slug);
 
-  // Sin streamer → sin schema
-  if (!s) return children;
+  // Sin streamer → 404 real (antes devolvía 200 con un mensaje)
+  if (!s) notFound();
 
   const adj = countryAdj(s.country);
   const description = `${s.display_name}${s.real_name ? ` (${s.real_name})` : ''} es un streamer ${adj} con ${fmt(s.total_followers)} seguidores.`;

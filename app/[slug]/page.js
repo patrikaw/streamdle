@@ -339,8 +339,8 @@ export default function StreamerPage() {
   const [avatars,setAvatars]=useState({});
   const [imgErr,setImgErr]=useState(false);
   const [clipLoaded,setClipLoaded]=useState(false);
-  const clipId=streamer.top_clip_id||((streamer.top_clip_url||'').match(/(clip_[A-Za-z0-9]+)/)||[])[1]||null;
-  const esKickClip=!streamer.top_clip_id&&!!clipId;
+  const clipId=streamer?.top_clip_id||((streamer?.top_clip_url||'').match(/(clip_[A-Za-z0-9]+)/)||[])[1]||null;
+  const esKickClip=!streamer?.top_clip_id&&!!clipId;
   const [clipInfo,setClipInfo]=useState(null);
   useEffect(()=>{
     if(!clipId)return;
