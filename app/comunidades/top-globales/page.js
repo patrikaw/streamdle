@@ -7,6 +7,8 @@ import CommunityTrivia from './CommunityTrivia';
 import CommunityFAQ from './CommunityFAQ';
 import CommunitySocials from './CommunitySocials';
 import ClipCards from './ClipCards';
+import { STREAMERS } from '../../../data/streamers';
+import { streamerSlug } from '../../../lib/agrupaciones';
 
 export const revalidate = 86400;
 
@@ -34,6 +36,20 @@ export async function generateMetadata() {
 }
 
 const COLOR = '#7C3AED';
+
+// Redes y seguidores salen de la ficha (data/streamers.js); lo escrito acá solo es respaldo.
+function conDatosDeFicha(m) {
+  const s = STREAMERS.find((x) => streamerSlug(x) === m.slug.replace(/^\//, ''));
+  if (!s) return m;
+  return {
+    ...m,
+    twitter: s.twitter_url || m.twitter,
+    instagram: s.instagram_url || m.instagram,
+    tiktok: s.tiktok_url || m.tiktok,
+    youtube: s.youtube_url || m.youtube,
+    followers: s.total_followers || m.followers,
+  };
+}
 
 // login = Twitch username usado solo para fetchAvatarsBatch (no se muestra)
 const MEMBERS_BASE = [
@@ -160,8 +176,8 @@ export default async function TopGlobalesPage() {
   const avatarOf = login => userData[login?.toLowerCase()]?.url ?? null;
 
   // Strip internal `login` field before passing to client components
-  const members = MEMBERS_BASE.map(({ login, ...rest }) => ({ ...rest, avatarUrl: avatarOf(login) }));
-  const guests  = GUESTS_BASE.map(({ login, ...rest })  => ({ ...rest, avatarUrl: avatarOf(login) }));
+  const members = MEMBERS_BASE.map(conDatosDeFicha).map(({ login, ...rest }) => ({ ...rest, avatarUrl: avatarOf(login) }));
+  const guests  = GUESTS_BASE.map(conDatosDeFicha).map(({ login, ...rest })  => ({ ...rest, avatarUrl: avatarOf(login) }));
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',

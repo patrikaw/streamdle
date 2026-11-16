@@ -287,27 +287,47 @@ function ActividadPanel({streamer}){
     return()=>{vivo=false;};
   },[streamer.id]);
   if(!a)return null;
-  const max=Math.max(...a.porDia,1);
-  const dias=Math.floor((Date.now()-new Date(a.ultimo).getTime())/86400000);
+  const r=a.reciente, ms=a.meses||[];
+  const max=r?Math.max(...r.porDia,1):1;
+  const dias=r?Math.floor((Date.now()-new Date(r.ultimo).getTime())/86400000):0;
+  const ult=ms[0], prev=ms[1];
+  const delta=ult&&prev&&prev.horas>0?Math.round(((ult.horas-prev.horas)/prev.horas)*100):null;
+  const maxH=Math.max(...ms.map(m=>m.horas),1);
   return(
     <div style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-border)',padding:'12px 14px'}}>
-      <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Actividad · últimos {a.dias} días</div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:10}}>
-        {[[`${a.horas} h`,'en vivo'],[a.sesiones,'directos'],[`${a.diasActivos} de ${a.dias}`,'días activo'],[`${a.promHoras} h`,'por directo']].map(([v,l])=>(
-          <div key={l} style={{background:'var(--bg-card)',borderRadius:8,padding:'6px 10px'}}>
-            <div style={{fontSize:16,fontWeight:800}}>{v}</div>
-            <div style={{fontSize:10,color:'var(--color-text-secondary)'}}>{l}</div>
+      {r&&(<>
+        <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Actividad · últimos {a.dias} días</div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:10}}>
+          {[[`${r.horas} h`,'en vivo'],[r.sesiones,'directos'],[`${r.diasActivos} de ${a.dias}`,'días activo'],[`${r.promHoras} h`,'por directo']].map(([v,l])=>(
+            <div key={l} style={{background:'var(--bg-card)',borderRadius:8,padding:'6px 10px'}}>
+              <div style={{fontSize:16,fontWeight:800}}>{v}</div>
+              <div style={{fontSize:10,color:'var(--color-text-secondary)'}}>{l}</div>
+            </div>
+          ))}
+        </div>
+        <div style={{display:'flex',alignItems:'flex-end',gap:4,height:44,marginBottom:4}}>
+          {r.porDia.map((v,i)=><div key={i} title={`${r.nombresDia[i]}: ${v} h`} style={{flex:1,height:`${Math.max(8,(v/max)*100)}%`,background:r.nombresDia[i]===r.diaTop?'var(--color-purple)':'var(--color-border)',borderRadius:3}}/>)}
+        </div>
+        <div style={{display:'flex',gap:4,marginBottom:8}}>{r.nombresDia.map(n=><div key={n} style={{flex:1,textAlign:'center',fontSize:9,color:'var(--color-text-secondary)'}}>{n}</div>)}</div>
+        <div style={{fontSize:12,color:'var(--color-text-secondary)',lineHeight:1.5}}>
+          Suele empezar cerca de las <strong style={{color:'#fff'}}>{r.horaTipica}</strong> (hora de {r.zona}), sobre todo los <strong style={{color:'#fff'}}>{r.diaTop}</strong>. Último directo {dias<=0?'hoy':dias===1?'ayer':`hace ${dias} días`}.
+        </div>
+      </>)}
+      {ult&&(
+        <div style={{marginTop:r?12:0,paddingTop:r?10:0,borderTop:r?'1px solid var(--color-border)':'none'}}>
+          <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:6}}>Mes anterior · {ult.mes}</div>
+          <div style={{fontSize:13,lineHeight:1.5}}>
+            <strong>{ult.horas} h</strong> en {ult.sesiones} directos, activo {ult.diasActivos} días
+            {delta!==null&&<span style={{color:delta>=0?'#4ADE80':'#F87171',fontWeight:700}}> ({delta>=0?'+':''}{delta}% vs {prev.mes})</span>}
           </div>
-        ))}
-      </div>
-      <div style={{display:'flex',alignItems:'flex-end',gap:4,height:44,marginBottom:4}}>
-        {a.porDia.map((v,i)=><div key={i} title={`${a.nombresDia[i]}: ${v} h`} style={{flex:1,height:`${Math.max(8,(v/max)*100)}%`,background:a.nombresDia[i]===a.diaTop?'var(--color-purple)':'var(--color-border)',borderRadius:3}}/>)}
-      </div>
-      <div style={{display:'flex',gap:4,marginBottom:8}}>{a.nombresDia.map(n=><div key={n} style={{flex:1,textAlign:'center',fontSize:9,color:'var(--color-text-secondary)'}}>{n}</div>)}</div>
-      <div style={{fontSize:12,color:'var(--color-text-secondary)',lineHeight:1.5}}>
-        Suele empezar cerca de las <strong style={{color:'#fff'}}>{a.horaTipica}</strong> (hora de {a.zona}), sobre todo los <strong style={{color:'#fff'}}>{a.diaTop}</strong>. Último directo {dias<=0?'hoy':dias===1?'ayer':`hace ${dias} días`}.
-      </div>
-      <div style={{fontSize:9,color:'var(--color-text-secondary)',marginTop:6,opacity:0.7}}>Según los directos guardados en {a.plataformas.join(' y ')}.</div>
+          {ms.length>1&&(
+            <div style={{display:'flex',alignItems:'flex-end',gap:4,height:34,marginTop:8}}>
+              {[...ms].reverse().map(m=><div key={m.clave} title={`${m.mes}: ${m.horas} h`} style={{flex:1,textAlign:'center'}}><div style={{height:`${Math.max(6,(m.horas/maxH)*28)}px`,background:'var(--color-purple)',borderRadius:3,opacity:m.clave===ult.clave?1:0.5}}/><div style={{fontSize:8,color:'var(--color-text-secondary)',marginTop:2}}>{m.mes.slice(0,3)}</div></div>)}
+            </div>
+          )}
+        </div>
+      )}
+      <div style={{fontSize:9,color:'var(--color-text-secondary)',marginTop:8,opacity:0.7}}>Según los directos guardados en Twitch y Kick. El resumen mensual se actualiza el día 1.</div>
     </div>
   );
 }
