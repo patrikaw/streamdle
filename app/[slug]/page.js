@@ -339,6 +339,15 @@ export default function StreamerPage() {
   const [avatars,setAvatars]=useState({});
   const [imgErr,setImgErr]=useState(false);
   const [clipLoaded,setClipLoaded]=useState(false);
+  const clipId=streamer.top_clip_id||((streamer.top_clip_url||'').match(/(clip_[A-Za-z0-9]+)/)||[])[1]||null;
+  const esKickClip=!streamer.top_clip_id&&!!clipId;
+  const [clipInfo,setClipInfo]=useState(null);
+  useEffect(()=>{
+    if(!clipId)return;
+    let vivo=true;
+    fetch(`/api/clip/${clipId}`).then(r=>r.json()).then(d=>{if(vivo&&d.ok)setClipInfo(d);}).catch(()=>{});
+    return()=>{vivo=false;};
+  },[clipId]);
   useEffect(()=>{getAvatars().then(d=>setAvatars(d||{}));},[]);
 
   if (!streamer) return <NotFound/>;
@@ -547,32 +556,33 @@ export default function StreamerPage() {
             ) : null}
 
             {/* CLIP */}
-            {streamer.top_clip_id&&(
+            {clipId&&(
               <div style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-border)',padding:'12px 14px'}}>
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
                   <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px'}}>🎬 Clip más visto</div>
-                  {streamer.top_clip_url&&<a href={streamer.top_clip_url} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:'var(--color-purple-light)',textDecoration:'none'}}>Ver en Twitch ↗</a>}
+                  {streamer.top_clip_url&&<a href={streamer.top_clip_url} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:'var(--color-purple-light)',textDecoration:'none'}}>Ver en {esKickClip?'Kick':'Twitch'} ↗</a>}
                 </div>
-                {streamer.top_clip_title&&(
-                  <div style={{fontSize:13,fontWeight:600,color:'#fff',marginBottom:8,lineHeight:1.3}}>
-                    "{streamer.top_clip_title}"
-                    {streamer.top_clip_views>0&&<span style={{color:'var(--color-text-secondary)',fontWeight:400,marginLeft:6}}>· {fmtFull(streamer.top_clip_views)} vistas</span>}
-                  </div>
-                )}
-                <div style={{position:'relative',paddingBottom:'56.25%',height:0,borderRadius:10,overflow:'hidden'}}>
-                  {!clipLoaded?(
-                    <div style={{position:'absolute',inset:0,background:'var(--bg-card)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:10,cursor:'pointer',borderRadius:10}}
-                      onClick={()=>setClipLoaded(true)}>
-                      <div style={{width:52,height:52,borderRadius:'50%',background:'var(--color-purple)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22}}>▶</div>
-                      <span style={{fontSize:12,color:'var(--color-text-secondary)'}}>Click para ver el clip</span>
-                    </div>
-                  ):(
+                <div style={{position:'relative',paddingBottom:'56.25%',height:0,borderRadius:10,overflow:'hidden',background:'linear-gradient(135deg,#1A1A2E,#2D1B69)'}}>
+                  {clipLoaded&&!esKickClip?(
                     <iframe
-                      src={`https://clips.twitch.tv/embed?clip=${streamer.top_clip_id}&parent=streamdle.net&parent=www.streamdle.net&autoplay=true`}
+                      src={`https://clips.twitch.tv/embed?clip=${clipId}&parent=streamdle.net&parent=www.streamdle.net&autoplay=true`}
                       style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',border:'none',borderRadius:10}}
                       allowFullScreen
                       title={`Clip de ${streamer.display_name}`}
                     />
+                  ):(
+                    <a href={esKickClip?streamer.top_clip_url:undefined} target={esKickClip?'_blank':undefined} rel="noopener noreferrer"
+                      onClick={esKickClip?undefined:(e)=>{e.preventDefault();setClipLoaded(true);}}
+                      style={{position:'absolute',inset:0,display:'block',cursor:'pointer',textDecoration:'none'}}>
+                      {clipInfo?.thumb&&<img src={clipInfo.thumb} alt={streamer.top_clip_title||`Clip de ${streamer.display_name}`} loading="lazy" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}/>}
+                      <div style={{position:'absolute',inset:0,background:'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.25) 100%)'}}/>
+                      <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:58,height:58,borderRadius:'50%',background:'rgba(124,58,237,0.92)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,color:'#fff',boxShadow:'0 4px 20px rgba(0,0,0,0.5)'}}>▶</div>
+                      {clipInfo?.duracion>0&&<span style={{position:'absolute',top:8,right:8,background:'rgba(0,0,0,0.75)',color:'#fff',fontSize:11,fontWeight:700,padding:'2px 7px',borderRadius:5}}>{Math.floor(clipInfo.duracion/60)}:{String(Math.round(clipInfo.duracion%60)).padStart(2,'0')}</span>}
+                      <div style={{position:'absolute',left:12,right:12,bottom:10}}>
+                        {(streamer.top_clip_title||clipInfo?.titulo)&&<div style={{fontSize:14,fontWeight:700,color:'#fff',lineHeight:1.3,textShadow:'0 1px 6px rgba(0,0,0,0.8)',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical',overflow:'hidden'}}>{streamer.top_clip_title||clipInfo.titulo}</div>}
+                        {(streamer.top_clip_views>0||clipInfo?.vistas>0)&&<div style={{fontSize:11,color:'rgba(255,255,255,0.8)',marginTop:3}}>👁 {fmtFull(streamer.top_clip_views>0?streamer.top_clip_views:clipInfo.vistas)} vistas</div>}
+                      </div>
+                    </a>
                   )}
                 </div>
               </div>
