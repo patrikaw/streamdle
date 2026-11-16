@@ -107,6 +107,9 @@ const KICK_AVATARS = {
   'adrianozendejas32': 'https://files.kick.com/images/user/53715418/profile_image/conversion/4ddecb8f-57f5-4c84-a293-50d98fd3c1cb-fullsize.webp',
   'benjaz':            'https://files.kick.com/images/user/11383714/profile_image/conversion/b4458890-6422-43b0-aed7-f2b657c6b357-fullsize.webp',
   'cristorata7':       'https://files.kick.com/images/user/37748685/profile_image/conversion/bb8c1847-06c9-452b-9800-673997f74107-fullsize.webp',
+  'chanty': "https://files.kick.com/images/user/3543430/profile_image/conversion/5b78bcc9-343f-4186-9a88-16586e6c9726-fullsize.webp",
+  'samulx': "https://files.kick.com/images/user/1777357/profile_image/conversion/bc68bdcd-7bc0-4de9-a2ad-99cf1bca65b8-fullsize.webp",
+  'willito': "https://files.kick.com/images/user/26418138/profile_image/conversion/d326d5c4-f3d7-4259-9337-5b7f257d3a2d-fullsize.webp",
 };
 
 export async function getAvatarsForLogins(logins) {

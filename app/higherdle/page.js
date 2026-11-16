@@ -183,6 +183,7 @@ function HigherdleInner() {
     if (country === 'ALL') newPool = STREAMERS;
     else if (country === 'LATAM') newPool = STREAMERS.filter(s => s.country !== 'ES');
     else newPool = STREAMERS.filter(s => s.country === country);
+    newPool = newPool.filter(s => mode === 'followers' || (mode === 'hours' ? s.total_hours : s.peak_viewers) > 0);
     setPool(newPool);
     setHighScore(getHighScore(mode, country));
     initGame(newPool);
