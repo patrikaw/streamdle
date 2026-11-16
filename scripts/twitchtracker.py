@@ -4,7 +4,7 @@ top_category y second_category de data/streamers.js.
 
   python scripts/twitchtracker.py                 -> simula, escribe scripts/ultimo-reporte-tt.md
   python scripts/twitchtracker.py --write         -> aplica los cambios
-  python scripts/twitchtracker.py --solo=ibai     -> un solo streamer
+  python scripts/twitchtracker.py --solo=ibai,auronplay -> solo esos logins
   python scripts/twitchtracker.py --visible       -> muestra Chrome (por si Cloudflare bloquea)
 
 peak_viewers no se toca si el streamer tiene Kick (su pico real puede ser en Kick).
@@ -23,7 +23,7 @@ ARCHIVO = RAIZ / 'data' / 'streamers.js'
 REPORTE = RAIZ / 'scripts' / 'ultimo-reporte-tt.md'
 ESCRIBIR = '--write' in sys.argv
 VISIBLE = '--visible' in sys.argv
-SOLO = next((a.split('=')[1].lower() for a in sys.argv if a.startswith('--solo=')), None)
+SOLO = next((set(a.split('=')[1].lower().split(',')) for a in sys.argv if a.startswith('--solo=')), None)
 ESPERA, PAUSA = 12, 2
 
 
@@ -52,15 +52,13 @@ def bloqueada(driver):
 def estadisticas(driver, login):
     r = {'horas': None, 'peak': None}
     driver.get(f'https://twitchtracker.com/{login}/statistics')
-    esperar(driver, '[class*="g-x-s"]')
+    esperar(driver, '.pge-v')
     if bloqueada(driver): return None
-    vals = driver.find_elements(By.CSS_SELECTOR, '[class*="g-x-s-value"], [class*="stat-value"]')
-    labs = driver.find_elements(By.CSS_SELECTOR, '[class*="g-x-s-label"], [class*="stat-label"]')
-    for v, l in zip(vals, labs):
-        l, n = l.text.strip().lower(), num(v.text)
+    for t, v in re.findall(r'<div class="pge-t">([^<]+)</div>\s*<div class="pge-v">\s*<span[^>]*>([^<]+)</span>', driver.page_source):
+        t, n = t.strip().lower(), num(v)
         if n is None: continue
-        if 'hours streamed' in l and r['horas'] is None: r['horas'] = n
-        if 'peak viewers' in l and r['peak'] is None: r['peak'] = n
+        if t == 'hours streamed' and r['horas'] is None: r['horas'] = n
+        if t == 'peak viewers' and r['peak'] is None: r['peak'] = n
     return r
 
 
@@ -94,7 +92,7 @@ def main():
             m = re.match(r'^  \{id:\d+, name:"[^"]*", display_name:"([^"]*)".*?\btwitch:"([^"]+)"', l)
             if not m: continue
             nombre, login = m.group(1), m.group(2).lower()
-            if SOLO and login != SOLO: continue
+            if SOLO and login not in SOLO: continue
             if bloqueos >= 5:
                 avisos.append('Demasiados bloqueos seguidos (¿Cloudflare?): se corta la corrida.')
                 break
@@ -106,6 +104,7 @@ def main():
                     avisos.append(f'{nombre}: TwitchTracker no respondió o bloqueó.')
                     continue
                 bloqueos = 0
+                print(f'  {nombre}: TwitchTracker horas={est["horas"]} peak={est["peak"]}', flush=True)
                 tiene_kick = not re.search(r'\bkick:""', l)
                 h_old, p_old = valor(l, 'twitch_hours'), valor(l, 'peak_viewers')
                 if est['horas'] and est['horas'] >= h_old and est['horas'] != h_old:
