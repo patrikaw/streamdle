@@ -51,7 +51,7 @@ export default function PrivacidadPage() {
           },
           {
             title: '3. Cookies',
-            content: 'Streamdle utiliza localStorage del navegador para guardar tu progreso de juego local. No utilizamos cookies de rastreo de terceros con fines publicitarios.',
+            content: 'Streamdle utiliza localStorage del navegador para guardar tu progreso de juego local. Terceros proveedores, entre ellos Google, utilizan cookies para mostrar anuncios basados en tus visitas anteriores a este y otros sitios web. El uso de cookies publicitarias permite a Google y a sus socios mostrar anuncios según tu navegación. Podés desactivar la publicidad personalizada en https://www.google.com/settings/ads y consultar cómo Google usa los datos en https://policies.google.com/technologies/partner-sites.',
           },
           {
             title: '4. APIs de terceros',

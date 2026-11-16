@@ -42,6 +42,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es" className={inter.variable}>
       <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9797476509112947"
+          crossOrigin="anonymous"
+        />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-MDVFG17P7S"
           strategy="afterInteractive"
