@@ -21,11 +21,12 @@ function claveDelDia(country) {
   return `edadle_${country}_${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-function pista(diff, conDistancia) {
+function pista(diff, n) {
   const d = Math.abs(diff);
   if (d === 0) return { txt: '¡Exacto!', color: '#16A34A' };
+  if (n < 2) return { txt: 'No es esa edad', color: '#A78BFA' };
   const dir = diff > 0 ? 'es mayor ↑' : 'es menor ↓';
-  if (!conDistancia) return { txt: dir, color: '#A78BFA' };
+  if (n < 3) return { txt: dir, color: '#A78BFA' };
   const calor = d <= 1 ? 'Muy cerca' : d <= 3 ? 'Cerca' : d <= 6 ? 'Lejos' : 'Muy lejos';
   return { txt: `${calor} · ${dir}`, color: d <= 3 ? '#F59E0B' : '#DC2626' };
 }
@@ -136,7 +137,7 @@ export default function EdadlePage() {
       <main className="game-main-content" style={{ maxWidth: 600, margin: '0 auto', padding: '24px 16px 48px' }}>
         <div style={{ textAlign: 'center', marginBottom: 20 }}>
           <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 6 }}>🎂 ¿Cuántos años tiene este streamer?</h1>
-          <p style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>Tenés {MAX_ATTEMPTS} intentos. Te decimos si es mayor o menor, y desde el 3.er intento también qué tan cerca estás.</p>
+          <p style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>Tenés {MAX_ATTEMPTS} intentos. Desde el 2.º intento te decimos si es mayor o menor, y desde el 3.º también qué tan cerca estás.</p>
         </div>
         {ayer && <div style={{ textAlign: 'center', marginBottom: 12, fontSize: 13, color: 'var(--color-text-secondary)' }}>El de ayer fue <a href={`/${slugDe(ayer)}`} style={{ fontWeight: 700, color: '#9146FF', textDecoration: 'none' }}>{ayer.display_name}</a> ({edadDe(ayer)} años)</div>}
         <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
@@ -166,7 +167,7 @@ export default function EdadlePage() {
         {guesses.length > 0 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {guesses.map((n, i) => {
-              const p = pista(edad - n, guesses.length >= 3);
+              const p = pista(edad - n, guesses.length);
               return (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: `${p.color}22`, border: `1px solid ${p.color}55`, borderRadius: 8, padding: '10px 14px' }}>
                   <span style={{ fontSize: 18, fontWeight: 800 }}>{n} años</span>
