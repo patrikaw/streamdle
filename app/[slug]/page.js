@@ -448,7 +448,7 @@ export default function StreamerPage() {
                       {!streamer.is_active&&<span style={{background:'var(--bg-card)',color:'var(--color-text-secondary)',fontSize:10,fontWeight:700,padding:'2px 7px',borderRadius:4}}>INACTIVO</span>}
                     </div>
                     <div style={{fontSize:12,color:'var(--color-text-secondary)',marginTop:3}}>{flagOf(streamer.country)} {countryName(streamer.country)}</div>
-                    {streamer.birth_year&&streamer.birth_month&&streamer.birth_day&&(()=>{const h=new Date();let e=h.getUTCFullYear()-streamer.birth_year;if(h.getUTCMonth()+1<streamer.birth_month||(h.getUTCMonth()+1===streamer.birth_month&&h.getUTCDate()<streamer.birth_day))e--;return <p style={{fontSize:13,color:'var(--color-text-secondary)',margin:'6px 0 0',lineHeight:1.5}}>{streamer.display_name} tiene <strong style={{color:'#fff'}}>{e} años</strong>: nació el {streamer.birth_date}{streamer.real_name?`. Su nombre real es ${streamer.real_name}`:''}.</p>;})()}
+
                     {badges.length>0&&<div style={{display:'flex',gap:6,flexWrap:'wrap',marginTop:7}}>{badges.map(b=><a key={b.texto} href={b.href} title={b.title} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:20,background:'rgba(74,222,128,0.12)',color:'#4ADE80',border:'1px solid rgba(74,222,128,0.35)',textDecoration:'none'}}>{b.texto} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>)}</div>}
                   </div>
                   <div style={{display:'flex',gap:5,flexShrink:0,flexWrap:'wrap'}}>
