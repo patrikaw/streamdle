@@ -279,6 +279,39 @@ function NotFound() {
   );
 }
 
+function ActividadPanel({streamer}){
+  const [a,setA]=useState(null);
+  useEffect(()=>{
+    let vivo=true;
+    fetch(`/api/actividad/${streamer.display_name.toLowerCase().replace(/\s+/g,'-')}`).then(r=>r.json()).then(d=>{if(vivo&&d.ok)setA(d);}).catch(()=>{});
+    return()=>{vivo=false;};
+  },[streamer.id]);
+  if(!a)return null;
+  const max=Math.max(...a.porDia,1);
+  const dias=Math.floor((Date.now()-new Date(a.ultimo).getTime())/86400000);
+  return(
+    <div style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-border)',padding:'12px 14px'}}>
+      <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Actividad · últimos {a.dias} días</div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:10}}>
+        {[[`${a.horas} h`,'en vivo'],[a.sesiones,'directos'],[`${a.diasActivos} de ${a.dias}`,'días activo'],[`${a.promHoras} h`,'por directo']].map(([v,l])=>(
+          <div key={l} style={{background:'var(--bg-card)',borderRadius:8,padding:'6px 10px'}}>
+            <div style={{fontSize:16,fontWeight:800}}>{v}</div>
+            <div style={{fontSize:10,color:'var(--color-text-secondary)'}}>{l}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{display:'flex',alignItems:'flex-end',gap:4,height:44,marginBottom:4}}>
+        {a.porDia.map((v,i)=><div key={i} title={`${a.nombresDia[i]}: ${v} h`} style={{flex:1,height:`${Math.max(8,(v/max)*100)}%`,background:a.nombresDia[i]===a.diaTop?'var(--color-purple)':'var(--color-border)',borderRadius:3}}/>)}
+      </div>
+      <div style={{display:'flex',gap:4,marginBottom:8}}>{a.nombresDia.map(n=><div key={n} style={{flex:1,textAlign:'center',fontSize:9,color:'var(--color-text-secondary)'}}>{n}</div>)}</div>
+      <div style={{fontSize:12,color:'var(--color-text-secondary)',lineHeight:1.5}}>
+        Suele empezar cerca de las <strong style={{color:'#fff'}}>{a.horaTipica}</strong> (hora de {a.zona}), sobre todo los <strong style={{color:'#fff'}}>{a.diaTop}</strong>. Último directo {dias<=0?'hoy':dias===1?'ayer':`hace ${dias} días`}.
+      </div>
+      <div style={{fontSize:9,color:'var(--color-text-secondary)',marginTop:6,opacity:0.7}}>Según los directos guardados en {a.plataformas.join(' y ')}.</div>
+    </div>
+  );
+}
+
 export default function StreamerPage() {
   const params=useParams();
   const slug=params?.slug||'';
@@ -592,6 +625,7 @@ export default function StreamerPage() {
                 </div>
               </div>
             )}
+            <ActividadPanel streamer={streamer}/>
             <div style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-purple)',padding:'12px 14px'}}>
               <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Jugá con streamers</div>
               <div style={{display:'flex',flexDirection:'column',gap:6}}>
