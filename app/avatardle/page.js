@@ -154,8 +154,8 @@ export default function AvatardlePage() {
           <a href="/explorar" style={{fontSize:'11px',fontWeight:600,color:'var(--color-text-secondary)',textDecoration:'none',padding:'4px 10px',borderRadius:'8px',border:'1px solid var(--color-border)',background:'var(--bg-card)',whiteSpace:'nowrap'}}>🔍 Explorar</a>
         </div>
         <div style={{display:'flex',gap:'4px',flexWrap:'wrap',justifyContent:'center'}}>
-          {[{href:'/classic',label:'🎯 Classic'},{href:'/avatardle',label:'👤 Avatardle'},{href:'/emojidle',label:'😂 Emojidle'},{href:'/categorydle',label:'🎮 Categorydle'},{href:'/chatdle',label:'💬 Chatdle'},{href:'/higherdle',label:'📊 Higherdle'}].map(g=>(
-            <a key={g.href} href={g.href} style={{background:g.href==='/avatardle'?'#7C3AED':'var(--bg-card)',border:'1px solid var(--color-border)',color:'white',borderRadius:'8px',padding:'4px 8px',fontSize:'10px',fontWeight:'600',textDecoration:'none',whiteSpace:'nowrap'}}>{g.label}</a>
+          {[{ href: '/', label: '🎮 Nuestros juegos' }].map(g=>(
+            <a key={g.href} href={g.href} style={{background:'#7C3AED',border:'1px solid var(--color-border)',color:'white',borderRadius:'8px',padding:'4px 8px',fontSize:'10px',fontWeight:'600',textDecoration:'none',whiteSpace:'nowrap'}}>{g.label}</a>
           ))}
         </div>
       </header>

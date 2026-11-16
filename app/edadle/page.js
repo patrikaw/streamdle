@@ -7,10 +7,7 @@ import { getAvatars, getAvatarUrl } from '../../data/avatars';
 const MAX_ATTEMPTS = 6;
 const tieneEdad = (s) => !!(s.birth_year && s.birth_month && s.birth_day);
 const slugDe = (s) => s.display_name.toLowerCase().replace(/\s+/g, '-');
-const GAMES = [
-  { href: '/classic', label: '🎯 Classic' }, { href: '/avatardle', label: '👤 Avatardle' }, { href: '/edadle', label: '🎂 Edadle' },
-  { href: '/emojidle', label: '😂 Emojidle' }, { href: '/categorydle', label: '🎮 Categorydle' }, { href: '/chatdle', label: '💬 Chatdle' }, { href: '/higherdle', label: '📊 Higherdle' },
-];
+const GAMES = [{ href: '/', label: '🎮 Nuestros juegos' }];
 
 function edadDe(s) {
   const h = new Date();
@@ -130,7 +127,7 @@ export default function EdadlePage() {
         <a href="/" style={{ textDecoration: 'none', fontSize: 18, fontWeight: 800, background: 'linear-gradient(135deg,#7C3AED,#53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</a>
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
           {GAMES.map((g) => (
-            <a key={g.href} href={g.href} style={{ background: g.href === '/edadle' ? '#7C3AED' : 'var(--bg-card)', border: '1px solid var(--color-border)', color: 'white', borderRadius: 8, padding: '4px 8px', fontSize: 10, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>{g.label}</a>
+            <a key={g.href} href={g.href} style={{ background: '#7C3AED', border: '1px solid var(--color-border)', color: 'white', borderRadius: 8, padding: '4px 8px', fontSize: 10, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>{g.label}</a>
           ))}
         </div>
       </header>

@@ -14,11 +14,7 @@ function fmt(n) {
   return String(n);
 }
 
-const GAMES = [
-  { href: '/classic', label: '🎯 Classic' }, { href: '/avatardle', label: '👤 Avatardle' },
-  { href: '/emojidle', label: '😂 Emojidle' }, { href: '/categorydle', label: '🎮 Categorydle' },
-  { href: '/chatdle', label: '💬 Chatdle' }, { href: '/edadle', label: '🎂 Edadle' }, { href: '/higherdle', label: '📊 Higherdle' },
-];
+const GAMES = [{ href: '/', label: '🎮 Nuestros juegos' }];
 
 export function Shell({ crumbs, children }) {
   return (

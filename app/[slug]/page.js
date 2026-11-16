@@ -342,7 +342,7 @@ export default function StreamerPage() {
           <SearchBar />
         </div>
         <div className="game-nav-links" style={{display:'flex',gap:4,flexWrap:'wrap',justifyContent:'center'}}>
-          {[{href:'/classic',label:'🎯 Classic'},{href:'/avatardle',label:'👤 Avatardle'},{href:'/emojidle',label:'😂 Emojidle'},{href:'/categorydle',label:'🎮 Categorydle'},{href:'/chatdle',label:'💬 Chatdle'},{href:'/higherdle',label:'📊 Higherdle'}].map(g=>(
+          {[{ href: '/', label: '🎮 Nuestros juegos' }].map(g=>(
             <a key={g.href} href={g.href} style={{background:'var(--bg-card)',border:'1px solid var(--color-border)',color:'white',borderRadius:8,padding:'5px 12px',fontSize:10,fontWeight:600,textDecoration:'none',whiteSpace:'nowrap'}}>{g.label}</a>
           ))}
         </div>
@@ -553,7 +553,7 @@ export default function StreamerPage() {
                 <div style={{fontSize:11,color:'var(--color-text-secondary)'}}>Descubrilo en nuestros juegos diarios</div>
               </div>
               <div style={{display:'flex',gap:5,flexWrap:'nowrap',overflowX:'auto'}}>
-                {[{href:'/classic',label:'🎯 Classic'},{href:'/avatardle',label:'👤 Avatardle'},{href:'/emojidle',label:'😂 Emojidle'},{href:'/chatdle',label:'💬 Chatdle'}].map(g=>(
+                {[{ href: '/', label: '🎮 Nuestros juegos' }].map(g=>(
                   <a key={g.href} href={g.href} style={{background:'var(--color-purple)',color:'#fff',borderRadius:8,padding:'5px 9px',fontSize:10,fontWeight:600,textDecoration:'none',transition:'opacity 0.2s',whiteSpace:'nowrap',flexShrink:0}}
                     onMouseOver={e=>e.currentTarget.style.opacity='0.85'} onMouseOut={e=>e.currentTarget.style.opacity='1'}>{g.label}</a>
                 ))}

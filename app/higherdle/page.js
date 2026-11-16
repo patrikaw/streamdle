@@ -247,13 +247,9 @@ function HigherdleInner() {
           </a>
           <a href="/explorar" style={{ fontSize: '11px', fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '4px 10px', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--bg-card)', whiteSpace: 'nowrap' }}>🔍 Explorar</a>
           <div className="game-nav-links" style={{ display: 'flex', gap: '4px' }}>
-            {[
-              { href: '/classic', label: '🎯' }, { href: '/avatardle', label: '👤' },
-              { href: '/emojidle', label: '😂' }, { href: '/categorydle', label: '🎮' },
-              { href: '/chatdle', label: '💬' }, { href: '/higherdle', label: '📊' },
-            ].map(g => (
+            {[{ href: '/', label: '🎮 Nuestros juegos' }].map(g => (
               <a key={g.href} href={g.href} style={{
-                background: g.href === '/higherdle' ? '#7C3AED' : 'var(--bg-card)',
+                background: '#7C3AED',
                 border: '1px solid var(--color-border)',
                 color: 'white', borderRadius: '6px', padding: '3px 7px',
                 fontSize: '12px', textDecoration: 'none',
