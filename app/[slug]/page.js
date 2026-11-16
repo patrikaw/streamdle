@@ -592,6 +592,15 @@ export default function StreamerPage() {
                 </div>
               </div>
             )}
+            <div style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-purple)',padding:'12px 14px'}}>
+              <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Jugá con streamers</div>
+              <div style={{display:'flex',flexDirection:'column',gap:6}}>
+                {[['/classic','🎯 Streamdle Classic'],['/chatdle','💬 Chatdle · adiviná la frase'],['/avatardle','👤 Avatardle · adiviná la foto'],['/edadle','🎂 Edadle · adiviná la edad']].map(([h,l])=>(
+                  <a key={h} href={h} style={{fontSize:13,fontWeight:700,color:'#fff',textDecoration:'none',padding:'8px 12px',borderRadius:8,background:'var(--bg-card)',border:'1px solid var(--color-border)'}}>{l}</a>
+                ))}
+                <a href="/" style={{fontSize:12,fontWeight:600,color:'var(--color-purple-light)',textDecoration:'none',padding:'4px 2px'}}>Ver todos los juegos →</a>
+              </div>
+            </div>
             {related.length>0&&(
               <div className="panel-relacionados" style={{background:'var(--bg-secondary)',borderRadius:12,border:'1px solid var(--color-border)',padding:'12px 14px'}}>
                 <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Relacionados</div>
