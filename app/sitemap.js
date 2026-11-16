@@ -3,6 +3,7 @@ import { getCategoriesWithMinStreamers } from '../lib/categories';
 import seoOverrides from '../data/seo-overrides.json';
 import { TIPOS, gruposDe } from '../lib/agrupaciones';
 import { REGIONES, tendenciasDe, periodosArchivo } from '../lib/tendencias';
+import { COMUNIDADES, esIndexable } from '../lib/comunidades';
 import historial from '../data/historial.json';
 
 export default function sitemap() {
@@ -82,6 +83,11 @@ export default function sitemap() {
     { url: `${baseUrl}/comunidades/top-globales`, lastModified: today, changeFrequency: 'weekly', priority: 0.8 },
   ];
 
+  const comunidades_extra = [
+    { url: `${baseUrl}/comunidades`, lastModified: today, changeFrequency: 'weekly', priority: 0.8 },
+    ...COMUNIDADES.filter(esIndexable).map((c) => ({ url: `${baseUrl}/comunidades/${c.slug}`, lastModified: today, changeFrequency: 'weekly', priority: 0.7 })),
+  ];
+
   const eventos_pages = [
     { url: `${baseUrl}/eventos/la-velada-del-ano-6`, lastModified: today, changeFrequency: 'weekly', priority: 0.7 },
   ];
@@ -97,6 +103,7 @@ export default function sitemap() {
     ...juegos_index,
     ...juegos_pages,
     ...comunidades_pages,
+    ...comunidades_extra,
     ...eventos_pages,
   ];
 }
