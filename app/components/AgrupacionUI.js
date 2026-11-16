@@ -19,8 +19,6 @@ const GAMES = [{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', 
 const FOOTER_TILES = [
   { href: '/tendencias', emoji: '🔥', titulo: 'En tendencia', desc: 'Quiénes más crecen este mes', color: '#F97316' },
   { href: '/streamers', emoji: '🏆', titulo: 'Ranking', desc: 'Todos los streamers por seguidores', color: '#7C3AED' },
-  { href: '/classic', emoji: '🎯', titulo: 'Jugá Streamdle', desc: 'El Wordle de streamers, cada día', color: '#DC2626' },
-  { href: '/edadle', emoji: '🎂', titulo: 'Edadle', desc: 'Adiviná cuántos años tiene', color: '#DB2777' },
   { href: '/comunidades', emoji: '👥', titulo: 'Comunidades', desc: 'Grupos y squads de streamers', color: '#16A34A' },
   { href: '/ruleta', emoji: '🎲', titulo: 'Ruleta de streamers', desc: 'Descubrí uno al azar', color: '#A855F7' },
   { href: '/clips/hoy', emoji: '🎬', titulo: 'Mejores clips', desc: 'Los más vistos de hoy, la semana y el mes', color: '#0EA5E9' },
@@ -66,7 +64,6 @@ export function Shell({ crumbs, children }) {
 
       <footer style={{ borderTop: '1px solid var(--color-border)', background: 'var(--bg-secondary)', marginTop: 24 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '18px 16px 12px' }}>
-          <h2 style={{ fontSize: 15, fontWeight: 800, marginBottom: 10 }}>Seguí explorando Streamdle</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 8 }}>
             {FOOTER_TILES.map((t) => (
               <Link key={t.href} href={t.href} className="agr-card" style={{
@@ -76,11 +73,6 @@ export function Shell({ crumbs, children }) {
                 <div style={{ fontSize: 13, fontWeight: 800 }}>{t.emoji} {t.titulo}</div>
                 <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginTop: 2 }}>{t.desc}</div>
               </Link>
-            ))}
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
-            {[{ href: '/streamers/signo', label: '♈ Por signo' }, { href: '/streamers/generacion', label: '🧬 Por generación' }, { href: '/streamers/personalidad', label: '🎭 Por personalidad' }, { href: '/streamers/nacimiento', label: '🎂 Por año de nacimiento' }, { href: '/tendencias/latam', label: '🌎 Tendencia Latam' }, { href: '/tendencias/espana', label: '🇪🇸 Tendencia España' }, { href: '/tendencias/argentina', label: '🇦🇷 Tendencia Argentina' }, { href: '/tendencias/mexico', label: '🇲🇽 Tendencia México' }].map((l) => (
-              <Link key={l.href} href={l.href} className="agr-chip" style={{ fontSize: 11, fontWeight: 600, color: '#fff', textDecoration: 'none', padding: '4px 10px', borderRadius: 20, border: '1px solid var(--color-border)', background: 'var(--bg-card)' }}>{l.label}</Link>
             ))}
           </div>
           <div style={{ borderTop: '1px solid var(--color-border)', marginTop: 12, paddingTop: 10, display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center', fontSize: 12, color: 'var(--color-text-secondary)' }}>

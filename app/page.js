@@ -119,6 +119,7 @@ export default function Home() {
           }}>STREAMDLE</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <a href="/ruleta" style={{ fontSize: '12px', fontWeight: 700, color: '#fff', textDecoration: 'none', padding: '6px 14px', borderRadius: '8px', background: '#7C3AED', whiteSpace: 'nowrap' }}>🎲 Descubrí un streamer</a>
           <a href="/explorar" style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '4px 10px', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--bg-card)', whiteSpace: 'nowrap' }}>🔍 Explorar</a>
           <span style={{
             fontSize: '12px',
@@ -291,11 +292,8 @@ export default function Home() {
 
         {/* Novedades */}
         <section id="novedades" style={{ marginTop: '48px' }}>
-          <h2 style={{ fontSize: '22px', fontWeight: 800, textAlign: 'center', marginBottom: '6px' }}>Lo nuevo en Streamdle</h2>
-          <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--color-text-secondary)', marginBottom: '20px' }}>Volvimos con más juegos, más datos y más streamers.</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
             {[
-              { href: '/edadle', emoji: '🎂', titulo: 'Edadle', texto: 'El nuevo juego diario: adiviná cuántos años tiene el streamer.', color: '#DB2777' },
               { href: '/tendencias', emoji: '🔥', titulo: 'Streamers en tendencia', texto: 'Quiénes ganaron más seguidores, por país y para toda Latam.', color: '#F97316' },
               { href: '/comunidades', emoji: '👥', titulo: 'Comunidades', texto: 'Top Globales, W Crew, Coscu Army y los grupos que mueven el streaming.', color: '#16A34A' },
               { href: '/streamers', emoji: '🏆', titulo: 'Ranking y fichas', texto: 'Más de 200 fichas con edad, actividad del mes y clip más visto.', color: '#7C3AED' },
