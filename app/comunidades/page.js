@@ -5,7 +5,7 @@ import { COMUNIDADES, SITE, miembrosDe, sinFichaDe } from '../../lib/comunidades
 export const revalidate = 86400;
 
 export const metadata = {
-  title: 'Comunidades y grupos de streamers hispanos: Top Globales, Coscu Army y más | Streamdle',
+  title: 'Comunidades de streamers hispanos: Top Globales y más | Streamdle',
   description: 'Los grupos de streamers hispanos más conocidos: Top Globales, Coscu Army, W Crew de WestCOL, La Comarca, Esos 4 y el Escuadrón Salchichón. Integrantes, edades y seguidores.',
   alternates: { canonical: `${SITE}/comunidades` },
 };

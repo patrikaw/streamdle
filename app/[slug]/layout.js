@@ -67,8 +67,8 @@ export async function generateMetadata({ params }) {
   const title = ed ? `${s.display_name}: edad, fecha de nacimiento y datos | Streamdle` : titleBase;
   const descBase = seo?.description ?? `${s.display_name}${s.real_name ? ` (${s.real_name})` : ''} es un streamer ${adj} con ${fmt(s.total_followers)} seguidores en Twitch${s.kick ? ' y Kick' : ''}. Peak histórico: ${fmt(s.peak_viewers)} espectadores. Trivia, estadísticas y clip más visto en Streamdle.`;
   const description = ed
-    ? `${s.display_name} tiene ${ed.edad} años (nació el ${ed.fecha}${s.real_name ? `, nombre real: ${s.real_name}` : ''}). ${s.display_name} es un streamer ${adj} con ${fmt(s.total_followers)} seguidores${s.kick ? ' entre Twitch y Kick' : ' en Twitch'}. Stats, trivia y clip más visto.`
-    : descBase;
+    ? `${s.display_name} tiene ${ed.edad} años (nació el ${ed.fecha}). Streamer ${adj} con ${fmt(s.total_followers)} seguidores. Stats, trivia y clip más visto.`
+    : (seo?.description ?? `${s.display_name} es un streamer ${adj} con ${fmt(s.total_followers)} seguidores${s.peak_viewers ? ` y un peak de ${fmt(s.peak_viewers)} espectadores` : ''}. Trivia, stats y clip más visto.`);
   const ogTitle = seo?.openGraphTitle ?? title;
   const ogDescription = seo?.openGraphDescription ?? description;
 

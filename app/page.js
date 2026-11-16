@@ -130,6 +130,11 @@ export default function Home() {
         </div>
       </header>
 
+      {/* Cinta de novedades */}
+      <a href="#novedades" className="cinta-volvimos" style={{ display: 'block', textAlign: 'center', textDecoration: 'none', color: '#fff', fontSize: '13px', fontWeight: 700, padding: '9px 16px', background: 'linear-gradient(90deg, #7C3AED, #DB2777, #F59E0B)' }}>
+        🎉 ¡Volvimos con todo! Nuevo juego <u>Edadle</u>, streamers en tendencia y comunidades. Mirá las novedades ↓
+      </a>
+
       {/* Hero */}
       <div style={{ textAlign: 'center', padding: '48px 24px 32px' }}>
         <h1 style={{
@@ -155,6 +160,17 @@ export default function Home() {
           margin: '0 auto',
         }}>
           Adiviná el streamer del día — el Wordle de streamers hispanohablantes
+        </p>
+        <p style={{
+          color: 'var(--color-text-secondary)',
+          fontSize: '14px',
+          lineHeight: 1.7,
+          maxWidth: '620px',
+          margin: '14px auto 0',
+          opacity: 0.9,
+        }}>
+          Streamdle reúne a más de 200 streamers hispanos de Twitch y Kick: 7 juegos diarios, una ficha con datos reales de cada uno
+          (edad, seguidores, horas, clip más visto y actividad reciente) y rankings que se actualizan cada 15 días.
         </p>
       </div>
 
@@ -266,6 +282,28 @@ export default function Home() {
           );
         })}
         </div>
+
+        {/* Novedades */}
+        <section id="novedades" style={{ marginTop: '48px' }}>
+          <h2 style={{ fontSize: '22px', fontWeight: 800, textAlign: 'center', marginBottom: '6px' }}>Lo nuevo en Streamdle</h2>
+          <p style={{ textAlign: 'center', fontSize: '13px', color: 'var(--color-text-secondary)', marginBottom: '20px' }}>Volvimos con más juegos, más datos y más streamers.</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
+            {[
+              { href: '/edadle', emoji: '🎂', titulo: 'Edadle', texto: 'El nuevo juego diario: adiviná cuántos años tiene el streamer.', color: '#DB2777' },
+              { href: '/tendencias', emoji: '🔥', titulo: 'Streamers en tendencia', texto: 'Quiénes ganaron más seguidores, por país y para toda Latam.', color: '#F97316' },
+              { href: '/comunidades', emoji: '👥', titulo: 'Comunidades', texto: 'Top Globales, W Crew, Coscu Army y los grupos que mueven el streaming.', color: '#16A34A' },
+              { href: '/streamers', emoji: '🏆', titulo: 'Ranking y fichas', texto: 'Más de 200 fichas con edad, actividad del mes y clip más visto.', color: '#7C3AED' },
+              { href: '/streamers/signo', emoji: '♈', titulo: 'Por signo, generación y personalidad', texto: 'Explorá a los streamers agrupados de otra manera.', color: '#2563EB' },
+              { href: '/eventos/la-velada-del-ano-6', emoji: '🥊', titulo: 'La Velada del Año VI', texto: 'Resultados de los diez combates: TheGrefg vs IlloJuan y más.', color: '#EF4444' },
+            ].map((n) => (
+              <a key={n.href} href={n.href} style={{ display: 'block', textDecoration: 'none', color: 'inherit', borderRadius: '14px', padding: '16px 18px', background: `linear-gradient(135deg, ${n.color}26, var(--bg-card))`, border: `1px solid ${n.color}55` }}>
+                <div style={{ fontSize: '24px', marginBottom: '6px' }}>{n.emoji}</div>
+                <div style={{ fontSize: '15px', fontWeight: 800, color: '#fff' }}>{n.titulo}</div>
+                <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginTop: '4px', lineHeight: 1.5 }}>{n.texto}</div>
+              </a>
+            ))}
+          </div>
+        </section>
 
         {/* Footer links */}
         <div style={{

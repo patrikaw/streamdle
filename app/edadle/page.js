@@ -105,7 +105,7 @@ export default function EdadlePage() {
     try { localStorage.setItem(claveDelDia(country), JSON.stringify({ guesses, won, gameOver, targetId: target.id })); } catch {}
   }, [guesses, won, gameOver, target]);
 
-  if (!target) return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ color: 'var(--color-text-secondary)' }}>Cargando...</div></div>;
+  if (!target) return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ textAlign: 'center', color: '#A1A1B5' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>🎂 ¿Cuántos años tiene este streamer?</h1>Cargando...</div></div>;
 
   const edad = edadDe(target);
   const avatarUrl = getAvatarUrl(target, avatars);

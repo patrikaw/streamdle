@@ -266,7 +266,7 @@ export default function ChatdlePage() {
 
   if (!target) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0D0D14' }}>
-      <div style={{ color: '#A1A1B5' }}>Cargando...</div>
+      <div style={{ textAlign: 'center', color: '#A1A1B5' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>💬 ¿De quién es esta frase?</h1>Cargando...</div>
     </div>
   );
 

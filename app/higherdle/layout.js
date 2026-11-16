@@ -25,7 +25,7 @@ export default function Layout({ children }) {
   return (
     <>
       {children}
-      <JuegoSEO href="/higherdle" {...SEO} />
+      <JuegoSEO href="/higherdle" h1Oculto="Higherdle: ¿quién tiene más seguidores, horas o peak?" {...SEO} />
     </>
   );
 }

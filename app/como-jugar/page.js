@@ -69,6 +69,20 @@ export default function ComoJugarPage() {
       ],
     },
     {
+      name: 'Edadle',
+      emoji: '🎂',
+      color: '#DB2777',
+      slug: '/edadle',
+      description: 'Adiviná cuántos años tiene el streamer del día.',
+      steps: [
+        'Se muestra un streamer con su foto, su categoría y sus seguidores',
+        'Escribí la edad que creés que tiene',
+        'En el primer intento solo te decimos que no es esa edad. Desde el segundo te decimos si es mayor o menor, y desde el tercero qué tan cerca estás',
+        'Si seguís fallando se desbloquean pistas: su generación y su signo',
+        'Tenés 6 intentos. ¡Un nuevo streamer cada día!',
+      ],
+    },
+    {
       name: 'Higherdle',
       emoji: '📊',
       color: '#2563EB',
@@ -103,6 +117,7 @@ export default function ComoJugarPage() {
             { href: '/emojidle',    label: '😂 Emojidle' },
             { href: '/categorydle', label: '🎮 Categorydle' },
             { href: '/chatdle',     label: '💬 Chatdle' },
+            { href: '/edadle',      label: '🎂 Edadle' },
             { href: '/higherdle',   label: '📊 Higherdle' },
           ].map(g => (
             <a key={g.href} href={g.href} style={{
@@ -188,7 +203,7 @@ export default function ComoJugarPage() {
               Pato Wnuk
             </a>{' '}
             para la comunidad de streamers hispanohablantes. Nació en 2025 como un Wordle de streamers
-            y creció hasta convertirse en una plataforma con 6 juegos diarios, fichas de streamers,
+            y creció hasta convertirse en una plataforma con 7 juegos diarios, fichas de streamers,
             estadísticas y cultura streamer en español. No estamos afiliados con Twitch, Kick ni YouTube.
             Si querés sugerir un streamer, reportar un error o colaborar,{' '}
             <a href="/contacto" style={{ color: 'var(--color-purple-light)', textDecoration: 'none' }}>

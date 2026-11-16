@@ -108,7 +108,7 @@ export function metaTendencias(regionSlug, periodoClave) {
   const { region, p } = t;
   const url = `${SITE}${rutaDe(regionSlug, periodoClave)}`;
   const top = t.porGanancia.slice(0, 3).map((f) => f.s.display_name).join(', ');
-  const title = periodoClave ? `Streamers ${region.nombre} que más crecieron en ${p.mes} | Streamdle` : `Streamers ${region.nombre} en tendencia: los que más crecen | Streamdle`;
+  const title = periodoClave ? `Streamers ${region.nombre} que más crecieron en ${p.mes} | Streamdle` : `Streamers ${region.nombre} en tendencia | Streamdle`;
   const description = `Los streamers ${region.nombre} que más crecieron en Twitch (${p.mes}${periodoClave ? ', archivo' : ''}): ${top}. Ranking por seguidores ganados y por % de crecimiento.`;
   return {
     title,

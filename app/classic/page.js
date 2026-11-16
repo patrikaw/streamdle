@@ -365,7 +365,7 @@ export default function ClassicPage() {
     else if (newGuesses.length >= MAX_ATTEMPTS) { setGameOver(true); setTimeout(() => setShowModal(true), 800); }
   };
 
-  if (!target) return <div style={{ minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center' }}><div style={{ color:'var(--color-text-secondary)' }}>Cargando...</div></div>;
+  if (!target) return <div style={{ minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center' }}><div style={{ textAlign: 'center', color: '#A1A1B5' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>🎯 Adiviná el streamer del día</h1>Cargando...</div></div>;
 
   return (
     <div style={{ minHeight:'100vh',background:'var(--bg-primary)' }}>

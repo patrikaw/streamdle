@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import SearchBar from '../../components/SearchBar';
-import VoteSection from './VoteSection';
+import Resultados from './Resultados';
 import { fetchAvatarsBatch } from '../../../lib/twitch-server';
 
 export const metadata = {
-  title: 'La Velada del Año VI: Fecha, Hora, Lugar y Peleas | Streamdle',
-  description: 'La Velada del Año VI se celebra el 25 de julio de 2026 en el Estadio de La Cartuja, Sevilla. Fecha, hora, lugar, combates, peleadores y predicciones.',
+  title: 'La Velada del Año VI: resultados y ganadores | Streamdle',
+  description: 'Resultados de La Velada del Año VI (25 de julio de 2026, La Cartuja, Sevilla): TheGrefg venció a IlloJuan, Plex a Fernanfloo y más. Todos los combates.',
   keywords: [
     'velada del año 6 fecha', 'velada del año 6 hora', 'velada del año 6 lugar',
     'velada del año 6 donde', 'velada del año 6 cuando', 'velada del año 6 horario',
@@ -16,7 +16,7 @@ export const metadata = {
   ],
   openGraph: {
     title: 'La Velada del Año VI | Streamdle',
-    description: '25 de julio de 2026 · Estadio de La Cartuja, Sevilla · +80.000 espectadores. Combates, peleadores y predicciones.',
+    description: '25 de julio de 2026 · Estadio de La Cartuja, Sevilla. Resultados y ganadores de los diez combates.',
     images: [{ url: 'https://www.infobae.com/resizer/v2/FQGHRHFGH5CM7HTZZNKSBK36E4.jpg?auth=07dcd7c19353c7a54f4b1f4fc291576b012d7e3e85d43e492c641181ccec1996&smart=true&width=1200&height=1200&quality=85', width: 1200, height: 1200 }],
     type: 'article',
   },
@@ -49,6 +49,8 @@ const FIGHTERS_WITH_PROFILES = [
   { twitch: 'byviruzz',       slug: 'byviruzz',       displayName: 'byViruZz',      flag: '🇪🇸', fight: 6 },
   { twitch: 'rivers_gg',      slug: 'rivers-gg',      displayName: 'Samy Rivers',   flag: '🇲🇽', fight: 7 },
   { twitch: 'fernanfloo',     slug: 'fernanfloo',     displayName: 'Fernanfloo',    flag: '🇸🇻', fight: 9 },
+  { twitch: 'thegrefg',       slug: 'thegrefg',       displayName: 'TheGrefg',      flag: '🇪🇸', fight: 10 },
+  { twitch: 'illojuan',       slug: 'illojuan',       displayName: 'IlloJuan',      flag: '🇪🇸', fight: 10 },
 ];
 
 const GAME_LINKS = [
@@ -90,7 +92,7 @@ export default async function VeladaPage() {
     location: { '@type': 'Place', name: 'Estadio de La Cartuja', address: { '@type': 'PostalAddress', addressLocality: 'Sevilla', addressCountry: 'ES' } },
     organizer: { '@type': 'Person', name: 'Ibai Llanos', url: 'https://streamdle.net/ibai' },
     description: 'La Velada del Año VI, evento de boxeo organizado por Ibai Llanos en el Estadio de La Cartuja, Sevilla.',
-    eventStatus: 'https://schema.org/EventScheduled',
+    eventStatus: 'https://schema.org/EventScheduled', // el evento ya se realizó; el estado de Schema.org sigue siendo válido para eventos pasados
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     image: 'https://www.infobae.com/resizer/v2/FQGHRHFGH5CM7HTZZNKSBK36E4.jpg?auth=07dcd7c19353c7a54f4b1f4fc291576b012d7e3e85d43e492c641181ccec1996&smart=true&width=1200&height=1200&quality=85',
     url: 'https://streamdle.net/eventos/la-velada-del-ano-6',
@@ -224,6 +226,7 @@ export default async function VeladaPage() {
               <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(245,158,11,0.15)', color: '#F59E0B', border: '1px solid rgba(245,158,11,0.4)', padding: '3px 10px', borderRadius: 20 }}>🎪 EVENTO</span>
               <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(239,68,68,0.15)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.4)', padding: '3px 10px', borderRadius: 20 }}>🥊 BOXEO</span>
               <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(83,252,24,0.1)', color: '#53FC18', border: '1px solid rgba(83,252,24,0.3)', padding: '3px 10px', borderRadius: 20 }}>📅 JUL 2026</span>
+              <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(148,163,184,0.15)', color: '#CBD5E1', border: '1px solid rgba(148,163,184,0.4)', padding: '3px 10px', borderRadius: 20 }}>✅ FINALIZADO</span>
             </div>
 
             <h1 style={{ fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 800, lineHeight: 1.2, marginBottom: 12, color: '#fff' }}>
@@ -231,7 +234,7 @@ export default async function VeladaPage() {
             </h1>
 
             <p style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--color-text-secondary)', maxWidth: 580, marginBottom: 20 }}>
-              La Velada del Año VI se celebrará el sábado 25 de julio de 2026 en el Estadio de La Cartuja en Sevilla, España a partir de las 19:00 horas con más de 80.000 espectadores en directo.
+              La Velada del Año VI, organizada por Ibai Llanos, se celebró el sábado 25 de julio de 2026 en el Estadio de La Cartuja de Sevilla, España, a partir de las 19:00 horas, con más de 80.000 espectadores en directo. Acá están los resultados de los diez combates.
             </p>
 
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -264,8 +267,8 @@ export default async function VeladaPage() {
         </div>
       </div>
 
-      {/* Combates */}
-      <VoteSection />
+      {/* Resultados */}
+      <Resultados />
 
       {/* Luchadores con ficha */}
       <section style={{ maxWidth: 1000, margin: '0 auto', padding: '0 24px 72px' }}>

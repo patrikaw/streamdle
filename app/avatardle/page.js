@@ -141,7 +141,7 @@ export default function AvatardlePage() {
   };
 
   const avatarUrl=target?getAvatarUrl(target,avatars):null;
-  if(!target)return <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center'}}><div style={{color:'var(--color-text-secondary)'}}>Cargando...</div></div>;
+  if(!target)return <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center'}}><div style={{ textAlign: 'center', color: '#A1A1B5' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>👤 ¿Quién es este streamer?</h1>Cargando...</div></div>;
 
   return (
     <div style={{minHeight:'100vh',background:'var(--bg-primary)'}}>
