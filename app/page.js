@@ -285,6 +285,15 @@ export default function Home() {
 ))}
  
         </div>
+        <nav aria-label="Rankings y explorador de streamers" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center', marginTop: '28px' }}>
+          {[
+            ['/tendencias', '🔥 Streamers en tendencia'], ['/streamers', '🏆 Ranking de streamers'], ['/streamers/signo', '♈ Por signo'],
+            ['/streamers/generacion', '🧬 Por generación'], ['/streamers/personalidad', '🎭 Por personalidad'], ['/tendencias/latam', '🌎 Tendencia Latam'],
+            ['/tendencias/espana', '🇪🇸 Tendencia España'], ['/tendencias/argentina', '🇦🇷 Tendencia Argentina'], ['/tendencias/mexico', '🇲🇽 Tendencia México'],
+          ].map(([href, label]) => (
+            <a key={href} href={href} style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '6px 12px', borderRadius: '20px', border: '1px solid var(--color-border)', background: 'var(--bg-card)' }}>{label}</a>
+          ))}
+        </nav>
         <p style={{
           textAlign: 'center',
           color: 'var(--color-text-secondary)',
