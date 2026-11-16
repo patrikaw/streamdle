@@ -527,6 +527,7 @@ export default function StreamersIndex({
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center', margin: '4px 0 14px' }}>
           <span style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>Explorá por:</span>
           {[
+            { href: '/tendencias',              label: '🔥 Tendencias' },
             { href: '/streamers/signo',        label: '♈ Signo' },
             { href: '/streamers/generacion',   label: '👥 Generación' },
             { href: '/streamers/nacimiento',   label: '🎂 Año de nacimiento' },
@@ -657,6 +658,7 @@ export default function StreamersIndex({
       }}>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}>
           {[
+            { href: '/tendencias',             label: 'Tendencias' },
             { href: '/streamers/signo',        label: 'Por signo' },
             { href: '/streamers/generacion',   label: 'Por generación' },
             { href: '/streamers/nacimiento',   label: 'Por año de nacimiento' },

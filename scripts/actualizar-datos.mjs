@@ -87,7 +87,12 @@ async function actualizarTwitch() {
   for (const s of con) {
     const u = usuarios.get(s.twitch.toLowerCase());
     if (!u) { avisos.push(`${s.display_name}: el login de Twitch "${s.twitch}" ya no existe (¿cambió de nombre o lo borraron?).`); continue; }
-    const r = await fetch(`https://api.twitch.tv/helix/channels/followers?broadcaster_id=${u.id}`, { headers: h });
+    let r;
+    for (let i = 0; i < 3; i++) {
+      r = await fetch(`https://api.twitch.tv/helix/channels/followers?broadcaster_id=${u.id}`, { headers: h });
+      if (r.ok || ![401, 429, 500, 502, 503].includes(r.status)) break;
+      await dormir(1500 * (i + 1));
+    }
     if (r.ok) {
       const total = (await r.json()).total;
       if (numeroCreible(s, 'twitch_followers', s.twitch_followers, total)) anotar(s, 'twitch_followers', s.twitch_followers, total);
@@ -103,7 +108,7 @@ async function actualizarTwitch() {
 async function kickSeguidores(slug) {
   for (let intento = 0; intento < 2; intento++) {
     try {
-      const r = await fetch(`https://kick.com/api/v2/channels/${slug}`, { headers: { 'User-Agent': UA } });
+      const r = await fetch(`https://kick.com/api/v2/channels/${slug}`, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(15000) });
       if (r.status === 404) return { error: '404 (el canal no existe con ese nombre)' };
       if (r.ok) {
         const n = Number((await r.json()).followers_count); // a veces llega como texto
@@ -168,6 +173,21 @@ if (ESCRIBIR) {
     return out;
   });
   fs.writeFileSync(ARCHIVO, nuevo);
+
+  // Foto de los números de hoy, para medir crecimiento (página /tendencias).
+  const rutaHist = path.join(RAIZ, 'data', 'historial.json');
+  const hist = fs.existsSync(rutaHist) ? JSON.parse(fs.readFileSync(rutaHist, 'utf8')) : { snapshots: [] };
+  const hoy = new Date().toISOString().slice(0, 10);
+  const foto = { fecha: hoy, kickFiable: SOLO !== 'twitch', tw: {}, kick: {} };
+  for (const s of registros.values()) {
+    const c = cambios.get(s.id) || {};
+    const tw = c.twitch_followers ? c.twitch_followers[1] : s.twitch_followers;
+    const kk = c.kick_followers ? c.kick_followers[1] : s.kick_followers;
+    if (tw > 0) foto.tw[s.id] = tw;
+    if (s.kick && kk > 0) foto.kick[s.id] = kk;
+  }
+  hist.snapshots = [...hist.snapshots.filter((x) => x.fecha !== hoy), foto].sort((a, b) => a.fecha.localeCompare(b.fecha));
+  fs.writeFileSync(rutaHist, JSON.stringify(hist));
 }
 
 console.log(`${ESCRIBIR ? 'Aplicado' : 'Simulación'}: ${filas.length} cambios, ${avisos.length} avisos. Reporte: scripts/ultimo-reporte.md`);

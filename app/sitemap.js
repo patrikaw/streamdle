@@ -2,25 +2,30 @@ import { STREAMERS } from '../data/streamers';
 import { getCategoriesWithMinStreamers } from '../lib/categories';
 import seoOverrides from '../data/seo-overrides.json';
 import { TIPOS, gruposDe } from '../lib/agrupaciones';
+import { REGIONES, tendenciasDe } from '../lib/tendencias';
+import historial from '../data/historial.json';
 
 export default function sitemap() {
   const baseUrl = 'https://streamdle.net';
-  const today = new Date().toISOString();
+  // Fecha real del último cambio de datos (última actualización de seguidores); las páginas estáticas, la fecha fija de su última edición.
+  const ultima = historial.snapshots.at(-1)?.fecha;
+  const today = ultima ? new Date(`${ultima}T12:00:00Z`).toISOString() : '2026-11-16T12:00:00.000Z';
+  const estatica = '2026-11-16T12:00:00.000Z';
 
   // Páginas principales
   const static_pages = [
-    { url: baseUrl,                          lastModified: today, changeFrequency: 'daily',   priority: 1.0 },
-    { url: `${baseUrl}/classic`,             lastModified: today, changeFrequency: 'daily',   priority: 0.9 },
-    { url: `${baseUrl}/avatardle`,           lastModified: today, changeFrequency: 'daily',   priority: 0.9 },
-    { url: `${baseUrl}/emojidle`,            lastModified: today, changeFrequency: 'daily',   priority: 0.9 },
-    { url: `${baseUrl}/categorydle`,         lastModified: today, changeFrequency: 'daily',   priority: 0.9 },
-    { url: `${baseUrl}/chatdle`,             lastModified: today, changeFrequency: 'daily',   priority: 0.9 },
-    { url: `${baseUrl}/higherdle`,           lastModified: today, changeFrequency: 'daily',   priority: 0.8 },
-    { url: `${baseUrl}/explorar`,             lastModified: today, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${baseUrl}/como-jugar`,          lastModified: today, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${baseUrl}/contacto`,            lastModified: today, changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${baseUrl}/privacidad`,          lastModified: today, changeFrequency: 'monthly', priority: 0.3 },
-    { url: `${baseUrl}/terminos`,            lastModified: today, changeFrequency: 'monthly', priority: 0.3 },
+    { url: baseUrl,                          lastModified: estatica, changeFrequency: 'daily',   priority: 1.0 },
+    { url: `${baseUrl}/classic`,             lastModified: estatica, changeFrequency: 'daily',   priority: 0.9 },
+    { url: `${baseUrl}/avatardle`,           lastModified: estatica, changeFrequency: 'daily',   priority: 0.9 },
+    { url: `${baseUrl}/emojidle`,            lastModified: estatica, changeFrequency: 'daily',   priority: 0.9 },
+    { url: `${baseUrl}/categorydle`,         lastModified: estatica, changeFrequency: 'daily',   priority: 0.9 },
+    { url: `${baseUrl}/chatdle`,             lastModified: estatica, changeFrequency: 'daily',   priority: 0.9 },
+    { url: `${baseUrl}/higherdle`,           lastModified: estatica, changeFrequency: 'daily',   priority: 0.8 },
+    { url: `${baseUrl}/explorar`,             lastModified: estatica, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${baseUrl}/como-jugar`,          lastModified: estatica, changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${baseUrl}/contacto`,            lastModified: estatica, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${baseUrl}/privacidad`,          lastModified: estatica, changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}/terminos`,            lastModified: estatica, changeFrequency: 'monthly', priority: 0.3 },
   ];
 
   const streamers_index = [
@@ -40,6 +45,10 @@ export default function sitemap() {
       url: `${baseUrl}/streamers/${t.ruta}/${g.slug}`, lastModified: today, changeFrequency: 'monthly', priority: 0.6,
     })),
   ]);
+
+  const tendencias = REGIONES.filter((r) => tendenciasDe(r.slug)?.indexable).map((r) => ({
+    url: `${baseUrl}/tendencias${r.slug ? '/' + r.slug : ''}`, lastModified: today, changeFrequency: 'weekly', priority: r.slug ? 0.7 : 0.9,
+  }));
 
   // Fichas individuales — todas; las que tienen override en seo-overrides.json van con más prioridad
   const streamer_pages = STREAMERS.map(s => {
@@ -75,6 +84,7 @@ export default function sitemap() {
     ...static_pages,
     ...streamers_index,
     ...agrupaciones,
+    ...tendencias,
     ...streamer_pages,
     ...juegos_index,
     ...juegos_pages,

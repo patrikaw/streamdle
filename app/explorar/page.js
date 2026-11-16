@@ -253,6 +253,7 @@ export default function ExplorarPage() {
           </div>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {[
+              { href: '/tendencias', label: '🔥 Tendencias' },
               { href: '/streamers/signo', label: '♈ Por signo' },
               { href: '/streamers/generacion', label: '👥 Por generación' },
               { href: '/streamers/nacimiento', label: '🎂 Por año de nacimiento' },

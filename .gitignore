@@ -43,3 +43,5 @@ next-env.d.ts
 
 # reporte del script de actualización
 scripts/ultimo-reporte.md
+
+scripts/ultimo-reporte-tt.md

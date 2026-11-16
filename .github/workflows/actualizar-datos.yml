@@ -39,7 +39,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$rama"
-          git add data/streamers.js
+          git add data/streamers.js data/historial.json
           git commit -m "Actualización automática de seguidores ($(date +%Y-%m-%d))"
           git push origin "$rama"
           gh pr create --base main --head "$rama" \

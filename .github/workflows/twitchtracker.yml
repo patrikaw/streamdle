@@ -1,0 +1,51 @@
+name: Actualizar TwitchTracker (horas, peak, categorías)
+
+# El día 3 de cada mes. Si TwitchTracker bloquea a GitHub (Cloudflare) el job termina
+# sin cambios y avisa en el log; en ese caso correr scripts/twitchtracker-local.bat en la PC.
+on:
+  schedule:
+    - cron: '0 14 3 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  twitchtracker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: browser-actions/setup-chrome@v1
+
+      - name: Instalar dependencias
+        run: pip install selenium undetected-chromedriver setuptools
+
+      - name: Leer TwitchTracker
+        run: python scripts/twitchtracker.py --write
+
+      - name: Abrir pull request para revisar
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git diff --quiet data/streamers.js; then
+            echo "Sin cambios (o TwitchTracker bloqueó la consulta). Ver scripts/ultimo-reporte-tt.md"
+            cat scripts/ultimo-reporte-tt.md
+            exit 0
+          fi
+          rama="twitchtracker/$(date +%Y-%m-%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$rama"
+          git add data/streamers.js
+          git commit -m "Actualización de TwitchTracker ($(date +%Y-%m-%d))"
+          git push origin "$rama"
+          gh pr create --base main --head "$rama" \
+            --title "TwitchTracker $(date +%Y-%m-%d)" \
+            --body-file scripts/ultimo-reporte-tt.md

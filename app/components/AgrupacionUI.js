@@ -5,7 +5,7 @@ import { getAvatarUrl } from '../../data/avatars';
 import { fetchTwitchAvatars } from '../../lib/twitch-server';
 import { SITE, TIPOS, TIPOS_LISTA, gruposDe, resumenDe } from '../../lib/agrupaciones';
 
-const FLAGS = { ES:'🇪🇸', AR:'🇦🇷', MX:'🇲🇽', PE:'🇵🇪', CO:'🇨🇴', CL:'🇨🇱', SV:'🇸🇻', PR:'🇵🇷', VE:'🇻🇪', UY:'🇺🇾', GT:'🇬🇹', DO:'🇩🇴', CU:'🇨🇺', FR:'🇫🇷', NO:'🇳🇴' };
+export const FLAGS = { ES:'🇪🇸', AR:'🇦🇷', MX:'🇲🇽', PE:'🇵🇪', CO:'🇨🇴', CL:'🇨🇱', SV:'🇸🇻', PR:'🇵🇷', VE:'🇻🇪', UY:'🇺🇾', GT:'🇬🇹', DO:'🇩🇴', CU:'🇨🇺', FR:'🇫🇷', NO:'🇳🇴' };
 
 function fmt(n) {
   if (!n) return '—';
@@ -20,7 +20,7 @@ const GAMES = [
   { href: '/chatdle', label: '💬 Chatdle' }, { href: '/higherdle', label: '📊 Higherdle' },
 ];
 
-function Shell({ crumbs, children }) {
+export function Shell({ crumbs, children }) {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       <style>{`
@@ -80,7 +80,7 @@ function TipoNav({ actual }) {
   );
 }
 
-function jsonLd(obj) {
+export function jsonLd(obj) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(obj) }} />;
 }
 

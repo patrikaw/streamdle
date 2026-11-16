@@ -6,6 +6,7 @@ import SearchBar from '../components/SearchBar';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { enlacesDeFicha } from '../../lib/agrupaciones';
+import { badgesDe } from '../../lib/tendencias';
 import { categoryToSlug, getCategoriesWithMinStreamers } from '../../lib/categories';
 
 const VALID_GAME_SLUGS = new Set(getCategoriesWithMinStreamers(7).map(c => c.slug));
@@ -308,6 +309,7 @@ export default function StreamerPage() {
   crumbs.push({label:streamer.display_name,href:null});
 
   const enlaces=enlacesDeFicha(streamer);
+  const badges=badgesDe(streamer);
   const extraData=[
     streamer.real_name&&{label:'Nombre real',value:streamer.real_name},
     age&&{label:'Edad',value:`${age} años`},
@@ -384,6 +386,7 @@ export default function StreamerPage() {
                       {!streamer.is_active&&<span style={{background:'var(--bg-card)',color:'var(--color-text-secondary)',fontSize:10,fontWeight:700,padding:'2px 7px',borderRadius:4}}>INACTIVO</span>}
                     </div>
                     <div style={{fontSize:12,color:'var(--color-text-secondary)',marginTop:3}}>{flagOf(streamer.country)} {countryName(streamer.country)}</div>
+                    {badges.length>0&&<div style={{display:'flex',gap:6,flexWrap:'wrap',marginTop:7}}>{badges.map(b=><a key={b.texto} href={b.href} title={b.title} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:20,background:'rgba(74,222,128,0.12)',color:'#4ADE80',border:'1px solid rgba(74,222,128,0.35)',textDecoration:'none'}}>{b.texto} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>)}</div>}
                   </div>
                   <div style={{display:'flex',gap:5,flexShrink:0,flexWrap:'wrap'}}>
                     {twitchUrl&&<SocialIcon href={twitchUrl} type="twitch"/>}
