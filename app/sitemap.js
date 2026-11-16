@@ -2,7 +2,7 @@ import { STREAMERS } from '../data/streamers';
 import { getCategoriesWithMinStreamers } from '../lib/categories';
 import seoOverrides from '../data/seo-overrides.json';
 import { TIPOS, gruposDe } from '../lib/agrupaciones';
-import { REGIONES, tendenciasDe } from '../lib/tendencias';
+import { REGIONES, tendenciasDe, periodosArchivo } from '../lib/tendencias';
 import historial from '../data/historial.json';
 
 export default function sitemap() {
@@ -51,6 +51,11 @@ export default function sitemap() {
     url: `${baseUrl}/tendencias${r.slug ? '/' + r.slug : ''}`, lastModified: today, changeFrequency: 'weekly', priority: r.slug ? 0.7 : 0.9,
   }));
 
+  const archivo = periodosArchivo().flatMap((a) => REGIONES.filter((r) => tendenciasDe(r.slug, a)?.indexable).map((r) => ({
+    url: `${baseUrl}/tendencias/archivo/${a.clave}${r.slug ? '/' + r.slug : ''}`, lastModified: new Date(`${a.fin.fecha}T12:00:00Z`).toISOString(), changeFrequency: 'yearly', priority: 0.5,
+  })));
+  const archivo_index = periodosArchivo().length ? [{ url: `${baseUrl}/tendencias/archivo`, lastModified: today, changeFrequency: 'monthly', priority: 0.5 }] : [];
+
   // Fichas individuales — todas; las que tienen override en seo-overrides.json van con más prioridad
   const streamer_pages = STREAMERS.map(s => {
     const slug = s.display_name.toLowerCase().replace(/\s+/g, '-');
@@ -86,6 +91,8 @@ export default function sitemap() {
     ...streamers_index,
     ...agrupaciones,
     ...tendencias,
+    ...archivo_index,
+    ...archivo,
     ...streamer_pages,
     ...juegos_index,
     ...juegos_pages,

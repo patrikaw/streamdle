@@ -3,9 +3,10 @@ import AvatarImg from './AvatarImg';
 import { Shell, jsonLd, FLAGS } from './AgrupacionUI';
 import { getAvatarUrl } from '../../data/avatars';
 import { fetchTwitchAvatars } from '../../lib/twitch-server';
-import { REGIONES, SITE, tendenciasDe, fmtNum } from '../../lib/tendencias';
+import { REGIONES, SITE, tendenciasDe, fmtNum, periodosArchivo } from '../../lib/tendencias';
 
-const rutaDe = (slug) => (slug ? `/tendencias/${slug}` : '/tendencias');
+const rutaDe = (slug, clave) => (clave ? `/tendencias/archivo/${clave}${slug ? '/' + slug : ''}` : slug ? `/tendencias/${slug}` : '/tendencias');
+const periodoDe = (clave) => (clave ? periodosArchivo().find((x) => x.clave === clave) : undefined);
 
 function Lista({ titulo, nota, filas, avatares, modo }) {
   return (
@@ -38,15 +39,18 @@ function Lista({ titulo, nota, filas, avatares, modo }) {
   );
 }
 
-export async function Tendencias({ regionSlug }) {
-  const t = tendenciasDe(regionSlug);
+export async function Tendencias({ regionSlug, periodoClave }) {
+  const t = tendenciasDe(regionSlug, periodoDe(periodoClave));
   const { region, p } = t;
-  const url = `${SITE}${rutaDe(regionSlug)}`;
+  const url = `${SITE}${rutaDe(regionSlug, periodoClave)}`;
+  const archivo = periodosArchivo();
   const avatares = await fetchTwitchAvatars([...new Set([...t.porGanancia, ...t.porPct].map((f) => f.s.twitch).filter(Boolean))]);
   const crumbs = [
     { label: 'Inicio', href: '/' },
     { label: 'Streamers', href: '/streamers' },
-    ...(regionSlug ? [{ label: 'Tendencias', href: '/tendencias' }, { label: region.label }] : [{ label: 'Tendencias' }]),
+    ...(periodoClave
+      ? [{ label: 'Tendencias', href: '/tendencias' }, { label: 'Archivo', href: '/tendencias/archivo' }, regionSlug ? { label: p.mes, href: rutaDe('', periodoClave) } : { label: p.mes }, ...(regionSlug ? [{ label: region.label }] : [])]
+      : regionSlug ? [{ label: 'Tendencias', href: '/tendencias' }, { label: region.label }] : [{ label: 'Tendencias' }]),
   ];
   const plataforma = t.soloTwitch ? 'seguidores en Twitch' : 'seguidores en Twitch y Kick';
   const primero = t.porGanancia[0];
@@ -71,7 +75,7 @@ export async function Tendencias({ regionSlug }) {
 
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
         {REGIONES.map((r) => (
-          <Link key={r.slug} href={rutaDe(r.slug)} className="agr-chip" style={{
+          <Link key={r.slug} href={rutaDe(r.slug, periodoClave)} className="agr-chip" style={{
             background: r.slug === regionSlug ? 'var(--color-purple)' : 'var(--bg-card)', border: '1px solid var(--color-border)',
             color: '#fff', borderRadius: 20, padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none',
           }}>{r.label}</Link>
@@ -83,19 +87,29 @@ export async function Tendencias({ regionSlug }) {
 
       <p style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 32, maxWidth: 780, lineHeight: 1.6 }}>
         Cómo se calcula: comparamos los seguidores de cada streamer en dos fechas ({p.desde} y {p.hasta}).
-        Los datos se actualizan cada 15 días y esta página se renueva con ellos. Solo aparecen los {t.total} streamers {region.nombre} que están en Streamdle.
+        {periodoClave ? 'Esta página es un registro permanente de ese período y no cambia.' : 'Los datos se actualizan cada 15 días y esta página se renueva con ellos.'} Solo aparecen los {t.total} streamers {region.nombre} que están en Streamdle.
       </p>
+      {archivo.length > 0 && (
+        <section style={{ marginTop: 28 }}>
+          <h2 style={{ fontSize: 16, fontWeight: 800, marginBottom: 10 }}>Archivo de tendencias</h2>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {archivo.map((a) => (
+              <Link key={a.clave} href={rutaDe(regionSlug, a.clave)} className="agr-chip" style={{ background: a.clave === periodoClave ? 'var(--color-purple)' : 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 20, padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{a.tipo === 'año' ? `Año ${a.mes}` : a.mes}</Link>
+            ))}
+          </div>
+        </section>
+      )}
     </Shell>
   );
 }
 
-export function metaTendencias(regionSlug) {
-  const t = tendenciasDe(regionSlug);
+export function metaTendencias(regionSlug, periodoClave) {
+  const t = tendenciasDe(regionSlug, periodoDe(periodoClave));
   const { region, p } = t;
-  const url = `${SITE}${rutaDe(regionSlug)}`;
+  const url = `${SITE}${rutaDe(regionSlug, periodoClave)}`;
   const top = t.porGanancia.slice(0, 3).map((f) => f.s.display_name).join(', ');
-  const title = `Streamers ${region.nombre} en tendencia: los que más crecen | Streamdle`;
-  const description = `Los streamers ${region.nombre} que más crecieron en Twitch (${p.mes}): ${top}. Ranking por seguidores ganados y por % de crecimiento.`;
+  const title = periodoClave ? `Streamers ${region.nombre} que más crecieron en ${p.mes} | Streamdle` : `Streamers ${region.nombre} en tendencia: los que más crecen | Streamdle`;
+  const description = `Los streamers ${region.nombre} que más crecieron en Twitch (${p.mes}${periodoClave ? ', archivo' : ''}): ${top}. Ranking por seguidores ganados y por % de crecimiento.`;
   return {
     title,
     description,
