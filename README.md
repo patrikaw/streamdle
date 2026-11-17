@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Streamdle
 
-## Getting Started
+Juegos diarios, fichas, rankings y tendencias de streamers hispanos de Twitch y Kick. Sitio en [streamdle.net](https://streamdle.net).
 
-First, run the development server:
+Hecho con Next.js 16 (App Router), React 19 y Tailwind 4. No usa base de datos: los datos viven en archivos de `data/` y se actualizan con scripts y GitHub Actions.
+
+## Desarrollo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # build de producción + verificación automática
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Las claves de Twitch (`TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET`) van en `.env.local` y como secretos del repositorio.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Cómo se mantienen los datos
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`data/streamers.js` es la fuente de verdad. Cinco flujos de GitHub Actions la completan y publican directo en `main`:
 
-## Learn More
+| Flujo | Cuándo | Qué hace |
+|---|---|---|
+| Actualizar datos de streamers | días 1 y 16 | seguidores de Twitch y Kick, y foto para tendencias |
+| TwitchTracker | día 3 de cada mes | horas transmitidas y pico de espectadores |
+| Actividad del mes | día 1 | resumen del mes anterior de cada streamer |
+| Contenido diario | todos los días | mejores clips del día, la semana y el mes |
+| Muestreo de juegos | cada 6 horas | qué juega cada streamer (ranking de GTA 6 y panel de las fichas) |
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Más detalle en `CLAUDE.md`.
