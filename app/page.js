@@ -54,7 +54,7 @@ const GAMES = [
     slug: 'edadle',
     name: 'Edadle',
     emoji: '🎂',
-    description: '¿Cuántos años tiene?',
+    description: '¿Cuántos años tiene el streamer?',
     color: '#DB2777',
     available: true,
     daily: true,
