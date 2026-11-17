@@ -125,7 +125,7 @@ export default function EdadlePage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+    <div style={{ background: 'var(--bg-primary)' }}>
       <header style={{ borderBottom: '1px solid var(--color-border)', padding: '14px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-secondary)', gap: 12, flexWrap: 'wrap' }}>
         <a href="/" style={{ textDecoration: 'none', fontSize: 18, fontWeight: 800, background: 'linear-gradient(135deg,#7C3AED,#53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</a>
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>

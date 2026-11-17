@@ -357,7 +357,7 @@ export default function ClassicPage() {
   if (!target) return <div style={{ minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center' }}><div style={{ textAlign: 'center', color: '#A1A1B5' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>🎯 Adiviná el streamer del día</h1>Cargando...</div></div>;
 
   return (
-    <div style={{ minHeight:'100vh',background:'var(--bg-primary)' }}>
+    <div style={{ background:'var(--bg-primary)' }}>
       <style>{`
         @keyframes swipeHintFade {
           0%   { opacity:0; transform:translateY(-3px); }

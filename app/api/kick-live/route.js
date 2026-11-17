@@ -1,6 +1,8 @@
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const users = searchParams.get('users')?.split(',').filter(Boolean) ?? [];
+  const users = [...new Set((searchParams.get('users')?.split(',') ?? []).map((u) => u.trim().toLowerCase()))]
+    .filter((u) => /^[a-z0-9_-]{1,40}$/.test(u))
+    .slice(0, 40);
   if (!users.length) return Response.json({});
 
   const results = {};

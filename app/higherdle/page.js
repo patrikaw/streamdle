@@ -234,7 +234,7 @@ function HigherdleInner() {
   const currentLevel = getLevel(score);
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0D0D14', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ background: '#0D0D14', display: 'flex', flexDirection: 'column' }}>
       <header style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
         borderBottom: '1px solid var(--color-border)', padding: '8px 16px',

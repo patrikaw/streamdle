@@ -258,7 +258,7 @@ export default function CategorydlePage() {
   const avatarUrl = getAvatarUrl(target, avatars);
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+    <div style={{ background: 'var(--bg-primary)' }}>
       <header style={{
         borderBottom: '1px solid var(--color-border)', padding: '14px 24px',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',

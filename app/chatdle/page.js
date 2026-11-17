@@ -271,7 +271,7 @@ export default function ChatdlePage() {
   );
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+    <div style={{ background: 'var(--bg-primary)' }}>
       {/* Header */}
       <header style={{
         borderBottom: '1px solid var(--color-border)', padding: '14px 24px',

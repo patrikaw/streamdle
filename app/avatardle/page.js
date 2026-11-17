@@ -144,7 +144,7 @@ export default function AvatardlePage() {
   if(!target)return <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center'}}><div style={{ textAlign: 'center', color: '#A1A1B5' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>👤 ¿Quién es este streamer?</h1>Cargando...</div></div>;
 
   return (
-    <div style={{minHeight:'100vh',background:'var(--bg-primary)'}}>
+    <div style={{background:'var(--bg-primary)'}}>
       <header style={{borderBottom:'1px solid var(--color-border)',padding:'14px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--bg-secondary)',gap:'12px',flexWrap:'wrap'}}>
         <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
           <a href="/" style={{textDecoration:'none',display:'flex',alignItems:'center',gap:'8px'}}>
