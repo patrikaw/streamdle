@@ -4,7 +4,7 @@
 // Mismo planteo que la de Pispeo: bolsa mezclada (no se repite hasta ver a todos), contador de descubiertos en
 // localStorage y animación de rodillo. Si el navegador no deja guardar nada, la ruleta gira igual.
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
 const CLAVE = 'streamdle-ruleta-vistas';
@@ -44,11 +44,23 @@ export default function Ruleta({ conTitulo = false }) {
   const ultimo = useRef(null);
   const sinMov = useRef(false);
 
+  const raiz = useRef(null);
+  const pedido = useRef(false);
+  const cargar = useCallback(() => {
+    if (pedido.current) return;
+    pedido.current = true;
+    fetch('/api/ruleta').then((r) => r.json()).then((d) => setItems(d.items || [])).catch(() => setItems([]));
+  }, []);
+
   useEffect(() => {
     sinMov.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     setVistas(leerVistas());
-    fetch('/api/ruleta').then((r) => r.json()).then((d) => setItems(d.items || [])).catch(() => setItems([]));
-  }, []);
+    // El listado pesa poco, pero no hace falta pedirlo hasta que la ruleta esté cerca de la pantalla.
+    if (!('IntersectionObserver' in window)) { cargar(); return; }
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { cargar(); obs.disconnect(); } }, { rootMargin: '300px' });
+    if (raiz.current) obs.observe(raiz.current);
+    return () => obs.disconnect();
+  }, [cargar]);
 
   const sacar = () => {
     if (bolsa.current.length === 0) {
@@ -96,7 +108,7 @@ export default function Ruleta({ conTitulo = false }) {
   const completas = total > 0 && n >= total;
 
   return (
-    <section data-ruleta style={{ background: 'var(--bg-secondary)', border: '1px solid var(--color-border)', borderRadius: 24, padding: '28px 20px', maxWidth: 560, margin: '0 auto' }}>
+    <section ref={raiz} data-ruleta style={{ background: 'var(--bg-secondary)', border: '1px solid var(--color-border)', borderRadius: 24, padding: '28px 20px', maxWidth: 560, margin: '0 auto' }}>
       {conTitulo && (
         <header style={{ textAlign: 'center', marginBottom: 20 }}>
           <h2 style={{ fontSize: 24, fontWeight: 800, margin: 0 }}>🎲 ¡Descubrí un <span style={{ background: 'linear-gradient(135deg,#7C3AED,#53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>streamer</span>!</h2>
@@ -115,7 +127,7 @@ export default function Ruleta({ conTitulo = false }) {
       </div>
 
       <div style={{ marginTop: 18, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
-        <button type="button" onClick={tirar} disabled={girando || !items || total === 0} className="btn-primary" style={{ padding: '14px 32px', fontSize: 16, fontWeight: 800, borderRadius: 14, opacity: girando ? 0.7 : 1, cursor: girando ? 'wait' : 'pointer' }}>
+        <button type="button" onClick={tirar} onMouseEnter={cargar} onFocus={cargar} disabled={girando || !items || total === 0} className="btn-primary" style={{ padding: '14px 32px', fontSize: 16, fontWeight: 800, borderRadius: 14, opacity: girando ? 0.7 : 1, cursor: girando ? 'wait' : 'pointer' }}>
           <span style={{ display: 'inline-block', marginRight: 8, animation: girando ? 'dadoGira .6s linear infinite' : 'none' }}>🎲</span>
           {items === null ? 'Cargando…' : total === 0 ? 'Todavía no hay streamers' : res ? 'Descubrir otro' : 'Descubrir un streamer'}
         </button>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { claro } from '../lib/colores';
 import Ruleta from './components/Ruleta';
 
 const GAMES = [
@@ -219,7 +220,7 @@ export default function Home() {
                     fontSize: '10px',
                     fontWeight: '700',
                     background: `${game.color}22`,
-                    color: game.color,
+                    color: claro(game.color),
                     padding: '3px 8px',
                     borderRadius: '8px',
                     border: `1px solid ${game.color}44`,
@@ -247,7 +248,7 @@ export default function Home() {
                       { label: '🏆 Peak', href: '/higherdle?mode=peak', color: '#7C3AED' },
                     ].map(btn => (
                       <button key={btn.href} onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = btn.href; }} style={{
-                        color: btn.color, fontSize: '13px', fontWeight: '700',
+                        color: claro(btn.color), fontSize: '13px', fontWeight: '700',
                         background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0',
                       }}>{btn.label}</button>
                     ))}
@@ -258,7 +259,7 @@ export default function Home() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px',
-                    color: game.color,
+                    color: claro(game.color),
                     fontSize: '13px',
                     fontWeight: '600',
                   }}>
@@ -341,7 +342,7 @@ export default function Home() {
           marginTop: '12px',
         }}>
           © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por{' '}
-          <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer" style={{ color: '#53FC18', fontWeight: '700', textDecoration: 'none' }}>Pato Wnuk</a>.
+          <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer" style={{ color: '#53FC18', fontWeight: '700', textDecoration: 'underline' }}>Pato Wnuk</a>.
         </p>
       </main>
     </div>

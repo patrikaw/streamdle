@@ -1,5 +1,7 @@
 'use client';
 
+import { claro, textoSobre } from '../../lib/colores';
+
 export default function ComoJugarPage() {
   const games = [
     {
@@ -171,7 +173,7 @@ export default function ComoJugarPage() {
                         minWidth: '22px', height: '22px', borderRadius: '50%',
                         background: `${game.color}22`, border: `1px solid ${game.color}44`,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '11px', fontWeight: '700', color: game.color, flexShrink: 0,
+                        fontSize: '11px', fontWeight: '700', color: claro(game.color), flexShrink: 0,
                       }}>{i + 1}</div>
                       <p style={{ fontSize: '13px', color: 'var(--color-text-secondary)', lineHeight: 1.5, margin: 0 }}>{step}</p>
                     </div>
@@ -179,7 +181,7 @@ export default function ComoJugarPage() {
                 </div>
                 <a href={game.slug} style={{
                   display: 'inline-block', marginTop: '16px',
-                  background: game.color, color: 'white',
+                  background: game.color, color: textoSobre(game.color),
                   padding: '8px 20px', borderRadius: '8px',
                   fontSize: '13px', fontWeight: '700', textDecoration: 'none',
                 }}>
@@ -199,14 +201,14 @@ export default function ComoJugarPage() {
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '13px', lineHeight: 1.7, margin: 0 }}>
             Streamdle es un proyecto independiente creado por{' '}
             <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer"
-              style={{ color: 'var(--color-green)', textDecoration: 'none', fontWeight: '700' }}>
+              style={{ color: 'var(--color-green)', textDecoration: 'underline', fontWeight: '700' }}>
               Pato Wnuk
             </a>{' '}
             para la comunidad de streamers hispanohablantes. Nació en 2025 como un Wordle de streamers
             y creció hasta convertirse en una plataforma con 7 juegos diarios, fichas de streamers,
             estadísticas y cultura streamer en español. No estamos afiliados con Twitch, Kick ni YouTube.
             Si querés sugerir un streamer, reportar un error o colaborar,{' '}
-            <a href="/contacto" style={{ color: 'var(--color-purple-light)', textDecoration: 'none' }}>
+            <a href="/contacto" style={{ color: 'var(--color-purple-light)', textDecoration: 'underline' }}>
               escribinos por acá
             </a>.
           </p>
@@ -236,7 +238,7 @@ export default function ComoJugarPage() {
         </div>
         © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por{' '}
         <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer"
-          style={{ color: 'var(--color-green)', textDecoration: 'none' }}>Pato Wnuk</a>.
+          style={{ color: 'var(--color-green)', textDecoration: 'underline' }}>Pato Wnuk</a>.
       </footer>
     </div>
   );

@@ -508,6 +508,7 @@ export default function StreamersIndex({
             </div>
             <div style={{ flex: 1 }} />
             <select
+              aria-label="Ordenar streamers"
               value={sort}
               onChange={e => setSort(e.target.value)}
               style={{
@@ -644,7 +645,7 @@ export default function StreamersIndex({
           </p>
           <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
             ¿Querés poner a prueba cuánto sabés de tus streamers favoritos? Jugá nuestros{' '}
-            <a href="/" style={{ color: 'var(--color-purple-light)' }}>juegos diarios de streamers</a>:
+            <a href="/" style={{ color: 'var(--color-purple-light)', textDecoration: 'underline' }}>juegos diarios de streamers</a>:
             Classic, Avatardle, Emojidle, Categorydle, Chatdle e Higherdle.
           </p>
         </div>
@@ -678,7 +679,7 @@ export default function StreamersIndex({
         </div>
         © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por{' '}
         <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer"
-          style={{ color: 'var(--color-green)', textDecoration: 'none' }}>Pato Wnuk</a>.
+          style={{ color: 'var(--color-green)', textDecoration: 'underline' }}>Pato Wnuk</a>.
       </footer>
     </div>
   );

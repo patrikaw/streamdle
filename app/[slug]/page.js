@@ -339,7 +339,7 @@ function ActividadPanel({streamer}){
           )}
         </div>
       )}
-      <div style={{fontSize:9,color:'var(--color-text-secondary)',marginTop:8,opacity:0.7}}>Según los directos guardados en Twitch y Kick.</div>
+      <div style={{fontSize:9,color:'var(--color-text-secondary)',marginTop:8}}>Según los directos guardados en Twitch y Kick.</div>
     </div>
   );
 }
@@ -689,7 +689,7 @@ export default function StreamerPage() {
           ))}
         </div>
         © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por{' '}
-        <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer" style={{color:'var(--color-green)',textDecoration:'none'}}>Pato Wnuk</a>.
+        <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer" style={{color:'var(--color-green)',textDecoration:'underline'}}>Pato Wnuk</a>.
       </footer>
     </div>
   );

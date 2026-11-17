@@ -115,7 +115,7 @@ function Countdown() {
               🥇 <span style={{ color: '#53FC18', fontWeight: '600' }}>{target.top_category}</span>
             </div>
             <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
-              🥈 <span style={{ color: '#9D5FF5', fontWeight: '600' }}>{target.second_category}</span>
+              🥈 <span style={{ color: '#B794FF', fontWeight: '600' }}>{target.second_category}</span>
             </div>
             <div style={{ display: 'flex', gap: '6px', marginTop: '6px', flexWrap: 'wrap' }}>
               {target.twitch && <a href={`https://twitch.tv/${target.twitch}`} target="_blank" rel="noopener noreferrer" className="badge-twitch">Twitch</a>}
@@ -348,7 +348,7 @@ export default function CategorydlePage() {
             <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)', marginBottom: '4px', fontWeight: '600', textTransform: 'uppercase' }}>
               🥈 Segunda Categoría
             </div>
-            <div style={{ fontSize: '15px', fontWeight: '700', color: secondGuessed ? '#9D5FF5' : 'var(--color-text-secondary)' }}>
+            <div style={{ fontSize: '15px', fontWeight: '700', color: secondGuessed ? '#B794FF' : 'var(--color-text-secondary)' }}>
               {secondGuessed ? target.second_category : '???'}
             </div>
           </div>

@@ -304,7 +304,7 @@ export default function ExplorarPage() {
           ))}
         </div>
         © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por{' '}
-        <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-green)', textDecoration: 'none' }}>Pato Wnuk</a>.
+        <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-green)', textDecoration: 'underline' }}>Pato Wnuk</a>.
       </footer>
     </div>
   );

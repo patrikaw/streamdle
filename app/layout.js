@@ -42,6 +42,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es" className={inter.variable}>
       <head>
+        <link rel="preconnect" href="https://static-cdn.jtvnw.net" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9797476509112947"
@@ -49,9 +51,9 @@ export default function RootLayout({ children }) {
         />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-MDVFG17P7S"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
