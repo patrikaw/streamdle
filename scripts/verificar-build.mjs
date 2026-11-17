@@ -7,6 +7,12 @@ import path from 'node:path';
 const APP = path.join('.next', 'server', 'app');
 if (!fs.existsSync(APP)) { console.log('verificar-build: no hay .next/server/app, se omite.'); process.exit(0); }
 
+// El adaptador de Vercel no deja .html en .next/server/app; ahí el control no puede leer las páginas y corre solo en local.
+if (process.env.NEXT_ADAPTER_PATH && !fs.readdirSync(APP).some((f) => f.endsWith('.html'))) {
+  console.log('verificar-build: build con adaptador de Vercel (sin .html en .next/server/app), se omite. Correr "npm run build" en local antes de subir.');
+  process.exit(0);
+}
+
 const errores = [];
 const leer = (ruta) => { const f = path.join(APP, ruta); return fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : null; };
 const exige = (ruta, marcas) => {
