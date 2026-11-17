@@ -31,7 +31,24 @@ function bajadaDe(s) {
     return punto > 80 ? corte.slice(0, punto + 1) : (t.length > 190 ? corte.trimEnd() + '…' : t);
   }
   const edad = edadDe(s);
-  return `${s.display_name} es un streamer de ${(PAISES[s.country] || ['', s.country])[1]}${edad ? ` de ${edad} años` : ''}${s.top_category ? ` que juega sobre todo ${s.top_category}` : ''}.`;
+  return `${s.display_name} es un streamer de ${(PAISES[s.country] || ['', s.country])[1]}${edad ? ` de ${edad} años` : ''}${actividadDe(s.top_category)}.`;
+}
+
+const NO_JUEGO = {
+  'just chatting': ' que hace sobre todo streams de Just Chatting',
+  'irl': ' que hace sobre todo streams IRL',
+  'sports': ' que hace sobre todo streams de deportes',
+  'kings league': ' que hace sobre todo streams de la Kings League',
+  'talk shows & podcasts': ' que hace sobre todo podcasts y charlas',
+  'asmr': ' que hace sobre todo streams de ASMR',
+  'art': ' que hace sobre todo streams de arte',
+  'music': ' que hace sobre todo streams de música',
+  'special events': ' que hace sobre todo streams de eventos especiales',
+};
+
+function actividadDe(cat) {
+  if (!cat) return '';
+  return NO_JUEGO[cat.trim().toLowerCase()] || ` que juega sobre todo ${cat}`;
 }
 
 export async function GET() {
