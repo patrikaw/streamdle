@@ -11,6 +11,7 @@ import { categoryToSlug, getCategoriesWithMinStreamers } from '../../lib/categor
 import { fmtNum } from '../../lib/formato';
 import { C } from '../../lib/colores';
 import { REDES as SOCIAL_DATA } from '../../lib/redes';
+import { plural } from '../../lib/plural';
 
 const VALID_GAME_SLUGS = new Set(getCategoriesWithMinStreamers(7).map(c => c.slug));
 
@@ -281,7 +282,7 @@ function ActividadPanel({streamer}){
       {r&&(<>
         <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Actividad · últimos {a.dias} días</div>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:10}}>
-          {[[`${r.horas} h`,'en vivo'],[r.sesiones,'directos'],[`${r.diasActivos} de ${a.dias}`,'días activo'],[`${r.promHoras} h`,'por directo']].map(([v,l])=>(
+          {[[`${r.horas} h`,'en vivo'],[r.sesiones,r.sesiones===1?'directo':'directos'],[`${r.diasActivos} de ${a.dias}`,'días activo'],[`${r.promHoras} h`,'por directo']].map(([v,l])=>(
             <div key={l} style={{background:'var(--bg-card)',borderRadius:'var(--radius-sm)',padding:'6px 10px'}}>
               <div style={{fontSize:16,fontWeight:800}}>{v}</div>
               <div style={{fontSize:10,color:'var(--color-text-secondary)'}}>{l}</div>
@@ -312,7 +313,7 @@ function ActividadPanel({streamer}){
         <div style={{marginTop:r||(a.juegos&&a.juegos.length>0)?12:0,paddingTop:r?10:0,borderTop:r?'1px solid var(--color-border)':'none'}}>
           <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:6}}>Mes anterior · {ult.mes}</div>
           <div style={{fontSize:13,lineHeight:1.5}}>
-            <strong>{ult.horas} h</strong> en {ult.sesiones} directos, activo {ult.diasActivos} días
+            <strong>{ult.horas} h</strong> en {plural(ult.sesiones, 'directo')}, activo {plural(ult.diasActivos, 'día')}
             {delta!==null&&<span style={{color:delta>=0?C.okLight:C.errorLight,fontWeight:700}}> ({delta>=0?'+':''}{delta}% vs {prev.mes})</span>}
           </div>
           {ms.length>1&&(

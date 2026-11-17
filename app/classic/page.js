@@ -6,6 +6,7 @@ import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat, getYes
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { fmtNum } from '../../lib/formato';
 import { C } from '../../lib/colores';
+import { plural } from '../../lib/plural';
 
 const MAX_ATTEMPTS = 8;
 
@@ -73,7 +74,7 @@ function getResultTexts(country, won, attempts, streamer) {
       won: [
         `¡Lo adivinaste! Sos un crack 🔥`,
         `¡Bien jugado! Conocés tu cultura streamer 😎`,
-        `¡Ahí está! Lo lograste en ${attempts} intentos`,
+        `¡Ahí está! Lo lograste en ${plural(attempts, 'intento')}`,
       ],
       lost: [
         `¡Casi! La próxima seguro 💀`,

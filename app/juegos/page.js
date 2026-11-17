@@ -3,6 +3,7 @@ import { getCategoriesWithMinStreamers } from '../../lib/categories';
 import { fetchTwitchGame } from '../../lib/twitch-server';
 import { fmtNum } from '../../lib/formato';
 import { colorCategoria } from '../../lib/colores';
+import { plural } from '../../lib/plural';
 
 export const revalidate = 86400;
 
@@ -160,7 +161,7 @@ export default async function JuegosPage() {
                           border: `1px solid ${color}44`,
                           borderRadius: 'var(--radius-sm)', padding: '2px 8px',
                         }}>
-                          {cat.totalCount} streamers
+                          {plural(cat.totalCount, 'streamer')}
                         </span>
                         <span style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
                           {cat.primaryCount} principal · {cat.secondaryCount} sec.

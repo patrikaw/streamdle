@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { STREAMERS } from '../../data/streamers';
 import { getCategoriesWithMinStreamers } from '../../lib/categories';
 import { fmtNum } from '../../lib/formato';
+import { plural } from '../../lib/plural';
 
 function norm(s) {
   return (s || '').toLowerCase()
@@ -31,7 +32,7 @@ const INDEX = (() => {
   const games = getCategoriesWithMinStreamers(7).map(c => ({
     type: 'game',
     label: c.name,
-    sub: `${c.totalCount} streamers`,
+    sub: plural(c.totalCount, 'streamer'),
     href: `/juegos/${c.slug}`,
     tokens: norm(c.name),
   }));

@@ -55,16 +55,20 @@ export async function generateMetadata({ params }) {
   }
 
   const seo = seoOverrides[slug];
+  // Los textos de seo-overrides traen cifras escritas a mano: se renuevan con los datos actuales.
+  const actual = (t) => (typeof t !== 'string' ? t : t
+    .replace(/\d+(?:[.,]\d+)?\s?[MK]\b(?=\s+(?:seguidores|fans))/g, fmt(s.total_followers))
+    .replace(/\d+(?:[.,]\d+)?\s?[MK]\b(?=\s+(?:espectadores|de pico))/g, (m) => (s.peak_viewers ? fmt(s.peak_viewers) : m)));
   const adj = countryAdj(s.country);
 
   const ed = edadDe(s);
-  const titleBase = seo?.title ?? `${s.display_name} — Streamer ${adj} | Streamdle`;
+  const titleBase = actual(seo?.title) ?? `${s.display_name} — Streamer ${adj} | Streamdle`;
   const title = ed ? `${s.display_name}: edad, fecha de nacimiento y datos | Streamdle` : titleBase;
   const description = ed
     ? `${s.display_name} tiene ${ed.edad} años (nació el ${ed.fecha}). Streamer ${adj} con ${fmt(s.total_followers)} seguidores. Stats, trivia y clip más visto.`
-    : (seo?.description ?? `${s.display_name} es un streamer ${adj} con ${fmt(s.total_followers)} seguidores${s.peak_viewers ? ` y un peak de ${fmt(s.peak_viewers)} espectadores` : ''}. Trivia, stats y clip más visto.`);
-  const ogTitle = seo?.openGraphTitle ?? title;
-  const ogDescription = seo?.openGraphDescription ?? description;
+    : (actual(seo?.description) ?? `${s.display_name} es un streamer ${adj} con ${fmt(s.total_followers)} seguidores${s.peak_viewers ? ` y un peak de ${fmt(s.peak_viewers)} espectadores` : ''}. Trivia, stats y clip más visto.`);
+  const ogTitle = actual(seo?.openGraphTitle) ?? title;
+  const ogDescription = actual(seo?.openGraphDescription) ?? description;
 
   const keywords = seo?.keywords
     ? seo.keywords.join(', ')

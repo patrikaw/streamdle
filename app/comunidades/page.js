@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Shell, jsonLd } from '../components/AgrupacionUI';
 import { COMUNIDADES, SITE, miembrosDe, sinFichaDe } from '../../lib/comunidades';
+import { plural } from '../../lib/plural';
 
 export const revalidate = 86400;
 
@@ -27,7 +28,7 @@ export default function ComunidadesPage() {
             <div style={{ fontSize: 28 }}>{x.emoji}</div>
             <div style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginTop: 6 }}>{x.nombre}</div>
             <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginTop: 4, lineHeight: 1.5 }}>{x.resumen}</div>
-            {x.n != null && <div style={{ fontSize: 12, color: 'var(--acento-texto, var(--color-purple-light))', marginTop: 8, fontWeight: 700 }}>{x.n} streamers →</div>}
+            {x.n != null && <div style={{ fontSize: 12, color: 'var(--acento-texto, var(--color-purple-light))', marginTop: 8, fontWeight: 700 }}>{plural(x.n, 'streamer')} →</div>}
           </Link>
         ))}
       </div>

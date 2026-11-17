@@ -5,6 +5,7 @@ import { fetchTwitchAvatars } from '../../lib/twitch-server';
 import { SITE, TIPOS, TIPOS_LISTA, gruposDe, resumenDe } from '../../lib/agrupaciones';
 import { fmtNum } from '../../lib/formato';
 import { SECCIONES } from '../../lib/sitio';
+import { plural } from '../../lib/plural';
 
 export const FLAGS = { ES:'🇪🇸', AR:'🇦🇷', MX:'🇲🇽', PE:'🇵🇪', CO:'🇨🇴', CL:'🇨🇱', SV:'🇸🇻', PR:'🇵🇷', VE:'🇻🇪', UY:'🇺🇾', GT:'🇬🇹', DO:'🇩🇴', CU:'🇨🇺', FR:'🇫🇷', NO:'🇳🇴' };
 
@@ -83,7 +84,7 @@ export function Hub({ tipo }) {
           }}>
             <div style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>{g.etiqueta}</div>
             <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 4 }}>
-              {g.miembros.length} streamers · {g.miembros.slice(0, 3).map((s) => s.display_name).join(', ')}
+              {plural(g.miembros.length, 'streamer')} · {g.miembros.slice(0, 3).map((s) => s.display_name).join(', ')}
             </div>
           </Link>
         ))}
