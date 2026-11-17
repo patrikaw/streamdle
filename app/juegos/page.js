@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { getCategoriesWithMinStreamers } from '../../lib/categories';
-import SearchBar from '../components/SearchBar';
 import { fetchTwitchGame } from '../../lib/twitch-server';
 import { fmtNum } from '../../lib/formato';
 
@@ -81,30 +80,7 @@ export default async function JuegosPage() {
       `}</style>
 
       {/* Header */}
-      <header style={{
-        borderBottom: '1px solid var(--color-border)',
-        padding: '14px 24px',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        background: 'var(--bg-secondary)', gap: 12, flexWrap: 'wrap',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
-            <span className="header-icon" style={{ fontSize: 20 }}>🎮</span>
-            <span style={{
-              fontSize: 18, fontWeight: 800,
-              background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            }}>STREAMDLE</span>
-          </Link>
-          <SearchBar />
-        </div>
-        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
-          {[{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', label: '🎲 Descubrí un streamer' }].map(g=>(
-            <Link key={g.href} href={g.href} style={{background:'var(--bg-card)',border:'1px solid var(--color-border)',color:'white',borderRadius:8,padding: '9px 22px',fontSize: 14,fontWeight:600,textDecoration:'none',whiteSpace:'nowrap'}}>{g.label}</Link>
-          ))}
-        </div>
-      </header>
-
+      
       {/* Breadcrumb */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '10px 24px 0', display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--color-text-secondary)', flexWrap: 'wrap' }}>
         <Link href="/explorar" className="breadcrumb-link" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>Explorar</Link>

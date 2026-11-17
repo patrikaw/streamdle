@@ -1,6 +1,8 @@
 import './globals.css';
 import Script from 'next/script';
 import { Inter } from 'next/font/google';
+import SiteHeader from './components/SiteHeader';
+import SiteFooter from './components/SiteFooter';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -62,7 +64,9 @@ export default function RootLayout({ children }) {
         </Script>
       </head>
       <body>
+        <SiteHeader />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );

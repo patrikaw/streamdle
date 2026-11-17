@@ -103,33 +103,6 @@ export default function ComoJugarPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
-      <header style={{
-        borderBottom: '1px solid var(--color-border)', padding: '14px 24px',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        background: 'var(--bg-secondary)', gap: '12px', flexWrap: 'wrap',
-      }}>
-        <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '20px' }}>🎮</span>
-          <span style={{ fontSize: '18px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
-        </a>
-        <div className="game-nav-links" style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {[
-            { href: '/classic',     label: '🎯 Classic' },
-            { href: '/avatardle',   label: '👤 Avatardle' },
-            { href: '/emojidle',    label: '😂 Emojidle' },
-            { href: '/categorydle', label: '🎮 Categorydle' },
-            { href: '/chatdle',     label: '💬 Chatdle' },
-            { href: '/edadle',      label: '🎂 Edadle' },
-            { href: '/higherdle',   label: '📊 Higherdle' },
-          ].map(g => (
-            <a key={g.href} href={g.href} style={{
-              background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-              color: 'white', borderRadius: '8px', padding: '5px 12px',
-              fontSize: '10px', fontWeight: '600', textDecoration: 'none', whiteSpace: 'nowrap',
-            }}>{g.label}</a>
-          ))}
-        </div>
-      </header>
 
       <main style={{ maxWidth: '720px', margin: '0 auto', padding: '40px 16px 64px' }}>
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
@@ -215,31 +188,6 @@ export default function ComoJugarPage() {
         </div>
       </main>
 
-      <footer style={{
-        borderTop: '1px solid var(--color-border)', background: 'var(--bg-secondary)',
-        padding: '20px 24px', textAlign: 'center',
-        fontSize: '12px', color: 'var(--color-text-secondary)',
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '8px' }}>
-          {[
-            { href: '/',           label: 'Juegos' },
-            { href: '/streamers',  label: 'Streamers' },
-            { href: '/contacto',   label: 'Contacto' },
-            { href: '/privacidad', label: 'Privacidad' },
-            { href: '/terminos',   label: 'Términos' },
-          ].map(l => (
-            <a key={l.href} href={l.href}
-              target={l.href.startsWith('http') ? '_blank' : undefined}
-              rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>
-              {l.label}
-            </a>
-          ))}
-        </div>
-        © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por{' '}
-        <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer"
-          style={{ color: 'var(--color-green)', textDecoration: 'underline' }}>Pato Wnuk</a>.
-      </footer>
     </div>
   );
 }

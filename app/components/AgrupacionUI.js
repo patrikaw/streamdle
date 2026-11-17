@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import SearchBar from './SearchBar';
 import AvatarImg from './AvatarImg';
 import { getAvatarUrl } from '../../data/avatars';
 import { fetchTwitchAvatars } from '../../lib/twitch-server';
@@ -9,17 +8,6 @@ import { fmtNum } from '../../lib/formato';
 export const FLAGS = { ES:'🇪🇸', AR:'🇦🇷', MX:'🇲🇽', PE:'🇵🇪', CO:'🇨🇴', CL:'🇨🇱', SV:'🇸🇻', PR:'🇵🇷', VE:'🇻🇪', UY:'🇺🇾', GT:'🇬🇹', DO:'🇩🇴', CU:'🇨🇺', FR:'🇫🇷', NO:'🇳🇴' };
 
 const fmt = (n) => fmtNum(n, '—');
-
-const GAMES = [{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', label: '🎲 Descubrí un streamer' }];
-
-const FOOTER_TILES = [
-  { href: '/tendencias', emoji: '🔥', titulo: 'En tendencia', desc: 'Quiénes más crecen este mes', color: '#F97316' },
-  { href: '/streamers', emoji: '🏆', titulo: 'Ranking', desc: 'Todos los streamers por seguidores', color: '#7C3AED' },
-  { href: '/comunidades', emoji: '👥', titulo: 'Comunidades', desc: 'Grupos y squads de streamers', color: '#16A34A' },
-  { href: '/ruleta', emoji: '🎲', titulo: 'Ruleta de streamers', desc: 'Descubrí uno al azar', color: '#A855F7' },
-  { href: '/clips/hoy', emoji: '🎬', titulo: 'Mejores clips', desc: 'Los más vistos de hoy, la semana y el mes', color: '#0EA5E9' },
-  { href: '/', emoji: '🎮', titulo: 'Todos los juegos', desc: '7 juegos diarios', color: '#2563EB' },
-];
 
 export function Shell({ crumbs, children }) {
   return (
@@ -31,20 +19,6 @@ export function Shell({ crumbs, children }) {
         .agr-chip:hover { border-color: var(--color-purple) !important; }
         .agr-crumb:hover { color: #fff !important; }
       `}</style>
-      <header style={{ borderBottom: '1px solid var(--color-border)', padding: '14px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-secondary)', gap: 12, flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
-            <span className="header-icon" style={{ fontSize: 20 }}>🎮</span>
-            <span style={{ fontSize: 18, fontWeight: 800, background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
-          </Link>
-          <SearchBar />
-        </div>
-        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
-          {GAMES.map((g) => (
-            <Link key={g.href} href={g.href} style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: 'white', borderRadius: 8, padding: '9px 22px', fontSize: 14, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>{g.label}</Link>
-          ))}
-        </div>
-      </header>
 
       <nav aria-label="breadcrumb" style={{ maxWidth: 1100, margin: '0 auto', padding: '12px 16px 0', display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--color-text-secondary)', flexWrap: 'wrap' }}>
         {crumbs.map((c, i) => (
@@ -58,27 +32,6 @@ export function Shell({ crumbs, children }) {
 
       <main style={{ maxWidth: 1100, margin: '0 auto', padding: '8px 16px 48px' }}>{children}</main>
 
-      <footer style={{ borderTop: '1px solid var(--color-border)', background: 'var(--bg-secondary)', marginTop: 24 }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '18px 16px 12px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 8 }}>
-            {FOOTER_TILES.map((t) => (
-              <Link key={t.href} href={t.href} className="agr-card" style={{
-                display: 'block', textDecoration: 'none', color: '#fff', borderRadius: 10, padding: '8px 12px',
-                background: `linear-gradient(135deg, ${t.color}33, var(--bg-card))`, border: `1px solid ${t.color}66`,
-              }}>
-                <div style={{ fontSize: 13, fontWeight: 800 }}>{t.emoji} {t.titulo}</div>
-                <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginTop: 2 }}>{t.desc}</div>
-              </Link>
-            ))}
-          </div>
-          <div style={{ borderTop: '1px solid var(--color-border)', marginTop: 12, paddingTop: 10, display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center', fontSize: 12, color: 'var(--color-text-secondary)' }}>
-            {[{ href: '/como-jugar', label: 'Cómo jugar' }, { href: '/contacto', label: 'Contacto' }, { href: '/privacidad', label: 'Privacidad' }, { href: '/terminos', label: 'Términos' }].map((l) => (
-              <Link key={l.href} href={l.href} style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>{l.label}</Link>
-            ))}
-            <a href="https://pispeo.com.ar" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>Pispeo · reseñas de herramientas</a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

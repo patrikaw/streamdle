@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
-import SearchBar from '../components/SearchBar';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatarsForLogins, getAvatarUrl } from '../../data/avatars';
 import { fmtNum } from '../../lib/formato';
@@ -387,40 +386,7 @@ export default function StreamersIndex({
       <style>{`@media(max-width:640px){.header-icon{display:none!important;}}`}</style>
 
       {/* HEADER */}
-      <header style={{
-        borderBottom: '1px solid var(--color-border)', padding: '14px 24px',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        background: 'var(--bg-secondary)', gap: 12, flexWrap: 'wrap',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span className="header-icon" style={{ fontSize: 20 }}>🎮</span>
-            <span style={{
-              fontSize: 18, fontWeight: 800,
-              background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            }}>STREAMDLE</span>
-          </a>
-          <SearchBar />
-        </div>
-        <div className="game-nav-links" style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
-          {[
-            { href: '/classic',     label: '🎯 Classic' },
-            { href: '/avatardle',   label: '👤 Avatardle' },
-            { href: '/emojidle',    label: '😂 Emojidle' },
-            { href: '/categorydle', label: '🎮 Categorydle' },
-            { href: '/chatdle',     label: '💬 Chatdle' },
-            { href: '/higherdle',   label: '📊 Higherdle' },
-          ].map(g => (
-            <a key={g.href} href={g.href} style={{
-              background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-              color: 'white', borderRadius: 8, padding: '5px 12px',
-              fontSize: 10, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap',
-            }}>{g.label}</a>
-          ))}
-        </div>
-      </header>
-
+      
       {/* BREADCRUMB */}
       <div style={{
         maxWidth: 1100, margin: '0 auto', padding: '12px 16px 0',
@@ -646,35 +612,6 @@ export default function StreamersIndex({
       </main>
 
       {/* FOOTER */}
-      <footer style={{
-        borderTop: '1px solid var(--color-border)', background: 'var(--bg-secondary)',
-        padding: '20px 24px', textAlign: 'center',
-        fontSize: 12, color: 'var(--color-text-secondary)',
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}>
-          {[
-            { href: '/tendencias',             label: 'Tendencias' },
-            { href: '/streamers/signo',        label: 'Por signo' },
-            { href: '/streamers/generacion',   label: 'Por generación' },
-            { href: '/streamers/nacimiento',   label: 'Por año de nacimiento' },
-            { href: '/streamers/personalidad', label: 'Por personalidad' },
-            { href: '/como-jugar', label: 'Cómo jugar' },
-            { href: '/contacto',   label: 'Contacto' },
-            { href: '/privacidad', label: 'Privacidad' },
-            { href: '/terminos',   label: 'Términos' },
-            { href: 'https://pispeo.com.ar', label: 'Pispeo · reseñas de herramientas' },
-          ].map(l => (
-            <a key={l.href} href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined}
-              rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>
-              {l.label}
-            </a>
-          ))}
-        </div>
-        © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por{' '}
-        <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer"
-          style={{ color: 'var(--color-green)', textDecoration: 'underline' }}>Pato Wnuk</a>.
-      </footer>
-    </div>
+          </div>
   );
 }

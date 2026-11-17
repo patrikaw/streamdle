@@ -231,64 +231,6 @@ function HigherdleInner() {
 
   return (
     <div style={{ background: '#0D0D14', display: 'flex', flexDirection: 'column' }}>
-      <header style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
-        borderBottom: '1px solid var(--color-border)', padding: '8px 16px',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        background: 'rgba(13,13,20,0.85)', backdropFilter: 'blur(12px)',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span className="hide-mobile" style={{ fontSize: '16px' }}>🎮</span>
-            <span style={{ fontSize: '14px', fontWeight: '800', background: 'linear-gradient(135deg, #7C3AED, #53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</span>
-          </a>
-          <a href="/explorar" style={{ fontSize: '11px', fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '4px 10px', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--bg-card)', whiteSpace: 'nowrap' }}>🔍 Explorar</a>
-          <div className="game-nav-links" style={{ display: 'flex', gap: '4px' }}>
-            {[{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', label: '🎲 Descubrí un streamer' }].map(g => (
-              <a key={g.href} href={g.href} style={{
-                background: '#7C3AED',
-                border: '1px solid var(--color-border)',
-                color: 'white', borderRadius: '10px', padding: '9px 22px',
-                fontSize: '14px', textDecoration: 'none',
-              }}>{g.label}</a>
-            ))}
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', gap: '4px', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
-          {[
-            { key: 'followers', emoji: '👥', label: 'Seg.' },
-            { key: 'hours', emoji: '⏱️', label: 'Hrs' },
-            { key: 'peak', emoji: '🏆', label: 'Peak' },
-          ].map(m => (
-            <button key={m.key} onClick={() => setMode(m.key)} className="higherdle-mode-btn" style={{
-              background: mode === m.key ? '#7C3AED' : 'var(--bg-card)',
-              border: '1px solid var(--color-border)',
-              color: 'white', borderRadius: '8px', padding: '4px 8px',
-              fontSize: '10px', fontWeight: '600', cursor: 'pointer', whiteSpace: 'nowrap',
-            }}>
-              {m.emoji} {m.label}
-            </button>
-          ))}
-        </div>
-
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          {/* Nivel actual visible mientras jugás */}
-          {score > 0 && (
-            <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '10px', color: currentLevel.color, fontWeight: '700' }}>{currentLevel.emoji} {currentLevel.rank}</div>
-            </div>
-          )}
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '10px', color: 'var(--color-text-secondary)' }}>RACHA</div>
-            <div style={{ fontSize: '18px', fontWeight: '800', color: '#53FC18' }}>{score}</div>
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '10px', color: 'var(--color-text-secondary)' }}>RÉCORD</div>
-            <div style={{ fontSize: '18px', fontWeight: '800', color: '#7C3AED' }}>{highScore}</div>
-          </div>
-        </div>
-      </header>
 
       <div style={{
         position: 'fixed', top: '57px', left: 0, right: 0, zIndex: 49,

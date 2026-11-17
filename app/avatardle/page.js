@@ -146,20 +146,6 @@ export default function AvatardlePage() {
 
   return (
     <div style={{background:'var(--bg-primary)'}}>
-      <header style={{borderBottom:'1px solid var(--color-border)',padding:'14px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--bg-secondary)',gap:'12px',flexWrap:'wrap'}}>
-        <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
-          <a href="/" style={{textDecoration:'none',display:'flex',alignItems:'center',gap:'8px'}}>
-            <span className="hide-mobile" style={{fontSize:'20px'}}>🎮</span>
-            <span style={{fontSize:'18px',fontWeight:'800',background:'linear-gradient(135deg,#7C3AED,#53FC18)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>STREAMDLE</span>
-          </a>
-          <a href="/explorar" style={{fontSize:'11px',fontWeight:600,color:'var(--color-text-secondary)',textDecoration:'none',padding:'4px 10px',borderRadius:'8px',border:'1px solid var(--color-border)',background:'var(--bg-card)',whiteSpace:'nowrap'}}>🔍 Explorar</a>
-        </div>
-        <div style={{display:'flex',gap:'4px',flexWrap:'wrap',justifyContent:'center'}}>
-          {[{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', label: '🎲 Descubrí un streamer' }].map(g=>(
-            <a key={g.href} href={g.href} style={{background:'#7C3AED',border:'1px solid var(--color-border)',color:'white',borderRadius: '10px',padding: '9px 22px',fontSize: '14px',fontWeight:'600',textDecoration:'none',whiteSpace:'nowrap'}}>{g.label}</a>
-          ))}
-        </div>
-      </header>
       <main className="game-main-content" style={{maxWidth:'600px',margin:'0 auto',padding:'24px 16px 48px'}}>
         <div style={{textAlign:'center',marginBottom:'24px'}}>
           <h1 style={{fontSize:'22px',fontWeight:'800',marginBottom:'6px'}}>👤 ¿Quién es este streamer?</h1>

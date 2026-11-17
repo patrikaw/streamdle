@@ -24,6 +24,40 @@
   --color-text-secondary: #A1A1B5;
   --color-border: #2A2A40;
   --font-main: var(--font-inter), sans-serif;
+
+  /* Plataformas: solo para marcar Twitch o Kick */
+  --color-twitch: #9146FF;
+  --color-kick: #53FC18;
+
+  /* Estados: acierto, error, casi, dato neutro */
+  --color-ok: #16A34A;
+  --color-ok-light: #4ADE80;
+  --color-error: #DC2626;
+  --color-error-light: #F87171;
+  --color-warn: #F59E0B;
+  --color-info: #0EA5E9;
+
+  /* Secciones: cada una tiene su color en todo el sitio */
+  --sec-juegos: #7C3AED;
+  --sec-ranking: #2563EB;
+  --sec-tendencias: #F97316;
+  --sec-comunidades: #14B8A6;
+  --sec-clips: #EC4899;
+
+  /* Identidad de cada juego */
+  --game-classic: #DC2626;
+  --game-chatdle: #B45309;
+  --game-avatardle: #9D5FF5;
+  --game-emojidle: #F59E0B;
+  --game-edadle: #DB2777;
+  --game-higherdle: #2563EB;
+  --game-categorydle: #059669;
+
+  /* Formas */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
 }
 
 * {
@@ -326,3 +360,35 @@ a.badge-twitch, a.badge-kick {
 .game-main-content div::-webkit-scrollbar {
   display: none;
 }
+
+/* Encabezado y pie únicos */
+.sd-header { position: sticky; top: 0; z-index: 50; background: var(--bg-secondary); border-bottom: 1px solid var(--color-border); }
+.sd-header-inner { max-width: 1200px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.sd-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+.sd-logo-text { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, var(--color-purple), var(--color-kick)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.sd-nav { display: flex; align-items: center; gap: 4px; margin-left: auto; flex-wrap: wrap; }
+.sd-link { display: inline-flex; align-items: center; gap: 5px; padding: 7px 11px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--color-text-secondary); text-decoration: none; white-space: nowrap; border: 1px solid transparent; cursor: pointer; background: none; font-family: inherit; }
+.sd-link:hover, .sd-link:focus-visible { color: #fff; border-color: var(--sd-color, var(--color-border)); }
+.sd-link[aria-current="page"] { color: #fff; background: color-mix(in srgb, var(--sd-color) 22%, transparent); border-color: color-mix(in srgb, var(--sd-color) 55%, transparent); }
+.sd-cta { background: var(--color-purple); color: #fff; border-radius: var(--radius-sm); padding: 8px 14px; font-size: 13px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.sd-cta:hover { filter: brightness(1.1); }
+.sd-menu { position: relative; }
+.sd-menu summary { list-style: none; }
+.sd-menu summary::-webkit-details-marker { display: none; }
+.sd-pop { position: absolute; top: calc(100% + 6px); left: 0; min-width: 190px; background: var(--bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 6px; box-shadow: 0 12px 32px rgba(0,0,0,.5); z-index: 60; }
+.sd-pop a { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: var(--radius-sm); color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; }
+.sd-pop a:hover, .sd-pop a[aria-current="page"] { background: color-mix(in srgb, var(--sd-color) 22%, transparent); }
+.sd-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sd-color); flex-shrink: 0; }
+@media (max-width: 760px) {
+  .sd-nav { margin-left: 0; width: 100%; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+  .sd-nav::-webkit-scrollbar { display: none; }
+  .sd-pop { position: fixed; left: 16px; right: 16px; top: 100px; }
+}
+.sd-footer { margin-top: 48px; background: var(--bg-secondary); border-top: 1px solid var(--color-border); }
+.sd-footer-inner { max-width: 1200px; margin: 0 auto; padding: 28px 16px 20px; }
+.sd-footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 24px; }
+.sd-footer h2 { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--color-text-secondary); margin-bottom: 10px; }
+.sd-footer ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.sd-footer a { color: #D4D4E2; font-size: 13px; text-decoration: none; }
+.sd-footer a:hover { color: #fff; text-decoration: underline; }
+.sd-footer-base { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border); text-align: center; font-size: 12px; color: var(--color-text-secondary); line-height: 1.7; }

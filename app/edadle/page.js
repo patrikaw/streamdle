@@ -10,7 +10,6 @@ const NO_JUEGO = ['just chatting', 'irl', 'sports', 'kings league', 'talk shows 
 const actividad = (c) => (c.toLowerCase() === 'irl' ? 'Hace streams IRL' : NO_JUEGO.includes(c.toLowerCase()) ? `Hace streams de ${c}` : `Juega ${c}`);
 const tieneEdad = (s) => !!(s.birth_year && s.birth_month && s.birth_day);
 const slugDe = (s) => s.display_name.toLowerCase().replace(/\s+/g, '-');
-const GAMES = [{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', label: '🎲 Descubrí un streamer' }];
 
 function edadDe(s) {
   const h = new Date();
@@ -129,14 +128,6 @@ export default function EdadlePage() {
 
   return (
     <div style={{ background: 'var(--bg-primary)' }}>
-      <header style={{ borderBottom: '1px solid var(--color-border)', padding: '14px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-secondary)', gap: 12, flexWrap: 'wrap' }}>
-        <a href="/" style={{ textDecoration: 'none', fontSize: 18, fontWeight: 800, background: 'linear-gradient(135deg,#7C3AED,#53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>STREAMDLE</a>
-        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
-          {GAMES.map((g) => (
-            <a key={g.href} href={g.href} style={{ background: '#7C3AED', border: '1px solid var(--color-border)', color: 'white', borderRadius: 8, padding: '9px 22px', fontSize: 14, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}>{g.label}</a>
-          ))}
-        </div>
-      </header>
       <main className="game-main-content" style={{ maxWidth: 600, margin: '0 auto', padding: '24px 16px 48px' }}>
         <div style={{ textAlign: 'center', marginBottom: 20 }}>
           <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 6 }}>🎂 ¿Cuántos años tiene este streamer?</h1>

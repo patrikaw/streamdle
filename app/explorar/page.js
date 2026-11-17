@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { STREAMERS } from '../../data/streamers';
-import SearchBar from '../components/SearchBar';
 import { getCategoriesWithMinStreamers } from '../../lib/categories';
 
 export const metadata = {
@@ -113,33 +112,7 @@ export default function ExplorarPage() {
       `}</style>
 
       {/* Header */}
-      <header style={{
-        borderBottom: '1px solid var(--color-border)', padding: '14px 24px',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        background: 'var(--bg-secondary)', gap: 12, flexWrap: 'wrap',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span className="header-icon" style={{ fontSize: 20 }}>🎮</span>
-            <span style={{
-              fontSize: 18, fontWeight: 800,
-              background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            }}>STREAMDLE</span>
-          </Link>
-          <SearchBar />
-        </div>
-        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
-          {GAME_NAV.map(g => (
-            <Link key={g.href} href={g.href} style={{
-              background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-              color: 'white', borderRadius: 8, padding: '5px 12px',
-              fontSize: 10, fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap',
-            }}>{g.label}</Link>
-          ))}
-        </div>
-      </header>
-
+      
       {/* Hero */}
       <div style={{ textAlign: 'center', padding: '52px 24px 40px' }}>
         <div style={{
@@ -294,18 +267,6 @@ export default function ExplorarPage() {
         </div>
       </main>
 
-      <footer style={{
-        borderTop: '1px solid var(--color-border)', background: 'var(--bg-secondary)',
-        padding: '20px 24px', textAlign: 'center', fontSize: 12, color: 'var(--color-text-secondary)',
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}>
-          {[{ href: '/streamers', label: 'Streamers' }, { href: '/juegos', label: 'Juegos' }, { href: '/contacto', label: 'Contacto' }, { href: '/privacidad', label: 'Privacidad' }].map(l => (
-            <a key={l.href} href={l.href} style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>{l.label}</a>
-          ))}
-        </div>
-        © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por{' '}
-        <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-green)', textDecoration: 'underline' }}>Pato Wnuk</a>.
-      </footer>
     </div>
   );
 }

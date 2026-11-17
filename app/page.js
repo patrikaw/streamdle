@@ -89,39 +89,7 @@ export default function Home() {
         @media (max-width: 440px) { .novedades-grid { grid-template-columns: 1fr; } }
       `}</style>
       {/* Header */}
-      <header style={{
-        borderBottom: '1px solid var(--color-border)',
-        padding: '16px 24px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        background: 'var(--bg-secondary)',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{ fontSize: '24px' }}>🎮</span>
-          <span style={{
-            fontSize: '22px',
-            fontWeight: '800',
-            background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}>STREAMDLE</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <a href="/ruleta" style={{ fontSize: '12px', fontWeight: 700, color: '#fff', textDecoration: 'none', padding: '6px 14px', borderRadius: '8px', background: '#7C3AED', whiteSpace: 'nowrap' }}>🎲 Descubrí un streamer</a>
-          <a href="/explorar" style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '4px 10px', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'var(--bg-card)', whiteSpace: 'nowrap' }}>🔍 Explorar</a>
-          <span style={{
-            fontSize: '12px',
-            color: 'var(--color-text-secondary)',
-            background: 'var(--bg-card)',
-            padding: '4px 10px',
-            borderRadius: '12px',
-            border: '1px solid var(--color-border)',
-          }}>🌎 ES</span>
-        </div>
-      </header>
-
+      
       {/* Cinta de novedades */}
       <a href="#novedades" className="cinta-volvimos" style={{ display: 'block', textAlign: 'center', textDecoration: 'none', color: '#fff', fontSize: '13px', fontWeight: 700, padding: '9px 16px', background: 'linear-gradient(90deg, #7C3AED, #DB2777, #F59E0B)' }}>
         🎉 ¡Volvimos con todo! Nuevo juego <u>Edadle</u>, streamers en tendencia y comunidades. Mirá las novedades ↓
@@ -301,50 +269,7 @@ export default function Home() {
         </section>
 
         {/* Pie */}
-        <footer style={{ marginTop: '48px', padding: '28px 24px 8px', borderTop: '1px solid var(--color-border)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', textAlign: 'center' }}>
-        <nav aria-label="Rankings y explorador de streamers" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
-          {[
-            ['/tendencias', '🔥 Streamers en tendencia'], ['/streamers', '🏆 Ranking de streamers'], ['/streamers/signo', '♈ Por signo'],
-            ['/streamers/generacion', '🧬 Por generación'], ['/streamers/personalidad', '🎭 Por personalidad'],
-          ].map(([href, label]) => (
-            <a key={href} href={href} style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '6px 12px', borderRadius: '20px', border: '1px solid var(--color-border)', background: 'var(--bg-card)' }}>{label}</a>
-          ))}
-        </nav>
-        <div style={{
-          textAlign: 'center',
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '24px',
-          flexWrap: 'wrap',
-        }}>
-          {[
-  { label: 'Cómo jugar', href: '/como-jugar' },
-  { label: 'Contacto', href: '/contacto' },
-  { label: 'Privacidad', href: '/privacidad' },
-  { label: 'Términos', href: '/terminos' },
-  { label: 'Pispeo · reseñas de herramientas', href: 'https://pispeo.com.ar' },
-].map(link => (
-  <a key={link.label} href={link.href} target={link.href.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer" style={{
-    color: 'var(--color-text-secondary)',
-    fontSize: '13px',
-    textDecoration: 'none',
-    cursor: 'pointer',
-    fontWeight: 'normal',
-  }}>{link.label}</a>
-))}
- 
-        </div>
-        <p style={{
-          textAlign: 'center',
-          color: 'var(--color-text-secondary)',
-          fontSize: '12px',
-          margin: 0,
-        }}>
-          © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por{' '}
-          <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer" style={{ color: '#53FC18', fontWeight: '700', textDecoration: 'underline' }}>Pato Wnuk</a>.
-        </p>
-        </footer>
-      </main>
+              </main>
     </div>
   );
 }

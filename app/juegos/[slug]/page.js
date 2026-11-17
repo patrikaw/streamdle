@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import gameSeoOverrides from '../../../data/game-seo-overrides.json';
-import SearchBar from '../../components/SearchBar';
 import {
   getCategoryFromSlug,
   getCategoriesWithMinStreamers,
@@ -213,32 +212,7 @@ export default async function JuegoPage({ params }) {
       `}</style>
 
       {/* Header */}
-      <header style={{
-        borderBottom: '1px solid var(--color-border)',
-        padding: '14px 24px',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        background: 'var(--bg-secondary)',
-        position: 'sticky', top: 0, zIndex: 10,
-        gap: 12, flexWrap: 'wrap',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
-            <span className="header-icon" style={{ fontSize: 20 }}>🎮</span>
-            <span style={{
-              fontSize: 18, fontWeight: 800,
-              background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            }}>STREAMDLE</span>
-          </Link>
-          <SearchBar />
-        </div>
-        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'center' }}>
-          {[{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', label: '🎲 Descubrí un streamer' }].map(g=>(
-            <Link key={g.href} href={g.href} style={{background:'var(--bg-card)',border:'1px solid var(--color-border)',color:'white',borderRadius:8,padding: '9px 22px',fontSize: 14,fontWeight:600,textDecoration:'none',whiteSpace:'nowrap'}}>{g.label}</Link>
-          ))}
-        </div>
-      </header>
-
+      
       {/* Breadcrumb */}
       <div style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--color-border)' }}>
         <div style={{

@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import SearchBar from '../components/SearchBar';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { enlacesDeFicha } from '../../lib/agrupaciones';
@@ -254,12 +253,6 @@ function RelatedCard({streamer,avatars}) {
 function NotFound() {
   return (
     <div style={{minHeight:'100vh',background:'var(--bg-primary)',display:'flex',flexDirection:'column'}}>
-      <header style={{borderBottom:'1px solid var(--color-border)',padding:'14px 24px',display:'flex',alignItems:'center',gap:8,background:'var(--bg-secondary)'}}>
-        <a href="/" style={{textDecoration:'none',display:'flex',alignItems:'center',gap:8}}>
-          <span className="header-icon" style={{fontSize:20}}>🎮</span>
-          <span style={{fontSize:18,fontWeight:800,background:'linear-gradient(135deg,#7C3AED,#53FC18)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>STREAMDLE</span>
-        </a>
-      </header>
       <div style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'40px 20px',textAlign:'center'}}>
         <div style={{fontSize:72,marginBottom:16}}>👤</div>
         <h1 style={{fontSize:28,fontWeight:800,marginBottom:8}}>Streamer no encontrado</h1>
@@ -401,20 +394,6 @@ export default function StreamerPage() {
         @media(max-width:640px){.header-icon{display:none!important;}}
       `}</style>
 
-      <header style={{borderBottom:'1px solid var(--color-border)',padding:'14px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--bg-secondary)',gap:12,flexWrap:'wrap'}}>
-        <div style={{display:'flex',alignItems:'center',gap:10}}>
-          <a href="/" style={{textDecoration:'none',display:'flex',alignItems:'center',gap:8}}>
-            <span className="header-icon" style={{fontSize:20}}>🎮</span>
-            <span style={{fontSize:18,fontWeight:800,background:'linear-gradient(135deg,#7C3AED,#53FC18)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>STREAMDLE</span>
-          </a>
-          <SearchBar />
-        </div>
-        <div className="game-nav-links" style={{display:'flex',gap:4,flexWrap:'wrap',justifyContent:'center'}}>
-          {[{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', label: '🎲 Descubrí un streamer' }].map(g=>(
-            <a key={g.href} href={g.href} style={{background:'var(--bg-card)',border:'1px solid var(--color-border)',color:'white',borderRadius:8,padding: '9px 22px',fontSize: 14,fontWeight:600,textDecoration:'none',whiteSpace:'nowrap'}}>{g.label}</a>
-          ))}
-        </div>
-      </header>
 
       <div style={{maxWidth:1100,margin:'0 auto',padding:'10px 16px 0',display:'flex',alignItems:'center',gap:6,fontSize:12,color:'var(--color-text-secondary)',flexWrap:'wrap'}}>
         {crumbs.map((c,i)=>(
@@ -675,15 +654,6 @@ export default function StreamerPage() {
         </div>
       </main>
 
-      <footer style={{borderTop:'1px solid var(--color-border)',background:'var(--bg-secondary)',padding:'20px 24px',textAlign:'center',fontSize:12,color:'var(--color-text-secondary)'}}>
-        <div style={{display:'flex',justifyContent:'center',gap:16,flexWrap:'wrap',marginBottom:8}}>
-          {[{href:'/streamers',label:'Todos los streamers'},{href:'/contacto',label:'Contacto'},{href:'/privacidad',label:'Privacidad'},{href:'/terminos',label:'Términos'}].map(l=>(
-            <a key={l.href} href={l.href} style={{color:'var(--color-text-secondary)',textDecoration:'none'}}>{l.label}</a>
-          ))}
-        </div>
-        © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por{' '}
-        <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer" style={{color:'var(--color-green)',textDecoration:'underline'}}>Pato Wnuk</a>.
-      </footer>
     </div>
   );
 }
