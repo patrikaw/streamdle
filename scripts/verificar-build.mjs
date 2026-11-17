@@ -50,6 +50,12 @@ else {
 
 if (errores.length) {
   console.error('\nverificar-build: FALLÓ\n - ' + errores.join('\n - ') + '\n');
+  const ls = (d) => { try { return fs.readdirSync(d).slice(0, 25).join(', '); } catch (e) { return 'no existe (' + e.code + ')'; } };
+  console.error('DIAGNÓSTICO cwd=' + process.cwd() + ' node=' + process.version + ' VERCEL=' + (process.env.VERCEL || '') + ' NEXT_ADAPTER_PATH=' + (process.env.NEXT_ADAPTER_PATH || ''));
+  console.error('DIAGNÓSTICO .next: ' + ls('.next'));
+  console.error('DIAGNÓSTICO .next/server: ' + ls(path.join('.next', 'server')));
+  console.error('DIAGNÓSTICO .next/server/app: ' + ls(APP));
+  console.error('DIAGNÓSTICO cantidad de .html en app: ' + fs.readdirSync(APP).filter((f) => f.endsWith('.html')).length);
   process.exit(1);
 }
 console.log('verificar-build: todo en orden.');
