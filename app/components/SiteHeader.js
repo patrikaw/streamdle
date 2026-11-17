@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { rachaActual } from '../../lib/racha';
 import SearchBar from './SearchBar';
-import { JUEGOS, SECCIONES, MENU } from '../../lib/sitio';
+import { JUEGOS, SECCIONES, MENU, RUTAS_EXPLORAR } from '../../lib/sitio';
 
 const activo = (pathname, href) => (href === '/' ? false : pathname === href || pathname.startsWith(href + '/'));
 
@@ -46,14 +46,14 @@ export default function SiteHeader() {
                 </details>
               );
             }
-            const aqui = activo(pathname, s.href.replace(/\/hoy$/, ''));
+            const aqui = clave === 'explorar' ? RUTAS_EXPLORAR.some((r) => activo(pathname, r)) : activo(pathname, s.href.replace(/\/hoy$/, ''));
             return (
               <Link key={clave} href={s.href} className="sd-link" style={{ '--sd-color': s.color }} aria-current={aqui ? 'page' : undefined}>
                 <span aria-hidden="true">{s.emoji}</span> {s.nombre}
               </Link>
             );
           })}
-          <Link href={SECCIONES.ruleta.href} className="sd-cta">🎲 Descubrí un streamer</Link>
+          <Link href={SECCIONES.ruleta.href} className="sd-cta" title="Descubrí un streamer al azar" aria-label="Ruleta: descubrí un streamer al azar"><span aria-hidden="true">🎲</span> Ruleta</Link>
         </nav>
       </div>
     </header>

@@ -73,6 +73,11 @@ export async function Tendencias({ regionSlug, periodoClave }) {
         {primero ? ` El que más seguidores sumó fue ${primero.s.display_name}, con +${fmtNum(primero.ganancia)}.` : ''}
         {' '}Se mide de dos formas: por seguidores ganados y por porcentaje de crecimiento (solo canales de más de 20 K, para que un canal chico no distorsione la lista).
       </p>
+      {t.soloTwitch && (
+        <p style={{ color: 'var(--color-text-secondary)', fontSize: 13, lineHeight: 1.6, maxWidth: 780, marginTop: 8 }}>
+          📌 Por ahora esta lista cuenta solo Twitch. Los seguidores de Kick se suman solos a partir de la próxima medición, cuando haya dos fotos comparables.
+        </p>
+      )}
 
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
         {REGIONES.map((r) => (
