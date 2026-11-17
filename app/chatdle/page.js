@@ -6,6 +6,7 @@ import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat, getYes
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { fmtNum } from '../../lib/formato';
 import { C } from '../../lib/colores';
+import EnlaceExterno from '../components/EnlaceExterno';
 
 function getSlug(s) { return s.display_name.toLowerCase().replace(/\s+/g,'-'); }
 
@@ -130,9 +131,9 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
             <div>
               <div style={{ fontWeight: '700', fontSize: '16px' }}>{target.display_name}</div>
               <div style={{ display: 'flex', gap: '5px', marginTop: '4px', flexWrap: 'wrap' }}>
-                {target.twitch && <a href={`https://twitch.tv/${target.twitch}`} target="_blank" rel="noopener noreferrer" className="badge-twitch">Twitch</a>}
-                {target.kick && <a href={`https://kick.com/${target.kick}`} target="_blank" rel="noopener noreferrer" className="badge-kick">Kick</a>}
-                {target.youtube && <a href={`https://youtube.com/${target.youtube}`} target="_blank" rel="noopener noreferrer" className="badge-youtube">YouTube</a>}
+                {target.twitch && <EnlaceExterno href={`https://twitch.tv/${target.twitch}`} className="badge-twitch">Twitch</EnlaceExterno>}
+                {target.kick && <EnlaceExterno href={`https://kick.com/${target.kick}`} className="badge-kick">Kick</EnlaceExterno>}
+                {target.youtube && <EnlaceExterno href={`https://youtube.com/${target.youtube}`} className="badge-youtube">YouTube</EnlaceExterno>}
               </div>
             </div>
           </div>

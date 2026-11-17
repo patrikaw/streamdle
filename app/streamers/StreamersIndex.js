@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import EnlaceExterno from '../components/EnlaceExterno';
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatarsForLogins, getAvatarUrl } from '../../data/avatars';
@@ -252,14 +253,10 @@ function StreamerCard({ streamer, avatars, sort }) {
         </div>
         <div style={{ display: 'flex', gap: 4 }}>
           {twitchUrl && (
-            <a href={twitchUrl} target="_blank" rel="noopener noreferrer"
-              className="badge-twitch" style={{ textDecoration: 'none' }}
-              onClick={e => e.stopPropagation()}>Twitch</a>
+            <EnlaceExterno href={twitchUrl} className="badge-twitch">Twitch</EnlaceExterno>
           )}
           {kickUrl && (
-            <a href={kickUrl} target="_blank" rel="noopener noreferrer"
-              className="badge-kick" style={{ textDecoration: 'none' }}
-              onClick={e => e.stopPropagation()}>Kick</a>
+            <EnlaceExterno href={kickUrl} className="badge-kick">Kick</EnlaceExterno>
           )}
         </div>
       </div>
