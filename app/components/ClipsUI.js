@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Shell, jsonLd } from './AgrupacionUI';
 import contenido from '../../data/contenido.json';
+import { fmtNum } from '../../lib/formato';
 
 export const SITE = 'https://streamdle.net';
 
@@ -44,7 +45,7 @@ export function metaClips(tipo, periodo) {
   };
 }
 
-const fmtVistas = (n) => (n >= 1_000_000 ? (n / 1_000_000).toFixed(1).replace('.', ',') + ' M' : n >= 1000 ? Math.round(n / 1000).toLocaleString('es-AR') + ' K' : String(n));
+const fmtVistas = (n) => fmtNum(n);
 
 export function ClipsPagina({ tipo, periodo }) {
   const T = TIPOS[tipo];

@@ -3,8 +3,11 @@
 import { useState, useEffect } from 'react';
 import { STREAMERS, COUNTRIES, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
+import { fmtNum } from '../../lib/formato';
 
 const MAX_ATTEMPTS = 6;
+const NO_JUEGO = ['just chatting', 'irl', 'sports', 'kings league', 'talk shows & podcasts', 'asmr', 'art', 'music', 'special events'];
+const actividad = (c) => (c.toLowerCase() === 'irl' ? 'Hace streams IRL' : NO_JUEGO.includes(c.toLowerCase()) ? `Hace streams de ${c}` : `Juega ${c}`);
 const tieneEdad = (s) => !!(s.birth_year && s.birth_month && s.birth_day);
 const slugDe = (s) => s.display_name.toLowerCase().replace(/\s+/g, '-');
 const GAMES = [{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', label: '🎲 Descubrí un streamer' }];
@@ -150,7 +153,7 @@ export default function EdadlePage() {
               : <span style={{ fontSize: 56 }}>{target.display_name[0]}</span>}
           </div>
           <div style={{ fontSize: 22, fontWeight: 800 }}>{target.display_name}</div>
-          <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginTop: 4 }}>{target.top_category ? `Juega ${target.top_category} · ` : ''}{Math.round(target.total_followers / 1000).toLocaleString('es-AR')} K seguidores</div>
+          <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginTop: 4 }}>{target.top_category ? `${actividad(target.top_category)} · ` : ''}{fmtNum(target.total_followers)} seguidores</div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginBottom: 8 }}>
           {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => <div key={i} style={{ width: 32, height: 6, borderRadius: 3, background: i < guesses.length ? (won && i === guesses.length - 1 ? '#16A34A' : '#DC2626') : 'var(--color-border)' }} />)}

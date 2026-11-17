@@ -8,6 +8,7 @@ import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { enlacesDeFicha } from '../../lib/agrupaciones';
 import { badgesDe } from '../../lib/tendencias';
 import { categoryToSlug, getCategoriesWithMinStreamers } from '../../lib/categories';
+import { fmtNum } from '../../lib/formato';
 
 const VALID_GAME_SLUGS = new Set(getCategoriesWithMinStreamers(7).map(c => c.slug));
 
@@ -21,14 +22,7 @@ function findStreamer(slug) {
   ) || null;
 }
 
-function fmt(n) {
-  if (!n) return '—';
-  const num = Number(n);
-  if (isNaN(num) || num === 0) return '—';
-  if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace('.0', '') + 'M';
-  if (num >= 1_000) return Math.round(num / 1_000) + 'K';
-  return num.toLocaleString('es-AR');
-}
+const fmt = (n) => fmtNum(n, '—');
 
 function fmtFull(n) {
   if (!n) return '—';

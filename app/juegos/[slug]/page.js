@@ -13,6 +13,7 @@ import { GAME_TRIVIA } from '../../../data/game-trivia';
 import LiveStats from './LiveStats';
 import StreamerGrid from './StreamerGrid';
 import GameTrivia from './GameTrivia';
+import { fmtNum } from '../../../lib/formato';
 
 export const revalidate = 86400;
 
@@ -412,11 +413,7 @@ export default async function JuegoPage({ params }) {
                         background: 'rgba(0,0,0,0.78)', color: '#fff',
                         fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
                       }}>
-                        {clip.view_count >= 1_000_000
-                          ? (clip.view_count / 1_000_000).toFixed(1) + 'M'
-                          : clip.view_count >= 1_000
-                          ? Math.round(clip.view_count / 1_000) + 'K'
-                          : clip.view_count} views
+                        {fmtNum(clip.view_count)} views
                       </span>
                     </div>
                   )}

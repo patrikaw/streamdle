@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
+import { fmtNum } from '../../lib/formato';
 
 const MAX_ATTEMPTS = 8;
 
@@ -16,12 +17,7 @@ function getNumericHint(guessVal, targetVal) {
   return 'lower';
 }
 
-function formatNum(n) {
-  if (!n) return '0';
-  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
-  if (n >= 1000) return (n / 1000).toFixed(0) + 'K';
-  return n.toString();
-}
+const formatNum = (n) => fmtNum(n, '0');
 
 function getPlatforms(streamer) {
   const platforms = [];

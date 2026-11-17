@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { STREAMERS } from '../../data/streamers';
 import seoOverrides from '../../data/seo-overrides.json';
+import { fmtNum } from '../../lib/formato';
 
 function findStreamer(slug) {
   return STREAMERS.find(s =>
@@ -8,13 +9,7 @@ function findStreamer(slug) {
   ) || null;
 }
 
-function fmt(n) {
-  if (!n) return '0';
-  const num = Number(n);
-  if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace('.0', '') + 'M';
-  if (num >= 1_000) return Math.round(num / 1_000) + 'K';
-  return String(num);
-}
+const fmt = (n) => fmtNum(n, '0');
 
 function countryAdj(code) {
   const map = {

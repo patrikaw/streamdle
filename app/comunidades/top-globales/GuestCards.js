@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { fmtNum } from '../../../lib/formato';
 
 const SOCIAL_SVG = {
   kick:      { path: 'M4 2h16a2 2 0 012 2v16a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2zm3 4v12h2.5v-4l4.5 4H17l-5-5 4.5-4.5h-2.8L9.5 12.5V6H7z', color: '#53FC18', bg: 'rgba(83,252,24,0.12)', border: 'rgba(83,252,24,0.3)' },
@@ -26,12 +27,7 @@ function GuestSocialIcon({ href, type }) {
   );
 }
 
-function fmt(n) {
-  if (!n) return '—';
-  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace('.0', '') + 'M';
-  if (n >= 1_000) return Math.round(n / 1_000) + 'K';
-  return n.toLocaleString('es');
-}
+const fmt = (n) => fmtNum(n, '—');
 
 export default function GuestCards({ guests }) {
   const [kickAvatars, setKickAvatars] = useState({});

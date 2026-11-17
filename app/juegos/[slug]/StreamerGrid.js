@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { fmtNum } from '../../../lib/formato';
 
 const PAGE_SIZE = 12;
 
@@ -9,12 +10,7 @@ function flagOf(code) {
   return m[code] ?? '🌍';
 }
 
-function fmt(n) {
-  if (!n) return '—';
-  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace('.0', '') + 'M';
-  if (n >= 1_000) return Math.round(n / 1_000) + 'K';
-  return n.toLocaleString('es');
-}
+const fmt = (n) => fmtNum(n, '—');
 
 function getInitials(n) { return (n || '?').slice(0, 2).toUpperCase(); }
 

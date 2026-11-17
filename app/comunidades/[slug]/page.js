@@ -5,6 +5,7 @@ import { Shell, jsonLd, FLAGS } from '../../components/AgrupacionUI';
 import { getAvatarUrl } from '../../../data/avatars';
 import { fetchTwitchAvatars } from '../../../lib/twitch-server';
 import { COMUNIDADES, SITE, comunidadPorSlug, miembrosDe, sinFichaDe, edadDe, esIndexable } from '../../../lib/comunidades';
+import { fmtNum } from '../../../lib/formato';
 
 export const dynamicParams = false;
 export const revalidate = 86400;
@@ -13,7 +14,7 @@ export function generateStaticParams() {
   return COMUNIDADES.map((c) => ({ slug: c.slug }));
 }
 
-const fmt = (n) => (n >= 1_000_000 ? (n / 1_000_000).toFixed(1).replace('.', ',') + ' M' : Math.round(n / 1000).toLocaleString('es-AR') + ' K');
+const fmt = (n) => fmtNum(n);
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;

@@ -4,15 +4,11 @@ import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
+import { fmtNum } from '../../lib/formato';
 
 function getSlug(s) { return s.display_name.toLowerCase().replace(/\s+/g,'-'); }
 
-function formatNum(n) {
-  if (!n || n === 0) return '0';
-  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
-  if (n >= 1000) return (n / 1000).toFixed(0) + 'K';
-  return n.toString();
-}
+const formatNum = (n) => fmtNum(n, '0');
 
 function formatNumFull(n) {
   if (!n) return '0';

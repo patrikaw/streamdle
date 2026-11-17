@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getCategoriesWithMinStreamers } from '../../lib/categories';
 import SearchBar from '../components/SearchBar';
 import { fetchTwitchGame } from '../../lib/twitch-server';
+import { fmtNum } from '../../lib/formato';
 
 export const revalidate = 86400;
 
@@ -43,12 +44,7 @@ function getColor(name) {
   return CATEGORY_COLORS[name] ?? '#7C3AED';
 }
 
-function fmt(n) {
-  if (!n) return '—';
-  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace('.0', '') + 'M';
-  if (n >= 1_000) return Math.round(n / 1_000) + 'K';
-  return n.toString();
-}
+const fmt = (n) => fmtNum(n, '—');
 
 function flagOf(code) {
   const m = { ES:'🇪🇸', AR:'🇦🇷', MX:'🇲🇽', PE:'🇵🇪', CO:'🇨🇴', CL:'🇨🇱', SV:'🇸🇻', PR:'🇵🇷', VE:'🇻🇪', UY:'🇺🇾', GT:'🇬🇹', DO:'🇩🇴', CU:'🇨🇺', FR:'🇫🇷', NO:'🇳🇴' };

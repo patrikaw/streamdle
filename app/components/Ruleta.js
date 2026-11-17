@@ -6,6 +6,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { fmtNum } from '../../lib/formato';
 
 const CLAVE = 'streamdle-ruleta-vistas';
 const ALTO = 76;
@@ -17,7 +18,7 @@ const DURACION_SUAVE = 900;
 const mezclar = (arr) => { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const leerVistas = () => { try { return new Set(JSON.parse(localStorage.getItem(CLAVE) || '[]')); } catch { return new Set(); } };
 const guardarVistas = (v) => { try { localStorage.setItem(CLAVE, JSON.stringify([...v])); } catch { /* sin storage solo se pierde el contador */ } };
-const fmt = (n) => (n >= 1_000_000 ? (n / 1_000_000).toFixed(1).replace('.', ',') + ' M' : Math.round(n / 1000).toLocaleString('es-AR') + ' K');
+const fmt = (n) => fmtNum(n);
 
 function Foto({ it, size }) {
   const [err, setErr] = useState(false);

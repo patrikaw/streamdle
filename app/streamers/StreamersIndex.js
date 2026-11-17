@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import SearchBar from '../components/SearchBar';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatarsForLogins, getAvatarUrl } from '../../data/avatars';
+import { fmtNum } from '../../lib/formato';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -46,14 +47,7 @@ const STAT_BY_SORT = {
 const PAGE_SIZE = 24;
 const LATAM_CODES = ['AR','MX','PE','CO','CL','SV','PR','VE','UY','GT','DO','FR','NO'];
 
-function fmt(n) {
-  if (!n) return '—';
-  const num = typeof n === 'string' ? parseInt(n.replace(/,/g, ''), 10) : Number(n);
-  if (isNaN(num) || num === 0) return '—';
-  if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace('.0', '') + 'M';
-  if (num >= 1_000)     return (num / 1_000).toFixed(1).replace('.0', '') + 'K';
-  return num.toString();
-}
+const fmt = (n) => fmtNum(n, '—');
 
 function fmtDate(iso) {
   if (!iso) return '—';

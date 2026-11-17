@@ -3,12 +3,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
+import { fmtNum } from '../../lib/formato';
 
 const MAX_ATTEMPTS = 6;
 const PIXEL_LEVELS = ['pixel-1','pixel-2','pixel-3','pixel-4','pixel-5','pixel-0'];
 
 function getSlug(s) { return s.display_name.toLowerCase().replace(/\s+/g,'-'); }
-function formatNum(n) { if(!n)return '0'; if(n>=1000000)return(n/1000000).toFixed(1)+'M'; if(n>=1000)return(n/1000).toFixed(0)+'K'; return n.toString(); }
+const formatNum = (n) => fmtNum(n, '0');
 function getTodayKey(country) { const d=new Date(); return `avatardle_${country}_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 
 function getResultText(country, won, attempts, streamer) {

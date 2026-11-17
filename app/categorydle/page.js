@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { STREAMERS, COUNTRIES, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
+import { fmtNum } from '../../lib/formato';
 
 function getSlug(s) { return s.display_name.toLowerCase().replace(/\s+/g,'-'); }
 
@@ -29,12 +30,7 @@ function getCategories(pool) {
   return Array.from(cats).sort();
 }
 
-function formatNum(n) {
-  if (!n) return '0';
-  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
-  if (n >= 1000) return (n / 1000).toFixed(0) + 'K';
-  return n.toString();
-}
+const formatNum = (n) => fmtNum(n, '0');
 
 function getTodayKey(country) {
   const d = new Date();
