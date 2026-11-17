@@ -24,6 +24,7 @@ const SEO = {"nombre": "Avatardle", "intro": "En Avatardle se muestra la foto de
 export default function Layout({ children }) {
   return (
     <>
+      <link rel="preconnect" href="https://static-cdn.jtvnw.net" crossOrigin="anonymous" />
       {children}
       <JuegoSEO href="/avatardle" {...SEO} />
     </>

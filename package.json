@@ -11,6 +11,12 @@
     "actualizar:aplicar": "node scripts/actualizar-datos.mjs --write",
     "postbuild": "node scripts/verificar-build.mjs"
   },
+  "browserslist": [
+    "chrome >= 111",
+    "edge >= 111",
+    "firefox >= 111",
+    "safari >= 16.4"
+  ],
   "dependencies": {
     "next": "^16.2.6",
     "react": "19.2.4",

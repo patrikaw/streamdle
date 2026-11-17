@@ -15,6 +15,7 @@ const CSP = [
 const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  experimental: { inlineCss: true },
   compiler: {
     removeConsole: { exclude: ['error'] },
   },

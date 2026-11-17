@@ -42,12 +42,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="es" className={inter.variable}>
       <head>
-        <link rel="preconnect" href="https://static-cdn.jtvnw.net" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
-        <script
-          async
+        <Script
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9797476509112947"
           crossOrigin="anonymous"
+          strategy="lazyOnload"
         />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-MDVFG17P7S"
