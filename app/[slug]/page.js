@@ -7,6 +7,9 @@ import { STREAMERS } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { enlacesDeFicha } from '../../lib/agrupaciones';
 import { badgesDe } from '../../lib/tendencias';
+import { hitoDe } from '../../lib/extras-ficha';
+import { CumpleChip } from '../components/Cumple';
+import VivoAhora from '../components/VivoAhora';
 import { categoryToSlug, getCategoriesWithMinStreamers } from '../../lib/categories';
 import { fmtNum } from '../../lib/formato';
 import { C } from '../../lib/colores';
@@ -368,6 +371,7 @@ export default function StreamerPage() {
 
   const enlaces=enlacesDeFicha(streamer);
   const badges=badgesDe(streamer);
+  const hito=hitoDe(streamer);
   const extraData=[
     streamer.real_name&&{label:'Nombre real',value:streamer.real_name},
     age&&{label:'Edad',value:`${age} años`},
@@ -426,10 +430,18 @@ export default function StreamerPage() {
                   <div style={{flex:1,minWidth:0,paddingBottom:2}}>
                     <div style={{display:'flex',alignItems:'center',gap:7,flexWrap:'wrap'}}>
                       <h1 style={{fontSize:'clamp(17px,3vw,24px)',fontWeight:800,margin:0}}>{streamer.display_name}</h1>
+                      <VivoAhora twitch={streamer.twitch} kick={streamer.kick}/>
                       {isPartner&&<span style={{background:C.twitch,color:'#fff',fontSize:10,fontWeight:700,padding:'2px 7px',borderRadius:'var(--radius-xs)'}}>PARTNER</span>}
                       {!streamer.is_active&&<span style={{background:'var(--bg-card)',color:'var(--color-text-secondary)',fontSize:10,fontWeight:700,padding:'2px 7px',borderRadius:'var(--radius-xs)'}}>INACTIVO</span>}
                     </div>
                     <div style={{fontSize:12,color:'var(--color-text-secondary)',marginTop:3}}>{flagOf(streamer.country)} {countryName(streamer.country)}</div>
+                    <div style={{display:'flex',gap:6,flexWrap:'wrap',marginTop:7}}>
+                      {streamer.twitch&&<span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'color-mix(in srgb, var(--color-twitch) 20%, transparent)',color:'#fff',border:'1px solid color-mix(in srgb, var(--color-twitch) 55%, transparent)'}}>Twitch</span>}
+                      {streamer.kick&&<span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'color-mix(in srgb, var(--color-kick) 16%, transparent)',color:'var(--color-kick)',border:'1px solid color-mix(in srgb, var(--color-kick) 50%, transparent)'}}>Kick</span>}
+                      {debut&&<span title="Año en que se creó su canal de Twitch" style={{fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'var(--bg-card)',color:'var(--color-text-secondary)',border:'1px solid var(--color-border)'}}>📅 En Twitch desde {debut}</span>}
+                      {hito&&<span title={hito.title} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'color-mix(in srgb, var(--color-warn) 18%, transparent)',color:'#fff',border:'1px solid color-mix(in srgb, var(--color-warn) 50%, transparent)'}}>{hito.texto}</span>}
+                      {streamer.birth_month&&streamer.birth_day&&<CumpleChip dia={Number(streamer.birth_day)} mes={Number(streamer.birth_month)} anio={streamer.birth_year?Number(streamer.birth_year):null}/>}
+                    </div>
 
                     {badges.length>0&&<div style={{display:'flex',gap:6,flexWrap:'wrap',marginTop:7}}>{badges.map(b=><a key={b.texto} href={b.href} title={b.title} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(74,222,128,0.12)',color:C.okLight,border:'1px solid rgba(74,222,128,0.35)',textDecoration:'none'}}>{b.texto} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>)}</div>}
                   </div>

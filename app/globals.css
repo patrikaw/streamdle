@@ -398,3 +398,5 @@ a.badge-twitch, a.badge-kick {
 /* Insignia de "en vivo": la misma en todo el sitio */
 .ui-live { display: inline-flex; align-items: center; gap: 5px; background: var(--color-live); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .04em; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
 .ui-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #fff; }
+
+.sd-racha { font-size: 12px; font-weight: 800; color: #fff; padding: 4px 9px; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--sec-tendencias) 25%, transparent); border: 1px solid color-mix(in srgb, var(--sec-tendencias) 60%, transparent); white-space: nowrap; }

@@ -3,6 +3,7 @@ import { getCategoriesWithMinStreamers } from '../../lib/categories';
 import { fetchTwitchGame } from '../../lib/twitch-server';
 import { fmtNum } from '../../lib/formato';
 import { colorCategoria } from '../../lib/colores';
+import { esJuego } from '../../lib/categorias';
 import { plural } from '../../lib/plural';
 
 export const revalidate = 86400;
@@ -163,6 +164,9 @@ export default async function JuegosPage() {
                         }}>
                           {plural(cat.totalCount, 'streamer')}
                         </span>
+                        {!esJuego(cat.name) && (
+                          <span title="No es un juego: es una categoría de charla, actividad o contenido" style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-text-secondary)', border: '1px dashed var(--color-border)', borderRadius: 'var(--radius-pill)', padding: '1px 8px' }}>Charla / contenido</span>
+                        )}
                         <span style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
                           {cat.primaryCount} principal · {cat.secondaryCount} sec.
                         </span>

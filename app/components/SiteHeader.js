@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { rachaActual } from '../../lib/racha';
 import SearchBar from './SearchBar';
 import { JUEGOS, SECCIONES, MENU } from '../../lib/sitio';
 
@@ -9,6 +11,8 @@ const activo = (pathname, href) => (href === '/' ? false : pathname === href || 
 
 export default function SiteHeader() {
   const pathname = usePathname() || '/';
+  const [racha, setRacha] = useState(0);
+  useEffect(() => { setRacha(rachaActual()); }, [pathname]);
   const enJuego = JUEGOS.some((j) => activo(pathname, j.href));
 
   return (
@@ -19,6 +23,9 @@ export default function SiteHeader() {
           <span className="sd-logo-text">STREAMDLE</span>
         </Link>
         <SearchBar />
+        {racha >= 2 && (
+          <span className="sd-racha" title={`Llevás ${racha} días seguidos ganando`}>🔥 {racha}</span>
+        )}
         <nav className="sd-nav" aria-label="Principal">
           {MENU.map((clave) => {
             const s = SECCIONES[clave];

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { claro, C, C_JUEGO, C_SEC } from '../lib/colores';
 import Ruleta from './components/Ruleta';
+import { CumpleHoy } from './components/Cumple';
 
 const GAMES = [
   {
@@ -94,6 +95,7 @@ export default function Home() {
       <a href="#novedades" className="cinta-volvimos" style={{ display: 'block', textAlign: 'center', textDecoration: 'none', color: '#fff', fontSize: '13px', fontWeight: 700, padding: '9px 16px', background: 'linear-gradient(90deg, var(--color-purple), #DB2777, var(--color-warn))' }}>
         🎉 ¡Volvimos con todo! Nuevo juego <u>Edadle</u>, streamers en tendencia y comunidades. Mirá las novedades ↓
       </a>
+      <CumpleHoy />
 
       {/* Hero */}
       <div style={{ textAlign: 'center', padding: '48px 24px 32px' }}>
