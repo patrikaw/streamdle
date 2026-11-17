@@ -33,8 +33,6 @@ function getPlatforms(streamer) {
 
 // Textos por país/región al ganar/perder
 function getResultTexts(country, won, attempts, streamer) {
-  const slug = getSlug(streamer);
-  const learnLink = `<a href="/${slug}" style="color:var(--color-purple-light);fontWeight:700">Conocé más de ${streamer.display_name} →</a>`;
   
   const texts = {
     ES: {
@@ -95,15 +93,6 @@ function getResultTexts(country, won, attempts, streamer) {
 function CountryFlag({ code }) {
   const flags = { AR:'🇦🇷',ES:'🇪🇸',MX:'🇲🇽',CO:'🇨🇴',PE:'🇵🇪',CL:'🇨🇱',VE:'🇻🇪',UY:'🇺🇾',BO:'🇧🇴',PY:'🇵🇾',EC:'🇪🇨',US:'🇺🇸',DO:'🇩🇴',GT:'🇬🇹',HN:'🇭🇳',SV:'🇸🇻',CR:'🇨🇷',PA:'🇵🇦',CU:'🇨🇺',NI:'🇳🇮',PR:'🇵🇷' };
   return <span>{flags[code] || '🏳️'}</span>;
-}
-
-function LockedCell({ label }) {
-  return (
-    <div style={{ background:'#1A1A2E',border:'1px dashed #2A2A40',borderRadius:'8px',padding:'8px 6px',textAlign:'center',flex:'1 1 0',minWidth:'72px',overflow:'hidden',opacity:0.5 }}>
-      <div style={{ fontSize:'10px',color:'rgba(255,255,255,0.4)',marginBottom:'4px',fontWeight:'500',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis' }}>{label}</div>
-      <div style={{ fontSize:'16px' }}>🔒</div>
-    </div>
-  );
 }
 
 function HintCell({ label, value, hint, arrow }) {

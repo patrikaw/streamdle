@@ -224,8 +224,6 @@ export const COUNTRIES = [
   {code:"ES",label:"🇪🇸 España"},
   {code:"LATAM",label:"🌎 LATAM"},
 ];
-export const LATAM_COUNTRIES = ["AR","MX","CO","PE","CL","VE","UY","SV","PR","DO","GT","HN","CR","PA","CU","NI","BO","PY","EC","FR","NO"];
-export const REDUCED_WEIGHT_COUNTRIES = ["AR","MX"];
 
 export function getStreamersByCountry(country) {
   if (country === "ALL") return STREAMERS;
@@ -252,13 +250,6 @@ export function searchStreamers(query, country = "ALL") {
   return pool.map(s=>({s,sc:score(s)})).filter(x=>x.sc<8)
     .sort((a,b)=>a.sc!==b.sc?a.sc-b.sc:a.s.display_name.localeCompare(b.s.display_name))
     .map(x=>x.s).slice(0,12);
-}
-
-export function getDailyStreamer(country = "ALL", gameOffset = 0) {
-  const pool = getStreamersByCountry(country);
-  const t = new Date();
-  const seed = t.getFullYear()*10000+(t.getMonth()+1)*100+t.getDate();
-  return pool[(seed+gameOffset)%pool.length];
 }
 
 const GAME_COUNTRIES      = ['ALL', 'AR', 'MX', 'ES', 'LATAM'];

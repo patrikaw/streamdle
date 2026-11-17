@@ -66,7 +66,6 @@ function Countdown() {
   const [copied, setCopied] = useState(false);
   const emoji = won ? (attempts <= 3 ? '🔥' : attempts <= 6 ? '✅' : '😅') : '💀';
   const resultText = getResultText(country, won, attempts, target);
-  const slug = getSlug(target);
   const blocks = Array.from({ length: MAX_ATTEMPTS }).map((_, i) => {
   const guess = guesses ? guesses[i] : null;
   if (!guess) return '⬛';

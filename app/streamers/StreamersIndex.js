@@ -282,7 +282,7 @@ export default function StreamersIndex({
   canonicalSlug = '',
 }) {
   const [search,  setSearch]  = useState('');
-  const [country, setCountry] = useState(defaultCountry);
+  const [country] = useState(defaultCountry);
   const [sort,    setSort]    = useState('followers_desc');
   const [page,    setPage]    = useState(1);
   const [avatars, setAvatars] = useState({});

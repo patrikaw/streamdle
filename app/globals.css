@@ -20,10 +20,6 @@
   --color-purple: #7C3AED;
   --color-purple-light: #B794FF;
   --color-green: #53FC18;
-  --color-correct: #16A34A;
-  --color-close: #B45309;
-  --color-wrong: #DC2626;
-  --color-higher-lower: #2563EB;
   --color-text: #FFFFFF;
   --color-text-secondary: #A1A1B5;
   --color-border: #2A2A40;
@@ -82,53 +78,6 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes pulse-purple {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.4); }
-  50%       { box-shadow: 0 0 0 8px rgba(124, 58, 237, 0); }
-}
-
-@keyframes pixelReveal {
-  from { filter: blur(12px) brightness(0.6); }
-  to   { filter: blur(0px) brightness(1); }
-}
-
-.animate-fadeIn    { animation: fadeIn 0.3s ease forwards; }
-.animate-popIn     { animation: popIn 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards; }
-.animate-slideDown { animation: slideDown 0.25s ease forwards; }
-
-/* Resultado correcto */
-.cell-correct {
-  background-color: var(--color-correct) !important;
-  border-color: var(--color-correct) !important;
-}
-.cell-close {
-  background-color: var(--color-close) !important;
-  border-color: var(--color-close) !important;
-}
-.cell-wrong {
-  background-color: var(--color-wrong) !important;
-  border-color: var(--color-wrong) !important;
-}
-.cell-higher {
-  background-color: var(--color-higher-lower) !important;
-  border-color: var(--color-higher-lower) !important;
-}
-
-/* Glow effects */
-.glow-purple {
-  box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
-}
-.glow-green {
-  box-shadow: 0 0 20px rgba(83, 252, 24, 0.3);
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #7C3AED, #53FC18);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
 
 /* Input base */
 .input-base {
