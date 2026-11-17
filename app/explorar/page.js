@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { STREAMERS } from '../../data/streamers';
 import { getCategoriesWithMinStreamers } from '../../lib/categories';
+import { C } from '../../lib/colores';
 
 export const metadata = {
   title: 'Explorar — Streamers, Juegos, Comunidades y más | Streamdle',
@@ -50,7 +51,7 @@ export default function ExplorarPage() {
       desc: 'Todos los streamers hispanohablantes de Twitch y Kick. Filtrá por país, ordená por seguidores, peak viewers u horas de transmisión.',
       href: '/streamers',
       live: true,
-      color: '#7C3AED',
+      color: C.purple,
       stat: `${totalStreamers} streamers`,
     },
     {
@@ -59,7 +60,7 @@ export default function ExplorarPage() {
       desc: 'Explorá qué juegan los streamers hispanos. Fortnite, Minecraft, GTA V, League of Legends y más — con clips, stats y cultura.',
       href: '/juegos',
       live: true,
-      color: '#53FC18',
+      color: C.kick,
       stat: `${totalJuegos} categorías`,
     },
     {
@@ -68,7 +69,7 @@ export default function ExplorarPage() {
       desc: 'La Velada del Año, Kings League, toreos, collabs masivas y los momentos más importantes de la escena hispana del streaming.',
       href: '/eventos',
       live: true,
-      color: '#F59E0B',
+      color: C.warn,
       stat: '1 evento',
     },
     {
@@ -77,7 +78,7 @@ export default function ExplorarPage() {
       desc: 'Equipos profesionales, jugadores con contratos activos y toda la escena competitiva hispanohablante en Twitch y Kick.',
       href: '/esports',
       live: false,
-      color: '#EF4444',
+      color: C.live,
       stat: `${totalEsports} streamers con equipo`,
     },
     {
@@ -86,7 +87,7 @@ export default function ExplorarPage() {
       desc: 'Coscu Army, QSMP, G2 House, Esos 4 y todas las comunidades que definen la cultura streamer hispana.',
       href: '/comunidades',
       live: true,
-      color: '#38BDF8',
+      color: C.info,
       stat: `${totalComunidades} comunidades`,
     },
     {
@@ -118,7 +119,7 @@ export default function ExplorarPage() {
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: 8,
           background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-          borderRadius: 20, padding: '4px 14px', marginBottom: 20,
+          borderRadius: 'var(--radius-pill)', padding: '4px 14px', marginBottom: 20,
           fontSize: 12, color: 'var(--color-text-secondary)',
         }}>
           🔍 Todo el universo del streaming hispano
@@ -126,7 +127,7 @@ export default function ExplorarPage() {
         <h1 style={{ fontSize: 'clamp(26px, 5vw, 44px)', fontWeight: 800, lineHeight: 1.2, marginBottom: 14 }}>
           Explorá{' '}
           <span style={{
-            background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
+            background: 'linear-gradient(135deg, var(--color-purple), var(--color-kick))',
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
           }}>Streamdle</span>
         </h1>
@@ -149,7 +150,7 @@ export default function ExplorarPage() {
                 style={{
                   background: 'var(--bg-card)',
                   border: `1px solid ${sec.live ? 'var(--color-border)' : 'var(--color-border)'}`,
-                  borderRadius: 16, padding: '24px 22px',
+                  borderRadius: 'var(--radius-lg)', padding: '24px 22px',
                   position: 'relative', overflow: 'hidden',
                   opacity: sec.live ? 1 : 0.72,
                 }}
@@ -169,7 +170,7 @@ export default function ExplorarPage() {
                     background: sec.live ? `${sec.color}22` : 'var(--bg-secondary)',
                     color: sec.live ? sec.color : 'var(--color-text-secondary)',
                     border: `1px solid ${sec.live ? sec.color + '44' : 'var(--color-border)'}`,
-                    borderRadius: 8, padding: '3px 9px',
+                    borderRadius: 'var(--radius-sm)', padding: '3px 9px',
                   }}>
                     {sec.stat}
                   </span>
@@ -218,7 +219,7 @@ export default function ExplorarPage() {
         {/* Listas de streamers */}
         <div style={{
           marginTop: 52, background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-          borderRadius: 16, padding: '28px 24px',
+          borderRadius: 'var(--radius-lg)', padding: '28px 24px',
         }}>
           <div style={{ marginBottom: 18 }}>
             <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 6 }}>🔮 Streamers por signo, edad y personalidad</h2>
@@ -236,7 +237,7 @@ export default function ExplorarPage() {
             ].map(l => (
               <Link key={l.href} href={l.href} style={{
                 background: 'var(--bg-secondary)', border: '1px solid var(--color-border)',
-                color: 'white', borderRadius: 10, padding: '8px 16px',
+                color: 'white', borderRadius: 'var(--radius-sm)', padding: '8px 16px',
                 fontSize: 13, fontWeight: 600, textDecoration: 'none',
               }}>{l.label}</Link>
             ))}
@@ -246,7 +247,7 @@ export default function ExplorarPage() {
         {/* Juegos diarios */}
         <div style={{
           marginTop: 52, background: 'linear-gradient(135deg, rgba(124,58,237,0.12), rgba(83,252,24,0.06))',
-          border: '1px solid rgba(124,58,237,0.25)', borderRadius: 16, padding: '28px 24px',
+          border: '1px solid rgba(124,58,237,0.25)', borderRadius: 'var(--radius-lg)', padding: '28px 24px',
         }}>
           <div style={{ marginBottom: 18 }}>
             <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 6 }}>🎯 Juegos diarios</h2>
@@ -258,7 +259,7 @@ export default function ExplorarPage() {
             {GAME_NAV.map(g => (
               <Link key={g.href} href={g.href} style={{
                 background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-                color: 'white', borderRadius: 10, padding: '8px 16px',
+                color: 'white', borderRadius: 'var(--radius-sm)', padding: '8px 16px',
                 fontSize: 13, fontWeight: 600, textDecoration: 'none',
                 transition: 'border-color 0.15s',
               }}>{g.label}</Link>

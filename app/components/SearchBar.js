@@ -98,7 +98,7 @@ export default function SearchBar() {
         display: 'flex', alignItems: 'center', gap: 6,
         background: 'var(--bg-card)',
         border: `1px solid ${showDropdown && hasResults ? 'var(--color-purple-light)' : 'var(--color-border)'}`,
-        borderRadius: 8, padding: '5px 10px',
+        borderRadius: 'var(--radius-sm)', padding: '5px 10px',
         transition: 'border-color 0.15s',
       }}>
         <span style={{ fontSize: 11, opacity: 0.45, flexShrink: 0 }}>🔍</span>
@@ -108,7 +108,7 @@ export default function SearchBar() {
           onChange={e => { setQuery(e.target.value); setOpen(true); setActive(-1); }}
           onFocus={() => { if (query) setOpen(true); }}
           onKeyDown={onKey}
-          placeholder="Buscar streamer o juego..."
+          placeholder="Buscar streamer o juego…"
           style={{
             background: 'none', border: 'none', outline: 'none',
             color: '#fff', fontSize: 12, width: '100%',
@@ -127,7 +127,7 @@ export default function SearchBar() {
         <div style={{
           position: 'absolute', top: 'calc(100% + 6px)', left: 0,
           background: 'var(--bg-secondary)', border: '1px solid var(--color-border)',
-          borderRadius: 10, overflow: 'hidden', minWidth: 260,
+          borderRadius: 'var(--radius-sm)', overflow: 'hidden', minWidth: 260,
           boxShadow: '0 8px 32px rgba(0,0,0,0.45)', zIndex: 200,
         }}>
           {hasResults ? (

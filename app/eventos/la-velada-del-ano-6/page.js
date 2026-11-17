@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import Resultados from './Resultados';
 import { fetchAvatarsBatch } from '../../../lib/twitch-server';
+import { C } from '../../../lib/colores';
+import { REDES as SOCIAL_SVG } from '../../../lib/redes';
 
 export const metadata = {
   title: 'La Velada del Año VI: resultados y ganadores | Streamdle',
@@ -28,11 +30,7 @@ export const metadata = {
   alternates: { canonical: 'https://streamdle.net/eventos/la-velada-del-ano-6' },
 };
 
-const SOCIAL_SVG = {
-  instagram: { path: 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z', color: '#E1306C', bg: 'rgba(225,48,108,0.12)', border: 'rgba(225,48,108,0.3)' },
-  twitter:   { path: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z', color: '#1DA1F2', bg: 'rgba(29,161,242,0.12)', border: 'rgba(29,161,242,0.3)' },
-  web:       { path: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z', color: '#9D5FF5', bg: 'rgba(124,58,237,0.12)', border: 'rgba(124,58,237,0.3)' },
-};
+
 
 const OFFICIAL_SOCIALS = [
   { href: 'https://www.instagram.com/infolavelada/', type: 'instagram' },
@@ -165,7 +163,7 @@ export default async function VeladaPage() {
               src="https://www.infobae.com/resizer/v2/FQGHRHFGH5CM7HTZZNKSBK36E4.jpg?auth=07dcd7c19353c7a54f4b1f4fc291576b012d7e3e85d43e492c641181ccec1996&smart=true&width=1200&height=1200&quality=85"
               alt="La Velada del Año VI"
               className="event-badge"
-              style={{ width: 130, height: 130, borderRadius: 14, objectFit: 'cover', display: 'block', border: '3px solid rgba(124,58,237,0.6)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
+              style={{ width: 130, height: 130, borderRadius: 'var(--radius-md)', objectFit: 'cover', display: 'block', border: '3px solid rgba(124,58,237,0.6)', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
             />
             <div className="velada-socials" style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
               {OFFICIAL_SOCIALS.map(({ href, type }) => {
@@ -173,7 +171,7 @@ export default async function VeladaPage() {
                 return (
                   <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="velada-social" style={{
                     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    width: 34, height: 34, borderRadius: 9,
+                    width: 34, height: 34, borderRadius: 'var(--radius-sm)',
                     background: s.bg, border: `1px solid ${s.border}`,
                     color: s.color, textDecoration: 'none',
                   }}>
@@ -187,10 +185,10 @@ export default async function VeladaPage() {
           {/* Right: text */}
           <div style={{ flex: 1, minWidth: 240 }}>
             <div style={{ display: 'flex', gap: 6, marginBottom: 14, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(245,158,11,0.15)', color: '#F59E0B', border: '1px solid rgba(245,158,11,0.4)', padding: '3px 10px', borderRadius: 20 }}>🎪 EVENTO</span>
-              <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(239,68,68,0.15)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.4)', padding: '3px 10px', borderRadius: 20 }}>🥊 BOXEO</span>
-              <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(83,252,24,0.1)', color: '#53FC18', border: '1px solid rgba(83,252,24,0.3)', padding: '3px 10px', borderRadius: 20 }}>📅 JUL 2026</span>
-              <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(148,163,184,0.15)', color: '#CBD5E1', border: '1px solid rgba(148,163,184,0.4)', padding: '3px 10px', borderRadius: 20 }}>✅ FINALIZADO</span>
+              <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(245,158,11,0.15)', color: C.warn, border: '1px solid rgba(245,158,11,0.4)', padding: '3px 10px', borderRadius: 'var(--radius-pill)' }}>🎪 EVENTO</span>
+              <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(239,68,68,0.15)', color: C.live, border: '1px solid rgba(239,68,68,0.4)', padding: '3px 10px', borderRadius: 'var(--radius-pill)' }}>🥊 BOXEO</span>
+              <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(83,252,24,0.1)', color: C.kick, border: '1px solid rgba(83,252,24,0.3)', padding: '3px 10px', borderRadius: 'var(--radius-pill)' }}>📅 JUL 2026</span>
+              <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(148,163,184,0.15)', color: '#CBD5E1', border: '1px solid rgba(148,163,184,0.4)', padding: '3px 10px', borderRadius: 'var(--radius-pill)' }}>✅ FINALIZADO</span>
             </div>
 
             <h1 style={{ fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: 800, lineHeight: 1.2, marginBottom: 12, color: '#fff' }}>
@@ -206,7 +204,7 @@ export default async function VeladaPage() {
                 <div key={label} style={{
                   display: 'flex', alignItems: 'center', gap: 8,
                   background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-                  borderRadius: 10, padding: '8px 14px',
+                  borderRadius: 'var(--radius-sm)', padding: '8px 14px',
                 }}>
                   <span style={{ fontSize: 16 }}>{icon}</span>
                   <div>
@@ -218,7 +216,7 @@ export default async function VeladaPage() {
               <Link href="/ibai" style={{
                 display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none',
                 background: 'rgba(124,58,237,0.12)', border: '1px solid rgba(124,58,237,0.3)',
-                borderRadius: 10, padding: '8px 14px',
+                borderRadius: 'var(--radius-sm)', padding: '8px 14px',
               }}>
                 <span style={{ fontSize: 16 }}>🎤</span>
                 <div>
@@ -249,7 +247,7 @@ export default async function VeladaPage() {
               <Link key={f.twitch} href={`/${f.slug}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
                 <div className="fighter-card" style={{
                   background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-                  borderRadius: 12, padding: '16px 14px', height: '100%',
+                  borderRadius: 'var(--radius-md)', padding: '16px 14px', height: '100%',
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
                   cursor: 'pointer',
                 }}>
@@ -261,7 +259,7 @@ export default async function VeladaPage() {
                   ) : (
                     <div style={{
                       width: 56, height: 56, borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #7C3AED, #9D5FF5)',
+                      background: 'linear-gradient(135deg, var(--color-purple), #9D5FF5)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 20, fontWeight: 800, color: '#fff',
                       border: '2px solid var(--color-border)',
@@ -274,9 +272,9 @@ export default async function VeladaPage() {
                     <div style={{ fontSize: 11, color: 'var(--color-text-secondary)', marginTop: 2 }}>{f.flag}</div>
                   </div>
                   <div style={{
-                    fontSize: 10, fontWeight: 700, color: '#60A5FA',
+                    fontSize: 10, fontWeight: 700, color: C.blueLight,
                     background: 'rgba(37,99,235,0.15)', border: '1px solid rgba(37,99,235,0.3)',
-                    borderRadius: 4, padding: '2px 8px', marginTop: 'auto',
+                    borderRadius: 'var(--radius-xs)', padding: '2px 8px', marginTop: 'auto',
                   }}>
                     Combate {f.fight}
                   </div>

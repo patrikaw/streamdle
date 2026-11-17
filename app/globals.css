@@ -34,6 +34,7 @@
   --color-ok-light: #4ADE80;
   --color-error: #DC2626;
   --color-error-light: #F87171;
+  --color-live: #EF4444;
   --color-warn: #F59E0B;
   --color-info: #0EA5E9;
 
@@ -54,6 +55,7 @@
   --game-categorydle: #059669;
 
   /* Formas */
+  --radius-xs: 4px;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
@@ -392,3 +394,7 @@ a.badge-twitch, a.badge-kick {
 .sd-footer a { color: #D4D4E2; font-size: 13px; text-decoration: none; }
 .sd-footer a:hover { color: #fff; text-decoration: underline; }
 .sd-footer-base { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border); text-align: center; font-size: 12px; color: var(--color-text-secondary); line-height: 1.7; }
+
+/* Insignia de "en vivo": la misma en todo el sitio */
+.ui-live { display: inline-flex; align-items: center; gap: 5px; background: var(--color-live); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .04em; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
+.ui-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #fff; }

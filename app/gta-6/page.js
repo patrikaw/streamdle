@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { Shell, jsonLd } from '../components/AgrupacionUI';
 import { STREAMERS } from '../../data/streamers';
 import { getTwitchToken } from '../../lib/twitch-server';
+import { C } from '../../lib/colores';
+import EnVivo from '../components/EnVivo';
 
 export const revalidate = 600;
 
@@ -74,9 +76,9 @@ export default async function Page() {
     ['¿Qué streamers hispanos juegan GTA 6?', 'En esta página mostramos en vivo cuáles de los streamers de Streamdle están transmitiendo GTA 6 en Twitch y sus clips más vistos de la última semana.'],
     ['¿Cada cuánto se actualiza esta página?', 'Cada 10 minutos aproximadamente.'],
   ];
-  const caja = { background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 12, overflow: 'hidden', textDecoration: 'none', color: 'inherit', display: 'block' };
+  const caja = { background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', overflow: 'hidden', textDecoration: 'none', color: 'inherit', display: 'block' };
   return (
-    <Shell crumbs={crumbs}>
+    <Shell crumbs={crumbs} seccion="juegos">
       {jsonLd({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map((x, i) => ({ '@type': 'ListItem', position: i + 1, name: x.label, item: x.href ? `${SITE}${x.href}` : url })) })}
       {jsonLd({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) })}
       <h1 style={{ fontSize: 'clamp(24px, 5vw, 38px)', fontWeight: 800, margin: '20px 0 10px' }}>🎮 GTA 6 en español: streamers en vivo y clips</h1>
@@ -86,14 +88,14 @@ export default async function Page() {
 
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 14 }}>
         {[['/gta-6/clips/hoy', '🎬 Mejores clips de hoy'], ['/gta-6/clips/semana', 'Clips de la semana'], ['/gta-6/clips/mes', 'Clips del mes'], ['/gta-6/ranking', '🏆 Quién más lo jugó']].map(([h, l]) => (
-          <Link key={h} href={h} className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 20, padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{l}</Link>
+          <Link key={h} href={h} className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{l}</Link>
         ))}
       </div>
 
       {d && (
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 16 }}>
           {[[d.totalEs, 'directos en español ahora'], [d.nuestros.length, 'de streamers con ficha'], [d.totalVivos, 'directos en total (mundo)']].map(([v, l]) => (
-            <div key={l} style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 10, padding: '8px 14px' }}>
+            <div key={l} style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-sm)', padding: '8px 14px' }}>
               <div style={{ fontSize: 18, fontWeight: 800 }}>{v}</div>
               <div style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>{l}</div>
             </div>
@@ -109,8 +111,8 @@ export default async function Page() {
               <Link key={v.id} href={`/${slugDe(v.ficha)}`} style={caja} className="agr-card">
                 <div style={{ position: 'relative', paddingBottom: '56.25%', background: '#000' }}>
                   <img src={v.thumbnail_url.replace('{width}', '440').replace('{height}', '248')} alt={`${v.user_name} jugando GTA 6`} loading="lazy" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                  <span style={{ position: 'absolute', top: 8, left: 8, background: '#DC2626', color: '#fff', fontSize: 10, fontWeight: 800, padding: '2px 7px', borderRadius: 4 }}>EN VIVO</span>
-                  <span style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(0,0,0,0.75)', color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>👁 {v.viewer_count.toLocaleString('es-AR')}</span>
+                  <EnVivo style={{ position: 'absolute', top: 8, left: 8 }} />
+                  <span style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(0,0,0,0.75)', color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 7px', borderRadius: 'var(--radius-xs)' }}>👁 {v.viewer_count.toLocaleString('es-AR')}</span>
                 </div>
                 <div style={{ padding: '10px 12px' }}>
                   <div style={{ fontSize: 14, fontWeight: 800 }}>{v.ficha.display_name}</div>
@@ -134,7 +136,7 @@ export default async function Page() {
               <a key={c.id} href={c.url} target="_blank" rel="noopener noreferrer" style={caja} className="agr-card">
                 <div style={{ position: 'relative', paddingBottom: '56.25%', background: '#000' }}>
                   <img src={c.thumbnail_url} alt={c.title} loading="lazy" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                  <span style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(0,0,0,0.75)', color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>👁 {c.view_count.toLocaleString('es-AR')}</span>
+                  <span style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(0,0,0,0.75)', color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 7px', borderRadius: 'var(--radius-xs)' }}>👁 {c.view_count.toLocaleString('es-AR')}</span>
                 </div>
                 <div style={{ padding: '10px 12px' }}>
                   <div style={{ fontSize: 13, fontWeight: 700 }}>{c.title}</div>

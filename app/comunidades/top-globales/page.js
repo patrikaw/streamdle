@@ -8,6 +8,7 @@ import CommunitySocials from './CommunitySocials';
 import ClipCards from './ClipCards';
 import { STREAMERS } from '../../../data/streamers';
 import { streamerSlug } from '../../../lib/agrupaciones';
+import { C } from '../../../lib/colores';
 
 export const revalidate = 86400;
 
@@ -34,7 +35,7 @@ export async function generateMetadata() {
   };
 }
 
-const COLOR = '#7C3AED';
+const COLOR = C.purple;
 
 // Redes y seguidores salen de la ficha (data/streamers.js); lo escrito acá solo es respaldo.
 function conDatosDeFicha(m) {
@@ -239,14 +240,14 @@ export default async function TopGlobalesPage() {
               {TAGS.map(tag => (
                 <span key={tag} style={{
                   fontSize: 11, background: `${COLOR}22`, color: COLOR,
-                  border: `1px solid ${COLOR}44`, borderRadius: 6, padding: '2px 9px',
+                  border: `1px solid ${COLOR}44`, borderRadius: 'var(--radius-xs)', padding: '2px 9px',
                 }}>
                   {tag}
                 </span>
               ))}
               <span style={{
-                fontSize: 11, background: 'rgba(83,252,24,0.1)', color: '#53FC18',
-                border: '1px solid rgba(83,252,24,0.25)', borderRadius: 6, padding: '2px 9px',
+                fontSize: 11, background: 'rgba(83,252,24,0.1)', color: C.kick,
+                border: '1px solid rgba(83,252,24,0.25)', borderRadius: 'var(--radius-xs)', padding: '2px 9px',
               }}>
                 Kick AR
               </span>
@@ -263,7 +264,7 @@ export default async function TopGlobalesPage() {
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               <div style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                background: 'var(--bg-card)', border: `1px solid ${COLOR}44`, borderRadius: 10, padding: '8px 16px',
+                background: 'var(--bg-card)', border: `1px solid ${COLOR}44`, borderRadius: 'var(--radius-sm)', padding: '8px 16px',
               }}>
                 <span style={{ fontSize: 16 }}>👥</span>
                 <div>
@@ -273,7 +274,7 @@ export default async function TopGlobalesPage() {
               </div>
               <div style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 10, padding: '8px 16px',
+                background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-sm)', padding: '8px 16px',
               }}>
                 <span style={{ fontSize: 16 }}>🇦🇷</span>
                 <div>
@@ -283,11 +284,11 @@ export default async function TopGlobalesPage() {
               </div>
               <div style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                background: 'var(--bg-card)', border: '1px solid rgba(83,252,24,0.2)', borderRadius: 10, padding: '8px 16px',
+                background: 'var(--bg-card)', border: '1px solid rgba(83,252,24,0.2)', borderRadius: 'var(--radius-sm)', padding: '8px 16px',
               }}>
                 <span style={{ fontSize: 16 }}>⚡</span>
                 <div>
-                  <div style={{ fontSize: 16, fontWeight: 800, color: '#53FC18' }}>Kick</div>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: C.kick }}>Kick</div>
                   <div style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>plataforma principal</div>
                 </div>
               </div>
@@ -314,7 +315,7 @@ export default async function TopGlobalesPage() {
         <section style={{ marginTop: 48 }}>
           <div style={{
             background: 'var(--bg-card)', border: `1px solid ${COLOR}33`,
-            borderLeft: `3px solid ${COLOR}`, borderRadius: 12, padding: '22px 24px',
+            borderLeft: `3px solid ${COLOR}`, borderRadius: 'var(--radius-md)', padding: '22px 24px',
           }}>
             <p style={{ fontSize: 14, lineHeight: 1.75, color: 'var(--color-text-secondary)', marginBottom: 12 }}>
               Top Globales es una comunidad de streamers argentinos formada por Coscu, Goncho, DuendePablo, Zeko, Coker y varios invitados recurrentes que explotó en Kick gracias a sus streams diarios, el gaming constante y el caos total que manejan juntos.
@@ -346,7 +347,7 @@ export default async function TopGlobalesPage() {
           </p>
           <div style={{
             background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-            borderTop: `3px solid ${COLOR}`, borderRadius: 12, padding: '20px 20px 22px',
+            borderTop: `3px solid ${COLOR}`, borderRadius: 'var(--radius-md)', padding: '20px 20px 22px',
           }}>
             <CommunityTrivia color={COLOR} />
           </div>
@@ -359,7 +360,7 @@ export default async function TopGlobalesPage() {
           </h2>
           <div style={{
             background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-            borderRadius: 12, padding: '22px 24px',
+            borderRadius: 'var(--radius-md)', padding: '22px 24px',
           }}>
             <p style={{ fontSize: 14, lineHeight: 1.75, color: 'var(--color-text-secondary)', marginBottom: 12 }}>
               Más que un team, Top Globales terminó funcionando como una especie de "universo compartido" del streaming argentino. Cada streamer tiene su comunidad, sus memes y su forma de hacer contenido, pero juntos encontraron algo que hacía rato faltaba: streams grupales diarios donde siempre pasa algo.
@@ -377,7 +378,7 @@ export default async function TopGlobalesPage() {
           </h2>
           <div style={{
             background: 'var(--bg-card)', border: `1px solid ${COLOR}33`,
-            borderRadius: 12, padding: '22px 24px',
+            borderRadius: 'var(--radius-md)', padding: '22px 24px',
           }}>
             <div style={{ display: 'flex', gap: 14, marginBottom: 14, alignItems: 'flex-start' }}>
               <span style={{ fontSize: 28, flexShrink: 0 }}>🏠</span>

@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { fmtNum } from '../../../lib/formato';
+import EnVivo from '../../components/EnVivo';
+import { C } from '../../../lib/colores';
 
 const fmt = (n) => fmtNum(n, '0');
 
@@ -27,7 +29,7 @@ export default function LiveStats({ slug, color }) {
       .catch(() => setLoading(false));
   }, [slug]);
 
-  const accentColor = color ?? '#7C3AED';
+  const accentColor = color ?? C.purple;
 
   if (loading) {
     return (
@@ -55,11 +57,11 @@ export default function LiveStats({ slug, color }) {
             <div style={{
               display: 'flex', alignItems: 'center', gap: 8,
               background: 'var(--bg-card)', border: `1px solid ${accentColor}44`,
-              borderRadius: 12, padding: '10px 18px',
+              borderRadius: 'var(--radius-md)', padding: '10px 18px',
             }}>
               <span style={{
-                width: 8, height: 8, borderRadius: '50%', background: '#EF4444',
-                boxShadow: '0 0 6px #EF4444', flexShrink: 0,
+                width: 8, height: 8, borderRadius: '50%', background: C.live,
+                boxShadow: '0 0 6px var(--color-live)', flexShrink: 0,
                 animation: 'pulse 2s infinite',
               }} />
               <div>
@@ -72,7 +74,7 @@ export default function LiveStats({ slug, color }) {
             <div style={{
               display: 'flex', alignItems: 'center', gap: 8,
               background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-              borderRadius: 12, padding: '10px 18px',
+              borderRadius: 'var(--radius-md)', padding: '10px 18px',
             }}>
               <span style={{ fontSize: 18 }}>👥</span>
               <div>
@@ -100,7 +102,7 @@ export default function LiveStats({ slug, color }) {
                 style={{
                   display: 'block', textDecoration: 'none', color: 'inherit',
                   background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-                  borderRadius: 10, overflow: 'hidden',
+                  borderRadius: 'var(--radius-sm)', overflow: 'hidden',
                   transition: 'border-color 0.15s',
                 }}
                 onMouseEnter={e => e.currentTarget.style.borderColor = accentColor}
@@ -113,17 +115,11 @@ export default function LiveStats({ slug, color }) {
                       alt={s.title}
                       style={{ width: '100%', height: 130, objectFit: 'cover', display: 'block' }}
                     />
-                    <span style={{
-                      position: 'absolute', top: 6, left: 6,
-                      background: '#EF4444', color: '#fff',
-                      fontSize: 10, fontWeight: 700, padding: '2px 6px', borderRadius: 4,
-                    }}>
-                      EN VIVO
-                    </span>
+                    <EnVivo style={{ position: 'absolute', top: 6, left: 6 }} />
                     <span style={{
                       position: 'absolute', bottom: 6, right: 6,
                       background: 'rgba(0,0,0,0.75)', color: '#fff',
-                      fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
+                      fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 'var(--radius-xs)',
                     }}>
                       {fmt(s.viewer_count)} viewers
                     </span>

@@ -1,9 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { fmtNum } from '../../lib/formato';
+import { C } from '../../lib/colores';
 
 const MAX_ATTEMPTS = 8;
 
@@ -21,9 +23,9 @@ const formatNum = (n) => fmtNum(n, '0');
 
 function getPlatforms(streamer) {
   const platforms = [];
-  if (streamer.twitch) platforms.push({ label: 'Twitch', color: '#9146FF' });
-  if (streamer.kick) platforms.push({ label: 'Kick', color: '#53FC18', textColor: '#0D0D14' });
-  if (streamer.youtube) platforms.push({ label: 'YouTube', color: '#FF0000' });
+  if (streamer.twitch) platforms.push({ label: 'Twitch', color: C.twitch });
+  if (streamer.kick) platforms.push({ label: 'Kick', color: C.kick, textColor: 'var(--bg-primary)' });
+  if (streamer.youtube) platforms.push({ label: 'YouTube', color: C.youtube });
   return platforms;
 }
 
@@ -92,12 +94,12 @@ function CountryFlag({ code }) {
 }
 
 function HintCell({ label, value, hint, arrow }) {
-  const colors = { correct:'#16A34A',wrong:'#DC262299',higher:'#2563EB',lower:'#2563EB' };
+  const colors = { correct:C.ok,wrong:'#DC262299',higher:C.blue,lower:C.blue };
   const fallbackIcons = { correct:'✓', wrong:'✗' };
   const icon = arrow || fallbackIcons[hint] || null;
-  const bg = colors[hint] || '#1A1A2E';
+  const bg = colors[hint] || 'var(--bg-card)';
   return (
-    <div style={{ background:bg,border:`1px solid ${bg}`,borderRadius:'8px',padding:'8px 6px',textAlign:'center',flex:'1 1 0',minWidth:'72px',overflow:'hidden',animation:'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)' }}>
+    <div style={{ background:bg,border:`1px solid ${bg}`,borderRadius:'var(--radius-sm)',padding:'8px 6px',textAlign:'center',flex:'1 1 0',minWidth:'72px',overflow:'hidden',animation:'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)' }}>
       <div style={{ fontSize:'10px',color:'rgba(255,255,255,0.7)',marginBottom:'4px',fontWeight:'500',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis' }}>{label}</div>
       <div style={{ fontSize:'13px',fontWeight:'700',color:'white',lineHeight:1.2,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis' }}>
         {value}{icon && <span style={{ marginLeft:'4px' }}>{icon}</span>}
@@ -112,16 +114,16 @@ function PlatformsCell({ guess, target }) {
   const isCorrect = guessPlatforms.map(p => p.label).sort().join(',') === targetPlatforms.map(p => p.label).sort().join(',');
   return (
     <div style={{
-      background: isCorrect ? '#16A34A' : '#DC262299',
-      border: `1px solid ${isCorrect ? '#16A34A' : '#DC262299'}`,
-      borderRadius: '8px', padding: '8px 6px', textAlign: 'center',
+      background: isCorrect ? C.ok : '#DC262299',
+      border: `1px solid ${isCorrect ? C.ok : '#DC262299'}`,
+      borderRadius: 'var(--radius-sm)', padding: '8px 6px', textAlign: 'center',
       flex:'1 1 0', minWidth:'72px', overflow:'hidden',
       animation: 'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)',
     }}>
       <div style={{ fontSize:'10px',color:'rgba(255,255,255,0.7)',marginBottom:'4px',fontWeight:'500',whiteSpace:'nowrap' }}>Plataformas</div>
       <div style={{ display:'flex',flexDirection:'row',gap:'3px',alignItems:'center',justifyContent:'center',flexWrap:'wrap' }}>
         {guessPlatforms.map(p => (
-          <span key={p.label} style={{ fontSize:'9px',fontWeight:'700',background:p.color,color:p.textColor||'white',padding:'1px 5px',borderRadius:'3px',whiteSpace:'nowrap' }}>
+          <span key={p.label} style={{ fontSize:'9px',fontWeight:'700',background:p.color,color:p.textColor||'white',padding:'1px 5px',borderRadius:'var(--radius-xs)',whiteSpace:'nowrap' }}>
             {p.label}
           </span>
         ))}
@@ -139,10 +141,10 @@ function GuessRow({ guess, target, avatars, country }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', animation: 'fadeIn 0.3s ease', overflowX: 'auto', paddingBottom: '2px', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
       {/* Nombre/avatar clickeable */}
-      <a href={`/${slug}`} style={{
+      <Link href={`/${slug}`} style={{
         display:'flex',alignItems:'center',gap:'8px',
         minWidth:'130px',maxWidth:'130px',
-        background:'#1A1A2E',borderRadius:'8px',padding:'8px',
+        background:'var(--bg-card)',borderRadius:'var(--radius-sm)',padding:'8px',
         border:'1px solid var(--color-border)',flexShrink:0,
         textDecoration:'none',color:'inherit',
         transition:'border-color 0.15s',
@@ -153,14 +155,14 @@ function GuessRow({ guess, target, avatars, country }) {
         {avatarUrl ? (
           <img src={avatarUrl} alt={guess.display_name} style={{ width:'32px',height:'32px',borderRadius:'50%',objectFit:'cover',flexShrink:0 }} onError={e => e.target.style.display='none'} />
         ) : (
-          <div style={{ width:'32px',height:'32px',borderRadius:'50%',background:'#7C3AED',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',flexShrink:0 }}>
+          <div style={{ width:'32px',height:'32px',borderRadius:'50%',background:C.purple,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',flexShrink:0 }}>
             {guess.display_name[0].toUpperCase()}
           </div>
         )}
         <span style={{ fontSize:'11px',fontWeight:'600',color:'white',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap' }}>
           {guess.display_name}
         </span>
-      </a>
+      </Link>
 
       {country === 'ALL' && (
         <HintCell label="País" value={<CountryFlag code={guess.country} />}
@@ -230,8 +232,8 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
         </div>
 
         {/* Streamer clickeable */}
-        <a href={`/${slug}`} style={{
-          background:'var(--bg-primary)',borderRadius:'12px',padding:'16px',
+        <Link href={`/${slug}`} style={{
+          background:'var(--bg-primary)',borderRadius:'var(--radius-md)',padding:'16px',
           display:'flex',alignItems:'center',gap:'12px',
           marginBottom:'16px',border:'1px solid var(--color-purple)',
           textDecoration:'none',color:'inherit',transition:'border-color 0.18s',
@@ -242,7 +244,7 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
           {avatarUrl ? (
             <img src={avatarUrl} alt={target.display_name} style={{ width:'56px',height:'56px',borderRadius:'50%',objectFit:'cover' }} onError={e=>{e.target.style.display='none';}} />
           ) : (
-            <div style={{ width:'56px',height:'56px',borderRadius:'50%',background:'#7C3AED',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'24px' }}>
+            <div style={{ width:'56px',height:'56px',borderRadius:'50%',background:C.purple,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'24px' }}>
               {target.display_name[0]}
             </div>
           )}
@@ -259,9 +261,9 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
               </div>
             )}
           </div>
-        </a>
+        </Link>
 
-        <div style={{ textAlign:'center',marginBottom:'16px',padding:'12px',background:'var(--bg-primary)',borderRadius:'8px' }}>
+        <div style={{ textAlign:'center',marginBottom:'16px',padding:'12px',background:'var(--bg-primary)',borderRadius:'var(--radius-sm)' }}>
           <div style={{ fontSize:'12px',color:'var(--color-text-secondary)',marginBottom:'4px' }}>Próximo streamer en</div>
           <Countdown />
         </div>
@@ -350,7 +352,7 @@ export default function ClassicPage() {
     else if (newGuesses.length >= MAX_ATTEMPTS) { setGameOver(true); setTimeout(() => setShowModal(true), 800); }
   };
 
-  if (!target) return <div style={{ minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center' }}><div style={{ textAlign: 'center', color: '#A1A1B5' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>🎯 Adiviná el streamer del día</h1>Cargando...</div></div>;
+  if (!target) return <div style={{ minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center' }}><div style={{ textAlign: 'center', color: 'var(--color-text-secondary)' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>🎯 Adiviná el streamer del día</h1>Cargando…</div></div>;
 
   return (
     <div style={{ background:'var(--bg-primary)' }}>
@@ -375,7 +377,7 @@ export default function ClassicPage() {
         {yesterday && (
           <div style={{ textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)' }}>
             El streamer de ayer fue{' '}
-            <a href={`/${getSlug(yesterday)}`} style={{ fontWeight:'700',color:yesterday.kick?'#53FC18':'#9146FF',textDecoration:'none' }}>{yesterday.display_name}</a>
+            <Link href={`/${getSlug(yesterday)}`} style={{ fontWeight:'700',color:yesterday.kick?C.kick:C.twitch,textDecoration:'none' }}>{yesterday.display_name}</Link>
           </div>
         )}
 
@@ -386,7 +388,7 @@ export default function ClassicPage() {
         <div style={{ textAlign:'center',marginBottom:'16px' }}>
           <div style={{ display:'flex',justifyContent:'center',gap:'6px',marginBottom:'6px' }}>
             {Array.from({length:MAX_ATTEMPTS}).map((_,i) => (
-              <div key={i} style={{ width:'28px',height:'6px',borderRadius:'3px',background:i<guesses.length?(won&&i===guesses.length-1?'#16A34A':'#DC262299'):'var(--color-border)',transition:'background 0.3s' }} />
+              <div key={i} style={{ width:'28px',height:'6px',borderRadius:'var(--radius-xs)',background:i<guesses.length?(won&&i===guesses.length-1?C.ok:'#DC262299'):'var(--color-border)',transition:'background 0.3s' }} />
             ))}
           </div>
           <p style={{ fontSize:'12px',color:'var(--color-text-secondary)' }}>
@@ -405,7 +407,7 @@ export default function ClassicPage() {
         {!gameOver && (
           <div style={{ position:'relative',marginBottom:'20px' }}>
             <label htmlFor="classic-search" className="sr-only">Buscar streamer</label>
-            <input id="classic-search" ref={inputRef} className="input-base" placeholder="Escribí el nombre del streamer..."
+            <input id="classic-search" ref={inputRef} className="input-base" placeholder="Escribí el nombre del streamer…"
               value={query} onChange={e => setQuery(e.target.value)}
               onKeyDown={e => { if(e.key==='Enter'&&suggestions.length>0)handleGuess(suggestions[0]); if(e.key==='Escape')setSuggestions([]); }}
               autoComplete="off" style={{ fontSize:'15px',padding:'12px 16px' }} />
@@ -416,7 +418,7 @@ export default function ClassicPage() {
                   return (
                     <div key={s.id} className="suggestion-item" onClick={() => handleGuess(s)}>
                       {sUrl ? <img src={sUrl} alt={s.display_name} style={{ width:'28px',height:'28px',borderRadius:'50%' }} onError={e => e.target.style.display='none'} />
-                        : <div style={{ width:'28px',height:'28px',borderRadius:'50%',background:'#7C3AED',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12px' }}>{s.display_name[0]}</div>}
+                        : <div style={{ width:'28px',height:'28px',borderRadius:'50%',background:C.purple,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12px' }}>{s.display_name[0]}</div>}
                       <div>
                         <div style={{ fontSize:'14px',fontWeight:'600' }}>{s.display_name}</div>
                         <div style={{ fontSize:'11px',color:'var(--color-text-secondary)' }}>{s.country} · {formatNum(s.total_followers)} seguidores</div>

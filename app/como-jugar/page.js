@@ -1,13 +1,14 @@
 'use client';
 
-import { claro, textoSobre } from '../../lib/colores';
+import Link from 'next/link';
+import { claro, textoSobre, C, C_JUEGO, C_SEC } from '../../lib/colores';
 
 export default function ComoJugarPage() {
   const games = [
     {
       name: 'Streamdle Classic',
       emoji: '🎯',
-      color: '#7C3AED',
+      color: C_JUEGO.classic,
       slug: '/classic',
       description: 'El juego principal. Adiviná el streamer del día usando pistas.',
       steps: [
@@ -20,7 +21,7 @@ export default function ComoJugarPage() {
     {
       name: 'Avatardle',
       emoji: '👤',
-      color: '#9D5FF5',
+      color: C_JUEGO.avatardle,
       slug: '/avatardle',
       description: 'Adiviná el streamer por su foto de perfil pixelada.',
       steps: [
@@ -33,7 +34,7 @@ export default function ComoJugarPage() {
     {
       name: 'Emojidle',
       emoji: '😂',
-      color: '#F59E0B',
+      color: C_JUEGO.emojidle,
       slug: '/emojidle',
       description: 'Adiviná el streamer por sus emojis representativos.',
       steps: [
@@ -46,7 +47,7 @@ export default function ComoJugarPage() {
     {
       name: 'Categorydle',
       emoji: '🎮',
-      color: '#059669',
+      color: C_JUEGO.categorydle,
       slug: '/categorydle',
       description: 'Adiviná las dos categorías que más streameó el streamer del día.',
       steps: [
@@ -60,7 +61,7 @@ export default function ComoJugarPage() {
     {
       name: 'Chatdle',
       emoji: '💬',
-      color: '#B45309',
+      color: C_JUEGO.chatdle,
       slug: '/chatdle',
       description: 'Adiviná el streamer por su frase más icónica.',
       steps: [
@@ -73,7 +74,7 @@ export default function ComoJugarPage() {
     {
       name: 'Edadle',
       emoji: '🎂',
-      color: '#DB2777',
+      color: C_JUEGO.edadle,
       slug: '/edadle',
       description: 'Adiviná cuántos años tiene el streamer del día.',
       steps: [
@@ -87,7 +88,7 @@ export default function ComoJugarPage() {
     {
       name: 'Higherdle',
       emoji: '📊',
-      color: '#2563EB',
+      color: C_JUEGO.higherdle,
       slug: '/higherdle',
       description: 'Higher or Lower de streamers. ¿Quién tiene más seguidores, horas o peak?',
       steps: [
@@ -114,7 +115,7 @@ export default function ComoJugarPage() {
 
         {/* Filtros globales */}
         <div style={{
-          background: 'var(--bg-secondary)', borderRadius: '12px', padding: '16px 20px',
+          background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)', padding: '16px 20px',
           marginBottom: '32px', border: '1px solid var(--color-border)',
         }}>
           <div style={{ fontWeight: '700', marginBottom: '8px', fontSize: '14px' }}>🌎 Filtros de región</div>
@@ -127,7 +128,7 @@ export default function ComoJugarPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {games.map(game => (
             <div key={game.slug} style={{
-              background: 'var(--bg-secondary)', borderRadius: '14px',
+              background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)',
               border: '1px solid var(--color-border)', overflow: 'hidden',
             }}>
               <div style={{ height: '4px', background: `linear-gradient(90deg, ${game.color}, transparent)` }} />
@@ -155,7 +156,7 @@ export default function ComoJugarPage() {
                 <a href={game.slug} style={{
                   display: 'inline-block', marginTop: '16px',
                   background: game.color, color: textoSobre(game.color),
-                  padding: '8px 20px', borderRadius: '8px',
+                  padding: '8px 20px', borderRadius: 'var(--radius-sm)',
                   fontSize: '13px', fontWeight: '700', textDecoration: 'none',
                 }}>
                   Jugar ahora →
@@ -167,23 +168,23 @@ export default function ComoJugarPage() {
 
         {/* Sobre Streamdle */}
         <div style={{
-          background: 'var(--bg-secondary)', borderRadius: '12px', padding: '20px 24px',
+          background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)', padding: '20px 24px',
           marginTop: '40px', border: '1px solid var(--color-border)',
         }}>
           <div style={{ fontWeight: '700', marginBottom: '8px', fontSize: '14px' }}>🎮 Sobre Streamdle</div>
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '13px', lineHeight: 1.7, margin: 0 }}>
             Streamdle es un proyecto independiente creado por{' '}
             <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer"
-              style={{ color: 'var(--color-green)', textDecoration: 'underline', fontWeight: '700' }}>
+              style={{ color: 'var(--color-kick)', textDecoration: 'underline', fontWeight: '700' }}>
               Pato Wnuk
             </a>{' '}
             para la comunidad de streamers hispanohablantes. Nació en 2025 como un Wordle de streamers
             y creció hasta convertirse en una plataforma con 7 juegos diarios, fichas de streamers,
             estadísticas y cultura streamer en español. No estamos afiliados con Twitch, Kick ni YouTube.
             Si querés sugerir un streamer, reportar un error o colaborar,{' '}
-            <a href="/contacto" style={{ color: 'var(--color-purple-light)', textDecoration: 'underline' }}>
+            <Link href="/contacto" style={{ color: 'var(--color-purple-light)', textDecoration: 'underline' }}>
               escribinos por acá
-            </a>.
+            </Link>.
           </p>
         </div>
       </main>

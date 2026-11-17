@@ -41,7 +41,7 @@ export default function CommunityFAQ() {
         <div key={i} style={{
           background: 'var(--bg-card)',
           border: '1px solid var(--color-border)',
-          borderRadius: 8,
+          borderRadius: 'var(--radius-sm)',
           overflow: 'hidden',
         }}>
           <button

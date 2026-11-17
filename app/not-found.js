@@ -1,3 +1,4 @@
+import Link from 'next/link';
 export const metadata = { title: 'Página no encontrada', robots: { index: false } };
 
 const ENLACES = [
@@ -18,10 +19,10 @@ export default function NotFound() {
         </p>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
           {ENLACES.map((l) => (
-            <a key={l.href} href={l.href} style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 10, padding: '8px 14px', fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>{l.label}</a>
+            <a key={l.href} href={l.href} style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 'var(--radius-sm)', padding: '8px 14px', fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>{l.label}</a>
           ))}
         </div>
-        <a href="/" style={{ display: 'inline-block', marginTop: 20, fontSize: 13, color: 'var(--color-text-secondary)' }}>← Volver al inicio</a>
+        <Link href="/" style={{ display: 'inline-block', marginTop: 20, fontSize: 13, color: 'var(--color-text-secondary)' }}>← Volver al inicio</Link>
       </div>
     </main>
   );

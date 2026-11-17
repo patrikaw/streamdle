@@ -1,3 +1,4 @@
+import { C } from '../../lib/colores';
 export const metadata = {
   title: 'Términos de Uso — Streamdle',
   description: 'Términos y condiciones de uso de Streamdle. Reglas, licencias y todo lo que necesitás saber antes de jugar.',
@@ -47,7 +48,7 @@ export default function TerminosPage() {
           },
         ].map(section => (
           <div key={section.title} style={{ marginBottom: '28px' }}>
-            <h2 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '8px', color: '#B794FF' }}>{section.title}</h2>
+            <h2 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '8px', color: C.purpleLight }}>{section.title}</h2>
             <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>{section.content}</p>
           </div>
         ))}

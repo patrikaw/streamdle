@@ -1,9 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { STREAMERS, COUNTRIES, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { fmtNum } from '../../lib/formato';
+import { C } from '../../lib/colores';
 
 const MAX_ATTEMPTS = 6;
 const NO_JUEGO = ['just chatting', 'irl', 'sports', 'kings league', 'talk shows & podcasts', 'asmr', 'art', 'music', 'special events'];
@@ -25,12 +27,12 @@ function claveDelDia(country) {
 
 function pista(diff, n) {
   const d = Math.abs(diff);
-  if (d === 0) return { txt: '¡Exacto!', color: '#16A34A' };
-  if (n < 2) return { txt: 'No es esa edad', color: '#A78BFA' };
+  if (d === 0) return { txt: '¡Exacto!', color: C.ok };
+  if (n < 2) return { txt: 'No es esa edad', color: C.purpleLight };
   const dir = diff > 0 ? 'es mayor ↑' : 'es menor ↓';
-  if (n < 3) return { txt: dir, color: '#A78BFA' };
+  if (n < 3) return { txt: dir, color: C.purpleLight };
   const calor = d <= 1 ? 'Muy cerca' : d <= 3 ? 'Cerca' : d <= 6 ? 'Lejos' : 'Muy lejos';
-  return { txt: `${calor} · ${dir}`, color: d <= 3 ? '#F59E0B' : '#DC2626' };
+  return { txt: `${calor} · ${dir}`, color: d <= 3 ? C.warn : C.error };
 }
 
 function Cuenta() {
@@ -59,8 +61,8 @@ function Resultado({ won, intentos, target, edad, onClose }) {
           <p style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>{target.display_name} tiene <strong style={{ color: '#fff' }}>{edad} años</strong> y nació el {target.birth_date}.</p>
           <div style={{ fontSize: 24, letterSpacing: 4, margin: '10px 0' }}>{bloques}</div>
         </div>
-        <a href={`/${slugDe(target)}`} className="btn-primary" style={{ display: 'block', textAlign: 'center', textDecoration: 'none', marginBottom: 12 }}>Ver la ficha de {target.display_name} →</a>
-        <div style={{ textAlign: 'center', marginBottom: 16, padding: 12, background: 'var(--bg-primary)', borderRadius: 8 }}>
+        <Link href={`/${slugDe(target)}`} className="btn-primary" style={{ display: 'block', textAlign: 'center', textDecoration: 'none', marginBottom: 12 }}>Ver la ficha de {target.display_name} →</Link>
+        <div style={{ textAlign: 'center', marginBottom: 16, padding: 12, background: 'var(--bg-primary)', borderRadius: 'var(--radius-sm)' }}>
           <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginBottom: 4 }}>Próximo streamer en</div>
           <Cuenta />
         </div>
@@ -107,7 +109,7 @@ export default function EdadlePage() {
     try { localStorage.setItem(claveDelDia(country), JSON.stringify({ guesses, won, gameOver, targetId: target.id })); } catch {}
   }, [guesses, won, gameOver, target]);
 
-  if (!target) return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ textAlign: 'center', color: '#A1A1B5' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>🎂 ¿Cuántos años tiene este streamer?</h1>Cargando...</div></div>;
+  if (!target) return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ textAlign: 'center', color: 'var(--color-text-secondary)' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>🎂 ¿Cuántos años tiene este streamer?</h1>Cargando…</div></div>;
 
   const edad = edadDe(target);
   const avatarUrl = getAvatarUrl(target, avatars);
@@ -133,12 +135,12 @@ export default function EdadlePage() {
           <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 6 }}>🎂 ¿Cuántos años tiene este streamer?</h1>
           <p style={{ color: 'var(--color-text-secondary)', fontSize: 14 }}>Tenés {MAX_ATTEMPTS} intentos. Desde el 2.º intento te decimos si es mayor o menor, y desde el 3.º también qué tan cerca estás.</p>
         </div>
-        {ayer && <div style={{ textAlign: 'center', marginBottom: 12, fontSize: 13, color: 'var(--color-text-secondary)' }}>El de ayer fue <a href={`/${slugDe(ayer)}`} style={{ fontWeight: 700, color: '#9146FF', textDecoration: 'none' }}>{ayer.display_name}</a> ({edadDe(ayer)} años)</div>}
+        {ayer && <div style={{ textAlign: 'center', marginBottom: 12, fontSize: 13, color: 'var(--color-text-secondary)' }}>El de ayer fue <Link href={`/${slugDe(ayer)}`} style={{ fontWeight: 700, color: C.twitch, textDecoration: 'none' }}>{ayer.display_name}</Link> ({edadDe(ayer)} años)</div>}
         <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 20 }}>
           {COUNTRIES.map((c) => <button key={c.code} className={`filter-pill ${country === c.code ? 'active' : ''}`} onClick={() => setCountry(c.code)}>{c.label}</button>)}
         </div>
         <div style={{ textAlign: 'center', marginBottom: 20 }}>
-          <div style={{ width: 140, height: 140, borderRadius: '50%', overflow: 'hidden', margin: '0 auto 10px', border: '3px solid var(--color-purple)', boxShadow: '0 0 30px rgba(124,58,237,0.4)', background: '#1A1A2E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 140, height: 140, borderRadius: '50%', overflow: 'hidden', margin: '0 auto 10px', border: '3px solid var(--color-purple)', boxShadow: '0 0 30px rgba(124,58,237,0.4)', background: 'var(--bg-card)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {avatarUrl && !imgErr
               ? <img key={target.id} src={avatarUrl} alt={target.display_name} draggable={false} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={() => setImgErr(true)} />
               : <span style={{ fontSize: 56 }}>{target.display_name[0]}</span>}
@@ -147,14 +149,14 @@ export default function EdadlePage() {
           <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginTop: 4 }}>{target.top_category ? `${actividad(target.top_category)} · ` : ''}{fmtNum(target.total_followers)} seguidores</div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginBottom: 8 }}>
-          {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => <div key={i} style={{ width: 32, height: 6, borderRadius: 3, background: i < guesses.length ? (won && i === guesses.length - 1 ? '#16A34A' : '#DC2626') : 'var(--color-border)' }} />)}
+          {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => <div key={i} style={{ width: 32, height: 6, borderRadius: 'var(--radius-xs)', background: i < guesses.length ? (won && i === guesses.length - 1 ? C.ok : C.error) : 'var(--color-border)' }} />)}
         </div>
         <p style={{ fontSize: 12, color: 'var(--color-text-secondary)', textAlign: 'center', marginBottom: 14 }}>{gameOver ? (won ? '¡Correcto!' : 'Se acabaron los intentos') : `${MAX_ATTEMPTS - guesses.length} intento${MAX_ATTEMPTS - guesses.length !== 1 ? 's' : ''} restante${MAX_ATTEMPTS - guesses.length !== 1 ? 's' : ''}`}</p>
-        {pistas.length > 0 && <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 14 }}>{pistas.map((p) => <span key={p} style={{ fontSize: 12, fontWeight: 700, padding: '4px 12px', borderRadius: 20, background: 'var(--bg-card)', border: '1px solid var(--color-border)' }}>💡 {p}</span>)}</div>}
+        {pistas.length > 0 && <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 14 }}>{pistas.map((p) => <span key={p} style={{ fontSize: 12, fontWeight: 700, padding: '4px 12px', borderRadius: 'var(--radius-pill)', background: 'var(--bg-card)', border: '1px solid var(--color-border)' }}>💡 {p}</span>)}</div>}
         {!gameOver && (
           <form onSubmit={adivinar} style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
             <label htmlFor="edadle-edad" className="sr-only">Edad del streamer</label>
-            <input id="edadle-edad" className="input-base" type="number" inputMode="numeric" min="10" max="80" placeholder="Escribí la edad..." value={valor} onChange={(e) => setValor(e.target.value)} style={{ fontSize: 16, padding: '12px 16px', flex: 1 }} />
+            <input id="edadle-edad" className="input-base" type="number" inputMode="numeric" min="10" max="80" placeholder="Escribí la edad…" value={valor} onChange={(e) => setValor(e.target.value)} style={{ fontSize: 16, padding: '12px 16px', flex: 1 }} />
             <button type="submit" className="btn-primary" style={{ padding: '0 20px' }}>Probar</button>
           </form>
         )}
@@ -163,7 +165,7 @@ export default function EdadlePage() {
             {guesses.map((n, i) => {
               const p = pista(edad - n, guesses.length);
               return (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: `${p.color}22`, border: `1px solid ${p.color}55`, borderRadius: 8, padding: '10px 14px' }}>
+                <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: `${p.color}22`, border: `1px solid ${p.color}55`, borderRadius: 'var(--radius-sm)', padding: '10px 14px' }}>
                   <span style={{ fontSize: 18, fontWeight: 800 }}>{n} años</span>
                   <span style={{ fontSize: 13, fontWeight: 700, color: p.color }}>{p.txt}</span>
                 </div>

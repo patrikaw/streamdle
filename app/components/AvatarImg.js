@@ -8,7 +8,7 @@ export default function AvatarImg({ url, name, size = 48 }) {
     return (
       <div style={{
         width: size, height: size, borderRadius: '50%',
-        background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
+        background: 'linear-gradient(135deg, var(--color-purple), var(--color-kick))',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: size * 0.32, fontWeight: 800, color: '#fff', flexShrink: 0,
       }}>

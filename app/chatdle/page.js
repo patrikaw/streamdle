@@ -1,9 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { fmtNum } from '../../lib/formato';
+import { C } from '../../lib/colores';
 
 function getSlug(s) { return s.display_name.toLowerCase().replace(/\s+/g,'-'); }
 
@@ -30,9 +32,9 @@ const formatNum = (n) => fmtNum(n, '0');
 
 function getPlatforms(streamer) {
   const p = [];
-  if (streamer.twitch) p.push({ label: 'Twitch', color: '#9146FF' });
-  if (streamer.kick) p.push({ label: 'Kick', color: '#53FC18', textColor: '#0D0D14' });
-  if (streamer.youtube) p.push({ label: 'YouTube', color: '#FF0000' });
+  if (streamer.twitch) p.push({ label: 'Twitch', color: C.twitch });
+  if (streamer.kick) p.push({ label: 'Kick', color: C.kick, textColor: 'var(--bg-primary)' });
+  if (streamer.youtube) p.push({ label: 'YouTube', color: C.youtube });
   return p;
 }
 
@@ -57,12 +59,12 @@ function Countdown() {
   return <span className="countdown">{time}</span>;
 }
 
-function HintBadge({ label, value, color = '#7C3AED' }) {
+function HintBadge({ label, value, color = C.purple }) {
   return (
     <div style={{
       display: 'inline-flex', alignItems: 'center', gap: '6px',
       background: `${color}22`, border: `1px solid ${color}44`,
-      borderRadius: '8px', padding: '6px 12px',
+      borderRadius: 'var(--radius-sm)', padding: '6px 12px',
       animation: 'fadeIn 0.4s ease',
     }}>
       <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{label}:</span>
@@ -102,8 +104,8 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
         </div>
 
         {/* Frase + streamer */}
-        <a href={`/${slug}`} style={{
-          background: 'var(--bg-primary)', borderRadius: '12px', padding: '16px',
+        <Link href={`/${slug}`} style={{
+          background: 'var(--bg-primary)', borderRadius: 'var(--radius-md)', padding: '16px',
           marginBottom: '16px', border: '1px solid var(--color-purple)',
           textDecoration: 'none', color: 'inherit', transition: 'border-color 0.18s', display: 'block',
         }}
@@ -121,7 +123,7 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
               <img src={avatarUrl} alt={target.display_name}
                 style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }} onError={e=>{e.target.style.display='none';}} />
             ) : (
-              <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: C.purple, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px' }}>
                 {target.display_name[0]}
               </div>
             )}
@@ -134,9 +136,9 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
               </div>
             </div>
           </div>
-        </a>
+        </Link>
 
-        <div style={{ textAlign: 'center', marginBottom: '16px', padding: '10px', background: 'var(--bg-primary)', borderRadius: '8px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '16px', padding: '10px', background: 'var(--bg-primary)', borderRadius: 'var(--radius-sm)' }}>
           <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '4px' }}>Próxima frase en</div>
           <Countdown />
         </div>
@@ -261,8 +263,8 @@ export default function ChatdlePage() {
   };
 
   if (!target) return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0D0D14' }}>
-      <div style={{ textAlign: 'center', color: '#A1A1B5' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>💬 ¿De quién es esta frase?</h1>Cargando...</div>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-primary)' }}>
+      <div style={{ textAlign: 'center', color: 'var(--color-text-secondary)' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>💬 ¿De quién es esta frase?</h1>Cargando…</div>
     </div>
   );
 
@@ -277,7 +279,7 @@ export default function ChatdlePage() {
             Adiviná el streamer por su frase más icónica
           </p>
         </div>
-          {yesterday && <div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>La frase de ayer era de <a href={`/${getSlug(yesterday)}`} target="_blank" rel="noopener noreferrer" style={{fontWeight:'700',color:yesterday.kick?'#53FC18':'#9146FF',textDecoration:'none'}}>{yesterday.display_name}</a></div>}
+          {yesterday && <div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>La frase de ayer era de <a href={`/${getSlug(yesterday)}`} target="_blank" rel="noopener noreferrer" style={{fontWeight:'700',color:yesterday.kick?C.kick:C.twitch,textDecoration:'none'}}>{yesterday.display_name}</a></div>}
 
         {/* Filtro país */}
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
@@ -290,23 +292,23 @@ export default function ChatdlePage() {
 
         {/* LA FRASE */}
         <div style={{
-          background: 'var(--bg-secondary)', borderRadius: '16px',
+          background: 'var(--bg-secondary)', borderRadius: 'var(--radius-lg)',
           padding: '28px 24px', marginBottom: '24px',
           border: '1px solid var(--color-border)',
           position: 'relative', overflow: 'hidden',
         }}>
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
-            background: 'linear-gradient(90deg, #7C3AED, #53FC18)',
+            background: 'linear-gradient(90deg, var(--color-purple), var(--color-kick))',
           }} />
-          <div style={{ fontSize: '32px', color: '#7C3AED', marginBottom: '8px', lineHeight: 1 }}>"</div>
+          <div style={{ fontSize: '32px', color: C.purple, marginBottom: '8px', lineHeight: 1 }}>"</div>
           <p style={{
             fontSize: '20px', fontWeight: '700', color: 'white',
             lineHeight: 1.4, fontStyle: 'italic', textAlign: 'center',
           }}>
             {target.catchphrase}
           </p>
-          <div style={{ fontSize: '32px', color: '#7C3AED', textAlign: 'right', lineHeight: 1, marginTop: '8px' }}>"</div>
+          <div style={{ fontSize: '32px', color: C.purple, textAlign: 'right', lineHeight: 1, marginTop: '8px' }}>"</div>
         </div>
 
         {/* Pistas desbloqueadas */}
@@ -316,13 +318,13 @@ export default function ChatdlePage() {
               <HintBadge label="Categoría" value={target.top_category} color="#059669" />
             )}
             {showCountry && target.country && country === 'ALL' && (
-  <HintBadge label="País" value={`${countryFlags[target.country] || ''} ${target.country}`} color="#2563EB" />
+  <HintBadge label="País" value={`${countryFlags[target.country] || ''} ${target.country}`} color="var(--sec-ranking)" />
 )}
             {showPlatform && (
               <HintBadge label="Plataformas" value={getPlatforms(target).map(p => p.label).join(' · ')} color="#B45309" />
             )}
             {showInitial && target.display_name && (
-              <HintBadge label="Inicial" value={target.display_name[0].toUpperCase()} color="#DC2626" />
+              <HintBadge label="Inicial" value={target.display_name[0].toUpperCase()} color="var(--color-error)" />
             )}
           </div>
         )}
@@ -337,7 +339,7 @@ export default function ChatdlePage() {
               { label: 'Inicial', unlockAt: 4 },
             ].filter(h => attemptCount < h.unlockAt).map(h => (
               <div key={h.label} style={{
-                fontSize: '11px', padding: '3px 10px', borderRadius: '8px',
+                fontSize: '11px', padding: '3px 10px', borderRadius: 'var(--radius-sm)',
                 background: 'var(--bg-card)', color: 'var(--color-text-secondary)',
                 border: '1px solid var(--color-border)', fontWeight: '500',
               }}>
@@ -352,9 +354,9 @@ export default function ChatdlePage() {
           <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '6px' }}>
             {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => (
               <div key={i} style={{
-                width: '32px', height: '6px', borderRadius: '3px',
+                width: '32px', height: '6px', borderRadius: 'var(--radius-xs)',
                 background: i < guesses.length
-                  ? (won && i === guesses.length - 1 ? '#16A34A' : '#DC2626')
+                  ? (won && i === guesses.length - 1 ? C.ok : C.error)
                   : 'var(--color-border)',
                 transition: 'background 0.3s',
               }} />
@@ -375,7 +377,7 @@ export default function ChatdlePage() {
               id="chatdle-search"
               ref={inputRef}
               className="input-base"
-              placeholder="Escribí el nombre del streamer..."
+              placeholder="Escribí el nombre del streamer…"
               value={query}
               onChange={e => setQuery(e.target.value)}
               onKeyDown={e => {
@@ -396,7 +398,7 @@ export default function ChatdlePage() {
                           style={{ width: '28px', height: '28px', borderRadius: '50%' }}
                           onError={e => e.target.style.display = 'none'} />
                       ) : (
-                        <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: C.purple, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
                           {s.display_name[0]}
                         </div>
                       )}
@@ -422,11 +424,11 @@ export default function ChatdlePage() {
               const isCorrect = guess.id === target.id;
               const gUrl = getAvatarUrl(guess, avatars);
               return (
-                <a key={guess.id} href={`/${getSlug(guess)}`} style={{
+                <Link key={guess.id} href={`/${getSlug(guess)}`} style={{
                   display: 'flex', alignItems: 'center', gap: '10px',
-                  background: isCorrect ? '#16A34A22' : '#DC262622',
-                  border: `1px solid ${isCorrect ? '#16A34A44' : '#DC262644'}`,
-                  borderRadius: '8px', padding: '8px 12px',
+                  background: isCorrect ? C.ok + '22' : C.error + '22',
+                  border: `1px solid ${isCorrect ? C.ok + '44' : C.error + '44'}`,
+                  borderRadius: 'var(--radius-sm)', padding: '8px 12px',
                   animation: 'fadeIn 0.3s ease',
                   textDecoration: 'none', color: 'inherit',
                 }}>
@@ -435,13 +437,13 @@ export default function ChatdlePage() {
                       style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }}
                       onError={e => e.target.style.display = 'none'} />
                   ) : (
-                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: C.purple, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
                       {guess.display_name[0]}
                     </div>
                   )}
                   <span style={{ fontSize: '14px', fontWeight: '600' }}>{guess.display_name}</span>
                   <span style={{ marginLeft: 'auto', fontSize: '16px' }}>{isCorrect ? '✅' : '❌'}</span>
-                </a>
+                </Link>
               );
             })}
           </div>

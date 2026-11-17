@@ -13,6 +13,7 @@ import LiveStats from './LiveStats';
 import StreamerGrid from './StreamerGrid';
 import GameTrivia from './GameTrivia';
 import { fmtNum } from '../../../lib/formato';
+import { colorCategoria } from '../../../lib/colores';
 
 export const revalidate = 86400;
 
@@ -58,24 +59,7 @@ export async function generateMetadata({ params }) {
   };
 }
 
-const CATEGORY_COLORS = {
-  'Just Chatting': '#7C3AED',
-  'Minecraft': '#53FC18',
-  'Grand Theft Auto V': '#F97316',
-  'Fortnite': '#38BDF8',
-  'League of Legends': '#EAB308',
-  'Counter-Strike': '#EF4444',
-  'Valorant': '#FF4655',
-  'World of Warcraft': '#AAE0FA',
-  'Kings League': '#F59E0B',
-  'EA Sports FC 26': '#16A34A',
-  'Sports': '#22C55E',
-  'Variety': '#8B5CF6',
-  'Rust': '#D97706',
-  'Clash Royale': '#6366F1',
-};
-
-function getColor(name) { return CATEGORY_COLORS[name] ?? '#7C3AED'; }
+const getColor = colorCategoria;
 
 
 
@@ -91,13 +75,13 @@ function EventCard({ event }) {
     <div className="event-card" style={{
       background: 'var(--bg-card)', border: '1px solid var(--color-border)',
       borderLeft: '3px solid var(--game-color)',
-      borderRadius: 12, padding: '16px 18px',
+      borderRadius: 'var(--radius-md)', padding: '16px 18px',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, flexWrap: 'wrap' }}>
         <span style={{ fontSize: 16 }}>{icon}</span>
         <span style={{ fontSize: 15, fontWeight: 700, color: '#fff' }}>{event.title}</span>
         {event.subtitle && (
-          <span style={{ fontSize: 11, background: 'var(--game-color-bg)', color: 'var(--game-color)', border: '1px solid var(--game-color-border)', borderRadius: 4, padding: '1px 7px' }}>
+          <span style={{ fontSize: 11, background: 'var(--game-color-bg)', color: 'var(--game-color)', border: '1px solid var(--game-color-border)', borderRadius: 'var(--radius-xs)', padding: '1px 7px' }}>
             {event.subtitle}
           </span>
         )}
@@ -107,7 +91,7 @@ function EventCard({ event }) {
       {event.streamers?.length > 0 && (
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           {event.streamers.map(s => (
-            <span key={s} style={{ fontSize: 11, background: 'var(--bg-secondary)', borderRadius: 4, padding: '2px 7px', color: 'var(--color-text-secondary)' }}>{s}</span>
+            <span key={s} style={{ fontSize: 11, background: 'var(--bg-secondary)', borderRadius: 'var(--radius-xs)', padding: '2px 7px', color: 'var(--color-text-secondary)' }}>{s}</span>
           ))}
         </div>
       )}
@@ -249,17 +233,17 @@ export default async function JuegoPage({ params }) {
           <div className="juego-art-col" style={{ flexShrink: 0 }}>
             {boxArt && (
               <img src={boxArt} alt={categoryName} width={130} height={174}
-                style={{ borderRadius: 10, objectFit: 'cover', display: 'block', border: `2px solid ${color}44` }} />
+                style={{ borderRadius: 'var(--radius-sm)', objectFit: 'cover', display: 'block', border: `2px solid ${color}44` }} />
             )}
             <div className="juego-stats-mobile">
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg-card)', border: `1px solid ${color}44`, borderRadius: 10, padding: '8px 12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg-card)', border: `1px solid ${color}44`, borderRadius: 'var(--radius-sm)', padding: '8px 12px' }}>
                 <span style={{ fontSize: 16 }}>🎙️</span>
                 <div>
                   <div style={{ fontSize: 16, fontWeight: 800, color: '#fff' }}>{total}</div>
                   <div style={{ fontSize: 10, color: 'var(--color-text-secondary)' }}>streamers hispanos</div>
                 </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 10, padding: '8px 12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-sm)', padding: '8px 12px' }}>
                 <span style={{ fontSize: 16 }}>⭐</span>
                 <div>
                   <div style={{ fontSize: 16, fontWeight: 800, color: '#fff' }}>{primary.length}</div>
@@ -274,17 +258,17 @@ export default async function JuegoPage({ params }) {
             {(igdbInfo?.genres?.length > 0 || igdbInfo?.releaseYear || igdbInfo?.developer) && (
               <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
                 {igdbInfo?.genres?.slice(0, 3).map(g => (
-                  <span key={g} style={{ fontSize: 11, background: `${color}22`, color, border: `1px solid ${color}44`, borderRadius: 6, padding: '2px 9px' }}>
+                  <span key={g} style={{ fontSize: 11, background: `${color}22`, color, border: `1px solid ${color}44`, borderRadius: 'var(--radius-xs)', padding: '2px 9px' }}>
                     {g}
                   </span>
                 ))}
                 {igdbInfo?.releaseYear && (
-                  <span style={{ fontSize: 11, background: 'var(--bg-card)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)', borderRadius: 6, padding: '2px 9px' }}>
+                  <span style={{ fontSize: 11, background: 'var(--bg-card)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-xs)', padding: '2px 9px' }}>
                     {igdbInfo.releaseYear}
                   </span>
                 )}
                 {igdbInfo?.developer && (
-                  <span style={{ fontSize: 11, background: 'var(--bg-card)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)', borderRadius: 6, padding: '2px 9px' }}>
+                  <span style={{ fontSize: 11, background: 'var(--bg-card)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-xs)', padding: '2px 9px' }}>
                     {igdbInfo.developer}
                   </span>
                 )}
@@ -307,7 +291,7 @@ export default async function JuegoPage({ params }) {
             <div className="juego-stats-desktop" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <div style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                background: 'var(--bg-card)', border: `1px solid ${color}44`, borderRadius: 10, padding: '8px 16px',
+                background: 'var(--bg-card)', border: `1px solid ${color}44`, borderRadius: 'var(--radius-sm)', padding: '8px 16px',
               }}>
                 <span style={{ fontSize: 18 }}>🎙️</span>
                 <div>
@@ -317,7 +301,7 @@ export default async function JuegoPage({ params }) {
               </div>
               <div style={{
                 display: 'flex', alignItems: 'center', gap: 8,
-                background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 10, padding: '8px 16px',
+                background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-sm)', padding: '8px 16px',
               }}>
                 <span style={{ fontSize: 18 }}>⭐</span>
                 <div>
@@ -347,7 +331,7 @@ export default async function JuegoPage({ params }) {
             <div style={{
               background: 'var(--bg-card)', border: '1px solid var(--color-border)',
               borderTop: `3px solid ${color}`,
-              borderRadius: 12, padding: '20px 20px 22px',
+              borderRadius: 'var(--radius-md)', padding: '20px 20px 22px',
             }}>
               <GameTrivia questions={GAME_TRIVIA[slug]} color={color} />
             </div>
@@ -374,7 +358,7 @@ export default async function JuegoPage({ params }) {
                   style={{
                     display: 'block', textDecoration: 'none', color: 'inherit',
                     background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-                    borderRadius: 10, overflow: 'hidden',
+                    borderRadius: 'var(--radius-sm)', overflow: 'hidden',
                     transition: 'border-color 0.15s',
                   }}
                 >
@@ -385,7 +369,7 @@ export default async function JuegoPage({ params }) {
                       <span style={{
                         position: 'absolute', bottom: 6, right: 6,
                         background: 'rgba(0,0,0,0.78)', color: '#fff',
-                        fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
+                        fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 'var(--radius-xs)',
                       }}>
                         {fmtNum(clip.view_count)} views
                       </span>
@@ -412,7 +396,7 @@ export default async function JuegoPage({ params }) {
               <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff' }}>
                 Top streamers de {categoryName}
               </h2>
-              <span style={{ fontSize: 12, fontWeight: 700, background: `${color}22`, color, border: `1px solid ${color}44`, borderRadius: 8, padding: '2px 9px' }}>
+              <span style={{ fontSize: 12, fontWeight: 700, background: `${color}22`, color, border: `1px solid ${color}44`, borderRadius: 'var(--radius-sm)', padding: '2px 9px' }}>
                 {primary.length}
               </span>
             </div>
@@ -430,7 +414,7 @@ export default async function JuegoPage({ params }) {
               <h2 style={{ fontSize: 18, fontWeight: 700, color: '#fff' }}>
                 También juegan {categoryName}
               </h2>
-              <span style={{ fontSize: 12, background: 'var(--bg-card)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)', borderRadius: 8, padding: '2px 9px' }}>
+              <span style={{ fontSize: 12, background: 'var(--bg-card)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-sm)', padding: '2px 9px' }}>
                 {secondary.length}
               </span>
             </div>
@@ -452,7 +436,7 @@ export default async function JuegoPage({ params }) {
           ) : (
             <div style={{
               background: 'var(--bg-card)', border: '1px dashed var(--color-border)',
-              borderRadius: 12, padding: '28px 24px', textAlign: 'center',
+              borderRadius: 'var(--radius-md)', padding: '28px 24px', textAlign: 'center',
             }}>
               <div style={{ fontSize: 28, marginBottom: 10 }}>🏆</div>
               <div style={{ fontSize: 14, color: 'var(--color-text-secondary)' }}>
@@ -477,7 +461,7 @@ export default async function JuegoPage({ params }) {
                 style={{
                   display: 'flex', alignItems: 'center', gap: 10,
                   background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-                  borderRadius: 12, padding: '12px 18px', textDecoration: 'none', color: 'inherit',
+                  borderRadius: 'var(--radius-md)', padding: '12px 18px', textDecoration: 'none', color: 'inherit',
                   transition: 'all 0.15s', minWidth: 200,
                 }}
               >

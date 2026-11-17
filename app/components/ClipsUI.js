@@ -57,7 +57,7 @@ export function ClipsPagina({ tipo, periodo }) {
     ['¿Cada cuánto se actualiza?', 'Todos los días. La última actualización fue el ' + fechaActualizado() + '.'],
   ];
   return (
-    <Shell crumbs={crumbs}>
+    <Shell crumbs={crumbs} seccion="clips">
       {jsonLd({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.label, item: c.href ? `${SITE}${c.href}` : url })) })}
       {jsonLd({ '@context': 'https://schema.org', '@type': 'ItemList', name: T.h1(periodo), url, itemListElement: lista.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.titulo, url: c.url })) })}
       {jsonLd({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) })}
@@ -67,9 +67,9 @@ export function ClipsPagina({ tipo, periodo }) {
       </p>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
         {Object.keys(PERIODOS).map((p) => (
-          <Link key={p} href={`${T.base}/${p}`} className="agr-chip" style={{ background: p === periodo ? 'var(--color-purple)' : 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 20, padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{p === 'hoy' ? 'Hoy' : p === 'semana' ? 'Semana' : 'Mes'}</Link>
+          <Link key={p} href={`${T.base}/${p}`} className="agr-chip" style={{ background: p === periodo ? 'var(--acento, var(--color-purple))' : 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{p === 'hoy' ? 'Hoy' : p === 'semana' ? 'Semana' : 'Mes'}</Link>
         ))}
-        <Link href={tipo === 'clips' ? '/gta-6/clips/hoy' : '/clips/hoy'} className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 20, padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{tipo === 'clips' ? '🎮 Clips de GTA 6' : '🎬 Todos los clips'}</Link>
+        <Link href={tipo === 'clips' ? '/gta-6/clips/hoy' : '/clips/hoy'} className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{tipo === 'clips' ? '🎮 Clips de GTA 6' : '🎬 Todos los clips'}</Link>
       </div>
 
       {lista.length === 0 ? (
@@ -77,16 +77,16 @@ export function ClipsPagina({ tipo, periodo }) {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14, marginTop: 24 }}>
           {lista.map((c, i) => (
-            <div key={c.id} style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 12, overflow: 'hidden' }}>
+            <div key={c.id} style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
               <a href={c.url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', position: 'relative', paddingBottom: '56.25%', background: '#000' }}>
                 <img src={c.miniatura} alt={c.titulo} loading="lazy" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                <span style={{ position: 'absolute', top: 8, left: 8, background: 'rgba(124,58,237,0.92)', color: '#fff', fontSize: 11, fontWeight: 800, padding: '2px 8px', borderRadius: 5 }}>#{i + 1}</span>
-                <span style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(0,0,0,0.75)', color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 7px', borderRadius: 4 }}>👁 {fmtVistas(c.vistas)}</span>
+                <span style={{ position: 'absolute', top: 8, left: 8, background: 'rgba(124,58,237,0.92)', color: '#fff', fontSize: 11, fontWeight: 800, padding: '2px 8px', borderRadius: 'var(--radius-xs)' }}>#{i + 1}</span>
+                <span style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(0,0,0,0.75)', color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 7px', borderRadius: 'var(--radius-xs)' }}>👁 {fmtVistas(c.vistas)}</span>
               </a>
               <div style={{ padding: '10px 12px' }}>
                 <div style={{ fontSize: 14, fontWeight: 700, lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{c.titulo}</div>
                 <div style={{ fontSize: 12, marginTop: 4, color: 'var(--color-text-secondary)' }}>
-                  {c.ficha ? <Link href={`/${c.ficha.slug}`} style={{ color: 'var(--color-purple-light)', fontWeight: 700, textDecoration: 'none' }}>{c.ficha.nombre}</Link> : c.canal}
+                  {c.ficha ? <Link href={`/${c.ficha.slug}`} style={{ color: 'var(--acento-texto, var(--color-purple-light))', fontWeight: 700, textDecoration: 'none' }}>{c.ficha.nombre}</Link> : c.canal}
                   {c.duracion ? ` · ${Math.floor(c.duracion / 60)}:${String(c.duracion % 60).padStart(2, '0')}` : ''}
                 </div>
               </div>

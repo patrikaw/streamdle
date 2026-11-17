@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { STREAMERS } from '../../data/streamers';
 
 const OTROS = [
@@ -75,9 +76,9 @@ export default function JuegoSEO({ href, nombre, intro, reglas, preguntas, h1Ocu
         <h2 style={{ ...h2, margin: '20px 0 10px' }}>Más juegos de Streamdle</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           {OTROS.filter(([h]) => h !== href).map(([h, l]) => (
-            <a key={h} href={h} style={{ fontSize: 12, fontWeight: 600, color: '#fff', textDecoration: 'none', padding: '6px 12px', borderRadius: 20, border: '1px solid var(--color-border)', background: 'var(--bg-card)' }}>{l}</a>
+            <a key={h} href={h} style={{ fontSize: 12, fontWeight: 600, color: '#fff', textDecoration: 'none', padding: '6px 12px', borderRadius: 'var(--radius-pill)', border: '1px solid var(--color-border)', background: 'var(--bg-card)' }}>{l}</a>
           ))}
-          <a href="/tendencias" style={{ fontSize: 12, fontWeight: 600, color: '#fff', textDecoration: 'none', padding: '6px 12px', borderRadius: 20, border: '1px solid var(--color-border)', background: 'var(--bg-card)' }}>🔥 Streamers en tendencia</a>
+          <Link href="/tendencias" style={{ fontSize: 12, fontWeight: 600, color: '#fff', textDecoration: 'none', padding: '6px 12px', borderRadius: 'var(--radius-pill)', border: '1px solid var(--color-border)', background: 'var(--bg-card)' }}>🔥 Streamers en tendencia</Link>
         </div>
       </div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faq) }} />

@@ -51,19 +51,19 @@ export default async function Page({ params }) {
     [`¿Quién es el integrante con más seguidores de ${c.nombre}?`, `${m[0].s.display_name}, con ${fmt(m[0].s.total_followers)} de seguidores.`],
   ];
   return (
-    <Shell crumbs={crumbs}>
+    <Shell crumbs={crumbs} seccion="comunidades">
       {jsonLd({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map((x, i) => ({ '@type': 'ListItem', position: i + 1, name: x.label, item: x.href ? `${SITE}${x.href}` : url })) })}
       {jsonLd({ '@context': 'https://schema.org', '@type': 'ItemList', name: `Integrantes de ${c.nombre}`, url, itemListElement: [...m.map((x) => ({ name: x.s.display_name, url: `${SITE}/${x.slug}` })), ...sf.map((x) => ({ name: x.nombre }))].map((x, i) => ({ '@type': 'ListItem', position: i + 1, ...x })) })}
       {jsonLd({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) })}
       <h1 style={{ fontSize: 'clamp(24px, 5vw, 38px)', fontWeight: 800, margin: '20px 0 10px' }}>{c.emoji} {c.nombre}: integrantes, edades y seguidores</h1>
       <p style={{ color: 'var(--color-text-secondary)', fontSize: 15, lineHeight: 1.6, maxWidth: 780 }}>{c.descripcion} Los {m.length === 1 ? 'streamers con ficha suman' : `${m.length} streamers con ficha suman`} unos {fmt(total)} de seguidores.</p>
-      {c.enlaceExtra && <p style={{ marginTop: 10 }}><Link href={c.enlaceExtra.href} style={{ color: 'var(--color-purple-light)', fontWeight: 700, textDecoration: 'none' }}>{c.enlaceExtra.label}</Link></p>}
+      {c.enlaceExtra && <p style={{ marginTop: 10 }}><Link href={c.enlaceExtra.href} style={{ color: 'var(--acento-texto, var(--color-purple-light))', fontWeight: 700, textDecoration: 'none' }}>{c.enlaceExtra.label}</Link></p>}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 10, marginTop: 24 }}>
         {m.map((x, i) => {
           const edad = edadDe(x.s);
           return (
-            <Link key={x.s.id} href={`/${x.slug}`} className="agr-card" style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'var(--bg-card)', border: `1px solid ${c.color}55`, borderRadius: 12, padding: '12px 14px', textDecoration: 'none', color: 'inherit' }}>
+            <Link key={x.s.id} href={`/${x.slug}`} className="agr-card" style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'var(--bg-card)', border: `1px solid ${c.color}55`, borderRadius: 'var(--radius-md)', padding: '12px 14px', textDecoration: 'none', color: 'inherit' }}>
               <div style={{ minWidth: 24, fontSize: 12, fontWeight: 700, textAlign: 'right', color: 'var(--color-text-secondary)' }}>#{i + 1}</div>
               <AvatarImg url={getAvatarUrl(x.s, avatares)} name={x.s.display_name} size={52} />
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -84,7 +84,7 @@ export default async function Page({ params }) {
           <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 10 }}>Otros integrantes y protagonistas</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 10 }}>
             {sf.map((x) => (
-              <div key={x.nombre} style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '12px 14px' }}>
+              <div key={x.nombre} style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '12px 14px' }}>
                 <div style={{ width: 48, height: 48, borderRadius: '50%', background: `${c.color}55`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, fontWeight: 800, flexShrink: 0 }}>{x.nombre[0]}</div>
                 <div style={{ minWidth: 0 }}>
                   <div style={{ fontSize: 15, fontWeight: 700 }}>{x.nombre}</div>
@@ -120,9 +120,9 @@ export default async function Page({ params }) {
       <section style={{ marginTop: 28 }}>
         <h2 style={{ fontSize: 16, fontWeight: 800, marginBottom: 10 }}>Otras comunidades</h2>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <Link href="/comunidades/top-globales" className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 20, padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>🌎 Top Globales</Link>
+          <Link href="/comunidades/top-globales" className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>🌎 Top Globales</Link>
           {COMUNIDADES.filter((o) => o.slug !== c.slug).map((o) => (
-            <Link key={o.slug} href={`/comunidades/${o.slug}`} className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 20, padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{o.emoji} {o.nombre}</Link>
+            <Link key={o.slug} href={`/comunidades/${o.slug}`} className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{o.emoji} {o.nombre}</Link>
           ))}
         </div>
       </section>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getCategoriesWithMinStreamers } from '../../lib/categories';
 import { fetchTwitchGame } from '../../lib/twitch-server';
 import { fmtNum } from '../../lib/formato';
+import { colorCategoria } from '../../lib/colores';
 
 export const revalidate = 86400;
 
@@ -22,26 +23,7 @@ export const metadata = {
   alternates: { canonical: 'https://streamdle.net/juegos' },
 };
 
-const CATEGORY_COLORS = {
-  'Just Chatting': '#7C3AED',
-  'Minecraft': '#53FC18',
-  'Grand Theft Auto V': '#F97316',
-  'Fortnite': '#38BDF8',
-  'League of Legends': '#EAB308',
-  'Counter-Strike': '#EF4444',
-  'Valorant': '#FF4655',
-  'World of Warcraft': '#AAE0FA',
-  'Kings League': '#F59E0B',
-  'EA Sports FC 26': '#16A34A',
-  'Sports': '#22C55E',
-  'Variety': '#8B5CF6',
-  'Rust': '#D97706',
-  'Clash Royale': '#6366F1',
-};
-
-function getColor(name) {
-  return CATEGORY_COLORS[name] ?? '#7C3AED';
-}
+const getColor = colorCategoria;
 
 const fmt = (n) => fmtNum(n, '—');
 
@@ -93,7 +75,7 @@ export default async function JuegosPage() {
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: 8,
           background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-          borderRadius: 20, padding: '4px 14px', marginBottom: 18,
+          borderRadius: 'var(--radius-pill)', padding: '4px 14px', marginBottom: 18,
           fontSize: 12, color: 'var(--color-text-secondary)',
         }}>
           🎮 {categories.length} categorías · {categories.reduce((s, c) => s + c.totalCount, 0)} participaciones
@@ -103,7 +85,7 @@ export default async function JuegosPage() {
         }}>
           La cultura streamer{' '}
           <span style={{
-            background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
+            background: 'linear-gradient(135deg, var(--color-purple), var(--color-kick))',
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
           }}>alrededor del juego</span>
         </h1>
@@ -133,7 +115,7 @@ export default async function JuegosPage() {
                   style={{
                     background: 'var(--bg-card)',
                     border: '1px solid var(--color-border)',
-                    borderRadius: 14, padding: '16px 18px',
+                    borderRadius: 'var(--radius-md)', padding: '16px 18px',
                     position: 'relative', overflow: 'hidden',
                     transition: 'border-color 0.18s ease',
                     display: 'flex', gap: 14, alignItems: 'flex-start',
@@ -149,7 +131,7 @@ export default async function JuegosPage() {
 
                   {/* Key art */}
                   <div style={{
-                    width: 60, height: 80, flexShrink: 0, borderRadius: 8,
+                    width: 60, height: 80, flexShrink: 0, borderRadius: 'var(--radius-sm)',
                     overflow: 'hidden', marginTop: 4,
                     background: `${color}22`,
                     border: `1px solid ${color}33`,
@@ -176,7 +158,7 @@ export default async function JuegosPage() {
                           fontSize: 12, fontWeight: 700,
                           background: `${color}22`, color,
                           border: `1px solid ${color}44`,
-                          borderRadius: 8, padding: '2px 8px',
+                          borderRadius: 'var(--radius-sm)', padding: '2px 8px',
                         }}>
                           {cat.totalCount} streamers
                         </span>
@@ -191,7 +173,7 @@ export default async function JuegosPage() {
                         <span key={s.id} style={{
                           display: 'inline-flex', alignItems: 'center', gap: 4,
                           fontSize: 11, color: 'var(--color-text-secondary)',
-                          background: 'var(--bg-secondary)', borderRadius: 6, padding: '3px 7px',
+                          background: 'var(--bg-secondary)', borderRadius: 'var(--radius-xs)', padding: '3px 7px',
                         }}>
                           {flagOf(s.country)} {s.display_name}
                           <span style={{ color: '#555', fontSize: 10 }}>{fmt(s.total_followers)}</span>
@@ -200,7 +182,7 @@ export default async function JuegosPage() {
                       {cat.totalCount > 2 && (
                         <span style={{
                           fontSize: 11, color: 'var(--color-text-secondary)',
-                          background: 'var(--bg-secondary)', borderRadius: 6, padding: '3px 7px',
+                          background: 'var(--bg-secondary)', borderRadius: 'var(--radius-xs)', padding: '3px 7px',
                         }}>
                           +{cat.totalCount - 2} más
                         </span>

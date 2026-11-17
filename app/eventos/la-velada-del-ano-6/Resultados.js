@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { C } from '../../../lib/colores';
 
 // Resultados verificados en varias fuentes (DAZN, Depor, Movistar eSports). Orden de la cartelera del evento.
 const COMBATES = [
@@ -23,12 +24,12 @@ export default function Resultados() {
       </p>
       <div style={{ display: 'grid', gap: 8 }}>
         {COMBATES.map((c) => (
-          <div key={c.n} style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '12px 16px', flexWrap: 'wrap' }}>
-            <div style={{ minWidth: 70, fontSize: 11, fontWeight: 700, color: '#60A5FA' }}>Combate {c.n}</div>
+          <div key={c.n} style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '12px 16px', flexWrap: 'wrap' }}>
+            <div style={{ minWidth: 70, fontSize: 11, fontWeight: 700, color: C.blueLight }}>Combate {c.n}</div>
             <div style={{ flex: 1, minWidth: 220, fontSize: 15 }}>
               {c.slug
-                ? <Link href={`/${c.slug}`} style={{ color: '#4ADE80', fontWeight: 800, textDecoration: 'none' }}>{c.ganador}</Link>
-                : <strong style={{ color: '#4ADE80' }}>{c.ganador}</strong>}
+                ? <Link href={`/${c.slug}`} style={{ color: C.okLight, fontWeight: 800, textDecoration: 'none' }}>{c.ganador}</Link>
+                : <strong style={{ color: C.okLight }}>{c.ganador}</strong>}
               <span style={{ color: 'var(--color-text-secondary)' }}> venció a </span>
               {c.slugPerdedor
                 ? <Link href={`/${c.slugPerdedor}`} style={{ color: '#fff', textDecoration: 'none' }}>{c.perdedor}</Link>

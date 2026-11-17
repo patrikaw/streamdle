@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { claro } from '../lib/colores';
+import { claro, C, C_JUEGO, C_SEC } from '../lib/colores';
 import Ruleta from './components/Ruleta';
 
 const GAMES = [
@@ -10,7 +10,7 @@ const GAMES = [
     name: 'Streamdle',
     emoji: '🎯',
     description: 'Adiviná el streamer del día con pistas',
-    color: '#DC2626',
+    color: C_JUEGO.classic,
     available: true,
     daily: true,
   },
@@ -19,7 +19,7 @@ const GAMES = [
     name: 'Avatardle',
     emoji: '👤',
     description: 'Adiviná el streamer por su foto pixelada',
-    color: '#9D5FF5',
+    color: C_JUEGO.avatardle,
     available: true,
     daily: true,
   },
@@ -28,7 +28,7 @@ const GAMES = [
     name: 'Emojidle',
     emoji: '😂',
     description: 'Adiviná el streamer por sus emojis',
-    color: '#F59E0B',
+    color: C_JUEGO.emojidle,
     available: true,
     daily: true,
   },
@@ -37,7 +37,7 @@ const GAMES = [
     name: 'Categorydle',
     emoji: '🎮',
     description: 'Adiviná las 2 categorías favoritas del streamer',
-    color: '#059669',
+    color: C_JUEGO.categorydle,
     available: true,
     daily: true,
   },
@@ -46,7 +46,7 @@ const GAMES = [
     name: 'Higherdle',
     emoji: '📊',
     description: '¿Quién tiene más?',
-    color: '#2563EB',
+    color: C_JUEGO.higherdle,
     available: true,
     daily: false,
   },
@@ -55,7 +55,7 @@ const GAMES = [
     name: 'Edadle',
     emoji: '🎂',
     description: '¿Cuántos años tiene el streamer?',
-    color: '#DB2777',
+    color: C_JUEGO.edadle,
     available: true,
     daily: true,
     nuevo: true,
@@ -65,7 +65,7 @@ const GAMES = [
     name: 'Chatdle',
     emoji: '💬',
     description: 'Adiviná el streamer por su frase más icónica',
-    color: '#B45309',
+    color: C_JUEGO.chatdle,
     available: true,
     daily: true,
   },
@@ -81,7 +81,7 @@ export default function Home() {
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       <style>{`
         .ribbon-nuevo { position: absolute; top: 14px; right: -34px; width: 130px; text-align: center; transform: rotate(40deg);
-          background: linear-gradient(90deg, #F59E0B, #EC4899, #8B5CF6); background-size: 200% 100%; color: #fff; font-size: 11px; font-weight: 900;
+          background: linear-gradient(90deg, var(--color-warn), var(--sec-clips), var(--color-purple)); background-size: 200% 100%; color: #fff; font-size: 11px; font-weight: 900;
           letter-spacing: 1px; padding: 4px 0; box-shadow: 0 2px 10px rgba(236,72,153,.6); animation: nuevoBrillo 2.4s linear infinite; z-index: 2; }
         @keyframes nuevoBrillo { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
         .novedades-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -91,7 +91,7 @@ export default function Home() {
       {/* Header */}
       
       {/* Cinta de novedades */}
-      <a href="#novedades" className="cinta-volvimos" style={{ display: 'block', textAlign: 'center', textDecoration: 'none', color: '#fff', fontSize: '13px', fontWeight: 700, padding: '9px 16px', background: 'linear-gradient(90deg, #7C3AED, #DB2777, #F59E0B)' }}>
+      <a href="#novedades" className="cinta-volvimos" style={{ display: 'block', textAlign: 'center', textDecoration: 'none', color: '#fff', fontSize: '13px', fontWeight: 700, padding: '9px 16px', background: 'linear-gradient(90deg, var(--color-purple), #DB2777, var(--color-warn))' }}>
         🎉 ¡Volvimos con todo! Nuevo juego <u>Edadle</u>, streamers en tendencia y comunidades. Mirá las novedades ↓
       </a>
 
@@ -105,7 +105,7 @@ export default function Home() {
         }}>
           El Wordle de{' '}
           <span style={{
-            background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
+            background: 'linear-gradient(135deg, var(--color-purple), var(--color-kick))',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
@@ -161,7 +161,7 @@ export default function Home() {
               <div style={{
                 background: 'var(--bg-card)',
                 border: `1.5px solid ${hoveredGame === game.slug ? game.color : 'var(--color-border)'}`,
-                borderRadius: '14px',
+                borderRadius: 'var(--radius-md)',
                 padding: '24px',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
@@ -185,7 +185,7 @@ export default function Home() {
 
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '12px' }}>
                   {game.image
-                    ? <img src={game.image} alt={game.name} width={40} height={40} style={{ borderRadius: '10px' }} />
+                    ? <img src={game.image} alt={game.name} width={40} height={40} style={{ borderRadius: 'var(--radius-sm)' }} />
                     : <span style={{ fontSize: '32px' }}>{game.emoji}</span>}
                   <span style={{
                     fontSize: '10px',
@@ -193,7 +193,7 @@ export default function Home() {
                     background: `${game.color}22`,
                     color: claro(game.color),
                     padding: '3px 8px',
-                    borderRadius: '8px',
+                    borderRadius: 'var(--radius-sm)',
                     border: `1px solid ${game.color}44`,
                   }}>{game.badge || (game.daily ? 'DIARIO' : 'INFINITO')}</span>
                 </div>
@@ -214,9 +214,9 @@ export default function Home() {
                 {game.slug === 'higherdle' ? (
                   <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'row', gap: '8px', flexWrap: 'wrap' }}>
                     {[
-                      { label: '👥 Seg.', href: '/higherdle', color: '#2563EB' },
-                      { label: '⏱️ Horas', href: '/higherdle?mode=hours', color: '#0891B2' },
-                      { label: '🏆 Peak', href: '/higherdle?mode=peak', color: '#7C3AED' },
+                      { label: '👥 Seg.', href: '/higherdle', color: C.purple },
+                      { label: '⏱️ Horas', href: '/higherdle?mode=hours', color: C.info },
+                      { label: '🏆 Peak', href: '/higherdle?mode=peak', color: C.warn },
                     ].map(btn => (
                       <button key={btn.href} onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = btn.href; }} style={{
                         color: claro(btn.color), fontSize: '13px', fontWeight: '700',
@@ -252,14 +252,14 @@ export default function Home() {
         <section id="novedades" style={{ marginTop: '48px' }}>
           <div className="novedades-grid">
             {[
-              { href: '/tendencias', emoji: '🔥', titulo: 'Streamers en tendencia', texto: 'Quiénes ganaron más seguidores, por país y para toda Latam.', color: '#F97316' },
-              { href: '/comunidades', emoji: '👥', titulo: 'Comunidades', texto: 'Top Globales, W Crew, Coscu Army y los grupos que mueven el streaming.', color: '#16A34A' },
-              { href: '/streamers', emoji: '🏆', titulo: 'Ranking y fichas', texto: 'Más de 200 fichas con edad, actividad del mes y clip más visto.', color: '#7C3AED' },
-              { href: '/streamers/signo', emoji: '♈', titulo: 'Por signo, generación y personalidad', texto: 'Explorá a los streamers agrupados de otra manera.', color: '#2563EB' },
-              { href: '/clips/hoy', emoji: '🎬', titulo: 'Mejores clips de hoy', texto: 'Los clips más vistos de los streamers hispanos, del día, la semana y el mes.', color: '#0EA5E9' },
-              { href: '/gta-6', emoji: '🎮', titulo: 'GTA 6 en español', texto: 'Quién lo juega en vivo entre los streamers hispanos y sus mejores clips.', color: '#0EA5E9' },
+              { href: '/tendencias', emoji: '🔥', titulo: 'Streamers en tendencia', texto: 'Quiénes ganaron más seguidores, por país y para toda Latam.', color: C_SEC.tendencias },
+              { href: '/comunidades', emoji: '👥', titulo: 'Comunidades', texto: 'Top Globales, W Crew, Coscu Army y los grupos que mueven el streaming.', color: C_SEC.comunidades },
+              { href: '/streamers', emoji: '🏆', titulo: 'Ranking y fichas', texto: 'Más de 200 fichas con edad, actividad del mes y clip más visto.', color: C_SEC.ranking },
+              { href: '/streamers/signo', emoji: '♈', titulo: 'Por signo, generación y personalidad', texto: 'Explorá a los streamers agrupados de otra manera.', color: C_SEC.ranking },
+              { href: '/clips/hoy', emoji: '🎬', titulo: 'Mejores clips de hoy', texto: 'Los clips más vistos de los streamers hispanos, del día, la semana y el mes.', color: C_SEC.clips },
+              { href: '/gta-6', emoji: '🎮', titulo: 'GTA 6 en español', texto: 'Quién lo juega en vivo entre los streamers hispanos y sus mejores clips.', color: C.info },
             ].map((n) => (
-              <a key={n.href} href={n.href} style={{ display: 'block', textDecoration: 'none', color: 'inherit', borderRadius: '14px', padding: '16px 18px', background: `linear-gradient(135deg, ${n.color}26, var(--bg-card))`, border: `1px solid ${n.color}55` }}>
+              <a key={n.href} href={n.href} style={{ display: 'block', textDecoration: 'none', color: 'inherit', borderRadius: 'var(--radius-md)', padding: '16px 18px', background: `linear-gradient(135deg, ${n.color}26, var(--bg-card))`, border: `1px solid ${n.color}55` }}>
                 <div style={{ fontSize: '24px', marginBottom: '6px' }}>{n.emoji}</div>
                 <div style={{ fontSize: '15px', fontWeight: 800, color: '#fff' }}>{n.titulo}</div>
                 <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginTop: '4px', lineHeight: 1.5 }}>{n.texto}</div>

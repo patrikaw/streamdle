@@ -4,6 +4,7 @@ import { Shell, jsonLd, FLAGS } from './AgrupacionUI';
 import { getAvatarUrl } from '../../data/avatars';
 import { fetchTwitchAvatars } from '../../lib/twitch-server';
 import { REGIONES, SITE, tendenciasDe, fmtNum, periodosArchivo } from '../../lib/tendencias';
+import { C } from '../../lib/colores';
 
 const rutaDe = (slug, clave) => (clave ? `/tendencias/archivo/${clave}${slug ? '/' + slug : ''}` : slug ? `/tendencias/${slug}` : '/tendencias');
 const periodoDe = (clave) => (clave ? periodosArchivo().find((x) => x.clave === clave) : undefined);
@@ -17,17 +18,17 @@ function Lista({ titulo, nota, filas, avatares, modo }) {
         {filas.map((f, i) => (
           <Link key={f.s.id} href={`/${f.slug}`} className="agr-card" style={{
             display: 'flex', alignItems: 'center', gap: 12, background: 'var(--bg-card)',
-            border: '1px solid var(--color-border)', borderRadius: 12, padding: '12px 14px',
+            border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '12px 14px',
             textDecoration: 'none', color: 'inherit',
           }}>
-            <div style={{ minWidth: 26, fontSize: 12, fontWeight: 700, textAlign: 'right', color: i < 3 ? 'var(--color-purple-light)' : 'var(--color-text-secondary)' }}>#{i + 1}</div>
+            <div style={{ minWidth: 26, fontSize: 12, fontWeight: 700, textAlign: 'right', color: i < 3 ? 'var(--acento-texto, var(--color-purple-light))' : 'var(--color-text-secondary)' }}>#{i + 1}</div>
             <AvatarImg url={getAvatarUrl(f.s, avatares)} name={f.s.display_name} size={48} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
                 <span style={{ fontSize: 14, fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 170 }}>{f.s.display_name}</span>
                 <span style={{ fontSize: 12 }}>{FLAGS[f.s.country] ?? '🌍'}</span>
               </div>
-              <div style={{ fontSize: 12, marginTop: 3, color: '#4ADE80', fontWeight: 700 }}>
+              <div style={{ fontSize: 12, marginTop: 3, color: C.okLight, fontWeight: 700 }}>
                 {modo === 'pct' ? `+${f.pct.toFixed(f.pct >= 10 ? 0 : 1).replace('.', ',')}%` : `+${fmtNum(f.ganancia)}`}
                 <span style={{ color: 'var(--color-text-secondary)', fontWeight: 400 }}> · {fmtNum(f.base)} → {fmtNum(f.ahora)}</span>
               </div>
@@ -55,7 +56,7 @@ export async function Tendencias({ regionSlug, periodoClave }) {
   const plataforma = t.soloTwitch ? 'seguidores en Twitch' : 'seguidores en Twitch y Kick';
   const primero = t.porGanancia[0];
   return (
-    <Shell crumbs={crumbs}>
+    <Shell crumbs={crumbs} seccion="tendencias">
       {jsonLd({
         '@context': 'https://schema.org', '@type': 'BreadcrumbList',
         itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.label, item: c.href ? `${SITE}${c.href}` : url })),
@@ -76,8 +77,8 @@ export async function Tendencias({ regionSlug, periodoClave }) {
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
         {REGIONES.map((r) => (
           <Link key={r.slug} href={rutaDe(r.slug, periodoClave)} className="agr-chip" style={{
-            background: r.slug === regionSlug ? 'var(--color-purple)' : 'var(--bg-card)', border: '1px solid var(--color-border)',
-            color: '#fff', borderRadius: 20, padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none',
+            background: r.slug === regionSlug ? 'var(--acento, var(--color-purple))' : 'var(--bg-card)', border: '1px solid var(--color-border)',
+            color: '#fff', borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none',
           }}>{r.label}</Link>
         ))}
       </div>
@@ -94,7 +95,7 @@ export async function Tendencias({ regionSlug, periodoClave }) {
           <h2 style={{ fontSize: 16, fontWeight: 800, marginBottom: 10 }}>Archivo de tendencias</h2>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {archivo.map((a) => (
-              <Link key={a.clave} href={rutaDe(regionSlug, a.clave)} className="agr-chip" style={{ background: a.clave === periodoClave ? 'var(--color-purple)' : 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 20, padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{a.tipo === 'año' ? `Año ${a.mes}` : a.mes}</Link>
+              <Link key={a.clave} href={rutaDe(regionSlug, a.clave)} className="agr-chip" style={{ background: a.clave === periodoClave ? 'var(--acento, var(--color-purple))' : 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{a.tipo === 'año' ? `Año ${a.mes}` : a.mes}</Link>
             ))}
           </div>
         </section>

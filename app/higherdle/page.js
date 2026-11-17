@@ -1,10 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { fmtNum } from '../../lib/formato';
+import { C } from '../../lib/colores';
 
 function getSlug(s) { return s.display_name.toLowerCase().replace(/\s+/g,'-'); }
 
@@ -37,12 +39,12 @@ function saveHighScore(mode, country, score) {
 }
 
 const LEVELS = [
-  { min: 0,  max: 0,  emoji: '💀', rank: 'Sin canal',          color: '#DC2626', sub: 'Ni un acierto...' },
+  { min: 0,  max: 0,  emoji: '💀', rank: 'Sin canal',          color: C.error, sub: 'Ni un acierto...' },
   { min: 1,  max: 4,  emoji: '👁️', rank: 'Viewer',             color: '#6B7280', sub: 'Recién llegaste al stream' },
-  { min: 5,  max: 9,  emoji: '🟣', rank: 'Afiliado',           color: '#9146FF', sub: 'Algo sabés del mundillo' },
-  { min: 10, max: 19, emoji: '✓',  rank: 'Partner',            color: '#7C3AED', sub: '¡Conocés bien la escena!' },
-  { min: 20, max: 34, emoji: '🔥', rank: 'Partner Verificado', color: '#F59E0B', sub: 'Nivel élite, la rompés' },
-  { min: 35, max: Infinity, emoji: '👑', rank: 'Streamer Leyenda', color: '#53FC18', sub: '¿Sos Ibai disfrazado?' },
+  { min: 5,  max: 9,  emoji: '🟣', rank: 'Afiliado',           color: C.twitch, sub: 'Algo sabés del mundillo' },
+  { min: 10, max: 19, emoji: '✓',  rank: 'Partner',            color: C.purple, sub: '¡Conocés bien la escena!' },
+  { min: 20, max: 34, emoji: '🔥', rank: 'Partner Verificado', color: C.warn, sub: 'Nivel élite, la rompés' },
+  { min: 35, max: Infinity, emoji: '👑', rank: 'Streamer Leyenda', color: C.kick, sub: '¿Sos Ibai disfrazado?' },
 ];
 
 function getLevel(score) {
@@ -58,7 +60,7 @@ function StreamerCard({ streamer, value, label, showValue, result, onClick, disa
     <div style={{
       flex: 1, position: 'relative', overflow: 'hidden',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      minHeight: '100vh', background: '#13131F', transition: 'background 0.4s ease',
+      minHeight: '100vh', background: 'var(--bg-secondary)', transition: 'background 0.4s ease',
     }}>
       {avatarUrl && !imgErr && (
         <div style={{
@@ -77,7 +79,7 @@ function StreamerCard({ streamer, value, label, showValue, result, onClick, disa
         <div style={{
           width: '100px', height: '100px', borderRadius: '50%',
           overflow: 'hidden', border: '3px solid rgba(124,58,237,0.6)',
-          boxShadow: '0 0 30px rgba(124,58,237,0.4)', background: '#7C3AED', flexShrink: 0,
+          boxShadow: '0 0 30px rgba(124,58,237,0.4)', background: C.purple, flexShrink: 0,
         }}>
           {avatarUrl && !imgErr ? (
             <img src={avatarUrl} alt={streamer.display_name}
@@ -90,19 +92,19 @@ function StreamerCard({ streamer, value, label, showValue, result, onClick, disa
           )}
         </div>
         <div>
-          <a href={`/${getSlug(streamer)}`} style={{ textDecoration: 'none' }}>
+          <Link href={`/${getSlug(streamer)}`} style={{ textDecoration: 'none' }}>
             <div style={{ fontSize: '28px', fontWeight: '800', color: 'white', textShadow: '0 2px 8px rgba(0,0,0,0.8)', transition: 'color 0.2s' }}
               onMouseOver={e => e.currentTarget.style.color = 'var(--color-purple-light)'}
               onMouseOut={e => e.currentTarget.style.color = 'white'}>
               {streamer.display_name}
             </div>
-          </a>
+          </Link>
           <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', marginTop: '4px' }}>{streamer.country}</div>
         </div>
         {showValue ? (
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)', marginBottom: '4px' }}>{label}</div>
-            <div style={{ fontSize: '48px', fontWeight: '800', color: '#53FC18', textShadow: '0 0 20px rgba(83,252,24,0.5)', lineHeight: 1 }}>
+            <div style={{ fontSize: '48px', fontWeight: '800', color: C.kick, textShadow: '0 0 20px rgba(83,252,24,0.5)', lineHeight: 1 }}>
               {formatNum(value)}
             </div>
             <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', marginTop: '4px' }}>({formatNumFull(value)})</div>
@@ -115,12 +117,12 @@ function StreamerCard({ streamer, value, label, showValue, result, onClick, disa
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <button onClick={() => !disabled && onClick('higher')} disabled={disabled}
                 aria-label={`El streamer tiene más ${label.toLowerCase()}`}
-                style={{ background: 'rgba(124,58,237,0.8)', border: '2px solid #7C3AED', color: 'white', borderRadius: '10px', padding: '12px 32px', fontSize: '16px', fontWeight: '700', cursor: disabled ? 'default' : 'pointer', transition: 'all 0.2s', backdropFilter: 'blur(4px)' }}>
+                style={{ background: 'rgba(124,58,237,0.8)', border: '2px solid var(--color-purple)', color: 'white', borderRadius: 'var(--radius-sm)', padding: '12px 32px', fontSize: '16px', fontWeight: '700', cursor: disabled ? 'default' : 'pointer', transition: 'all 0.2s', backdropFilter: 'blur(4px)' }}>
                 ↑ Más
               </button>
               <button onClick={() => !disabled && onClick('lower')} disabled={disabled}
                 aria-label={`El streamer tiene menos ${label.toLowerCase()}`}
-                style={{ background: 'rgba(124,58,237,0.8)', border: '2px solid #7C3AED', color: 'white', borderRadius: '10px', padding: '12px 32px', fontSize: '16px', fontWeight: '700', cursor: disabled ? 'default' : 'pointer', transition: 'all 0.2s', backdropFilter: 'blur(4px)' }}>
+                style={{ background: 'rgba(124,58,237,0.8)', border: '2px solid var(--color-purple)', color: 'white', borderRadius: 'var(--radius-sm)', padding: '12px 32px', fontSize: '16px', fontWeight: '700', cursor: disabled ? 'default' : 'pointer', transition: 'all 0.2s', backdropFilter: 'blur(4px)' }}>
                 ↓ Menos
               </button>
             </div>
@@ -222,15 +224,15 @@ function HigherdleInner() {
   };
 
   if (!left || !right) return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0D0D14' }}>
-      <div style={{ color: '#A1A1B5' }}>Cargando...</div>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-primary)' }}>
+      <div style={{ color: 'var(--color-text-secondary)' }}>Cargando…</div>
     </div>
   );
 
   const currentLevel = getLevel(score);
 
   return (
-    <div style={{ background: '#0D0D14', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ background: 'var(--bg-primary)', display: 'flex', flexDirection: 'column' }}>
 
       <div style={{
         position: 'fixed', top: '57px', left: 0, right: 0, zIndex: 49,
@@ -256,7 +258,7 @@ function HigherdleInner() {
           <div style={{
             position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
             zIndex: 10, width: '56px', height: '56px', borderRadius: '50%',
-            background: '#0D0D14', border: '2px solid var(--color-border)',
+            background: 'var(--bg-primary)', border: '2px solid var(--color-border)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: '14px', fontWeight: '800', color: 'white',
           }}>VS</div>
@@ -272,7 +274,7 @@ function HigherdleInner() {
           <div style={{
             position: 'relative', zIndex: 10,
             background: 'rgba(19,19,31,0.92)', border: '1px solid var(--color-border)',
-            borderRadius: '20px', padding: '40px', textAlign: 'center',
+            borderRadius: 'var(--radius-lg)', padding: '40px', textAlign: 'center',
             maxWidth: '400px', width: '90%',
             animation: 'popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)',
             backdropFilter: 'blur(12px)',
@@ -302,13 +304,13 @@ function HigherdleInner() {
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '28px' }}>
-              <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', padding: '16px' }}>
+              <div style={{ background: 'var(--bg-primary)', borderRadius: 'var(--radius-md)', padding: '16px' }}>
                 <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)', marginBottom: '4px' }}>RACHA</div>
-                <div style={{ fontSize: '36px', fontWeight: '800', color: '#53FC18' }}>{score}</div>
+                <div style={{ fontSize: '36px', fontWeight: '800', color: C.kick }}>{score}</div>
               </div>
-              <div style={{ background: 'var(--bg-primary)', borderRadius: '12px', padding: '16px' }}>
+              <div style={{ background: 'var(--bg-primary)', borderRadius: 'var(--radius-md)', padding: '16px' }}>
                 <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)', marginBottom: '4px' }}>RÉCORD</div>
-                <div style={{ fontSize: '36px', fontWeight: '800', color: '#7C3AED' }}>{Math.max(score, highScore)}</div>
+                <div style={{ fontSize: '36px', fontWeight: '800', color: C.purple }}>{Math.max(score, highScore)}</div>
               </div>
             </div>
 
@@ -319,8 +321,8 @@ function HigherdleInner() {
             <button style={{
               width: '100%', background: 'transparent',
               border: '1px solid var(--color-border)',
-              color: copied ? '#53FC18' : 'var(--color-text-secondary)',
-              borderRadius: '8px', padding: '8px', fontSize: '13px', cursor: 'pointer',
+              color: copied ? C.kick : 'var(--color-text-secondary)',
+              borderRadius: 'var(--radius-sm)', padding: '8px', fontSize: '13px', cursor: 'pointer',
               transition: 'color 0.2s',
             }} aria-label="Copiar resultado al portapapeles" onClick={handleShare}>
               {copied ? '✓ ¡Copiado!' : '🔗 Compartir resultado'}
@@ -335,8 +337,8 @@ function HigherdleInner() {
 export default function HigherdlePage() {
   return (
     <Suspense fallback={
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0D0D14' }}>
-        <div style={{ color: '#A1A1B5' }}>Cargando...</div>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-primary)' }}>
+        <div style={{ color: 'var(--color-text-secondary)' }}>Cargando…</div>
       </div>
     }>
       <HigherdleInner />

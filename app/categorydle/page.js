@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { STREAMERS, COUNTRIES, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { fmtNum } from '../../lib/formato';
+import { C } from '../../lib/colores';
 
 function getSlug(s) { return s.display_name.toLowerCase().replace(/\s+/g,'-'); }
 
@@ -92,7 +93,7 @@ function Countdown() {
         </div>
 
         <div style={{
-          background: 'var(--bg-primary)', borderRadius: '12px', padding: '16px',
+          background: 'var(--bg-primary)', borderRadius: 'var(--radius-md)', padding: '16px',
           display: 'flex', alignItems: 'center', gap: '12px',
           marginBottom: '16px', border: '1px solid var(--color-purple)',
         }}>
@@ -100,17 +101,17 @@ function Countdown() {
             <img src={avatarUrl} alt={target.display_name}
               style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover' }} onError={e=>{e.target.style.display='none';}} />
           ) : (
-            <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: C.purple, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}>
               {target.display_name[0]}
             </div>
           )}
           <div>
             <div style={{ fontWeight: '700', fontSize: '16px' }}>{target.display_name}</div>
             <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginTop: '4px' }}>
-              🥇 <span style={{ color: '#53FC18', fontWeight: '600' }}>{target.top_category}</span>
+              🥇 <span style={{ color: C.okLight, fontWeight: '600' }}>{target.top_category}</span>
             </div>
             <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginTop: '2px' }}>
-              🥈 <span style={{ color: '#B794FF', fontWeight: '600' }}>{target.second_category}</span>
+              🥈 <span style={{ color: C.purpleLight, fontWeight: '600' }}>{target.second_category}</span>
             </div>
             <div style={{ display: 'flex', gap: '6px', marginTop: '6px', flexWrap: 'wrap' }}>
               {target.twitch && <a href={`https://twitch.tv/${target.twitch}`} target="_blank" rel="noopener noreferrer" className="badge-twitch">Twitch</a>}
@@ -120,7 +121,7 @@ function Countdown() {
           </div>
         </div>
 
-        <div style={{ textAlign: 'center', marginBottom: '20px', padding: '12px', background: 'var(--bg-primary)', borderRadius: '8px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '20px', padding: '12px', background: 'var(--bg-primary)', borderRadius: 'var(--radius-sm)' }}>
           <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '4px' }}>Próximo streamer en</div>
           <Countdown />
         </div>
@@ -246,8 +247,8 @@ export default function CategorydlePage() {
   };
 
   if (!target) return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0D0D14' }}>
-      <div style={{ textAlign: 'center', color: '#A1A1B5' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>🎮 Adiviná las 2 categorías</h1>Cargando...</div>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-primary)' }}>
+      <div style={{ textAlign: 'center', color: 'var(--color-text-secondary)' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>🎮 Adiviná las 2 categorías</h1>Cargando…</div>
     </div>
   );
 
@@ -263,7 +264,7 @@ export default function CategorydlePage() {
             Encontrá la categoría principal y la segunda más streameada
           </p>
         </div>
-          {yesterday && <div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>El streamer de ayer fue <a href={`/${getSlug(yesterday)}`} target="_blank" rel="noopener noreferrer" style={{fontWeight:'700',color:yesterday.kick?'#53FC18':'#9146FF',textDecoration:'none'}}>{yesterday.display_name}</a></div>}
+          {yesterday && <div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>El streamer de ayer fue <a href={`/${getSlug(yesterday)}`} target="_blank" rel="noopener noreferrer" style={{fontWeight:'700',color:yesterday.kick?C.okLight:C.twitch,textDecoration:'none'}}>{yesterday.display_name}</a></div>}
 
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '20px' }}>
           {COUNTRIES.map(c => (
@@ -279,14 +280,14 @@ export default function CategorydlePage() {
               width: '100px', height: '100px', borderRadius: '50%',
               overflow: 'hidden', border: '3px solid var(--color-purple)',
               boxShadow: '0 0 24px rgba(124,58,237,0.4)',
-              background: '#1A1A2E', margin: '0 auto 10px',
+              background: 'var(--bg-card)', margin: '0 auto 10px',
             }}>
               {avatarUrl ? (
                 <img src={avatarUrl} alt="Streamer"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={e => e.target.style.display = 'none'} />
               ) : (
-                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px', background: '#7C3AED' }}>
+                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px', background: C.purple }}>
                   {target.display_name[0]}
                 </div>
               )}
@@ -300,26 +301,26 @@ export default function CategorydlePage() {
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '16px' }}>
           <div style={{
-            background: topGuessed ? '#16A34A22' : 'var(--bg-card)',
-            border: `1.5px solid ${topGuessed ? '#16A34A' : 'var(--color-border)'}`,
-            borderRadius: '10px', padding: '12px', textAlign: 'center', transition: 'all 0.3s',
+            background: topGuessed ? C.ok + '22' : 'var(--bg-card)',
+            border: `1.5px solid ${topGuessed ? C.ok : 'var(--color-border)'}`,
+            borderRadius: 'var(--radius-sm)', padding: '12px', textAlign: 'center', transition: 'all 0.3s',
           }}>
             <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)', marginBottom: '4px', fontWeight: '600', textTransform: 'uppercase' }}>
               🥇 Categoría Principal
             </div>
-            <div style={{ fontSize: '15px', fontWeight: '700', color: topGuessed ? '#53FC18' : 'var(--color-text-secondary)' }}>
+            <div style={{ fontSize: '15px', fontWeight: '700', color: topGuessed ? C.okLight : 'var(--color-text-secondary)' }}>
               {topGuessed ? target.top_category : '???'}
             </div>
           </div>
           <div style={{
-            background: secondGuessed ? '#7C3AED22' : 'var(--bg-card)',
-            border: `1.5px solid ${secondGuessed ? '#7C3AED' : 'var(--color-border)'}`,
-            borderRadius: '10px', padding: '12px', textAlign: 'center', transition: 'all 0.3s',
+            background: secondGuessed ? C.purple + '22' : 'var(--bg-card)',
+            border: `1.5px solid ${secondGuessed ? C.purple : 'var(--color-border)'}`,
+            borderRadius: 'var(--radius-sm)', padding: '12px', textAlign: 'center', transition: 'all 0.3s',
           }}>
             <div style={{ fontSize: '11px', color: 'var(--color-text-secondary)', marginBottom: '4px', fontWeight: '600', textTransform: 'uppercase' }}>
               🥈 Segunda Categoría
             </div>
-            <div style={{ fontSize: '15px', fontWeight: '700', color: secondGuessed ? '#B794FF' : 'var(--color-text-secondary)' }}>
+            <div style={{ fontSize: '15px', fontWeight: '700', color: secondGuessed ? C.purpleLight : 'var(--color-text-secondary)' }}>
               {secondGuessed ? target.second_category : '???'}
             </div>
           </div>
@@ -335,10 +336,10 @@ export default function CategorydlePage() {
   const isEmpty = i >= guesses.length;
   return (
     <div key={i} style={{
-      width: '28px', height: '6px', borderRadius: '3px',
-      background: isEmpty ? 'var(--color-border)' : isCorrect ? '#16A34A' : '#DC2626',
+      width: '28px', height: '6px', borderRadius: 'var(--radius-xs)',
+      background: isEmpty ? 'var(--color-border)' : isCorrect ? C.ok : C.error,
       transition: 'background 0.3s',
-      outline: won && !isEmpty && isCorrect ? '2px solid #53FC18' : 'none',
+      outline: won && !isEmpty && isCorrect ? '2px solid var(--color-ok-light)' : 'none',
     }} />
   );
 })}
@@ -391,13 +392,13 @@ export default function CategorydlePage() {
               return (
                 <div key={i} style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  background: isCorrect ? '#16A34A22' : '#DC262622',
-                  border: `1px solid ${isCorrect ? '#16A34A44' : '#DC262644'}`,
-                  borderRadius: '8px', padding: '8px 14px',
+                  background: isCorrect ? C.ok + '22' : C.error + '22',
+                  border: `1px solid ${isCorrect ? C.ok + '44' : C.error + '44'}`,
+                  borderRadius: 'var(--radius-sm)', padding: '8px 14px',
                   animation: 'fadeIn 0.3s ease',
                 }}>
                   <span style={{ fontSize: '14px', fontWeight: '600' }}>🎮 {guess}</span>
-                  <span style={{ fontSize: '12px', color: isCorrect ? '#53FC18' : 'var(--color-text-secondary)' }}>
+                  <span style={{ fontSize: '12px', color: isCorrect ? C.okLight : 'var(--color-text-secondary)' }}>
                     {isTop ? '✅ Principal' : isSecond ? '✅ Segunda' : '❌'}
                   </span>
                 </div>

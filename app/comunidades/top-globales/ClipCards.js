@@ -1,17 +1,18 @@
 'use client';
 import { useState } from 'react';
+import { C } from '../../../lib/colores';
 
 const ACCENT = {
-  Coker:      '#7C3AED',
-  Goncho:     '#22C55E',
-  Zeko:       '#EF4444',
-  DuendePablo:'#3B82F6',
-  Coscu:      '#F59E0B',
+  Coker:      C.purple,
+  Goncho:     C.ok,
+  Zeko:       C.live,
+  DuendePablo:C.blue,
+  Coscu:      C.warn,
 };
 
 function ClipCard({ clip }) {
   const [thumbOk, setThumbOk] = useState(true);
-  const color = ACCENT[clip.streamer] ?? '#7C3AED';
+  const color = ACCENT[clip.streamer] ?? C.purple;
   const thumbUrl = `https://clips.kick.com/clips/${clip.id}/thumbnail.webp`;
   return (
     <a
@@ -21,7 +22,7 @@ function ClipCard({ clip }) {
       style={{
         display: 'block', textDecoration: 'none', color: 'inherit',
         background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-        borderRadius: 12, overflow: 'hidden',
+        borderRadius: 'var(--radius-md)', overflow: 'hidden',
         transition: 'border-color 0.15s, transform 0.15s',
       }}
       className="clip-card"
@@ -72,8 +73,8 @@ function ClipCard({ clip }) {
         {/* Kick badge */}
         <span style={{
           position: 'absolute', top: 8, right: 8,
-          background: 'rgba(0,0,0,0.75)', color: '#53FC18',
-          fontSize: 9, fontWeight: 800, borderRadius: 3, padding: '2px 6px',
+          background: 'rgba(0,0,0,0.75)', color: C.kick,
+          fontSize: 9, fontWeight: 800, borderRadius: 'var(--radius-xs)', padding: '2px 6px',
           letterSpacing: '0.3px',
         }}>
           VER EN KICK ↗

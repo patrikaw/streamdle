@@ -1,9 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatarsForLogins, getAvatarUrl } from '../../data/avatars';
 import { fmtNum } from '../../lib/formato';
+import { C } from '../../lib/colores';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -115,7 +117,7 @@ function AvatarImg({ streamer, size = 48, avatars = {} }) {
     return (
       <div style={{
         width: size, height: size, borderRadius: '50%',
-        background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
+        background: 'linear-gradient(135deg, var(--color-purple), var(--color-kick))',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: size * 0.32, fontWeight: 800, color: '#fff',
         flexShrink: 0, letterSpacing: '-1px', userSelect: 'none',
@@ -150,13 +152,13 @@ function StreamerCard({ streamer, avatars, sort }) {
   const statLabel = statConfig.label;
 
   return (
-    <a
+    <Link
       href={`/${slug}`}
       style={{
         display: 'flex', alignItems: 'center', gap: 14,
         background: hovered ? 'var(--bg-card)' : 'var(--bg-secondary)',
         border: `1px solid ${hovered ? 'var(--color-purple)' : 'var(--color-border)'}`,
-        borderRadius: 12, padding: '12px 16px',
+        borderRadius: 'var(--radius-md)', padding: '12px 16px',
         textDecoration: 'none', color: 'inherit',
         transition: 'all 0.18s ease',
         transform: hovered ? 'translateY(-2px)' : 'none',
@@ -182,7 +184,7 @@ function StreamerCard({ streamer, avatars, sort }) {
           <span style={{
             position: 'absolute', bottom: 0, right: 0,
             width: 10, height: 10, borderRadius: '50%',
-            background: '#16A34A', border: '2px solid var(--bg-secondary)',
+            background: C.ok, border: '2px solid var(--bg-secondary)',
           }} title="Activo" />
         )}
       </div>
@@ -196,7 +198,7 @@ function StreamerCard({ streamer, avatars, sort }) {
           }}>
             {streamer.display_name}
           </span>
-          {isPartner && <span title="Partner de Twitch" style={{ fontSize: 11, color: '#9146FF' }}>✓</span>}
+          {isPartner && <span title="Partner de Twitch" style={{ fontSize: 11, color: C.twitch }}>✓</span>}
           <span style={{ fontSize: 12 }}>{flagOf(streamer.country)}</span>
         </div>
 
@@ -213,7 +215,7 @@ function StreamerCard({ streamer, avatars, sort }) {
         <div style={{ display: 'flex', gap: 5, marginTop: 5, flexWrap: 'wrap', alignItems: 'center' }}>
           {streamer.top_category && (
             <span style={{
-              fontSize: 10, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
+              fontSize: 10, fontWeight: 600, padding: '2px 7px', borderRadius: 'var(--radius-xs)',
               background: 'rgba(124,58,237,0.2)', color: 'var(--color-purple-light)',
               whiteSpace: 'nowrap',
             }}>
@@ -222,8 +224,8 @@ function StreamerCard({ streamer, avatars, sort }) {
           )}
           {streamer.community && (
             <span style={{
-              fontSize: 10, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
-              background: 'rgba(83,252,24,0.12)', color: 'var(--color-green)',
+              fontSize: 10, fontWeight: 600, padding: '2px 7px', borderRadius: 'var(--radius-xs)',
+              background: 'rgba(83,252,24,0.12)', color: 'var(--color-kick)',
               whiteSpace: 'nowrap',
             }}>
               {Array.isArray(streamer.community) ? streamer.community[0] : streamer.community}
@@ -231,8 +233,8 @@ function StreamerCard({ streamer, avatars, sort }) {
           )}
           {streamer.esports_team && (
             <span style={{
-              fontSize: 10, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
-              background: 'rgba(37,99,235,0.2)', color: '#60A5FA', whiteSpace: 'nowrap',
+              fontSize: 10, fontWeight: 600, padding: '2px 7px', borderRadius: 'var(--radius-xs)',
+              background: 'rgba(37,99,235,0.2)', color: C.blueLight, whiteSpace: 'nowrap',
             }}>
               ⚔️ {streamer.esports_team}
             </span>
@@ -261,7 +263,7 @@ function StreamerCard({ streamer, avatars, sort }) {
           )}
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
 
@@ -425,7 +427,7 @@ export default function StreamersIndex({
 
         {/* CONTROLES */}
         <div style={{
-          background: 'var(--bg-secondary)', borderRadius: 14,
+          background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)',
           border: '1px solid var(--color-border)',
           padding: '16px 20px', marginBottom: 16,
           display: 'flex', flexDirection: 'column', gap: 14,
@@ -438,7 +440,7 @@ export default function StreamersIndex({
             }}>🔍</span>
             <input
               type="text"
-              placeholder="Buscar por nombre, alias o nombre real..."
+              placeholder="Buscar por nombre, alias o nombre real…"
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="input-base"
@@ -473,7 +475,7 @@ export default function StreamersIndex({
               onChange={e => setSort(e.target.value)}
               style={{
                 background: 'var(--bg-card)', border: '1.5px solid var(--color-border)',
-                color: '#fff', borderRadius: 8, padding: '6px 12px',
+                color: '#fff', borderRadius: 'var(--radius-sm)', padding: '6px 12px',
                 fontSize: 13, cursor: 'pointer', outline: 'none', minWidth: 170,
               }}
             >
@@ -496,7 +498,7 @@ export default function StreamersIndex({
           ].map(l => (
             <a key={l.href} href={l.href} style={{
               background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff',
-              borderRadius: 20, padding: '5px 12px', fontSize: 12, fontWeight: 600, textDecoration: 'none',
+              borderRadius: 'var(--radius-pill)', padding: '5px 12px', fontSize: 12, fontWeight: 600, textDecoration: 'none',
             }}>{l.label}</a>
           ))}
         </div>
@@ -514,7 +516,7 @@ export default function StreamersIndex({
           {search && (
             <span style={{
               background: 'rgba(124,58,237,0.2)', color: 'var(--color-purple-light)',
-              borderRadius: 4, padding: '1px 8px', fontSize: 11, fontWeight: 600,
+              borderRadius: 'var(--radius-xs)', padding: '1px 8px', fontSize: 11, fontWeight: 600,
             }}>"{search}"</span>
           )}
         </div>
@@ -550,7 +552,7 @@ export default function StreamersIndex({
               style={{
                 background: page === 1 ? 'var(--bg-card)' : 'var(--color-purple)',
                 border: 'none', color: page === 1 ? 'var(--color-text-secondary)' : '#fff',
-                borderRadius: 8, padding: '7px 16px', fontSize: 13, fontWeight: 600,
+                borderRadius: 'var(--radius-sm)', padding: '7px 16px', fontSize: 13, fontWeight: 600,
                 cursor: page === 1 ? 'default' : 'pointer',
               }}
             >← Anterior</button>
@@ -570,7 +572,7 @@ export default function StreamersIndex({
                     background: page === p ? 'var(--color-purple)' : 'var(--bg-card)',
                     border: `1px solid ${page === p ? 'var(--color-purple)' : 'var(--color-border)'}`,
                     color: page === p ? '#fff' : 'var(--color-text-secondary)',
-                    borderRadius: 8, padding: '7px 12px', fontSize: 13, fontWeight: 600,
+                    borderRadius: 'var(--radius-sm)', padding: '7px 12px', fontSize: 13, fontWeight: 600,
                     cursor: 'pointer', minWidth: 36,
                   }}>{p}</button>
                 )
@@ -584,7 +586,7 @@ export default function StreamersIndex({
                 background: page === totalPages ? 'var(--bg-card)' : 'var(--color-purple)',
                 border: 'none',
                 color: page === totalPages ? 'var(--color-text-secondary)' : '#fff',
-                borderRadius: 8, padding: '7px 16px', fontSize: 13, fontWeight: 600,
+                borderRadius: 'var(--radius-sm)', padding: '7px 16px', fontSize: 13, fontWeight: 600,
                 cursor: page === totalPages ? 'default' : 'pointer',
               }}
             >Siguiente →</button>
@@ -593,7 +595,7 @@ export default function StreamersIndex({
 
         {/* SEO TEXT */}
         <div style={{
-          marginTop: 48, padding: 24, borderRadius: 14,
+          marginTop: 48, padding: 24, borderRadius: 'var(--radius-md)',
           border: '1px solid var(--color-border)', background: 'var(--bg-secondary)',
         }}>
           <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}>
@@ -605,7 +607,7 @@ export default function StreamersIndex({
           </p>
           <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
             ¿Querés poner a prueba cuánto sabés de tus streamers favoritos? Jugá nuestros{' '}
-            <a href="/" style={{ color: 'var(--color-purple-light)', textDecoration: 'underline' }}>juegos diarios de streamers</a>:
+            <Link href="/" style={{ color: 'var(--color-purple-light)', textDecoration: 'underline' }}>juegos diarios de streamers</Link>:
             Classic, Avatardle, Emojidle, Categorydle, Chatdle e Higherdle.
           </p>
         </div>

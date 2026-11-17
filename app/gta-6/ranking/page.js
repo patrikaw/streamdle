@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Shell, jsonLd } from '../../components/AgrupacionUI';
 import { STREAMERS } from '../../../data/streamers';
 import { rankingsGta, ultimaMuestra } from '../../../lib/muestreo';
+import { C } from '../../../lib/colores';
 
 export const revalidate = 3600;
 const SITE = 'https://streamdle.net';
@@ -26,10 +27,10 @@ function Tabla({ titulo, nota, lista, valor, unidad }) {
       <p style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginBottom: 10 }}>{nota}</p>
       <div style={{ display: 'grid', gap: 8 }}>
         {lista.map((r, i) => (
-          <Link key={r.slug} href={`/${r.slug}`} className="agr-card" style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '10px 16px', textDecoration: 'none', color: 'inherit' }}>
+          <Link key={r.slug} href={`/${r.slug}`} className="agr-card" style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '10px 16px', textDecoration: 'none', color: 'inherit' }}>
             <div style={{ minWidth: 28, fontSize: 13, fontWeight: 800, color: i < 3 ? 'var(--color-purple-light)' : 'var(--color-text-secondary)' }}>#{i + 1}</div>
             <div style={{ flex: 1, fontSize: 15, fontWeight: 800, color: '#fff' }}>{r.s.display_name}</div>
-            <div style={{ fontSize: 14 }}><strong style={{ color: '#4ADE80' }}>{valor(r)}</strong> <span style={{ color: 'var(--color-text-secondary)', fontSize: 12 }}>{unidad}</span></div>
+            <div style={{ fontSize: 14 }}><strong style={{ color: C.okLight }}>{valor(r)}</strong> <span style={{ color: 'var(--color-text-secondary)', fontSize: 12 }}>{unidad}</span></div>
           </Link>
         ))}
       </div>
@@ -43,7 +44,7 @@ export default function Page() {
   const url = `${SITE}/gta-6/ranking`;
   const horas = conFicha(r.masHoras);
   return (
-    <Shell crumbs={crumbs}>
+    <Shell crumbs={crumbs} seccion="juegos">
       {jsonLd({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.label, item: c.href ? `${SITE}${c.href}` : url })) })}
       {horas.length > 0 && jsonLd({ '@context': 'https://schema.org', '@type': 'ItemList', name: 'Streamers hispanos que más jugaron GTA 6', url, itemListElement: horas.map((x, i) => ({ '@type': 'ListItem', position: i + 1, name: x.s.display_name, url: `${SITE}/${x.slug}` })) })}
       <h1 style={{ fontSize: 'clamp(24px, 5vw, 38px)', fontWeight: 800, margin: '20px 0 10px' }}>🏆 Ranking de GTA 6 entre streamers hispanos</h1>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { fmtNum } from '../../../lib/formato';
+import { C } from '../../../lib/colores';
 
 const PAGE_SIZE = 12;
 
@@ -24,7 +25,7 @@ function StreamerCard({ streamer, rank, isPrimary }) {
       style={{
         display: 'flex', alignItems: 'center', gap: 12,
         background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-        borderRadius: 12, padding: '12px 14px',
+        borderRadius: 'var(--radius-md)', padding: '12px 14px',
         textDecoration: 'none', color: 'inherit',
         transition: 'border-color 0.15s, transform 0.15s',
         animation: 'fadeIn 0.2s ease both',
@@ -43,7 +44,7 @@ function StreamerCard({ streamer, rank, isPrimary }) {
       ) : (
         <div style={{
           width: 48, height: 48, borderRadius: '50%',
-          background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
+          background: 'linear-gradient(135deg, var(--color-purple), var(--color-kick))',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 15, fontWeight: 800, color: '#fff', flexShrink: 0,
         }}>
@@ -57,7 +58,7 @@ function StreamerCard({ streamer, rank, isPrimary }) {
             {streamer.display_name}
           </span>
           {streamer.broadcaster_type === 'partner' && (
-            <span title="Partner" style={{ fontSize: 11, color: '#9146FF', flexShrink: 0 }}>✓</span>
+            <span title="Partner" style={{ fontSize: 11, color: C.twitch, flexShrink: 0 }}>✓</span>
           )}
           <span style={{ fontSize: 12, flexShrink: 0 }}>{flagOf(streamer.country)}</span>
         </div>
@@ -66,7 +67,7 @@ function StreamerCard({ streamer, rank, isPrimary }) {
             {fmt(streamer.total_followers)} segs
           </span>
           {streamer.personality && (
-            <span style={{ fontSize: 10, color: 'var(--color-text-secondary)', background: 'var(--bg-secondary)', borderRadius: 4, padding: '1px 6px' }}>
+            <span style={{ fontSize: 10, color: 'var(--color-text-secondary)', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-xs)', padding: '1px 6px' }}>
               {streamer.personality}
             </span>
           )}
@@ -95,7 +96,7 @@ export default function StreamerGrid({ streamers, isPrimary }) {
             onClick={() => setShown(prev => Math.min(prev + PAGE_SIZE, streamers.length))}
             style={{
               background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-              borderRadius: 10, padding: '10px 24px',
+              borderRadius: 'var(--radius-sm)', padding: '10px 24px',
               color: 'var(--color-text-secondary)', fontSize: 13, fontWeight: 600,
               cursor: 'pointer', transition: 'all 0.15s',
             }}

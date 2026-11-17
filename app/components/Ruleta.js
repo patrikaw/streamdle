@@ -7,6 +7,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { fmtNum } from '../../lib/formato';
+import { C } from '../../lib/colores';
 
 const CLAVE = 'streamdle-ruleta-vistas';
 const ALTO = 76;
@@ -22,8 +23,8 @@ const fmt = (n) => fmtNum(n);
 
 function Foto({ it, size }) {
   const [err, setErr] = useState(false);
-  if (it.avatar && !err) return <img src={it.avatar} alt="" width={size} height={size} onError={() => setErr(true)} style={{ width: size, height: size, borderRadius: '50%', objectFit: 'cover', flexShrink: 0, background: '#1A1A2E' }} />;
-  return <div style={{ width: size, height: size, borderRadius: '50%', background: 'linear-gradient(135deg,#7C3AED,#9D5FF5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: size / 2.4, flexShrink: 0 }}>{it.nombre[0].toUpperCase()}</div>;
+  if (it.avatar && !err) return <img src={it.avatar} alt="" width={size} height={size} onError={() => setErr(true)} style={{ width: size, height: size, borderRadius: '50%', objectFit: 'cover', flexShrink: 0, background: 'var(--bg-card)' }} />;
+  return <div style={{ width: size, height: size, borderRadius: '50%', background: 'linear-gradient(135deg,var(--color-purple),#9D5FF5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: size / 2.4, flexShrink: 0 }}>{it.nombre[0].toUpperCase()}</div>;
 }
 
 function Fila({ it }) {
@@ -109,15 +110,15 @@ export default function Ruleta({ conTitulo = false }) {
   const completas = total > 0 && n >= total;
 
   return (
-    <section ref={raiz} data-ruleta style={{ background: 'var(--bg-secondary)', border: '1px solid var(--color-border)', borderRadius: 24, padding: '28px 20px', maxWidth: 560, margin: '0 auto' }}>
+    <section ref={raiz} data-ruleta style={{ background: 'var(--bg-secondary)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)', padding: '28px 20px', maxWidth: 560, margin: '0 auto' }}>
       {conTitulo && (
         <header style={{ textAlign: 'center', marginBottom: 20 }}>
-          <h2 style={{ fontSize: 24, fontWeight: 800, margin: 0 }}>🎲 ¡Descubrí un <span style={{ background: 'linear-gradient(135deg,#7C3AED,#53FC18)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>streamer</span>!</h2>
+          <h2 style={{ fontSize: 24, fontWeight: 800, margin: 0 }}>🎲 ¡Descubrí un <span style={{ background: 'linear-gradient(135deg,var(--color-purple),var(--color-kick))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>streamer</span>!</h2>
           <p style={{ fontSize: 13, color: 'var(--color-text-secondary)', margin: '6px 0 0' }}>Tirá la ruleta y conocé a uno al azar. No se repite ninguno hasta que los veas a todos.</p>
         </header>
       )}
 
-      <div style={{ position: 'relative', height: ALTO, overflow: 'hidden', borderRadius: 16, background: 'var(--bg-card)', border: `1px solid ${girando ? '#7C3AED' : 'var(--color-border)'}`, boxShadow: girando ? '0 0 24px rgba(124,58,237,0.45)' : 'none', transition: 'box-shadow .3s, border-color .3s' }}>
+      <div style={{ position: 'relative', height: ALTO, overflow: 'hidden', borderRadius: 'var(--radius-lg)', background: 'var(--bg-card)', border: `1px solid ${girando ? C.purple : 'var(--color-border)'}`, boxShadow: girando ? '0 0 24px rgba(124,58,237,0.45)' : 'none', transition: 'box-shadow .3s, border-color .3s' }}>
         <div ref={strip} style={{ willChange: 'transform' }}>
           {filas
             ? filas.map((it, i) => <Fila key={i} it={it} />)
@@ -128,7 +129,7 @@ export default function Ruleta({ conTitulo = false }) {
       </div>
 
       <div style={{ marginTop: 18, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
-        <button type="button" onClick={tirar} onMouseEnter={cargar} onFocus={cargar} disabled={girando || !items || total === 0} className="btn-primary" style={{ padding: '14px 32px', fontSize: 16, fontWeight: 800, borderRadius: 14, opacity: girando ? 0.7 : 1, cursor: girando ? 'wait' : 'pointer' }}>
+        <button type="button" onClick={tirar} onMouseEnter={cargar} onFocus={cargar} disabled={girando || !items || total === 0} className="btn-primary" style={{ padding: '14px 32px', fontSize: 16, fontWeight: 800, borderRadius: 'var(--radius-md)', opacity: girando ? 0.7 : 1, cursor: girando ? 'wait' : 'pointer' }}>
           <span style={{ display: 'inline-block', marginRight: 8, animation: girando ? 'dadoGira .6s linear infinite' : 'none' }}>🎲</span>
           {items === null ? 'Cargando…' : total === 0 ? 'Todavía no hay streamers' : res ? 'Descubrir otro' : 'Descubrir un streamer'}
         </button>
@@ -136,14 +137,14 @@ export default function Ruleta({ conTitulo = false }) {
           {n > 0 && total > 0 ? (completas ? `Los descubriste a todos: ${total} de ${total} 🏆` : `Descubriste ${Math.min(n, total)} de ${total}`) : ''}
         </div>
         {n > 0 && total > 0 && (
-          <div style={{ width: '100%', maxWidth: 260, height: 4, borderRadius: 2, background: 'var(--bg-card)', overflow: 'hidden' }}>
+          <div style={{ width: '100%', maxWidth: 260, height: 4, borderRadius: 'var(--radius-xs)', background: 'var(--bg-card)', overflow: 'hidden' }}>
             <div style={{ width: `${Math.min(100, Math.round((n / total) * 100))}%`, height: '100%', background: 'var(--color-purple)', transition: 'width .5s' }} />
           </div>
         )}
       </div>
 
       {res && !girando && (
-        <div style={{ marginTop: 22, background: 'var(--bg-card)', border: '1px solid var(--color-purple)', borderRadius: 16, padding: '18px 18px' }}>
+        <div style={{ marginTop: 22, background: 'var(--bg-card)', border: '1px solid var(--color-purple)', borderRadius: 'var(--radius-lg)', padding: '18px 18px' }}>
           <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
             <Foto it={res} size={64} />
             <div style={{ minWidth: 0 }}>
@@ -156,7 +157,7 @@ export default function Ruleta({ conTitulo = false }) {
               </div>
               <p style={{ fontSize: 13, lineHeight: 1.6, color: 'var(--color-text-secondary)', margin: '8px 0 0' }}>{res.bajada}</p>
               <div style={{ marginTop: 14 }}>
-                <Link href={`/${res.slug}`} className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none', padding: '10px 18px', borderRadius: 10, fontSize: 14, fontWeight: 700 }}>Conocer a {res.nombre} →</Link>
+                <Link href={`/${res.slug}`} className="btn-primary" style={{ display: 'inline-block', textDecoration: 'none', padding: '10px 18px', borderRadius: 'var(--radius-sm)', fontSize: 14, fontWeight: 700 }}>Conocer a {res.nombre} →</Link>
               </div>
             </div>
           </div>

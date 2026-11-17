@@ -1,9 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { fmtNum } from '../../lib/formato';
+import { C } from '../../lib/colores';
 
 function getSlug(s) { return s.display_name.toLowerCase().replace(/\s+/g,'-'); }
 
@@ -242,8 +244,8 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
           <div style={{ fontSize: '22px', letterSpacing: '4px', margin: '10px 0' }}>{blocks}</div>
         </div>
 
-        <a href={`/${slug}`} style={{
-          background: 'var(--bg-primary)', borderRadius: '12px', padding: '16px',
+        <Link href={`/${slug}`} style={{
+          background: 'var(--bg-primary)', borderRadius: 'var(--radius-md)', padding: '16px',
           display: 'flex', alignItems: 'center', gap: '12px',
           marginBottom: '16px', border: '1px solid var(--color-purple)',
           textDecoration: 'none', color: 'inherit', transition: 'border-color 0.18s',
@@ -255,7 +257,7 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
             <img src={avatarUrl} alt={target.display_name}
               style={{ width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover' }} onError={e=>{e.target.style.display='none';}} />
           ) : (
-            <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: C.purple, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}>
               {target.display_name[0]}
             </div>
           )}
@@ -269,9 +271,9 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
             </div>
             <div style={{ fontSize: '11px', color: 'var(--color-purple-light)', marginTop: '4px', fontWeight: '600' }}>Ver perfil completo →</div>
           </div>
-        </a>
+        </Link>
 
-        <div style={{ textAlign: 'center', marginBottom: '16px', padding: '10px', background: 'var(--bg-primary)', borderRadius: '8px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '16px', padding: '10px', background: 'var(--bg-primary)', borderRadius: 'var(--radius-sm)' }}>
           <div style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginBottom: '4px' }}>Próximos emojis en</div>
           <Countdown />
         </div>
@@ -381,8 +383,8 @@ export default function EmojidlePage() {
   const visibleEmojis = targetEmojis ? targetEmojis.slice(0, Math.min(guesses.length + 1, MAX_EMOJIS)) : [];
 
   if (!target) return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0D0D14' }}>
-      <div style={{ textAlign: 'center', color: '#A1A1B5' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>😂 ¿De quién son estos emojis?</h1>Cargando...</div>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-primary)' }}>
+      <div style={{ textAlign: 'center', color: 'var(--color-text-secondary)' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>😂 ¿De quién son estos emojis?</h1>Cargando…</div>
     </div>
   );
 
@@ -397,7 +399,7 @@ export default function EmojidlePage() {
           </p>
         </div>
 
-        {yesterday && <div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>El streamer de ayer fue <a href={`/${getSlug(yesterday)}`} target="_blank" rel="noopener noreferrer" style={{fontWeight:'700',color:yesterday.kick?'#53FC18':'#9146FF',textDecoration:'none'}}>{yesterday.display_name}</a></div>}
+        {yesterday && <div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>El streamer de ayer fue <a href={`/${getSlug(yesterday)}`} target="_blank" rel="noopener noreferrer" style={{fontWeight:'700',color:yesterday.kick?C.kick:C.twitch,textDecoration:'none'}}>{yesterday.display_name}</a></div>}
 
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
           {COUNTRIES.map(c => (
@@ -409,7 +411,7 @@ export default function EmojidlePage() {
 
         {/* Emojis del streamer */}
         <div style={{
-          background: 'var(--bg-secondary)', borderRadius: '16px',
+          background: 'var(--bg-secondary)', borderRadius: 'var(--radius-lg)',
           padding: '32px 24px', marginBottom: '24px',
           border: '1px solid var(--color-border)',
           position: 'relative', overflow: 'hidden',
@@ -417,14 +419,14 @@ export default function EmojidlePage() {
         }}>
           <div style={{
             position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
-            background: 'linear-gradient(90deg, #F59E0B, #EF4444)',
+            background: 'linear-gradient(90deg, var(--color-warn), var(--color-live))',
           }} />
           <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
             {Array.from({ length: MAX_EMOJIS }).map((_, i) => (
               <div key={i} style={{
-                width: '64px', height: '64px', borderRadius: '16px',
-                background: i < visibleEmojis.length ? 'var(--bg-card)' : '#1A1A2E',
-                border: `2px solid ${i < visibleEmojis.length ? '#F59E0B44' : '#2A2A40'}`,
+                width: '64px', height: '64px', borderRadius: 'var(--radius-lg)',
+                background: i < visibleEmojis.length ? 'var(--bg-card)' : 'var(--bg-card)',
+                border: `2px solid ${i < visibleEmojis.length ? C.warn + '44' : 'var(--color-border)'}`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: i < visibleEmojis.length ? '36px' : '20px',
                 transition: 'all 0.4s ease',
@@ -446,9 +448,9 @@ export default function EmojidlePage() {
           <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '6px' }}>
             {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => (
               <div key={i} style={{
-                width: '32px', height: '6px', borderRadius: '3px',
+                width: '32px', height: '6px', borderRadius: 'var(--radius-xs)',
                 background: i < guesses.length
-                  ? (won && i === guesses.length - 1 ? '#16A34A' : '#DC2626')
+                  ? (won && i === guesses.length - 1 ? C.ok : C.error)
                   : 'var(--color-border)',
                 transition: 'background 0.3s',
               }} />
@@ -469,7 +471,7 @@ export default function EmojidlePage() {
               id="emojidle-search"
               ref={inputRef}
               className="input-base"
-              placeholder="Escribí el nombre del streamer..."
+              placeholder="Escribí el nombre del streamer…"
               value={query}
               onChange={e => setQuery(e.target.value)}
               onKeyDown={e => {
@@ -490,7 +492,7 @@ export default function EmojidlePage() {
                           style={{ width: '28px', height: '28px', borderRadius: '50%' }}
                           onError={e => e.target.style.display = 'none'} />
                       ) : (
-                        <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: C.purple, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
                           {s.display_name[0]}
                         </div>
                       )}
@@ -516,11 +518,11 @@ export default function EmojidlePage() {
               const isCorrect = guess.id === target.id;
               const gUrl = getAvatarUrl(guess, avatars);
               return (
-                <a key={guess.id} href={`/${getSlug(guess)}`} style={{
+                <Link key={guess.id} href={`/${getSlug(guess)}`} style={{
                   display: 'flex', alignItems: 'center', gap: '10px',
-                  background: isCorrect ? '#16A34A22' : '#DC262622',
-                  border: `1px solid ${isCorrect ? '#16A34A44' : '#DC262644'}`,
-                  borderRadius: '8px', padding: '8px 12px',
+                  background: isCorrect ? C.ok + '22' : C.error + '22',
+                  border: `1px solid ${isCorrect ? C.ok + '44' : C.error + '44'}`,
+                  borderRadius: 'var(--radius-sm)', padding: '8px 12px',
                   animation: 'fadeIn 0.3s ease',
                   textDecoration: 'none', color: 'inherit',
                 }}>
@@ -529,13 +531,13 @@ export default function EmojidlePage() {
                       style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }}
                       onError={e => e.target.style.display = 'none'} />
                   ) : (
-                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: C.purple, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
                       {guess.display_name[0]}
                     </div>
                   )}
                   <span style={{ fontSize: '14px', fontWeight: '600' }}>{guess.display_name}</span>
                   <span style={{ marginLeft: 'auto', fontSize: '16px' }}>{isCorrect ? '✅' : '❌'}</span>
-                </a>
+                </Link>
               );
             })}
           </div>

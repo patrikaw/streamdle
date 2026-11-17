@@ -26,7 +26,7 @@ export default function ContactoPage() {
             { emoji: '➕', title: 'Agregar un streamer', desc: 'Si conocés un streamer que debería estar en el juego' },
           ].map(item => (
             <div key={item.title} style={{
-              background: 'var(--bg-secondary)', borderRadius: '12px', padding: '16px 20px',
+              background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)', padding: '16px 20px',
               border: '1px solid var(--color-border)', display: 'flex', gap: '14px', alignItems: 'flex-start',
             }}>
               <span style={{ fontSize: '24px', flexShrink: 0 }}>{item.emoji}</span>
@@ -39,7 +39,7 @@ export default function ContactoPage() {
         </div>
 
         <div style={{
-          marginTop: '32px', background: 'var(--bg-secondary)', borderRadius: '14px',
+          marginTop: '32px', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)',
           padding: '28px', textAlign: 'center', border: '1px solid var(--color-purple)',
         }}>
           <div style={{ fontSize: '13px', color: 'var(--color-text-secondary)', marginBottom: '12px' }}>
@@ -47,7 +47,7 @@ export default function ContactoPage() {
           </div>
           <div style={{
             fontSize: '20px', fontWeight: '800',
-            background: 'linear-gradient(135deg, #7C3AED, #53FC18)',
+            background: 'linear-gradient(135deg, var(--color-purple), var(--color-kick))',
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             marginBottom: '16px',
           }}>

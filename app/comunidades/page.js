@@ -17,17 +17,17 @@ export default function ComunidadesPage() {
   ];
   const crumbs = [{ label: 'Inicio', href: '/' }, { label: 'Comunidades' }];
   return (
-    <Shell crumbs={crumbs}>
+    <Shell crumbs={crumbs} seccion="comunidades">
       {jsonLd({ '@context': 'https://schema.org', '@type': 'ItemList', name: 'Comunidades de streamers hispanos', itemListElement: items.map((x, i) => ({ '@type': 'ListItem', position: i + 1, name: x.nombre, url: `${SITE}${x.href}` })) })}
       <h1 style={{ fontSize: 'clamp(24px, 5vw, 38px)', fontWeight: 800, margin: '20px 0 10px' }}>Comunidades y grupos de streamers hispanos</h1>
       <p style={{ color: 'var(--color-text-secondary)', fontSize: 15, lineHeight: 1.6, maxWidth: 780 }}>Los grupos que mueven el streaming en español: quiénes los integran, cuántos seguidores suman y cuántos años tiene cada uno.</p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12, marginTop: 24 }}>
         {items.map((x) => (
-          <Link key={x.href} href={x.href} className="agr-card" style={{ display: 'block', background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 14, padding: '18px 20px', textDecoration: 'none', color: 'inherit' }}>
+          <Link key={x.href} href={x.href} className="agr-card" style={{ display: 'block', background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '18px 20px', textDecoration: 'none', color: 'inherit' }}>
             <div style={{ fontSize: 28 }}>{x.emoji}</div>
             <div style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginTop: 6 }}>{x.nombre}</div>
             <div style={{ fontSize: 13, color: 'var(--color-text-secondary)', marginTop: 4, lineHeight: 1.5 }}>{x.resumen}</div>
-            {x.n != null && <div style={{ fontSize: 12, color: 'var(--color-purple-light)', marginTop: 8, fontWeight: 700 }}>{x.n} streamers →</div>}
+            {x.n != null && <div style={{ fontSize: 12, color: 'var(--acento-texto, var(--color-purple-light))', marginTop: 8, fontWeight: 700 }}>{x.n} streamers →</div>}
           </Link>
         ))}
       </div>

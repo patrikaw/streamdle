@@ -4,23 +4,26 @@ import { getAvatarUrl } from '../../data/avatars';
 import { fetchTwitchAvatars } from '../../lib/twitch-server';
 import { SITE, TIPOS, TIPOS_LISTA, gruposDe, resumenDe } from '../../lib/agrupaciones';
 import { fmtNum } from '../../lib/formato';
+import { SECCIONES } from '../../lib/sitio';
 
 export const FLAGS = { ES:'🇪🇸', AR:'🇦🇷', MX:'🇲🇽', PE:'🇵🇪', CO:'🇨🇴', CL:'🇨🇱', SV:'🇸🇻', PR:'🇵🇷', VE:'🇻🇪', UY:'🇺🇾', GT:'🇬🇹', DO:'🇩🇴', CU:'🇨🇺', FR:'🇫🇷', NO:'🇳🇴' };
 
 const fmt = (n) => fmtNum(n, '—');
 
-export function Shell({ crumbs, children }) {
+export function Shell({ crumbs, children, seccion = 'ranking' }) {
+  const sec = SECCIONES[seccion] || SECCIONES.ranking;
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', '--acento': sec.color, '--acento-texto': `color-mix(in srgb, ${sec.color} 55%, white)` }}>
       <style>{`
         @media (max-width: 640px) { .header-icon { display: none !important; } }
         .agr-card { transition: border-color .15s, transform .15s; }
-        .agr-card:hover { border-color: var(--color-purple) !important; transform: translateY(-2px); }
-        .agr-chip:hover { border-color: var(--color-purple) !important; }
+        .agr-card:hover { border-color: var(--acento, var(--color-purple)) !important; transform: translateY(-2px); }
+        .agr-chip:hover { border-color: var(--acento, var(--color-purple)) !important; }
         .agr-crumb:hover { color: #fff !important; }
       `}</style>
 
       <nav aria-label="breadcrumb" style={{ maxWidth: 1100, margin: '0 auto', padding: '12px 16px 0', display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--color-text-secondary)', flexWrap: 'wrap' }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginRight: 6, padding: '2px 9px', borderRadius: 'var(--radius-pill)', fontWeight: 700, color: '#fff', background: 'color-mix(in srgb, var(--acento) 28%, transparent)', border: '1px solid color-mix(in srgb, var(--acento) 60%, transparent)' }}>{sec.emoji} {sec.nombre}</span>
         {crumbs.map((c, i) => (
           <span key={i} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             {i > 0 && <span>›</span>}
@@ -41,8 +44,8 @@ function TipoNav({ actual }) {
     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', margin: '16px 0 4px' }}>
       {TIPOS_LISTA.map((t) => (
         <Link key={t.tipo} href={`/streamers/${TIPOS[t.tipo].ruta}`} className="agr-chip" style={{
-          background: t.tipo === actual ? 'var(--color-purple)' : 'var(--bg-card)',
-          border: '1px solid var(--color-border)', color: '#fff', borderRadius: 20,
+          background: t.tipo === actual ? 'var(--acento, var(--color-purple))' : 'var(--bg-card)',
+          border: '1px solid var(--color-border)', color: '#fff', borderRadius: 'var(--radius-pill)',
           padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none',
         }}>{t.label}</Link>
       ))}
@@ -76,7 +79,7 @@ export function Hub({ tipo }) {
         {grupos.map((g) => (
           <Link key={g.slug} href={`/streamers/${t.ruta}/${g.slug}`} className="agr-card" style={{
             display: 'block', background: 'var(--bg-card)', border: '1px solid var(--color-border)',
-            borderRadius: 12, padding: '16px 18px', textDecoration: 'none', color: 'inherit',
+            borderRadius: 'var(--radius-md)', padding: '16px 18px', textDecoration: 'none', color: 'inherit',
           }}>
             <div style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>{g.etiqueta}</div>
             <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 4 }}>
@@ -120,10 +123,10 @@ export async function Detalle({ tipo, slug }) {
         {g.miembros.map((s, i) => (
           <Link key={s.id} href={`/${s._slug}`} className="agr-card" style={{
             display: 'flex', alignItems: 'center', gap: 12, background: 'var(--bg-card)',
-            border: '1px solid var(--color-border)', borderRadius: 12, padding: '12px 14px',
+            border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '12px 14px',
             textDecoration: 'none', color: 'inherit',
           }}>
-            <div style={{ minWidth: 26, fontSize: 12, fontWeight: 700, textAlign: 'right', color: i < 3 ? 'var(--color-purple-light)' : 'var(--color-text-secondary)' }}>#{i + 1}</div>
+            <div style={{ minWidth: 26, fontSize: 12, fontWeight: 700, textAlign: 'right', color: i < 3 ? 'var(--acento-texto, var(--color-purple-light))' : 'var(--color-text-secondary)' }}>#{i + 1}</div>
             <AvatarImg url={getAvatarUrl(s, avatares)} name={s.display_name} size={48} />
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
@@ -141,7 +144,7 @@ export async function Detalle({ tipo, slug }) {
       <h2 style={{ fontSize: 16, fontWeight: 700, margin: '36px 0 4px' }}>Más listas de {t.singular}</h2>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 10 }}>
         {grupos.filter((x) => x.slug !== g.slug).map((x) => (
-          <Link key={x.slug} href={`/streamers/${t.ruta}/${x.slug}`} className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 20, padding: '5px 12px', fontSize: 12, textDecoration: 'none' }}>{x.etiqueta}</Link>
+          <Link key={x.slug} href={`/streamers/${t.ruta}/${x.slug}`} className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 'var(--radius-pill)', padding: '5px 12px', fontSize: 12, textDecoration: 'none' }}>{x.etiqueta}</Link>
         ))}
       </div>
       <TipoNav actual={tipo} />

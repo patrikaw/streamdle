@@ -23,7 +23,7 @@ const FAQ = [
 export default function Page() {
   const crumbs = [{ label: 'Inicio', href: '/' }, { label: 'Ruleta' }];
   return (
-    <Shell crumbs={crumbs}>
+    <Shell crumbs={crumbs} seccion="ruleta">
       {jsonLd({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.label, item: c.href ? `${SITE}${c.href}` : `${SITE}/ruleta` })) })}
       {jsonLd({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) })}
       <h1 style={{ fontSize: 'clamp(24px, 5vw, 38px)', fontWeight: 800, margin: '20px 0 10px', textAlign: 'center' }}>🎲 Ruleta de streamers</h1>
@@ -41,7 +41,7 @@ export default function Page() {
         ))}
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
           {[['/streamers', '🏆 Ranking de streamers'], ['/tendencias', '🔥 En tendencia'], ['/edadle', '🎂 Jugá Edadle'], ['/', '🎮 Todos los juegos']].map(([h, l]) => (
-            <Link key={h} href={h} className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 20, padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{l}</Link>
+            <Link key={h} href={h} className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{l}</Link>
           ))}
         </div>
       </section>

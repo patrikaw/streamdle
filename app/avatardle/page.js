@@ -1,9 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { STREAMERS, COUNTRIES, searchStreamers, getDailyStreamerNoRepeat, getYesterdayStreamer } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
 import { fmtNum } from '../../lib/formato';
+import { C } from '../../lib/colores';
 
 const MAX_ATTEMPTS = 6;
 const PIXEL_LEVELS = ['pixel-1','pixel-2','pixel-3','pixel-4','pixel-5','pixel-0'];
@@ -49,10 +51,10 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
           <p style={{fontSize:'13px',fontWeight:'600',color:'white'}}>{resultText}</p>
           <div style={{fontSize:'24px',letterSpacing:'4px',margin:'10px 0'}}>{blocks}</div>
         </div>
-        <a href={`/${slug}`} style={{background:'var(--bg-primary)',borderRadius:'12px',padding:'16px',display:'flex',alignItems:'center',gap:'12px',marginBottom:'16px',border:'1px solid var(--color-purple)',textDecoration:'none',color:'inherit',transition:'border-color 0.18s'}}
+        <Link href={`/${slug}`} style={{background:'var(--bg-primary)',borderRadius:'var(--radius-md)',padding:'16px',display:'flex',alignItems:'center',gap:'12px',marginBottom:'16px',border:'1px solid var(--color-purple)',textDecoration:'none',color:'inherit',transition:'border-color 0.18s'}}
           onMouseOver={e=>e.currentTarget.style.borderColor='var(--color-purple-light)'} onMouseOut={e=>e.currentTarget.style.borderColor='var(--color-purple)'}>
           {avatarUrl?<img src={avatarUrl} alt={target.display_name} style={{width:'56px',height:'56px',borderRadius:'50%',objectFit:'cover'}} onError={e=>{e.target.style.display='none';}}/>
-            :<div style={{width:'56px',height:'56px',borderRadius:'50%',background:'#7C3AED',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'24px'}}>{target.display_name[0]}</div>}
+            :<div style={{width:'56px',height:'56px',borderRadius:'50%',background:C.purple,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'24px'}}>{target.display_name[0]}</div>}
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontWeight:'700',fontSize:'18px'}}>{target.display_name}</div>
             <div style={{display:'flex',gap:'6px',marginTop:'4px',flexWrap:'wrap'}}>
@@ -61,8 +63,8 @@ function ShareModal({ won, attempts, target, avatars, country, onClose, onOtherG
             </div>
             {!won&&<div style={{fontSize:'11px',color:'var(--color-purple-light)',marginTop:'4px',fontWeight:'600'}}>Ver perfil completo →</div>}
           </div>
-        </a>
-        <div style={{textAlign:'center',marginBottom:'16px',padding:'12px',background:'var(--bg-primary)',borderRadius:'8px'}}>
+        </Link>
+        <div style={{textAlign:'center',marginBottom:'16px',padding:'12px',background:'var(--bg-primary)',borderRadius:'var(--radius-sm)'}}>
           <div style={{fontSize:'12px',color:'var(--color-text-secondary)',marginBottom:'4px'}}>Próximo streamer en</div>
           <Countdown/>
         </div>
@@ -142,7 +144,7 @@ export default function AvatardlePage() {
   };
 
   const avatarUrl=target?getAvatarUrl(target,avatars):null;
-  if(!target)return <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center'}}><div style={{ textAlign: 'center', color: '#A1A1B5' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>👤 ¿Quién es este streamer?</h1>Cargando...</div></div>;
+  if(!target)return <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center'}}><div style={{ textAlign: 'center', color: 'var(--color-text-secondary)' }}><h1 style={{ fontSize: '22px', fontWeight: '800', color: '#fff', marginBottom: '8px' }}>👤 ¿Quién es este streamer?</h1>Cargando…</div></div>;
 
   return (
     <div style={{background:'var(--bg-primary)'}}>
@@ -151,26 +153,26 @@ export default function AvatardlePage() {
           <h1 style={{fontSize:'22px',fontWeight:'800',marginBottom:'6px'}}>👤 ¿Quién es este streamer?</h1>
           <p style={{color:'var(--color-text-secondary)',fontSize:'14px'}}>La foto se va aclarando con cada intento fallido. Los primeros 4 intentos, en blanco y negro</p>
         </div>
-        {yesterday&&<div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>El streamer de ayer fue <a href={`/${getSlug(yesterday)}`} style={{fontWeight:'700',color:yesterday.kick?'#53FC18':'#9146FF',textDecoration:'none'}}>{yesterday.display_name}</a></div>}
+        {yesterday&&<div style={{textAlign:'center',marginBottom:'12px',fontSize:'13px',color:'var(--color-text-secondary)'}}>El streamer de ayer fue <Link href={`/${getSlug(yesterday)}`} style={{fontWeight:'700',color:yesterday.kick?C.kick:C.twitch,textDecoration:'none'}}>{yesterday.display_name}</Link></div>}
         <div style={{display:'flex',gap:'8px',justifyContent:'center',flexWrap:'wrap',marginBottom:'24px'}}>
           {COUNTRIES.map(c=><button key={c.code} className={`filter-pill ${country===c.code?'active':''}`} onClick={()=>setCountry(c.code)}>{c.label}</button>)}
         </div>
         <div style={{display:'flex',justifyContent:'center',marginBottom:'24px'}}>
-          <div style={{width:'220px',height:'220px',borderRadius:'16px',overflow:'hidden',border:'3px solid var(--color-purple)',boxShadow:'0 0 30px rgba(124,58,237,0.4)',background:'#1A1A2E',display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <div style={{width:'220px',height:'220px',borderRadius:'var(--radius-lg)',overflow:'hidden',border:'3px solid var(--color-purple)',boxShadow:'0 0 30px rgba(124,58,237,0.4)',background:'var(--bg-card)',display:'flex',alignItems:'center',justifyContent:'center'}}>
             {avatarUrl&&!mainImgErr?<img key={`${country}-${target?.id}`} src={avatarUrl} alt="¿Quién es?" className={PIXEL_LEVELS[currentPixelLevel]+(!gameOver&&guesses.length<4?' avatar-bw':'')} draggable={false} style={{width:'100%',height:'100%',objectFit:'cover',transition:'filter 0.6s ease',userSelect:'none',WebkitTouchCallout:'none',pointerEvents:'none'}} onError={()=>setMainImgErr(true)}/>
               :<div style={{fontSize:'80px',filter:currentPixelLevel<4?'blur(8px)':'none'}}>👤</div>}
           </div>
         </div>
         <div style={{textAlign:'center',marginBottom:'20px'}}>
           <div style={{display:'flex',justifyContent:'center',gap:'8px',marginBottom:'6px'}}>
-            {Array.from({length:MAX_ATTEMPTS}).map((_,i)=><div key={i} style={{width:'32px',height:'6px',borderRadius:'3px',background:i<guesses.length?(won&&i===guesses.length-1?'#16A34A':'#DC2626'):'var(--color-border)',transition:'background 0.3s'}}/>)}
+            {Array.from({length:MAX_ATTEMPTS}).map((_,i)=><div key={i} style={{width:'32px',height:'6px',borderRadius:'var(--radius-xs)',background:i<guesses.length?(won&&i===guesses.length-1?C.ok:C.error):'var(--color-border)',transition:'background 0.3s'}}/>)}
           </div>
           <p style={{fontSize:'12px',color:'var(--color-text-secondary)'}}>{gameOver?(won?'¡Correcto!':'Se acabaron los intentos'):`${MAX_ATTEMPTS-guesses.length} intento${MAX_ATTEMPTS-guesses.length!==1?'s':''} restante${MAX_ATTEMPTS-guesses.length!==1?'s':''}`}</p>
         </div>
         {!gameOver&&(
           <div style={{position:'relative',marginBottom:'20px'}}>
             <label htmlFor="avatardle-search" className="sr-only">Buscar streamer</label>
-            <input id="avatardle-search" ref={inputRef} className="input-base" placeholder="Escribí el nombre del streamer..." value={query} onChange={e=>setQuery(e.target.value)}
+            <input id="avatardle-search" ref={inputRef} className="input-base" placeholder="Escribí el nombre del streamer…" value={query} onChange={e=>setQuery(e.target.value)}
               onKeyDown={e=>{if(e.key==='Enter'&&suggestions.length>0)handleGuess(suggestions[0]);if(e.key==='Escape')setSuggestions([]);}}
               autoComplete="off" style={{fontSize:'15px',padding:'12px 16px'}}/>
             {suggestions.length>0&&(
@@ -191,13 +193,13 @@ export default function AvatardlePage() {
             {guesses.map(guess=>{
               const isCorrect=guess.id===target.id, gUrl=getAvatarUrl(guess,avatars);
               return(
-                <a key={guess.id} href={`/${getSlug(guess)}`} style={{display:'flex',alignItems:'center',gap:'10px',background:isCorrect?'#16A34A22':'#DC262622',border:`1px solid ${isCorrect?'#16A34A44':'#DC262644'}`,borderRadius:'8px',padding:'8px 12px',animation:'fadeIn 0.3s ease',textDecoration:'none',color:'inherit',transition:'border-color 0.15s'}}
-                  onMouseOver={e=>e.currentTarget.style.borderColor=isCorrect?'#16A34A88':'#DC262688'} onMouseOut={e=>e.currentTarget.style.borderColor=isCorrect?'#16A34A44':'#DC262644'}>
+                <Link key={guess.id} href={`/${getSlug(guess)}`} style={{display:'flex',alignItems:'center',gap:'10px',background:isCorrect?C.ok + '22':C.error + '22',border:`1px solid ${isCorrect?C.ok + '44':C.error + '44'}`,borderRadius:'var(--radius-sm)',padding:'8px 12px',animation:'fadeIn 0.3s ease',textDecoration:'none',color:'inherit',transition:'border-color 0.15s'}}
+                  onMouseOver={e=>e.currentTarget.style.borderColor=isCorrect?C.ok + '88':C.error + '88'} onMouseOut={e=>e.currentTarget.style.borderColor=isCorrect?C.ok + '44':C.error + '44'}>
                   {gUrl?<img src={gUrl} alt={guess.display_name} style={{width:'28px',height:'28px',borderRadius:'50%',objectFit:'cover'}} onError={e=>e.target.style.display='none'}/>
-                    :<div style={{width:'28px',height:'28px',borderRadius:'50%',background:'#7C3AED',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12px'}}>{guess.display_name[0]}</div>}
+                    :<div style={{width:'28px',height:'28px',borderRadius:'50%',background:C.purple,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12px'}}>{guess.display_name[0]}</div>}
                   <span style={{fontSize:'14px',fontWeight:'600'}}>{guess.display_name}</span>
                   <span style={{marginLeft:'auto',fontSize:'16px'}}>{isCorrect?'✅':'❌'}</span>
-                </a>
+                </Link>
               );
             })}
           </div>

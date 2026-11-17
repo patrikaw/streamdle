@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { C } from '../../../lib/colores';
 
 const LABELS = ['A', 'B', 'C', 'D'];
 
@@ -101,7 +102,7 @@ export default function CommunityTrivia({ color }) {
         <div style={{ display: 'flex', gap: 4 }}>
           {QUESTIONS.map((_, i) => (
             <div key={i} style={{
-              width: 28, height: 3, borderRadius: 2,
+              width: 28, height: 3, borderRadius: 'var(--radius-xs)',
               background: i < current ? color : i === current ? color + 'aa' : 'var(--color-border)',
             }} />
           ))}
@@ -118,22 +119,22 @@ export default function CommunityTrivia({ color }) {
           const isRight = idx === q.a;
           let bg = 'var(--bg-primary)', border = 'var(--color-border)', txtColor = '#fff';
           if (selected !== null) {
-            if (isRight) { bg = 'rgba(22,163,74,0.2)'; border = '#16A34A'; txtColor = '#4ADE80'; }
-            else if (isSel) { bg = 'rgba(220,38,38,0.2)'; border = '#DC2626'; txtColor = '#F87171'; }
+            if (isRight) { bg = 'rgba(22,163,74,0.2)'; border = C.ok; txtColor = C.okLight; }
+            else if (isSel) { bg = 'rgba(220,38,38,0.2)'; border = C.error; txtColor = C.errorLight; }
           }
           return (
             <button key={idx} onClick={() => handleSelect(idx)} style={{
               display: 'flex', alignItems: 'flex-start', gap: 10,
               background: bg, border: `1.5px solid ${border}`, color: txtColor,
-              borderRadius: 9, padding: '10px 13px', textAlign: 'left',
+              borderRadius: 'var(--radius-sm)', padding: '10px 13px', textAlign: 'left',
               fontSize: 13, fontWeight: 600,
               cursor: selected !== null ? 'default' : 'pointer',
               transition: 'all 0.18s',
             }}>
               <span style={{
-                flexShrink: 0, width: 20, height: 20, borderRadius: 5,
+                flexShrink: 0, width: 20, height: 20, borderRadius: 'var(--radius-xs)',
                 background: selected !== null
-                  ? (isRight ? '#16A34A33' : isSel ? '#DC262633' : 'var(--bg-card)')
+                  ? (isRight ? C.ok + '33' : isSel ? C.error + '33' : 'var(--bg-card)')
                   : 'var(--bg-card)',
                 border: `1px solid ${border}`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -151,11 +152,11 @@ export default function CommunityTrivia({ color }) {
         <div>
           <div style={{
             fontSize: 13, lineHeight: 1.55,
-            background: 'var(--bg-card)', borderRadius: 9, padding: '10px 13px',
+            background: 'var(--bg-card)', borderRadius: 'var(--radius-sm)', padding: '10px 13px',
             marginBottom: 9,
-            borderLeft: `3px solid ${isCorrect ? '#16A34A' : '#DC2626'}`,
+            borderLeft: `3px solid ${isCorrect ? C.ok : C.error}`,
           }}>
-            <div style={{ fontWeight: 700, color: isCorrect ? '#4ADE80' : '#F87171', marginBottom: 4 }}>
+            <div style={{ fontWeight: 700, color: isCorrect ? C.okLight : C.errorLight, marginBottom: 4 }}>
               {isCorrect ? `✅ ${q.ok}` : `❌ ${q.ko}`}
             </div>
             <div style={{ color: 'var(--color-text-secondary)' }}>{q.exp}</div>
