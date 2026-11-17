@@ -16,6 +16,7 @@ Minijuegos de Wordle y fichas de streamers hispanos de Twitch y Kick. Next.js 16
 - `data/streamers.js` — **fuente de verdad** de todos los streamers (se edita a mano y la tocan los scripts)
 - `data/historial.json` — fotos de seguidores cada 15 días (tendencias y archivo)
 - `data/actividad.json`, `data/muestreo.json`, `data/contenido.json` — actividad mensual, juegos por streamer y clips (los generan scripts)
+- `data/picks-fijos.json` — quién es el streamer de cada día en cada juego (fijado, no cambia al sumar streamers)
 - `data/seo-overrides.json` — metadatos SEO por streamer/juego
 - `lib/twitch-server.js` — llamadas a la API de Twitch (solo server-side)
 
@@ -28,6 +29,7 @@ Minijuegos de Wordle y fichas de streamers hispanos de Twitch y Kick. Next.js 16
 - `scripts/actividad-mensual.mjs` — resumen del mes anterior, día 1
 - `scripts/contenido-diario.mjs` — mejores clips, todos los días
 - `scripts/muestreo.mjs` — qué juega cada streamer, 4 veces al día
+- `scripts/fijar-picks.mjs` — fija los próximos 14 días de cada juego (corre dentro del flujo diario de clips)
 - `scripts/verificar-build.mjs` — corre solo tras `npm run build`; si falta algo esencial, el build falla
 
 ## Comandos

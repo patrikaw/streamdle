@@ -84,6 +84,9 @@ export default function Home() {
           background: linear-gradient(90deg, #F59E0B, #EC4899, #8B5CF6); background-size: 200% 100%; color: #fff; font-size: 11px; font-weight: 900;
           letter-spacing: 1px; padding: 4px 0; box-shadow: 0 2px 10px rgba(236,72,153,.6); animation: nuevoBrillo 2.4s linear infinite; z-index: 2; }
         @keyframes nuevoBrillo { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
+        .novedades-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        @media (max-width: 700px) { .novedades-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 440px) { .novedades-grid { grid-template-columns: 1fr; } }
       `}</style>
       {/* Header */}
       <header style={{
@@ -279,7 +282,7 @@ export default function Home() {
 
         {/* Novedades */}
         <section id="novedades" style={{ marginTop: '48px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
+          <div className="novedades-grid">
             {[
               { href: '/tendencias', emoji: '🔥', titulo: 'Streamers en tendencia', texto: 'Quiénes ganaron más seguidores, por país y para toda Latam.', color: '#F97316' },
               { href: '/comunidades', emoji: '👥', titulo: 'Comunidades', texto: 'Top Globales, W Crew, Coscu Army y los grupos que mueven el streaming.', color: '#16A34A' },
@@ -287,7 +290,6 @@ export default function Home() {
               { href: '/streamers/signo', emoji: '♈', titulo: 'Por signo, generación y personalidad', texto: 'Explorá a los streamers agrupados de otra manera.', color: '#2563EB' },
               { href: '/clips/hoy', emoji: '🎬', titulo: 'Mejores clips de hoy', texto: 'Los clips más vistos de los streamers hispanos, del día, la semana y el mes.', color: '#0EA5E9' },
               { href: '/gta-6', emoji: '🎮', titulo: 'GTA 6 en español', texto: 'Quién lo juega en vivo entre los streamers hispanos y sus mejores clips.', color: '#0EA5E9' },
-              { href: '/eventos/la-velada-del-ano-6', emoji: '🥊', titulo: 'La Velada del Año VI', texto: 'Resultados de los diez combates: TheGrefg vs IlloJuan y más.', color: '#EF4444' },
             ].map((n) => (
               <a key={n.href} href={n.href} style={{ display: 'block', textDecoration: 'none', color: 'inherit', borderRadius: '14px', padding: '16px 18px', background: `linear-gradient(135deg, ${n.color}26, var(--bg-card))`, border: `1px solid ${n.color}55` }}>
                 <div style={{ fontSize: '24px', marginBottom: '6px' }}>{n.emoji}</div>
@@ -298,12 +300,18 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Footer links */}
+        {/* Pie */}
+        <footer style={{ marginTop: '48px', padding: '28px 24px 8px', borderTop: '1px solid var(--color-border)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', textAlign: 'center' }}>
+        <nav aria-label="Rankings y explorador de streamers" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
+          {[
+            ['/tendencias', '🔥 Streamers en tendencia'], ['/streamers', '🏆 Ranking de streamers'], ['/streamers/signo', '♈ Por signo'],
+            ['/streamers/generacion', '🧬 Por generación'], ['/streamers/personalidad', '🎭 Por personalidad'],
+          ].map(([href, label]) => (
+            <a key={href} href={href} style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '6px 12px', borderRadius: '20px', border: '1px solid var(--color-border)', background: 'var(--bg-card)' }}>{label}</a>
+          ))}
+        </nav>
         <div style={{
           textAlign: 'center',
-          marginTop: '48px',
-          padding: '24px',
-          borderTop: '1px solid var(--color-border)',
           display: 'flex',
           justifyContent: 'center',
           gap: '24px',
@@ -326,23 +334,16 @@ export default function Home() {
 ))}
  
         </div>
-        <nav aria-label="Rankings y explorador de streamers" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center', marginTop: '28px' }}>
-          {[
-            ['/tendencias', '🔥 Streamers en tendencia'], ['/streamers', '🏆 Ranking de streamers'], ['/streamers/signo', '♈ Por signo'],
-            ['/streamers/generacion', '🧬 Por generación'], ['/streamers/personalidad', '🎭 Por personalidad'],
-          ].map(([href, label]) => (
-            <a key={href} href={href} style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-text-secondary)', textDecoration: 'none', padding: '6px 12px', borderRadius: '20px', border: '1px solid var(--color-border)', background: 'var(--bg-card)' }}>{label}</a>
-          ))}
-        </nav>
         <p style={{
           textAlign: 'center',
           color: 'var(--color-text-secondary)',
           fontSize: '12px',
-          marginTop: '12px',
+          margin: 0,
         }}>
           © 2026 Streamdle. No afiliado con Twitch, Kick ni YouTube. Hecho por{' '}
           <a href="https://x.com/PatooWnuk" target="_blank" rel="noopener noreferrer" style={{ color: '#53FC18', fontWeight: '700', textDecoration: 'underline' }}>Pato Wnuk</a>.
         </p>
+        </footer>
       </main>
     </div>
   );

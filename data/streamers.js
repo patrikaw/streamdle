@@ -1,3 +1,4 @@
+import PICKS_FIJOS from './picks-fijos.json';
 // Fuente de verdad de los datos. Seguidores: scripts/actualizar-datos.mjs; horas/peak/categorías: scripts/twitchtracker.py. Ya no se genera desde la planilla.
 export const STREAMERS = [
   {id:1, name:"ibai", display_name:"ibai", country:"ES", language:"es", twitch:"ibai", kick:"", youtube:"", twitch_followers:20332349, kick_followers:0, total_followers:20332349, twitch_hours:8292, kick_hours:0, total_hours:8292, top_category:"Just Chatting", second_category:"League of Legends", peak_viewers:9189762, is_active:true, aliases:["Ibai Llanos","Ibai Llanos Garatea"], catchphrase:"Me llamas gordo y te doy la mano", emojis:"🥘,🏟️,🎤,🔔", community:"G2 House", esports_team:"Movistar KOI", real_name:"Ibai Llanos Garatea", events:["La Velada del Año VI","La Velada del Año","Ibainéfico","Mundial de Globos","Campanadas de Ibai","Disaster Chefs"], birth_year:1995, birth_month:3, birth_day:26, birth_date:"26 de marzo de 1995", zodiac:"Aries", generation:"Millennial", created_at:"2015-02-20T16:47:56Z", broadcaster_type:"partner", description:"Si lees esto que sepas que te aprecio", personality:"Carismático", twitter_url:"https://x.com/IbaiLlanos", instagram_url:"https://www.instagram.com/ibaillanos/", tiktok_url:"https://www.tiktok.com/@ibaillanos", youtube_url:"https://www.youtube.com/@IbaiLlanos/videos", top_clip_url:"https://www.twitch.tv/ibai/clip/AggressiveFrozenHerbsUnSane-prkuzLank5qzD122", top_clip_id:"AggressiveFrozenHerbsUnSane-prkuzLank5qzD122", top_clip_title:"King of spain enters the stadium", top_clip_views:424197, top_content:"Eventos", second_content:"Reacción", bio:"Ibai es el tipo que jubiló a la tele desde su cuarto, pasando de castear el Lol en sótanos a cenar con Messi. Su lore es el sueño del underdog: entendió antes que nadie que la clave no es el algoritmo, sino la autenticidad y el saber juntar a millones para ver un torneo de globos o La Velada del Año como si fuera una final del mundo. Es el arquitecto de los eventos en Twitch, el CEO de la épica cotidiana que convirtió el \"estar chill\" en un imperio transmedia, demostrando que para dominar la escena no hace falta un guion, sino ese carisma magnético de quien parece tu mejor amigo aunque sea una de las personas más influyentes del planeta.", trivia_q1:"¿En qué año y evento Ibai Llanos hizo su debut oficial como caster de League of Legends en la LVP (Liga de Videojuegos Profesional)?", trivia_a1:"2014 — Final Cup 7", trivia_opts1:["2012 — Final Cup 3","2015 — Gamergy","2013 — Madrid Games Week"], trivia_exp1:"Ibai debutó en 2014 junto a Ander Cortés, narrando una partida de la Superliga que cambiaría su carrera para siempre.", trivia_q2:"¿Cuál fue el nombre del primer equipo de eSports profesional que fichó a Ibai como creador de contenido tras su salida de la LVP en 2020?", trivia_a2:"G2 Esports", trivia_opts2:["KOI","Fnatic","Team Liquid"], trivia_exp2:"Carlos \"Ocelote\" lo fichó para formar un equipo de creadores junto a Ander, Reven y BarbeQ, marcando su transición total al streaming."},
@@ -273,6 +274,18 @@ function _buildPool(country, filter) {
 }
 
 const _dayMemo = new Map();
+
+// Elecciones diarias ya fijadas (data/picks-fijos.json): sumar streamers no cambia los días ya publicados.
+{
+  const porId = new Map(STREAMERS.map(s => [s.id, s]));
+  for (const [juego, fechas] of Object.entries(PICKS_FIJOS)) {
+    for (const [fecha, picks] of Object.entries(fechas)) {
+      const dia = {};
+      for (const [pais, id] of Object.entries(picks)) dia[pais] = id == null ? null : (porId.get(id) ?? null);
+      _dayMemo.set(`${juego}_${fecha}`, dia);
+    }
+  }
+}
 
 function _computeDayPicks(gameKey, offset, filter, targetDate) {
   const targetStr = _dateStr(targetDate);

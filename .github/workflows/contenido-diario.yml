@@ -1,6 +1,7 @@
 name: Contenido diario (clips)
 
-# Todos los días recalcula los mejores clips del día, la semana y el mes (GTA 6 y streamers de Streamdle).
+# Todos los días recalcula los mejores clips del día, la semana y el mes (GTA 6 y streamers de Streamdle)
+# y fija quién es el streamer de cada juego los próximos 14 días.
 on:
   schedule:
     - cron: '0 8 * * *'
@@ -25,16 +26,20 @@ jobs:
           TWITCH_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
         run: node scripts/contenido-diario.mjs
 
+      - name: Fijar los próximos días de cada juego
+        run: node scripts/fijar-picks.mjs
+
       - name: Publicar los cambios en main
         run: |
-          if git diff --quiet -- data/contenido.json; then
+          if git diff --quiet -- data/contenido.json data/picks-fijos.json; then
             echo "Sin cambios."
             exit 0
           fi
+          node -e "const f=JSON.parse(require('fs').readFileSync('data/picks-fijos.json','utf8')); if(Object.keys(f).length<6) process.exit(1)"
           node -e "const d=JSON.parse(require('fs').readFileSync('data/contenido.json','utf8')); if(!d.destacados||!d.destacados.semana||d.destacados.semana.length<3) process.exit(1)"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/contenido.json
+          git add data/contenido.json data/picks-fijos.json
           git commit -m "Contenido diario actualizado ($(date +%Y-%m-%d))"
           git pull --rebase origin main
           git push origin HEAD:main
