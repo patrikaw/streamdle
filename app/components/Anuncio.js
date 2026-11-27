@@ -8,8 +8,8 @@ const CLIENTE = 'ca-pub-9797476509112947';
 // Mientras estén vacíos, el anuncio no se muestra.
 export const SLOTS = {
   juegos: '5662754044',
-  ficha: '',
-  listado: '',
+  ficha: '7666100856',
+  listado: '2425061662',
 };
 
 // Bloque manual adaptable. Reserva altura para que la página no salte al cargar
