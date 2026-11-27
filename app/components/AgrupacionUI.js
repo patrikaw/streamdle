@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import AvatarImg from './AvatarImg';
+import { VivoLinea } from './Vivos';
 import { getAvatarUrl } from '../../data/avatars';
 import { fetchTwitchAvatars } from '../../lib/twitch-server';
 import { SITE, TIPOS, TIPOS_LISTA, gruposDe, resumenDe } from '../../lib/agrupaciones';
@@ -137,6 +138,7 @@ export async function Detalle({ tipo, slug }) {
               <div style={{ fontSize: 12, color: 'var(--color-text-secondary)', marginTop: 3 }}>
                 {fmt(s.total_followers)} segs{s.detalle ? ` · ${s.detalle}` : ''}
               </div>
+              <VivoLinea slug={s._slug} />
             </div>
           </Link>
         ))}

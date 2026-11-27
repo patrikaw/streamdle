@@ -55,7 +55,7 @@ export default function Page() {
 
       {r.total === 0 ? (
         <p style={{ marginTop: 24, color: 'var(--color-text-secondary)', lineHeight: 1.6, maxWidth: 720 }}>
-          Todavía nadie de Streamdle fue visto jugando GTA 6. El juego sale el 19 de noviembre de 2026: el ranking se arma solo desde ese día y se actualiza todas las horas.
+          Todavía nadie de Streamdle fue visto jugando GTA 6 en las mediciones. El juego salió el 19 de noviembre de 2026: el ranking se arma solo y se actualiza cada hora.
         </p>
       ) : (
         <>

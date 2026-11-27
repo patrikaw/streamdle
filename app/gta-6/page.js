@@ -4,6 +4,8 @@ import { STREAMERS } from '../../data/streamers';
 import { getTwitchToken } from '../../lib/twitch-server';
 import { C } from '../../lib/colores';
 import EnVivo from '../components/EnVivo';
+import { rankingsGta } from '../../lib/muestreo';
+import { EnVivoAhora } from '../components/Vivos';
 
 export const revalidate = 600;
 
@@ -12,7 +14,7 @@ const slugDe = (s) => s.display_name.toLowerCase().replace(/\s+/g, '-');
 
 export const metadata = {
   title: 'GTA 6 en español: streamers en vivo y clips | Streamdle',
-  description: 'Qué streamers hispanos juegan GTA 6 ahora en Twitch y sus clips más vistos. Fecha de lanzamiento, en vivo y recopilación, actualizado cada pocos minutos.',
+  description: 'Qué streamers hispanos juegan GTA 6 ahora en Twitch y sus clips más vistos. Ya disponible desde el 19 de noviembre de 2026: directos, clips y ranking de quién más lo jugó, actualizado cada pocos minutos.',
   alternates: { canonical: `${SITE}/gta-6` },
   openGraph: {
     title: 'GTA 6 en español: streamers en vivo y clips | Streamdle',
@@ -71,8 +73,12 @@ export default async function Page() {
   const d = await datosTwitch();
   const url = `${SITE}/gta-6`;
   const crumbs = [{ label: 'Inicio', href: '/' }, { label: 'GTA 6' }];
+  const rk = rankingsGta();
+  const top = rk.masHoras.map((x) => ({ ...x, s: STREAMERS.find((y) => slugDe(y) === x.slug) })).filter((x) => x.s).slice(0, 3);
   const faq = [
-    ['¿Cuándo sale GTA 6?', 'Según Take-Two y Rockstar Games, GTA 6 sale el 19 de noviembre de 2026 en PlayStation 5 y Xbox Series X|S. La versión de PC no tiene fecha confirmada. Conviene confirmarlo siempre en los canales oficiales de Rockstar.'],
+    ['¿Cuándo salió GTA 6?', 'GTA 6 salió el 19 de noviembre de 2026, según Rockstar Games.'],
+    ['¿En qué plataformas está GTA 6?', 'En PlayStation 5 y Xbox Series X|S. Rockstar no ha anunciado fecha para la versión de PC. Conviene confirmarlo en los canales oficiales de Rockstar.'],
+    ...(top.length ? [['¿Qué streamer hispano jugó más GTA 6?', `Según nuestras mediciones, ${top.map((x) => `${x.s.display_name} (${x.horas} h)`).join(', ')}. El ranking completo está en la página de ranking.`]] : []),
     ['¿Qué streamers hispanos juegan GTA 6?', 'En esta página mostramos en vivo cuáles de los streamers de Streamdle están transmitiendo GTA 6 en Twitch y sus clips más vistos de la última semana.'],
     ['¿Cada cuánto se actualiza esta página?', 'Cada 10 minutos aproximadamente.'],
   ];
@@ -83,11 +89,11 @@ export default async function Page() {
       {jsonLd({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) })}
       <h1 style={{ fontSize: 'clamp(24px, 5vw, 38px)', fontWeight: 800, margin: '20px 0 10px' }}>🎮 GTA 6 en español: streamers en vivo y clips</h1>
       <p style={{ color: 'var(--color-text-secondary)', fontSize: 15, lineHeight: 1.6, maxWidth: 780 }}>
-        Quiénes juegan GTA 6 ahora entre los streamers hispanos de Streamdle y cuáles son sus clips más vistos. El juego sale el <strong style={{ color: '#fff' }}>19 de noviembre de 2026</strong> en consolas, según Take-Two y Rockstar.
+        Quiénes juegan GTA 6 ahora entre los streamers hispanos de Streamdle y cuáles son sus clips más vistos. El juego salió el <strong style={{ color: '#fff' }}>19 de noviembre de 2026</strong> en PlayStation 5 y Xbox Series X|S, según Rockstar.
       </p>
 
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 14 }}>
-        {[['/gta-6/clips/hoy', '🎬 Mejores clips de hoy'], ['/gta-6/clips/semana', 'Clips de la semana'], ['/gta-6/clips/mes', 'Clips del mes'], ['/gta-6/ranking', '🏆 Quién más lo jugó']].map(([h, l]) => (
+        {[['/gta-6/clips/hoy', '🎬 Mejores clips de hoy'], ['/gta-6/clips/semana', 'Clips de la semana'], ['/gta-6/clips/mes', 'Clips del mes'], ['/gta-6/ranking', '🏆 Quién más lo jugó'], ['/gta-6/estadisticas', '📊 Día a día']].map(([h, l]) => (
           <Link key={h} href={h} className="agr-chip" style={{ background: 'var(--bg-card)', border: '1px solid var(--color-border)', color: '#fff', borderRadius: 'var(--radius-pill)', padding: '6px 14px', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>{l}</Link>
         ))}
       </div>
@@ -123,10 +129,14 @@ export default async function Page() {
           </div>
         ) : (
           <p style={{ fontSize: 14, color: 'var(--color-text-secondary)', lineHeight: 1.6, maxWidth: 720 }}>
-            Ahora mismo ningún streamer de Streamdle está transmitiendo GTA 6 en Twitch. El juego sale el 19 de noviembre: esta lista se llena sola desde ese día, y se actualiza cada pocos minutos.
+            Ahora mismo ningún streamer de Streamdle está transmitiendo GTA 6 en Twitch. Cuando alguno entre en directo con GTA 6 aparecerá aquí; la lista se actualiza cada pocos minutos.
           </p>
         )}
       </section>
+
+      <div style={{ marginTop: 22 }}>
+        <EnVivoAhora titulo="🟢 Jugando GTA 6 en Kick ahora" plataforma="Kick" juego="grand theft auto vi|gta ?(6|vi)" />
+      </div>
 
       {d && d.clips.length > 0 && (
         <section style={{ marginTop: 32 }}>
@@ -145,6 +155,22 @@ export default async function Page() {
               </a>
             ))}
           </div>
+        </section>
+      )}
+
+      {top.length > 0 && (
+        <section style={{ marginTop: 32 }}>
+          <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 6 }}>🏆 Quién más lo jugó</h2>
+          <div style={{ display: 'grid', gap: 8, maxWidth: 780 }}>
+            {top.map((x, i) => (
+              <Link key={x.slug} href={`/${x.slug}`} className="agr-card" style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'var(--bg-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '10px 16px', textDecoration: 'none', color: 'inherit' }}>
+                <div style={{ minWidth: 28, fontSize: 13, fontWeight: 800, color: 'var(--color-purple-light)' }}>#{i + 1}</div>
+                <div style={{ flex: 1, fontSize: 15, fontWeight: 800, color: '#fff' }}>{x.s.display_name}</div>
+                <div style={{ fontSize: 14 }}><strong style={{ color: C.okLight }}>{x.horas} h</strong> <span style={{ color: 'var(--color-text-secondary)', fontSize: 12 }}>jugando</span></div>
+              </Link>
+            ))}
+          </div>
+          <Link href="/gta-6/ranking" style={{ display: 'inline-block', marginTop: 10, fontSize: 13, fontWeight: 700, color: 'var(--color-purple-light)' }}>Ver el ranking completo →</Link>
         </section>
       )}
 

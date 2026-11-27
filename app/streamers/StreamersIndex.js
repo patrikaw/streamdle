@@ -7,6 +7,7 @@ import { STREAMERS } from '../../data/streamers';
 import { getAvatarsForLogins, getAvatarUrl } from '../../data/avatars';
 import { fmtNum } from '../../lib/formato';
 import { C } from '../../lib/colores';
+import { VivoLinea, EnVivoAhora, useVivos } from '../components/Vivos';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -22,6 +23,7 @@ const ALL_COUNTRIES = [
 ];
 
 const SORT_OPTIONS = [
+  { value: 'live',           label: '🔴 En vivo primero' },
   { value: 'followers_desc', label: '👥 Más seguidores' },
   { value: 'followers_asc',  label: '👥 Menos seguidores' },
   { value: 'peak_desc',      label: '🏆 Mayor peak' },
@@ -212,6 +214,7 @@ function StreamerCard({ streamer, avatars, sort }) {
             {streamer.real_name}
           </div>
         )}
+        <VivoLinea slug={slug} />
 
         <div style={{ display: 'flex', gap: 5, marginTop: 5, flexWrap: 'wrap', alignItems: 'center' }}>
           {streamer.top_category && (
@@ -278,6 +281,7 @@ export default function StreamersIndex({
   const [sort,    setSort]    = useState('followers_desc');
   const [page,    setPage]    = useState(1);
   const [avatars, setAvatars] = useState({});
+  const vivos = useVivos();
 
   useEffect(() => { setPage(1); }, [search, country, sort]);
 
@@ -326,10 +330,14 @@ export default function StreamersIndex({
       ? 'followers_desc'
       : sort;
 
-    const sorted = sortStreamers(list, effectiveSort);
+    let sorted = sortStreamers(list, effectiveSort === 'live' ? 'followers_desc' : effectiveSort);
+    if (effectiveSort === 'live' && vivos) {
+      const slugOf = (s) => s.display_name.toLowerCase().replace(/\s+/g, '-');
+      sorted = [...sorted].sort((a, b) => (vivos[slugOf(b)]?.v ?? -1) - (vivos[slugOf(a)]?.v ?? -1));
+    }
 
     return sorted.map(s => ({ ...s, _rank: rankMap[s.id] }));
-  }, [search, country, sort]);
+  }, [search, country, sort, sort === 'live' ? vivos : null]);
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paginated  = useMemo(
@@ -422,6 +430,8 @@ export default function StreamersIndex({
           )}
         </div>
 
+        <EnVivoAhora filtro={country === 'ALL' ? undefined : country === 'LATAM' ? (v) => LATAM_CODES.includes(v.c) : (v) => v.c === country} />
+
         {/* CONTROLES */}
         <div style={{
           background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)',
@@ -510,6 +520,12 @@ export default function StreamersIndex({
               ? `${STREAMERS.length} streamers`
               : `${filtered.length} streamer${filtered.length !== 1 ? 's' : ''}`}
           </span>
+          {vivos && (() => {
+            const n = filtered.filter(s => vivos[s.display_name.toLowerCase().replace(/\s+/g, '-')]).length;
+            return n > 0 && (
+              <button onClick={() => setSort('live')} style={{ background: 'rgba(233,25,22,0.15)', color: '#ff6b6b', border: '1px solid rgba(233,25,22,0.4)', borderRadius: 'var(--radius-pill)', padding: '2px 10px', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>🔴 {n} en vivo</button>
+            );
+          })()}
           {search && (
             <span style={{
               background: 'rgba(124,58,237,0.2)', color: 'var(--color-purple-light)',

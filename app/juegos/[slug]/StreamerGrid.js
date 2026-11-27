@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { fmtNum } from '../../../lib/formato';
 import { C } from '../../../lib/colores';
+import { VivoLinea } from '../../components/Vivos';
 
 const PAGE_SIZE = 12;
 
@@ -72,6 +73,7 @@ function StreamerCard({ streamer, rank, isPrimary }) {
             </span>
           )}
         </div>
+        <VivoLinea slug={fichaUrl.slice(1)} />
       </div>
     </a>
   );

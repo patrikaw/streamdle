@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { STREAMERS } from '../../data/streamers';
 import { getAvatars, getAvatarUrl } from '../../data/avatars';
@@ -10,6 +10,7 @@ import { badgesDe } from '../../lib/tendencias';
 import { hitoDe } from '../../lib/extras-ficha';
 import { CumpleChip } from '../components/Cumple';
 import VivoAhora from '../components/VivoAhora';
+import PanelInferior from '../components/PanelInferior';
 import { categoryToSlug, getCategoriesWithMinStreamers } from '../../lib/categories';
 import { fmtNum } from '../../lib/formato';
 import { C } from '../../lib/colores';
@@ -203,11 +204,11 @@ function TriviaSection({ streamer }) {
 function StatCard({label,value,tooltip,rank,color}) {
   const [hov,setHov]=useState(false);
   return (
-    <div style={{background:'var(--bg-card)',border:'1px solid var(--color-border)',borderRadius:'var(--radius-md)',padding:'13px 15px',flex:1,minWidth:100,position:'relative'}}
-      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}>
+    <div className="stat-card" style={{background:'var(--bg-card)',border:'1px solid var(--color-border)',borderRadius:'var(--radius-md)',padding:'13px 15px',minWidth:0,position:'relative',cursor:tooltip?'pointer':'default'}}
+      onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)} onClick={()=>setHov(h=>!h)}>
       <div style={{fontSize:10,color:'var(--color-text-secondary)',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:5}}>{label}</div>
-      <div style={{fontSize:20,fontWeight:800,color:color||'#fff',lineHeight:1}}>{value}</div>
-      {rank&&<div style={{fontSize:11,color:'var(--color-text-secondary)',marginTop:3,fontWeight:600}}>#{rank} en el sitio</div>}
+      <div className="stat-valor" style={{fontSize:20,fontWeight:800,color:color||'#fff',lineHeight:1}}>{value}</div>
+      {rank&&<div className="stat-rank" style={{fontSize:11,color:'var(--color-text-secondary)',marginTop:3,fontWeight:600}}>#{rank} en el sitio</div>}
       {tooltip&&hov&&(
         <div style={{position:'absolute',bottom:'calc(100% + 6px)',left:'50%',transform:'translateX(-50%)',background:'var(--bg-card)',border:'1px solid var(--color-border)',borderRadius:'var(--radius-xs)',padding:'5px 10px',fontSize:12,fontWeight:600,color:'#fff',whiteSpace:'nowrap',zIndex:10,boxShadow:'0 4px 12px rgba(0,0,0,0.4)',pointerEvents:'none'}}>
           {tooltip}
@@ -250,6 +251,55 @@ function RelatedCard({streamer,avatars}) {
   );
 }
 
+function ComunidadInfo({streamer}){
+  return (
+    <div style={{display:'flex',flexDirection:'row',flexWrap:'wrap',gap:12,alignItems:'flex-start'}}>
+      {streamer.community&&(
+        <div>
+          <div style={{fontSize:10,color:'var(--color-text-secondary)',marginBottom:4,fontWeight:600}}>Comunidad</div>
+          <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
+            {(Array.isArray(streamer.community)?streamer.community:[streamer.community]).map(c=>(
+              <span key={c} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(83,252,24,0.12)',color:'var(--color-kick)',border:'1px solid rgba(83,252,24,0.25)'}}>{c}</span>
+            ))}
+          </div>
+        </div>
+      )}
+      {streamer.esports_team&&(
+        <div>
+          <div style={{fontSize:10,color:'var(--color-text-secondary)',marginBottom:4,fontWeight:600}}>Equipo de Esports</div>
+          <span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(37,99,235,0.15)',color:C.blueLight,border:'1px solid rgba(37,99,235,0.3)'}}>⚔️ {streamer.esports_team}</span>
+        </div>
+      )}
+      {streamer.events&&streamer.events.length>0&&(
+        <div>
+          <div style={{fontSize:10,color:'var(--color-text-secondary)',marginBottom:4,fontWeight:600}}>Eventos</div>
+          <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
+            {streamer.events.map(e=>{
+              const url=EVENT_URLS[e];
+              return url
+                ?<a key={e} href={url} title={`Ver ${e}`} style={{textDecoration:'none'}}><span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(124,58,237,0.15)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)'}}>🎪 {e} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></span></a>
+                :<span key={e} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(124,58,237,0.15)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)'}}>🎪 {e}</span>;
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DatosLista({items}){
+  return (
+    <div style={{display:'flex',flexDirection:'column',gap:9}}>
+      {items.map((d,i)=>(
+        <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:8,paddingBottom:i<items.length-1?9:0,borderBottom:i<items.length-1?'1px solid var(--color-border)':undefined}}>
+          <span style={{fontSize:11,color:'var(--color-text-secondary)',flexShrink:0}}>{d.label}</span>
+          <span style={{fontSize:12,fontWeight:600,color:'#fff',textAlign:'right',overflowWrap:'anywhere'}}>{d.href?<a href={d.href} title={`Ver más streamers: ${d.value}`} style={{color:'var(--color-purple-light)',textDecoration:'none'}}>{d.value} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>:d.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function NotFound() {
   return (
     <div style={{minHeight:'100vh',background:'var(--bg-primary)',display:'flex',flexDirection:'column'}}>
@@ -266,14 +316,15 @@ function NotFound() {
   );
 }
 
-function ActividadPanel({streamer}){
+function ActividadPanel({streamer,enPanel}){
   const [a,setA]=useState(null);
+  const [listo,setListo]=useState(false);
   useEffect(()=>{
     let vivo=true;
-    fetch(`/api/actividad/${streamer.display_name.toLowerCase().replace(/\s+/g,'-')}`).then(r=>r.json()).then(d=>{if(vivo&&d.ok)setA(d);}).catch(()=>{});
+    fetch(`/api/actividad/${streamer.display_name.toLowerCase().replace(/\s+/g,'-')}`).then(r=>r.json()).then(d=>{if(vivo&&d.ok)setA(d);}).catch(()=>{}).finally(()=>{if(vivo)setListo(true);});
     return()=>{vivo=false;};
   },[streamer.id]);
-  if(!a)return null;
+  if(!a)return enPanel?<p style={{fontSize:13,color:'var(--color-text-secondary)',margin:0}}>{listo?'Todavía no hay actividad registrada para este streamer.':'Cargando actividad…'}</p>:null;
   const r=a.reciente, ms=a.meses||[];
   const max=r?Math.max(...r.porDia,1):1;
   const dias=r?Math.floor((Date.now()-new Date(r.ultimo).getTime())/86400000):0;
@@ -348,6 +399,8 @@ export default function StreamerPage() {
     return()=>{vivo=false;};
   },[clipId]);
   useEffect(()=>{getAvatars().then(d=>setAvatars(d||{}));},[]);
+  const [panel,setPanel]=useState(null);
+  const cerrarPanel=useCallback(()=>setPanel(null),[]);
 
   if (!streamer) return <NotFound/>;
 
@@ -369,6 +422,8 @@ export default function StreamerPage() {
   crumbs.push({label:countryName(streamer.country),href:cSlug?`/streamers/${cSlug}`:null});
   crumbs.push({label:streamer.display_name,href:null});
 
+  const chipGris={fontSize:12,fontWeight:700,padding:'5px 11px',borderRadius:'var(--radius-pill)',background:'var(--bg-card)',color:'#fff',border:'1px solid var(--color-border)'};
+  const tieneComunidad=!!(streamer.community||streamer.esports_team||(streamer.events&&streamer.events.length>0));
   const enlaces=enlacesDeFicha(streamer);
   const badges=badgesDe(streamer);
   const hito=hitoDe(streamer);
@@ -384,14 +439,19 @@ export default function StreamerPage() {
   return (
     <div style={{minHeight:'100vh',background:'var(--bg-primary)'}}>
       <style>{`
+        .solo-movil{display:none!important;}
         @media(max-width:768px){
-          .streamer-grid{grid-template-columns:1fr!important;}
-          .community-section-empty{display:none!important;}
-          .panel-datos{display:none!important;}
-          .panel-datos-mobile{display:block!important;}
+          .streamer-grid{grid-template-columns:minmax(0,1fr)!important;}
+          .solo-desktop{display:none!important;}
+          .solo-movil{display:flex!important;}
           .panel-relacionados{order:99;}
         }
-        .panel-datos-mobile{display:none;}
+        @media(max-width:420px){
+          .stat-card{padding:10px 8px!important;}
+          .stat-valor{font-size:17px!important;}
+          .stat-rank{font-size:10px!important;}
+          .hero-pad{padding:0 14px 14px!important;}
+        }
         @media(max-width:640px){.header-icon{display:none!important;}}
       `}</style>
 
@@ -418,7 +478,7 @@ export default function StreamerPage() {
                 {avatarUrl&&!imgErr&&<img src={avatarUrl} alt="" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',filter:'blur(20px) brightness(0.25) saturate(1.5)',transform:'scale(1.1)'}}/>}
                 <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,var(--bg-secondary) 100%)'}}/>
               </div>
-              <div style={{padding:'0 18px 18px',marginTop:-38,position:'relative'}}>
+              <div className="hero-pad" style={{padding:'0 18px 18px',marginTop:-38,position:'relative'}}>
                 <div style={{display:'flex',alignItems:'flex-end',gap:12,marginBottom:10,flexWrap:'wrap'}}>
                   <div style={{position:'relative',flexShrink:0}}>
                     {avatarUrl&&!imgErr
@@ -427,7 +487,7 @@ export default function StreamerPage() {
                     }
                     {streamer.is_active&&<span style={{position:'absolute',bottom:2,right:2,width:12,height:12,borderRadius:'50%',background:C.ok,border:'2px solid var(--bg-secondary)'}} title="Activo"/>}
                   </div>
-                  <div style={{flex:1,minWidth:0,paddingBottom:2}}>
+                  <div style={{flex:'1 1 200px',minWidth:0,paddingBottom:2}}>
                     <div style={{display:'flex',alignItems:'center',gap:7,flexWrap:'wrap'}}>
                       <h1 style={{fontSize:'clamp(17px,3vw,24px)',fontWeight:800,margin:0}}>{streamer.display_name}</h1>
                       <VivoAhora twitch={streamer.twitch} kick={streamer.kick}/>
@@ -438,14 +498,14 @@ export default function StreamerPage() {
                     <div style={{display:'flex',gap:6,flexWrap:'wrap',marginTop:7}}>
                       {streamer.twitch&&<span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'color-mix(in srgb, var(--color-twitch) 20%, transparent)',color:'#fff',border:'1px solid color-mix(in srgb, var(--color-twitch) 55%, transparent)'}}>Twitch</span>}
                       {streamer.kick&&<span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'color-mix(in srgb, var(--color-kick) 16%, transparent)',color:'var(--color-kick)',border:'1px solid color-mix(in srgb, var(--color-kick) 50%, transparent)'}}>Kick</span>}
-                      {debut&&<span title="Año en que se creó su canal de Twitch" style={{fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'var(--bg-card)',color:'var(--color-text-secondary)',border:'1px solid var(--color-border)'}}>📅 En Twitch desde {debut}</span>}
+                      {debut&&<span className="solo-desktop" title="Año en que se creó su canal de Twitch" style={{fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'var(--bg-card)',color:'var(--color-text-secondary)',border:'1px solid var(--color-border)'}}>📅 En Twitch desde {debut}</span>}
                       {hito&&<span title={hito.title} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'color-mix(in srgb, var(--color-warn) 18%, transparent)',color:'#fff',border:'1px solid color-mix(in srgb, var(--color-warn) 50%, transparent)'}}>{hito.texto}</span>}
                       {streamer.birth_month&&streamer.birth_day&&<CumpleChip dia={Number(streamer.birth_day)} mes={Number(streamer.birth_month)} anio={streamer.birth_year?Number(streamer.birth_year):null}/>}
                     </div>
 
-                    {badges.length>0&&<div style={{display:'flex',gap:6,flexWrap:'wrap',marginTop:7}}>{badges.map(b=><a key={b.texto} href={b.href} title={b.title} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(74,222,128,0.12)',color:C.okLight,border:'1px solid rgba(74,222,128,0.35)',textDecoration:'none'}}>{b.texto} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>)}</div>}
+                    {badges.length>0&&<div className="solo-desktop" style={{display:'flex',gap:6,flexWrap:'wrap',marginTop:7}}>{badges.map(b=><a key={b.texto} href={b.href} title={b.title} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(74,222,128,0.12)',color:C.okLight,border:'1px solid rgba(74,222,128,0.35)',textDecoration:'none'}}>{b.texto} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>)}</div>}
                   </div>
-                  <div style={{display:'flex',gap:5,flexShrink:0,flexWrap:'wrap'}}>
+                  <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
                     {twitchUrl&&<SocialIcon href={twitchUrl} type="twitch"/>}
                     {kickUrl&&<SocialIcon href={kickUrl} type="kick"/>}
                     {streamer.youtube_url&&<SocialIcon href={streamer.youtube_url} type="youtube"/>}
@@ -454,7 +514,7 @@ export default function StreamerPage() {
                     {streamer.tiktok_url&&<SocialIcon href={streamer.tiktok_url} type="tiktok"/>}
                   </div>
                 </div>
-                {streamer.description?.trim()&&<p style={{fontSize:13,color:'var(--color-text-secondary)',lineHeight:1.6,margin:'0 0 10px',fontStyle:'italic',borderLeft:'3px solid var(--color-purple)',paddingLeft:12}}>"{streamer.description}"</p>}
+                {streamer.description?.trim()&&<p style={{overflowWrap:'anywhere',fontSize:13,color:'var(--color-text-secondary)',lineHeight:1.6,margin:'0 0 10px',fontStyle:'italic',borderLeft:'3px solid var(--color-purple)',paddingLeft:12}}>"{streamer.description}"</p>}
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:6}}>
                   <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
                     {streamer.top_category&&(()=>{
@@ -464,16 +524,16 @@ export default function StreamerPage() {
                         ?<Link href={`/juegos/${sl}`} title={`Ver streamers de ${streamer.top_category}`} style={s}>{streamer.top_category} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></Link>
                         :<span style={s}>{streamer.top_category}</span>;
                     })()}
-                    {streamer.second_category&&streamer.second_category!=='(No tiene)'&&(()=>{
+                    {streamer.second_category&&streamer.second_category!=='(No tiene)'&&<span className="solo-desktop" style={{display:'contents'}}>{(()=>{
                       const sl=categoryToSlug(streamer.second_category);
                       const s={fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(124,58,237,0.1)',color:'var(--color-text-secondary)',border:'1px solid var(--color-border)',textDecoration:'none'};
                       return VALID_GAME_SLUGS.has(sl)
                         ?<Link href={`/juegos/${sl}`} title={`Ver streamers de ${streamer.second_category}`} style={s}>{streamer.second_category} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></Link>
                         :<span style={s}>{streamer.second_category}</span>;
-                    })()}
+                    })()}</span>}
                   </div>
                   {(streamer.top_content||streamer.second_content)&&(
-                    <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+                    <div className="solo-desktop" style={{display:'flex',gap:6,flexWrap:'wrap'}}>
                       {streamer.top_content&&<span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(245,158,11,0.15)',color:C.warnLight,border:'1px solid rgba(245,158,11,0.3)'}}>🎯 {streamer.top_content}</span>}
                       {streamer.second_content&&<span style={{fontSize:11,fontWeight:600,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(245,158,11,0.08)',color:C.warn,border:'1px solid rgba(245,158,11,0.2)'}}>🎯 {streamer.second_content}</span>}
                     </div>
@@ -485,11 +545,22 @@ export default function StreamerPage() {
             {/* STATS */}
             <div>
               <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:7}}>En números</div>
-              <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(3,minmax(0,1fr))',gap:8}}>
                 <StatCard label="Seguidores" value={fmt(streamer.total_followers)} tooltip={fmtFull(streamer.total_followers)} rank={RANK_BY_FOLLOWERS[streamer.id]} color="var(--color-purple-light)"/>
                 <StatCard label="Peak histórico" value={fmt(streamer.peak_viewers)} tooltip={fmtFull(streamer.peak_viewers)} rank={RANK_BY_PEAK[streamer.id]} color="var(--color-warn)"/>
                 <StatCard label="Horas en stream" value={fmt(streamer.total_hours)} tooltip={fmtFull(streamer.total_hours)+' hs · '+fmt_hours(streamer.total_hours)} rank={RANK_BY_HOURS[streamer.id]} color="var(--color-info)"/>
               </div>
+            </div>
+
+            {/* En móvil la info secundaria se abre en un panel inferior */}
+            <div className="solo-movil" style={{gap:8,flexWrap:'wrap'}}>
+              {[
+                ['datos','📋 Datos'],
+                ['actividad','📊 Actividad'],
+                tieneComunidad&&['comunidad','👥 Comunidad'],
+              ].filter(Boolean).map(([k,l])=>(
+                <button key={k} onClick={()=>setPanel(k)} style={{flexShrink:0,background:'var(--bg-secondary)',border:'1px solid var(--color-border)',color:'#fff',borderRadius:'var(--radius-pill)',padding:'9px 14px',fontSize:13,fontWeight:700,cursor:'pointer',whiteSpace:'nowrap'}}>{l} ›</button>
+              ))}
             </div>
 
             {/* PLATAFORMAS */}
@@ -511,40 +582,10 @@ export default function StreamerPage() {
 
             {/* COMUNIDAD / ESPORTS / EVENTOS */}
             {/* En mobile solo muestra si tiene datos en al menos una categoría */}
-            {(streamer.community||streamer.esports_team||(streamer.events&&streamer.events.length>0)) ? (
-              <div className="community-section" style={{background:'var(--bg-secondary)',borderRadius:'var(--radius-md)',border:'1px solid var(--color-border)',padding:'12px 14px'}}>
+            {tieneComunidad ? (
+              <div className="community-section solo-desktop" style={{background:'var(--bg-secondary)',borderRadius:'var(--radius-md)',border:'1px solid var(--color-border)',padding:'12px 14px'}}>
                 <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Comunidad & Esports</div>
-                <div style={{display:'flex',flexDirection:'row',flexWrap:'wrap',gap:12,alignItems:'flex-start'}}>
-                  {streamer.community&&(
-                    <div>
-                      <div style={{fontSize:10,color:'var(--color-text-secondary)',marginBottom:4,fontWeight:600}}>Comunidad</div>
-                      <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
-                        {(Array.isArray(streamer.community)?streamer.community:[streamer.community]).map(c=>(
-                          <span key={c} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(83,252,24,0.12)',color:'var(--color-kick)',border:'1px solid rgba(83,252,24,0.25)'}}>{c}</span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  {streamer.esports_team&&(
-                    <div>
-                      <div style={{fontSize:10,color:'var(--color-text-secondary)',marginBottom:4,fontWeight:600}}>Equipo de Esports</div>
-                      <span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(37,99,235,0.15)',color:C.blueLight,border:'1px solid rgba(37,99,235,0.3)'}}>⚔️ {streamer.esports_team}</span>
-                    </div>
-                  )}
-                  {streamer.events&&streamer.events.length>0&&(
-                    <div>
-                      <div style={{fontSize:10,color:'var(--color-text-secondary)',marginBottom:4,fontWeight:600}}>Eventos</div>
-                      <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
-                        {streamer.events.map(e=>{
-                          const url=EVENT_URLS[e];
-                          return url
-                            ?<a key={e} href={url} title={`Ver ${e}`} style={{textDecoration:'none'}}><span style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(124,58,237,0.15)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)'}}>🎪 {e} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></span></a>
-                            :<span key={e} style={{fontSize:11,fontWeight:700,padding:'3px 10px',borderRadius:'var(--radius-pill)',background:'rgba(124,58,237,0.15)',color:'var(--color-purple-light)',border:'1px solid rgba(124,58,237,0.3)'}}>🎪 {e}</span>;
-                        })}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                <ComunidadInfo streamer={streamer}/>
               </div>
             ) : null}
 
@@ -587,30 +628,15 @@ export default function StreamerPage() {
               <TriviaSection streamer={streamer}/>
             </div>
 
-            {/* DATOS (solo mobile) */}
-            {extraData.length>0&&(
-              <div className="panel-datos-mobile" style={{background:'var(--bg-secondary)',borderRadius:'var(--radius-md)',border:'1px solid var(--color-border)',padding:'12px 14px'}}>
-                <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Datos</div>
-                <div style={{display:'flex',flexDirection:'column',gap:9}}>
-                  {extraData.map((d,i)=>(
-                    <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:8,paddingBottom:i<extraData.length-1?9:0,borderBottom:i<extraData.length-1?'1px solid var(--color-border)':undefined}}>
-                      <span style={{fontSize:11,color:'var(--color-text-secondary)',flexShrink:0}}>{d.label}</span>
-                      <span style={{fontSize:12,fontWeight:600,color:'#fff',textAlign:'right'}}>{d.href?<a href={d.href} title={`Ver más streamers: ${d.value}`} style={{color:'var(--color-purple-light)',textDecoration:'none'}}>{d.value} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>:d.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {/* BANNER JUEGOS */}
             <div style={{background:'linear-gradient(135deg,rgba(124,58,237,0.15),rgba(83,252,24,0.08))',border:'1px solid rgba(124,58,237,0.3)',borderRadius:'var(--radius-md)',padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10}}>
               <div>
                 <div style={{fontSize:13,fontWeight:800,marginBottom:2}}>¿Habrá salido {streamer.display_name} hoy?</div>
                 <div style={{fontSize:11,color:'var(--color-text-secondary)'}}>Descubrilo en nuestros juegos diarios</div>
               </div>
-              <div style={{display:'flex',gap:5,flexWrap:'nowrap',overflowX:'auto'}}>
+              <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
                 {[{ href: '/', label: '🎮 Nuestros juegos' }, { href: '/ruleta', label: '🎲 Descubrí un streamer' }].map(g=>(
-                  <a key={g.href} href={g.href} style={{background:'var(--color-purple)',color:'#fff',borderRadius:'var(--radius-sm)',padding: '9px 22px',fontSize: 14,fontWeight:600,textDecoration:'none',transition:'opacity 0.2s',whiteSpace:'nowrap',flexShrink:0}}
+                  <a key={g.href} href={g.href} style={{background:'var(--color-purple)',color:'#fff',borderRadius:'var(--radius-sm)',padding:'9px 16px',fontSize:13,fontWeight:600,textDecoration:'none',transition:'opacity 0.2s',whiteSpace:'nowrap'}}
                     onMouseOver={e=>e.currentTarget.style.opacity='0.85'} onMouseOut={e=>e.currentTarget.style.opacity='1'}>{g.label}</a>
                 ))}
               </div>
@@ -636,19 +662,12 @@ export default function StreamerPage() {
           {/* DERECHA */}
           <div style={{display:'flex',flexDirection:'column',gap:12}}>
             {extraData.length>0&&(
-              <div className="panel-datos" style={{background:'var(--bg-secondary)',borderRadius:'var(--radius-md)',border:'1px solid var(--color-border)',padding:'12px 14px'}}>
+              <div className="panel-datos solo-desktop" style={{background:'var(--bg-secondary)',borderRadius:'var(--radius-md)',border:'1px solid var(--color-border)',padding:'12px 14px'}}>
                 <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Datos</div>
-                <div style={{display:'flex',flexDirection:'column',gap:9}}>
-                  {extraData.map((d,i)=>(
-                    <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:8,paddingBottom:i<extraData.length-1?9:0,borderBottom:i<extraData.length-1?'1px solid var(--color-border)':undefined}}>
-                      <span style={{fontSize:11,color:'var(--color-text-secondary)',flexShrink:0}}>{d.label}</span>
-                      <span style={{fontSize:12,fontWeight:600,color:'#fff',textAlign:'right'}}>{d.href?<a href={d.href} title={`Ver más streamers: ${d.value}`} style={{color:'var(--color-purple-light)',textDecoration:'none'}}>{d.value} <span aria-hidden="true" style={{fontSize:10,opacity:0.8}}>↗</span></a>:d.value}</span>
-                    </div>
-                  ))}
-                </div>
+                <DatosLista items={extraData}/>
               </div>
             )}
-            <ActividadPanel streamer={streamer}/>
+            <div className="solo-desktop"><ActividadPanel streamer={streamer}/></div>
             {related.length>0&&(
               <div className="panel-relacionados" style={{background:'var(--bg-secondary)',borderRadius:'var(--radius-md)',border:'1px solid var(--color-border)',padding:'12px 14px'}}>
                 <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:10}}>Relacionados</div>
@@ -662,6 +681,32 @@ export default function StreamerPage() {
           </div>
         </div>
       </main>
+      <PanelInferior abierto={!!panel} onCerrar={cerrarPanel} titulo={panel==='actividad'?'Actividad':panel==='comunidad'?'Comunidad & Esports':`Datos de ${streamer.display_name}`}>
+        {panel==='datos'&&(
+          <div style={{display:'flex',flexDirection:'column',gap:16}}>
+            {extraData.length>0&&<DatosLista items={extraData}/>}
+            {(debut||hito||streamer.top_category||streamer.top_content||badges.length>0)&&(
+              <div>
+                <div style={{fontSize:10,fontWeight:700,color:'var(--color-text-secondary)',textTransform:'uppercase',letterSpacing:'0.6px',marginBottom:8}}>Etiquetas</div>
+                <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+                  {debut&&<span style={chipGris}>📅 En Twitch desde {debut}</span>}
+                  {hito&&<span style={chipGris}>{hito.texto}</span>}
+                  {[streamer.top_category,streamer.second_category].filter(c=>c&&c!=='(No tiene)').map(c=>{
+                    const sl=categoryToSlug(c);
+                    return VALID_GAME_SLUGS.has(sl)
+                      ?<Link key={c} href={`/juegos/${sl}`} style={{...chipGris,color:'var(--color-purple-light)',textDecoration:'none'}}>🎮 {c} ↗</Link>
+                      :<span key={c} style={chipGris}>🎮 {c}</span>;
+                  })}
+                  {[streamer.top_content,streamer.second_content].filter(Boolean).map(c=><span key={c} style={{...chipGris,color:C.warnLight}}>🎯 {c}</span>)}
+                  {badges.map(b=><a key={b.texto} href={b.href} style={{...chipGris,color:C.okLight,textDecoration:'none'}}>{b.texto} ↗</a>)}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        {panel==='actividad'&&<ActividadPanel streamer={streamer} enPanel/>}
+        {panel==='comunidad'&&<ComunidadInfo streamer={streamer}/>}
+      </PanelInferior>
 
     </div>
   );

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import AvatarImg from '../../components/AvatarImg';
+import { VivoLinea } from '../../components/Vivos';
 import { Shell, jsonLd, FLAGS } from '../../components/AgrupacionUI';
 import { getAvatarUrl } from '../../../data/avatars';
 import { fetchTwitchAvatars } from '../../../lib/twitch-server';
@@ -73,6 +74,7 @@ export default async function Page({ params }) {
                   {x.nota && <span style={{ fontSize: 10, fontWeight: 700, color: c.color }}>{x.nota}</span>}
                 </div>
                 <div style={{ fontSize: 12, marginTop: 3, color: 'var(--color-text-secondary)' }}>{fmt(x.s.total_followers)} seguidores{edad ? ` · ${edad} años` : ''}{x.s.top_category ? ` · ${x.s.top_category}` : ''}</div>
+                <VivoLinea slug={x.slug} />
               </div>
             </Link>
           );

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { STREAMERS } from '../../data/streamers';
 import { getCategoriesWithMinStreamers } from '../../lib/categories';
 import { C } from '../../lib/colores';
+import { EnVivoAhora } from '../components/Vivos';
 
 export const metadata = {
   title: 'Explorar — Streamers, Juegos, Comunidades y más | Streamdle',
@@ -137,7 +138,8 @@ export default function ExplorarPage() {
       </div>
 
       {/* Grid */}
-      <main style={{ maxWidth: 960, margin: '0 auto', padding: '0 24px 80px' }}>
+      <main style={{ maxWidth: 960, margin: '0 auto', padding: '0 16px 80px' }}>
+        <EnVivoAhora titulo="🔴 Streamers en vivo ahora" />
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
