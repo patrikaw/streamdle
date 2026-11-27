@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { STREAMERS } from '../../data/streamers';
+import Anuncio, { SLOTS } from './Anuncio';
 
 const OTROS = [
   ['/classic', '🎯 Streamdle Classic'], ['/chatdle', '💬 Chatdle'], ['/avatardle', '👤 Avatardle'], ['/emojidle', '😂 Emojidle'],
@@ -49,6 +50,7 @@ export default function JuegoSEO({ href, nombre, intro, reglas, preguntas, h1Ocu
     <section style={{ background: 'var(--bg-primary)', borderTop: '1px solid var(--color-border)', padding: '32px 16px 48px' }}>
       <div style={{ maxWidth: 720, margin: '0 auto', color: 'var(--color-text-secondary)', fontSize: 14, lineHeight: 1.7 }}>
         {h1Oculto && <h1 className="sr-only">{h1Oculto}</h1>}
+        <Anuncio slot={SLOTS.juegos} style={{ marginTop: 0, marginBottom: 28 }} />
         <h2 style={h2}>Cómo se juega a {nombre}</h2>
         <p style={{ marginBottom: 12 }}>{intro}</p>
         <ul style={{ paddingLeft: 20, marginBottom: 20 }}>

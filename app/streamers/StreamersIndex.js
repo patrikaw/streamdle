@@ -8,6 +8,7 @@ import { getAvatarsForLogins, getAvatarUrl } from '../../data/avatars';
 import { fmtNum } from '../../lib/formato';
 import { C } from '../../lib/colores';
 import { VivoLinea, EnVivoAhora, useVivos } from '../components/Vivos';
+import Anuncio, { SLOTS } from '../components/Anuncio';
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -548,7 +549,10 @@ export default function StreamersIndex({
             gap: 8,
           }}>
             {paginated.map((s, i) => (
-              <StreamerCard key={s.id} streamer={s} avatars={avatars} sort={sort} />
+              <div key={s.id} style={{ display: 'contents' }}>
+                <StreamerCard streamer={s} avatars={avatars} sort={sort} />
+                {i === 11 && <Anuncio slot={SLOTS.listado} style={{ gridColumn: '1 / -1', margin: '8px 0', maxWidth: 'none' }} />}
+              </div>
             ))}
           </div>
         )}

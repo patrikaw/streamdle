@@ -1,0 +1,4 @@
+This is a Brave Creators publisher verification file.
+
+Domain: streamdle.net
+Token: 200df5dd4dc3f24f91fb62cf13951f8dcd8b4d7d3ddd3551264451193be4cdb6

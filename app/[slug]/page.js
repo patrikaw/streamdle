@@ -11,6 +11,7 @@ import { hitoDe } from '../../lib/extras-ficha';
 import { CumpleChip } from '../components/Cumple';
 import VivoAhora from '../components/VivoAhora';
 import PanelInferior from '../components/PanelInferior';
+import Anuncio, { SLOTS } from '../components/Anuncio';
 import { categoryToSlug, getCategoriesWithMinStreamers } from '../../lib/categories';
 import { fmtNum } from '../../lib/formato';
 import { C } from '../../lib/colores';
@@ -588,6 +589,8 @@ export default function StreamerPage() {
                 <ComunidadInfo streamer={streamer}/>
               </div>
             ) : null}
+
+            <Anuncio slot={SLOTS.ficha} style={{ margin: '4px 0', maxWidth: 'none' }} />
 
             {/* CLIP */}
             {clipId&&(
