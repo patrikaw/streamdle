@@ -7,7 +7,7 @@ const CLIENTE = 'ca-pub-9797476509112947';
 // IDs de bloque (data-ad-slot) creados en AdSense → Anuncios → Por bloque de anuncios.
 // Mientras estén vacíos, el anuncio no se muestra.
 export const SLOTS = {
-  juegos: '',
+  juegos: '5662754044',
   ficha: '',
   listado: '',
 };
